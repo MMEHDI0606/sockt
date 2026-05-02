@@ -60,7 +60,7 @@ export default function StackSection() {
       });
 
       LAYERS.forEach((layer, i) => {
-        tl.from(`#${layer.id}`, { y: -60, opacity: 0, duration: 0.4 }, i === 0 ? 0 : '-=0.3');
+        tl.from(`#${layer.id}`, { y: -20, duration: 0.4 }, i === 0 ? 0 : '-=0.3');
       });
     }, sectionRef);
 
