@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 const COLS = [
   {
@@ -25,6 +26,7 @@ const COLS = [
 
 export default function Footer() {
   const dotRef = useRef<HTMLSpanElement>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (!dotRef.current) return;
@@ -41,11 +43,11 @@ export default function Footer() {
     <footer
       style={{
         borderTop: '1px solid var(--bg-border)',
-        padding: '80px 32px 40px',
+        padding: isMobile ? '64px 24px 32px' : '80px 32px 40px',
       }}
     >
       <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '48px', marginBottom: '64px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: isMobile ? '32px' : '48px', marginBottom: '64px' }}>
           {COLS.map((col) => (
             <div key={col.title}>
               <div

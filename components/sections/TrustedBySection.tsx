@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 const PROOF_METRICS = [
   {
@@ -35,6 +36,7 @@ const OUTCOMES = [
 
 export default function TrustedBySection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -58,7 +60,7 @@ export default function TrustedBySection() {
     <section
       ref={sectionRef}
       style={{
-        padding: '120px 32px',
+        padding: isMobile ? '80px 24px' : '120px 32px',
         borderTop: '1px solid var(--bg-border)',
       }}
     >
@@ -70,7 +72,7 @@ export default function TrustedBySection() {
           </h2>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '14px', marginBottom: '24px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, minmax(0, 1fr))', gap: '14px', marginBottom: '24px' }}>
           {PROOF_METRICS.map((metric, i) => (
             <div
               key={i}

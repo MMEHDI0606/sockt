@@ -2,11 +2,13 @@
 
 import { useEffect, useRef } from 'react';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 export default function WhatIsSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const leftRef = useRef<HTMLDivElement>(null);
   const rightRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -30,15 +32,15 @@ export default function WhatIsSection() {
     <section
       ref={sectionRef}
       style={{
-        padding: '120px 32px',
+        padding: isMobile ? '80px 24px' : '120px 32px',
         maxWidth: '1280px',
         margin: '0 auto',
         borderTop: '1px solid var(--bg-border)',
       }}
     >
-      <div style={{ display: 'flex', gap: '80px', alignItems: 'flex-start' }}>
+      <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: isMobile ? '40px' : '80px', alignItems: 'flex-start' }}>
         {/* Left: counter + headline */}
-        <div ref={leftRef} style={{ flex: '0 0 55%' }}>
+        <div ref={leftRef} style={{ flex: isMobile ? '1 1 100%' : '0 0 55%' }}>
           <span
             style={{
               fontFamily: 'var(--font-mono)',

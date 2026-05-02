@@ -2,11 +2,13 @@
 
 import { useEffect, useRef } from 'react';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 const LINES = ['YOUR AGENT.', 'BUYS ITS OWN', 'COMPUTE.'];
 
 export default function CTASection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -50,7 +52,7 @@ export default function CTASection() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '120px 32px',
+        padding: isMobile ? '80px 24px' : '120px 32px',
         borderTop: '1px solid var(--bg-border)',
         textAlign: 'center',
       }}
@@ -81,7 +83,7 @@ export default function CTASection() {
         ))}
       </h2>
 
-      <div className="cta-sub" style={{ display: 'flex', gap: '16px', marginBottom: '24px', flexWrap: 'wrap', justifyContent: 'center' }}>
+      <div className="cta-sub" style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '16px', marginBottom: '24px', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}>
         <a
           href="#"
           style={{

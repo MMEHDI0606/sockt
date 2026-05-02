@@ -1,5 +1,7 @@
 'use client';
 
+import { useIsMobile } from '@/hooks/useIsMobile';
+
 const TIERS = [
   {
     name: 'SPARK',
@@ -48,10 +50,11 @@ const ROWS = [
 ];
 
 export default function PricingSection() {
+  const isMobile = useIsMobile();
   return (
     <section
       style={{
-        padding: '120px 32px',
+        padding: isMobile ? '80px 24px' : '120px 32px',
         borderTop: '1px solid var(--bg-border)',
       }}
     >
@@ -63,12 +66,12 @@ export default function PricingSection() {
           </h2>
         </div>
 
-        <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'center' }}>
           {TIERS.map((tier) => (
             <div
               key={tier.name}
               style={{
-                flex: '0 0 320px',
+                flex: isMobile ? '1 1 100%' : '0 0 320px',
                 backgroundColor: 'var(--bg-surface)',
                 border: `1px solid ${tier.recommended ? 'var(--accent-btc)' : 'var(--bg-border)'}`,
                 borderRadius: '6px',

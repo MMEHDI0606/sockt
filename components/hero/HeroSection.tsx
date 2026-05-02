@@ -9,6 +9,7 @@ import {
   type LayoutCursor,
 } from '@chenglou/pretext';
 import HeroConsole from './HeroConsole';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 const HEADLINE_TEXT = 'COMPUTE FOR AGENTS THAT PAY IN SATS.';
 const TAGLINE = 'Your agent shouldn’t pause and wait for a human to provision compute. Sockt gives it a wallet, a channel, and a GPU — autonomous and settled in under 90 seconds.';
@@ -82,6 +83,7 @@ export default function HeroSection() {
   const hoverRafRef = useRef<number | null>(null);
   const [headlineLines, setHeadlineLines] = useState<DynamicLine[]>([]);
   const [taglineLines, setTaglineLines] = useState<DynamicLine[]>([]);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const headlineNodes = sectionRef.current?.querySelectorAll('.hero-headline-line');
@@ -113,6 +115,7 @@ export default function HeroSection() {
   }, []);
 
   useEffect(() => {
+    if (isMobile) return;
     const headlineBox = headlineBoxRef.current;
     const taglineBox = taglineBoxRef.current;
     if (!headlineBox || !taglineBox) return;
@@ -186,7 +189,7 @@ export default function HeroSection() {
     return () => {
       resizeObserver.disconnect();
     };
-  }, []);
+  }, [isMobile]);
 
   const handleMouseMove = (event: React.MouseEvent<HTMLElement>) => {
     const headlineBox = headlineBoxRef.current;
@@ -276,8 +279,8 @@ export default function HeroSection() {
   return (
     <section
       ref={sectionRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
+      onMouseMove={isMobile ? undefined : handleMouseMove}
+      onMouseLeave={isMobile ? undefined : handleMouseLeave}
       style={{
         minHeight: '100vh',
         paddingTop: '67px',
@@ -292,7 +295,7 @@ export default function HeroSection() {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          padding: '80px 32px 120px',
+          padding: isMobile ? '48px 24px 80px' : '80px 32px 120px',
           maxWidth: '1280px',
           margin: '0 auto',
           width: '100%',
@@ -301,63 +304,97 @@ export default function HeroSection() {
         <div
           style={{
             display: 'flex',
-            gap: '48px',
+            flexDirection: isMobile ? 'column' : 'row',
+            gap: isMobile ? '32px' : '48px',
             alignItems: 'flex-start',
           }}
         >
           {/* Headline */}
-          <div style={{ flex: 1 }}>
-            <div
-              ref={headlineBoxRef}
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'var(--text-hero)',
-                fontWeight: 800,
-                lineHeight: 0.92,
-                maxWidth: '820px',
-              }}
-            >
-              {headlineLines.map((line, index) => (
-                <div
-                  key={`${index}-${line.text.length}`}
-                  className="hero-headline-line"
-                  style={{
-                    transform: `translateX(${line.xOffset}px)`,
-                    transition: 'transform 110ms ease-out',
-                    marginBottom: index < headlineLines.length - 1 ? '4px' : '0',
-                    color: line.text.includes('SATS') ? 'var(--accent-btc)' : 'var(--text-primary)',
-                  }}
-                >
-                  {line.text}
-                </div>
-              ))}
-            </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            {isMobile ? (
+              <h1
+                className="hero-headline-line"
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: 'clamp(2.6rem, 10vw, 5rem)',
+                  fontWeight: 800,
+                  lineHeight: 0.95,
+                  color: 'var(--text-primary)',
+                }}
+              >
+                {HEADLINE_TEXT.split(/(SATS\.)/).map((part, i) => (
+                  <span key={i} style={part === 'SATS.' ? { color: 'var(--accent-btc)' } : undefined}>
+                    {part}
+                  </span>
+                ))}
+              </h1>
+            ) : (
+              <div
+                ref={headlineBoxRef}
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: 'var(--text-hero)',
+                  fontWeight: 800,
+                  lineHeight: 0.92,
+                  maxWidth: '820px',
+                }}
+              >
+                {headlineLines.map((line, index) => (
+                  <div
+                    key={`${index}-${line.text.length}`}
+                    className="hero-headline-line"
+                    style={{
+                      transform: `translateX(${line.xOffset}px)`,
+                      transition: 'transform 110ms ease-out',
+                      marginBottom: index < headlineLines.length - 1 ? '4px' : '0',
+                      color: line.text.includes('SATS') ? 'var(--accent-btc)' : 'var(--text-primary)',
+                    }}
+                  >
+                    {line.text}
+                  </div>
+                ))}
+              </div>
+            )}
 
             {/* Tagline */}
-            <div
-              ref={taglineBoxRef}
-              style={{
-                marginTop: '32px',
-                fontFamily: 'var(--font-body)',
-                fontSize: '16px',
-                lineHeight: 1.7,
-                color: 'var(--text-secondary)',
-                maxWidth: '480px',
-              }}
-            >
-              {taglineLines.map((line, index) => (
-                <div
-                  key={`${index}-${line.text.length}`}
-                  style={{
-                    transform: `translateX(${line.xOffset}px)`,
-                    transition: 'transform 120ms ease-out',
-                    whiteSpace: 'pre-wrap',
-                  }}
-                >
-                  {line.text}
-                </div>
-              ))}
-            </div>
+            {isMobile ? (
+              <p
+                style={{
+                  marginTop: '24px',
+                  fontFamily: 'var(--font-body)',
+                  fontSize: '15px',
+                  lineHeight: 1.7,
+                  color: 'var(--text-secondary)',
+                }}
+              >
+                {TAGLINE}
+              </p>
+            ) : (
+              <div
+                ref={taglineBoxRef}
+                style={{
+                  marginTop: '32px',
+                  fontFamily: 'var(--font-body)',
+                  fontSize: '16px',
+                  lineHeight: 1.7,
+                  color: 'var(--text-secondary)',
+                  maxWidth: '480px',
+                }}
+              >
+                {taglineLines.map((line, index) => (
+                  <div
+                    key={`${index}-${line.text.length}`}
+                    style={{
+                      transform: `translateX(${line.xOffset}px)`,
+                      transition: 'transform 120ms ease-out',
+                      whiteSpace: 'pre-wrap',
+                    }}
+                  >
+                    {line.text}
+                  </div>
+                ))}
+              </div>
+            )}
 
             {/* CTA */}
             <div style={{ marginTop: '40px', display: 'flex', gap: '16px', alignItems: 'center' }}>
@@ -406,7 +443,7 @@ export default function HeroSection() {
           </div>
 
           {/* Console */}
-          <HeroConsole />
+          {!isMobile && <HeroConsole />}
         </div>
       </div>
 

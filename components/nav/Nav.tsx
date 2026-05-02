@@ -2,9 +2,11 @@
 
 import { useEffect, useRef } from 'react';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 export default function Nav() {
   const navRef = useRef<HTMLElement>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const nav = navRef.current;
@@ -85,30 +87,30 @@ export default function Nav() {
         </a>
 
         {/* Center: Nav links */}
-        <div
-          style={{
-            display: 'flex',
-            gap: '32px',
-            fontFamily: 'var(--font-body)',
-            fontSize: '16px',
-            color: 'var(--text-secondary)',
-            letterSpacing: '0.08em',
-          }}
-        >
-          {['Use Cases', 'Docs', 'Pricing', 'Status'].map((link) => (
-            <a
-              key={link}
-              href="#"
-              style={{ color: 'inherit', transition: 'none' }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
-            >
-              {link}
-            </a>
-          ))}
-        </div>
-
-        {/* Right: CTA */}
+        {!isMobile && (
+          <div
+            style={{
+              display: 'flex',
+              gap: '32px',
+              fontFamily: 'var(--font-body)',
+              fontSize: '16px',
+              color: 'var(--text-secondary)',
+              letterSpacing: '0.08em',
+            }}
+          >
+            {['Use Cases', 'Docs', 'Pricing', 'Status'].map((link) => (
+              <a
+                key={link}
+                href="#"
+                style={{ color: 'inherit', transition: 'none' }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
+              >
+                {link}
+              </a>
+            ))}
+          </div>
+        )}
         <a
           href="#"
           style={{

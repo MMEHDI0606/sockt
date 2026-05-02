@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 const STEPS = [
   {
@@ -68,8 +69,10 @@ export default function HowItWorksSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [activeDot, setActiveDot] = useState(0);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
+    if (isMobile) return;
     const ctx = gsap.context(() => {
       const track = trackRef.current;
       if (!track) return;
@@ -91,7 +94,29 @@ export default function HowItWorksSection() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [isMobile]);
+
+  if (isMobile) {
+    return (
+      <section style={{ borderTop: '1px solid var(--bg-border)', padding: '80px 24px' }}>
+        {STEPS.map((step, i) => (
+          <div key={i} style={{ marginBottom: i < STEPS.length - 1 ? '72px' : 0 }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '48px', fontWeight: 700, color: 'var(--bg-raised)', display: 'block', marginBottom: '12px', lineHeight: 1 }}>{step.num}</span>
+            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.5rem, 6vw, 2rem)', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '16px' }}>{step.title}</h3>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '15px', lineHeight: 1.7, color: 'var(--text-primary)', marginBottom: '8px' }}>{step.outcome}</p>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '16px' }}>{step.reassurance}</p>
+            <pre style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', lineHeight: 1.6, backgroundColor: 'var(--bg-surface)', border: '1px solid var(--bg-border)', borderRadius: '6px', padding: '16px', color: 'var(--text-mono)', overflow: 'auto', whiteSpace: 'pre-wrap' }}>
+              <code dangerouslySetInnerHTML={{ __html: step.code
+                .replace(/^(\+ .+)$/gm, '<span style="color:var(--accent-green)">$1</span>')
+                .replace(/^(- .+)$/gm, '<span style="color:var(--accent-red)">$1</span>')
+                .replace(/(✓.+)/g, '<span style="color:var(--accent-green)">$1</span>'),
+              }} />
+            </pre>
+          </div>
+        ))}
+      </section>
+    );
+  }
 
   return (
     <section
