@@ -81,8 +81,8 @@ export default function WhatIsSection() {
             }}
           >
             Sockt is the execution layer where AI agents autonomously provision compute resources,
-            open Lightning channels, and stream micropayments per compute epoch — no credit
-            cards, no procurement teams, no invoices.
+            open Lightning channels, and stream micropayments per compute epoch, with a website
+            api_key fallback path when account-based access is preferred.
           </p>
 
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
@@ -110,7 +110,7 @@ export default function WhatIsSection() {
                 letterSpacing: '0.04em',
               }}
             >
-              🔒 MCP fallback
+              🔒 website api_key fallback
             </span>
           </div>
         </div>

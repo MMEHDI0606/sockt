@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 
-const LINES = ['WIRE YOUR', 'AGENT IN', '< 5 MINUTES.'];
+const LINES = ['CHOOSE YOUR', 'ACCESS PATH', 'IN < 5 MINUTES.'];
 
 export default function CTASection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -97,7 +97,7 @@ export default function CTASection() {
             cursor: 'pointer',
           }}
         >
-          Open Lightning Channel →
+          Start wallet-native path →
         </a>
         <a
           href="#"
@@ -113,7 +113,7 @@ export default function CTASection() {
             cursor: 'pointer',
           }}
         >
-          Read the Docs →
+          Use website api_key →
         </a>
       </div>
 
@@ -126,7 +126,7 @@ export default function CTASection() {
           letterSpacing: '0.08em',
         }}
       >
-        No card. No account. Just sats.
+        One product, two access paths, same sandbox lifecycle.
       </span>
     </section>
   );
