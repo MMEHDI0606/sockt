@@ -1,15 +1,21 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
-import HeroTicker from './HeroTicker';
+import { layout, prepare } from '@chenglou/pretext';
 import HeroConsole from './HeroConsole';
 
 const HEADLINE = ['COMPUTE', 'FOR AGENTS', 'THAT PAY IN SATS.'];
+const TAGLINE = 'Autonomous AI infrastructure. Agents procure compute resources, settle in milliseconds via Lightning, and scale without human intervention.';
 
 export default function HeroSection() {
   const headlineRefs = useRef<(HTMLDivElement | null)[]>([]);
   const chevronRef = useRef<HTMLDivElement>(null);
+  const taglineRef = useRef<HTMLParagraphElement>(null);
+  const [pretextMetrics, setPretextMetrics] = useState<{ lineCount: number; height: number }>({
+    lineCount: 0,
+    height: 0,
+  });
 
   useEffect(() => {
     // Headline stagger entry
@@ -32,6 +38,32 @@ export default function HeroSection() {
         yoyo: true,
       });
     }
+
+    const p = taglineRef.current;
+    if (!p) return;
+
+    const style = window.getComputedStyle(p);
+    const fontWeight = style.fontWeight || '400';
+    const fontSize = style.fontSize || '16px';
+    const fontFamily = style.fontFamily || 'sans-serif';
+    const font = `${fontWeight} ${fontSize} ${fontFamily}`;
+    const lineHeight = Number.parseFloat(style.lineHeight) || 27;
+    const prepared = prepare(TAGLINE, font);
+
+    const updatePretextMetrics = () => {
+      const width = p.clientWidth;
+      if (!width) return;
+      const { lineCount, height } = layout(prepared, width, lineHeight);
+      setPretextMetrics({ lineCount, height });
+    };
+
+    updatePretextMetrics();
+    const resizeObserver = new ResizeObserver(updatePretextMetrics);
+    resizeObserver.observe(p);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
   }, []);
 
   return (
@@ -44,8 +76,6 @@ export default function HeroSection() {
         position: 'relative',
       }}
     >
-      <HeroTicker />
-
       <div
         style={{
           flex: 1,
@@ -87,6 +117,7 @@ export default function HeroSection() {
 
             {/* Tagline */}
             <p
+              ref={taglineRef}
               style={{
                 marginTop: '32px',
                 fontFamily: 'var(--font-body)',
@@ -96,9 +127,20 @@ export default function HeroSection() {
                 maxWidth: '480px',
               }}
             >
-              Autonomous AI infrastructure. Agents procure GPU resources, settle in milliseconds
-              via Lightning, and scale without human intervention.
+              {TAGLINE}
             </p>
+
+            <div
+              style={{
+                marginTop: '10px',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '11px',
+                color: 'var(--accent-amber)',
+                letterSpacing: '0.05em',
+              }}
+            >
+              PRETEXT LAYOUT: {pretextMetrics.lineCount} LINES / {Math.round(pretextMetrics.height)}PX
+            </div>
 
             {/* CTA */}
             <div style={{ marginTop: '40px', display: 'flex', gap: '16px', alignItems: 'center' }}>

@@ -80,7 +80,7 @@ export default function WhatIsSection() {
               marginBottom: '32px',
             }}
           >
-            Sockt is the execution layer where AI agents autonomously provision GPU resources,
+            Sockt is the execution layer where AI agents autonomously provision compute resources,
             open Lightning channels, and stream micropayments per compute epoch — no credit
             cards, no procurement teams, no invoices.
           </p>

@@ -46,7 +46,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <title>Sockt — Decentralized GPU Compute for AI Agents</title>
-        <meta name="description" content="Autonomous AI infrastructure. Agents procure GPU resources, settle in milliseconds via Lightning, and scale without human intervention." />
+        <meta name="description" content="Autonomous AI infrastructure. Agents procure compute resources, settle in milliseconds via Lightning, and scale without human intervention." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
