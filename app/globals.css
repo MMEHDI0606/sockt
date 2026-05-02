@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Background family */
+  --bg-void:     #080808;
+  --bg-surface:  #0f0f0f;
+  --bg-raised:   #161616;
+  --bg-border:   #1f1f1f;
+
+  /* Typography */
+  --text-primary:   #f0ece4;
+  --text-secondary: #6b6761;
+  --text-mono:      #c4bfb6;
+
+  /* Accent */
+  --accent-btc:    #f7931a;
+  --accent-amber:  #d4840a;
+  --accent-sats:   #fbbf24;
+  --accent-green:  #22d07a;
+  --accent-red:    #e53e3e;
+
+  /* Font families */
+  --font-display:  'Neue Haas Grotesk Display', 'Aktiv Grotesk Ex', sans-serif;
+  --font-body:     'Söhne', 'DM Sans', sans-serif;
+  --font-mono:     'Berkeley Mono', 'TX-02', 'Fira Code', monospace;
+
+  /* Motion */
+  --ease-expo:   cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-snap:   cubic-bezier(0.77, 0, 0.175, 1);
+  --dur-fast:    240ms;
+  --dur-medium:  480ms;
+  --dur-slow:    900ms;
+
+  /* Typography scale */
+  --text-hero:    clamp(4rem, 10vw, 9rem);
+  --text-display: clamp(2.5rem, 5vw, 5rem);
+  --text-xl:      clamp(1.25rem, 2vw, 1.75rem);
+  --text-body:    1rem;
+  --text-mono-sm: 0.75rem;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  background-color: var(--bg-void);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+}
+
+/* Topology grid background */
+body {
+  background-image: radial-gradient(circle, var(--bg-border) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Section base */
+section {
+  position: relative;
+}
+
+/* Char reveal wrapper */
+.char-wrapper {
+  overflow: hidden;
+  display: inline-block;
+}
+
+.char {
+  display: inline-block;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-void);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-border);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Cursor blink */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.cursor-blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* Ticker */
+.ticker-track {
+  will-change: transform;
+}
+
+/* Pinned section containers */
+.pin-container {
+  will-change: transform;
+}
