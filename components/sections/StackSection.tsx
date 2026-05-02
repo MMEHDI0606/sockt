@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 const LAYERS = [
   {
@@ -39,8 +40,10 @@ const LAYERS = [
 export default function StackSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const [activeLayer, setActiveLayer] = useState(0);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
+    if (isMobile) return;
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -65,17 +68,17 @@ export default function StackSection() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [isMobile]);
 
   return (
     <section
       ref={sectionRef}
       style={{
-        minHeight: '100vh',
+        minHeight: isMobile ? 'auto' : '100vh',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        padding: '80px 32px',
+        padding: isMobile ? '80px 24px' : '80px 32px',
         borderTop: '1px solid var(--bg-border)',
       }}
     >
@@ -93,10 +96,11 @@ export default function StackSection() {
               key={layer.id}
               id={layer.id}
               style={{
-                height: '64px',
+                height: isMobile ? 'auto' : '64px',
+                minHeight: isMobile ? '56px' : undefined,
                 display: 'flex',
                 alignItems: 'center',
-                padding: '0 20px',
+                padding: isMobile ? '12px 16px' : '0 20px',
                 backgroundColor: i === activeLayer ? 'var(--bg-raised)' : 'transparent',
                 borderLeft: `4px solid ${i === activeLayer ? 'var(--accent-btc)' : 'var(--bg-border)'}`,
                 transition: 'all 0.3s ease',
@@ -109,7 +113,8 @@ export default function StackSection() {
                   fontSize: '11px',
                   color: 'var(--text-secondary)',
                   letterSpacing: '0.08em',
-                  width: '200px',
+                  width: isMobile ? 'auto' : '200px',
+                  minWidth: isMobile ? undefined : '200px',
                   flexShrink: 0,
                 }}
               >

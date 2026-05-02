@@ -220,10 +220,10 @@ export default function HeroSection() {
           hRect.width,
           headlineLineHeightRef.current,
           hCursor,
-          120,
-          180,
+          80,
+          90,
           420,
-          34
+          16
         )
       );
 
@@ -233,10 +233,10 @@ export default function HeroSection() {
           tRect.width,
           taglineLineHeightRef.current,
           tCursor,
-          92,
-          110,
+          60,
+          55,
           180,
-          28
+          12
         )
       );
     });
@@ -256,10 +256,10 @@ export default function HeroSection() {
         headlineBox.clientWidth,
         headlineLineHeightRef.current,
         null,
-        120,
-        180,
+        80,
+        90,
         420,
-        34
+        16
       )
     );
     setTaglineLines(
@@ -268,10 +268,10 @@ export default function HeroSection() {
         taglineBox.clientWidth,
         taglineLineHeightRef.current,
         null,
-        92,
-        110,
+        60,
+        55,
         180,
-        28
+        12
       )
     );
   };

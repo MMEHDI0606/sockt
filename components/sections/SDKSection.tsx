@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import gsap from 'gsap';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 const TABS = ['TypeScript', 'Python', 'Go', 'CLI'];
 
@@ -87,6 +88,7 @@ sockt billing history`,
 
 export default function SDKSection() {
   const [activeTab, setActiveTab] = useState('TypeScript');
+  const isMobile = useIsMobile();
   const codeRef = { current: null as HTMLPreElement | null };
 
   const switchTab = (tab: string) => {
@@ -105,7 +107,7 @@ export default function SDKSection() {
   return (
     <section
       style={{
-        padding: '120px 32px',
+        padding: isMobile ? '80px 24px' : '120px 32px',
         borderTop: '1px solid var(--bg-border)',
       }}
     >
@@ -122,21 +124,22 @@ export default function SDKSection() {
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '48px' }}>
+        <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: isMobile ? '16px' : '48px' }}>
           {/* Tab selector */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', flexShrink: 0 }}>
+          <div style={{ display: 'flex', flexDirection: isMobile ? 'row' : 'column', gap: '4px', flexShrink: 0, overflowX: isMobile ? 'auto' : 'visible' }}>
             {TABS.map((tab) => (
               <button
                 key={tab}
                 onClick={() => switchTab(tab)}
                 style={{
                   fontFamily: 'var(--font-mono)',
-                  fontSize: '13px',
+                  fontSize: isMobile ? '12px' : '13px',
                   color: activeTab === tab ? 'var(--accent-btc)' : 'var(--text-secondary)',
                   backgroundColor: activeTab === tab ? 'var(--bg-raised)' : 'transparent',
                   border: `1px solid ${activeTab === tab ? 'var(--bg-border)' : 'transparent'}`,
-                  borderLeft: activeTab === tab ? '3px solid var(--accent-btc)' : '3px solid transparent',
-                  padding: '10px 16px',
+                  borderLeft: isMobile ? undefined : (activeTab === tab ? '3px solid var(--accent-btc)' : '3px solid transparent'),
+                  borderBottom: isMobile ? (activeTab === tab ? '2px solid var(--accent-btc)' : '2px solid transparent') : undefined,
+                  padding: isMobile ? '8px 12px' : '10px 16px',
                   textAlign: 'left',
                   cursor: 'pointer',
                   borderRadius: '0 4px 4px 0',

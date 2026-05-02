@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 const INITIAL_LINES = [
   '> [00:00:01] agent.init — model: claude-4',
@@ -37,6 +38,7 @@ export default function ConsoleSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const [lines, setLines] = useState(INITIAL_LINES);
   const [started, setStarted] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const trigger = ScrollTrigger.create({
@@ -69,7 +71,7 @@ export default function ConsoleSection() {
     <section
       ref={sectionRef}
       style={{
-        padding: '120px 32px',
+        padding: isMobile ? '80px 24px' : '120px 32px',
         borderTop: '1px solid var(--bg-border)',
       }}
     >
@@ -81,7 +83,7 @@ export default function ConsoleSection() {
           </h2>
         </div>
 
-        <div style={{ display: 'flex', gap: '32px' }}>
+        <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '32px' }}>
           {/* Agent Log */}
           <div style={{ flex: '0 0 55%' }}>
             <div
@@ -101,7 +103,7 @@ export default function ConsoleSection() {
                 border: '1px solid var(--bg-border)',
                 borderRadius: '6px',
                 padding: '20px',
-                height: '360px',
+                height: isMobile ? '240px' : '360px',
                 overflowY: 'auto',
               }}
             >
