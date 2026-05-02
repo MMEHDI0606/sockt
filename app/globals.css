@@ -2,6 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Geist';
+  src: url('/fonts/Geist-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('/fonts/GeistMono-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist Pixel';
+  src: url('/fonts/GeistPixel-Square.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* Background family */
   --bg-void:     #080808;
@@ -22,9 +46,10 @@
   --accent-red:    #e53e3e;
 
   /* Font families */
-  --font-display:  'Neue Haas Grotesk Display', 'Aktiv Grotesk Ex', sans-serif;
-  --font-body:     'Söhne', 'DM Sans', sans-serif;
-  --font-mono:     'Berkeley Mono', 'TX-02', 'Fira Code', monospace;
+  --font-display:  'Geist', sans-serif;
+  --font-body:     'Geist', sans-serif;
+  --font-mono:     'Geist Mono', monospace;
+  --font-pixel:    'Geist Pixel', monospace;
 
   /* Motion */
   --ease-expo:   cubic-bezier(0.16, 1, 0.3, 1);

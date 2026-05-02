@@ -80,9 +80,7 @@ export default function WhatIsSection() {
               marginBottom: '32px',
             }}
           >
-            Sockt is the execution layer where AI agents autonomously provision compute resources,
-            open Lightning channels, and stream micropayments per compute epoch, with a website
-            api_key fallback path when account-based access is preferred.
+            Sockt is the compute layer your agents actually pay for. They open a Lightning channel, provision GPU capacity, and settle per epoch — no human in the loop. Not on Lightning yet? The api_key path runs the same sandbox lifecycle.
           </p>
 
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
@@ -97,7 +95,7 @@ export default function WhatIsSection() {
                 letterSpacing: '0.04em',
               }}
             >
-              ⚡ Lightning settled
+            ⚡ Lightning settled
             </span>
             <span
               style={{
@@ -110,7 +108,7 @@ export default function WhatIsSection() {
                 letterSpacing: '0.04em',
               }}
             >
-              🔒 website api_key fallback
+            🔑 api_key path, same lifecycle
             </span>
           </div>
         </div>

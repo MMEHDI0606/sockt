@@ -7,8 +7,8 @@ const STEPS = [
   {
     num: '01',
     title: 'Agent Initializes',
-    outcome: 'Start in minutes with a single client setup and budget guardrails.',
-    reassurance: 'If wallet flow is unavailable, continue via api_key with the same sandbox lifecycle.',
+    outcome: 'Your agent has a budget ceiling and a payment identity before the first request fires.',
+    reassurance: 'No Lightning wallet yet? Drop an api_key — same lifecycle, same guarantees.',
     code: `import { SocktAgent } from '@sockt/sdk';
 
 const agent = new SocktAgent({
@@ -23,8 +23,8 @@ const agent = new SocktAgent({
   {
     num: '02',
     title: 'Channel Opens',
-    outcome: 'Agent receives payment-ready access for compute without manual intervention.',
-    reassurance: 'Fallback keeps requests running instead of blocking on one payment path.',
+    outcome: 'Compute access is payment-ready in milliseconds — no human approval step.',
+    reassurance: 'Dual-path design means a failed payment route never halts your agent.',
     code: `// Lightning channel established
 const channel = await agent.openChannel({
   capacity: 100_000, // sats
@@ -37,8 +37,8 @@ const channel = await agent.openChannel({
   {
     num: '03',
     title: 'GPU Provisioned',
-    outcome: 'Workloads get compute capacity with clear state transitions and budget visibility.',
-    reassurance: 'When preferred capacity is unavailable, fallback route prevents downtime.',
+    outcome: 'Agent gets exactly the capacity it declared — visible state, bounded cost.',
+    reassurance: 'When preferred capacity is full, fallback route routes instantly to avoid downtime.',
     code: `- gpu: null
 + gpu: H100_SXM5_2x
 
@@ -51,8 +51,8 @@ const channel = await agent.openChannel({
   {
     num: '04',
     title: 'Epoch Settled',
-    outcome: 'Costs stay predictable with interval receipts and a clean billing trail.',
-    reassurance: 'Pause and resume controls preserve progress while keeping spend under control.',
+    outcome: 'Every epoch closes with a receipt. Spend is auditable, predictable, and stoppable.',
+    reassurance: 'Pause and resume preserve progress without burning the remaining budget.',
     code: `INVOICE → PAID → RECEIPT
 
 invoice_id: lnbc1240n1...

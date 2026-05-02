@@ -11,7 +11,7 @@ import {
 import HeroConsole from './HeroConsole';
 
 const HEADLINE_TEXT = 'COMPUTE FOR AGENTS THAT PAY IN SATS.';
-const TAGLINE = 'Autonomous AI infrastructure. Agents procure compute resources, settle in milliseconds via Lightning, and scale without human intervention.';
+const TAGLINE = 'Your agent shouldn’t pause and wait for a human to provision compute. Sockt gives it a wallet, a channel, and a GPU — autonomous and settled in under 90 seconds.';
 
 type DynamicLine = {
   text: string;
@@ -401,7 +401,7 @@ export default function HeroSection() {
                 letterSpacing: '0.05em',
               }}
             >
-              Wallet-native and api_key fallback both supported.
+              No crypto required to start. api_key path available.
             </div>
           </div>
 

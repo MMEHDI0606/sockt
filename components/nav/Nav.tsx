@@ -56,31 +56,33 @@ export default function Nav() {
           justifyContent: 'space-between',
         }}
       >
-        {/* Left: Wordmark */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span
-            style={{
-              width: '6px',
-              height: '6px',
-              borderRadius: '50%',
-              backgroundColor: 'var(--accent-btc)',
-              boxShadow: '0 0 6px var(--accent-btc)',
-              animation: 'blink 2s ease-in-out infinite',
-              flexShrink: 0,
-            }}
-          />
+        {/* Left: Logo mark */}
+        <a href="/" style={{ display: 'flex', alignItems: 'baseline', gap: '5px', textDecoration: 'none' }}>
           <span
             style={{
               fontFamily: 'var(--font-mono)',
-              fontWeight: 500,
-              fontSize: '14px',
-              color: 'var(--text-primary)',
-              letterSpacing: '0.06em',
+              fontWeight: 400,
+              fontSize: '15px',
+              color: 'var(--accent-btc)',
+              letterSpacing: '-0.01em',
+              lineHeight: 1,
             }}
           >
-            SOCKT
+            {'{*}'}
           </span>
-        </div>
+          <span
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontWeight: 500,
+              fontSize: '15px',
+              color: 'var(--text-primary)',
+              letterSpacing: '0.01em',
+              lineHeight: 1,
+            }}
+          >
+            Sockt
+          </span>
+        </a>
 
         {/* Center: Nav links */}
         <div
@@ -110,7 +112,7 @@ export default function Nav() {
         <a
           href="#"
           style={{
-            fontFamily: 'var(--font-mono)',
+            fontFamily: 'var(--font-display)',
             fontSize: '12px',
             color: 'var(--accent-btc)',
             border: '1px solid var(--accent-btc)',

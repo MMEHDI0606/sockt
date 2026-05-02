@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 
-const LINES = ['CHOOSE YOUR', 'ACCESS PATH', 'IN < 5 MINUTES.'];
+const LINES = ['YOUR AGENT.', 'BUYS ITS OWN', 'COMPUTE.'];
 
 export default function CTASection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -97,7 +97,7 @@ export default function CTASection() {
             cursor: 'pointer',
           }}
         >
-          Start wallet-native path →
+          Start Sandbox →
         </a>
         <a
           href="#"
@@ -113,7 +113,7 @@ export default function CTASection() {
             cursor: 'pointer',
           }}
         >
-          Use website api_key →
+          Start with api_key →
         </a>
       </div>
 
@@ -126,7 +126,7 @@ export default function CTASection() {
           letterSpacing: '0.08em',
         }}
       >
-        One product, two access paths, same sandbox lifecycle.
+        No account required. No card. Connect wallet or paste an api_key.
       </span>
     </section>
   );
