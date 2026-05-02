@@ -29,7 +29,7 @@ export default function HeroTicker() {
       ease: 'none',
       repeat: -1,
       modifiers: {
-        x: gsap.utils.unitize((v: number) => parseFloat(v) % totalWidth),
+        x: gsap.utils.unitize((v: number) => v % totalWidth),
       },
     });
 
