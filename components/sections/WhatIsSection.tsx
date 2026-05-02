@@ -82,7 +82,7 @@ export default function WhatIsSection() {
               marginBottom: '32px',
             }}
           >
-            Sockt is the compute layer your agents actually pay for. They open a Lightning channel, provision GPU capacity, and settle per epoch — no human in the loop. Not on Lightning yet? The api_key path runs the same sandbox lifecycle.
+            Sockt is the compute layer your agents actually pay for. They open a Lightning channel, provision GPU capacity, and settle per epoch — no human in the loop. Not on Lightning yet? Log in on the website, generate a Sockt api_key, and run the same sandbox lifecycle with credit-based billing.
           </p>
 
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
@@ -110,7 +110,7 @@ export default function WhatIsSection() {
                 letterSpacing: '0.04em',
               }}
             >
-            🔑 api_key path, same lifecycle
+            🔑 Dashboard api_key, credits billing
             </span>
           </div>
         </div>

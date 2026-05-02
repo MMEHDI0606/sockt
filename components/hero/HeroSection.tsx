@@ -438,7 +438,7 @@ export default function HeroSection() {
                 letterSpacing: '0.05em',
               }}
             >
-              No crypto required to start. api_key path available.
+              Wallet-native path or dashboard-generated api_key fallback.
             </div>
           </div>
 

@@ -57,7 +57,7 @@ export default function FallbackSection() {
               FALLBACK LAYER
             </h2>
             <p style={{ fontFamily: 'var(--font-body)', fontSize: '15px', color: 'var(--text-secondary)', marginTop: '12px', maxWidth: '560px' }}>
-              If Sockt's node can't fill a request, the MCP server automatically routes through your personal API keys. Zero downtime, zero config.
+              Website fallback is account-based: log in, generate a Sockt api_key, run the same sandbox lifecycle, and manage revoke/rotate from the dashboard.
             </p>
           </div>
         </div>
@@ -82,7 +82,7 @@ export default function FallbackSection() {
 
           {/* YES path → right */}
           <path className="flow-path" d="M 610 144 L 750 144" stroke="var(--bg-border)" strokeWidth="1" markerEnd="url(#arrow)" />
-          <text x="680" y="136" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="10" fill="var(--text-secondary)">YES</text>
+          <text x="680" y="136" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="10" fill="var(--text-secondary)">LIGHTNING</text>
 
           {/* Sockt GPU Node */}
           <rect className="node-box" x="750" y="118" width="130" height="52" rx="4" fill="var(--bg-raised)" stroke="var(--accent-btc)" strokeWidth="1" />
@@ -98,19 +98,19 @@ export default function FallbackSection() {
 
           {/* NO path → down */}
           <path className="flow-path" d="M 450 170 L 450 230" stroke="var(--bg-border)" strokeWidth="1" markerEnd="url(#arrow)" />
-          <text x="430" y="205" fontFamily="var(--font-mono)" fontSize="10" fill="var(--text-secondary)">NO</text>
+          <text x="424" y="205" fontFamily="var(--font-mono)" fontSize="10" fill="var(--text-secondary)">API KEY</text>
 
-          {/* MCP Fallback */}
+          {/* Website fallback */}
           <rect className="node-box" x="290" y="230" width="320" height="52" rx="4" fill="var(--bg-raised)" stroke="var(--bg-border)" strokeWidth="1" />
-          <text x="450" y="260" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="12" fill="var(--text-primary)">MCP FALLBACK</text>
+          <text x="450" y="260" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="12" fill="var(--text-primary)">WEBSITE DASHBOARD</text>
 
           {/* Arrow down */}
           <path className="flow-path" d="M 450 282 L 450 328" stroke="var(--bg-border)" strokeWidth="1" markerEnd="url(#arrow)" />
 
-          {/* User API Keys */}
+          {/* Sockt API key */}
           <rect className="node-box" x="270" y="328" width="360" height="56" rx="4" fill="var(--bg-raised)" stroke="var(--bg-border)" strokeWidth="1" />
-          <text x="450" y="352" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="12" fill="var(--text-primary)">USER&apos;S API KEYS</text>
-          <text x="450" y="370" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="10" fill="var(--text-secondary)">Anthropic / OpenAI / custom</text>
+          <text x="450" y="352" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="12" fill="var(--text-primary)">SOCKT API KEY + CREDITS</text>
+          <text x="450" y="370" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="10" fill="var(--text-secondary)">Revoke / rotate anytime</text>
 
           <defs>
             <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">

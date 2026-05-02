@@ -182,7 +182,7 @@ export default function PricingSection() {
         >
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
             Billing is usage-based per compute epoch. Example: if you run CURRENT for 100 epochs in a week,
-            cost is about 84,000 sats. Fallback path keeps the same lifecycle and billing visibility.
+            cost is about 84,000 sats. Fallback path uses dashboard-issued api_key and account credits with the same lifecycle visibility.
           </p>
         </div>
       </div>

@@ -26,7 +26,7 @@ const OUTCOMES = [
   },
   {
     title: 'Infra leads',
-    detail: 'Keep control with wallet-native flow and api_key fallback in one platform.',
+    detail: 'Keep control with wallet-native flow plus dashboard-issued api_key fallback in one platform.',
   },
   {
     title: 'Product teams',

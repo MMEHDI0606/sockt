@@ -9,7 +9,7 @@ const STEPS = [
     num: '01',
     title: 'Agent Initializes',
     outcome: 'Your agent has a budget ceiling and a payment identity before the first request fires.',
-    reassurance: 'No Lightning wallet yet? Drop an api_key — same lifecycle, same guarantees.',
+    reassurance: 'No Lightning wallet yet? Generate a Sockt api_key in the dashboard and keep the same lifecycle guarantees.',
     code: `import { SocktAgent } from '@sockt/sdk';
 
 const agent = new SocktAgent({

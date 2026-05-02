@@ -128,7 +128,7 @@ export default function CTASection() {
           letterSpacing: '0.08em',
         }}
       >
-        No account required. No card. Connect wallet or paste an api_key.
+        Wallet-native path or website login with dashboard api_key, credits billing, and key rotation.
       </span>
     </section>
   );
