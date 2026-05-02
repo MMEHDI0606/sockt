@@ -119,6 +119,43 @@ export default function Footer() {
           ))}
         </div>
 
+        {/* Logo watermark */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'baseline',
+            gap: '12px',
+            margin: '64px 0 48px',
+            userSelect: 'none',
+            pointerEvents: 'none',
+          }}
+        >
+          <span
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontWeight: 400,
+              fontSize: 'clamp(64px, 12vw, 160px)',
+              color: 'var(--bg-border)',
+              letterSpacing: '-0.02em',
+              lineHeight: 1,
+            }}
+          >
+            {'{*}'}
+          </span>
+          <span
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontWeight: 600,
+              fontSize: 'clamp(60px, 11vw, 150px)',
+              color: 'var(--bg-border)',
+              letterSpacing: '-0.02em',
+              lineHeight: 1,
+            }}
+          >
+            Sockt
+          </span>
+        </div>
+
         {/* Bottom bar */}
         <div
           style={{

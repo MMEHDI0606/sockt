@@ -280,7 +280,7 @@ export default function HeroSection() {
       onMouseLeave={handleMouseLeave}
       style={{
         minHeight: '100vh',
-        paddingTop: '56px',
+        paddingTop: '67px',
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',

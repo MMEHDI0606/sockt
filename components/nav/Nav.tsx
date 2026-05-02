@@ -50,7 +50,7 @@ export default function Nav() {
           maxWidth: '1280px',
           margin: '0 auto',
           padding: '0 32px',
-          height: '56px',
+          height: '67px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -62,7 +62,7 @@ export default function Nav() {
             style={{
               fontFamily: 'var(--font-mono)',
               fontWeight: 400,
-              fontSize: '15px',
+              fontSize: '18px',
               color: 'var(--accent-btc)',
               letterSpacing: '-0.01em',
               lineHeight: 1,
@@ -74,7 +74,7 @@ export default function Nav() {
             style={{
               fontFamily: 'var(--font-display)',
               fontWeight: 500,
-              fontSize: '15px',
+              fontSize: '18px',
               color: 'var(--text-primary)',
               letterSpacing: '0.01em',
               lineHeight: 1,
@@ -90,7 +90,7 @@ export default function Nav() {
             display: 'flex',
             gap: '32px',
             fontFamily: 'var(--font-body)',
-            fontSize: '13px',
+            fontSize: '16px',
             color: 'var(--text-secondary)',
             letterSpacing: '0.08em',
           }}
@@ -113,10 +113,10 @@ export default function Nav() {
           href="#"
           style={{
             fontFamily: 'var(--font-display)',
-            fontSize: '12px',
+            fontSize: '14px',
             color: 'var(--accent-btc)',
             border: '1px solid var(--accent-btc)',
-            padding: '6px 14px',
+            padding: '7px 17px',
             borderRadius: '100px',
             letterSpacing: '0.04em',
             transition: 'background-color 0.15s, color 0.15s',
