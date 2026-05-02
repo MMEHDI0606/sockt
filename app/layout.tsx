@@ -45,9 +45,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
-        <title>{'{*}'} Sockt — Decentralized GPU Compute for AI Agents</title>
+        <title>Sockt</title>
         <meta name="description" content="Autonomous AI infrastructure. Agents procure compute resources, settle in milliseconds via Lightning, and scale without human intervention." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/sockt-logo.svg" type="image/svg+xml" />
 
       </head>
       <body>{children}</body>
