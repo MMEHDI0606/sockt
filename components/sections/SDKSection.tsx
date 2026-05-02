@@ -6,80 +6,105 @@ import gsap from 'gsap';
 const TABS = ['TypeScript', 'Python', 'Go', 'CLI'];
 
 const CODE: Record<string, string> = {
-  TypeScript: `import { SocktAgent } from '@sockt/sdk';
+  TypeScript: `import { SatoshiComputeClient } from 'satoshi-compute-client';
 
-const agent = new SocktAgent({
-  apiKey: process.env.SOCKT_KEY,
-  budget: { sats: 50_000 },
-  fallback: {
-    provider: 'anthropic',
-    apiKey: process.env.ANTHROPIC_KEY
-  }
+const client = new SatoshiComputeClient({
+  baseUrl: 'https://api.satoshicompute.io',
+  wallet: {
+    bolt12Offer: process.env.BOLT12_OFFER!,
+  },
 });
 
-const session = await agent.provision({
-  gpu: 'H100',
-  count: 2,
-  duration: '30m'
+// Registers wallet offer and returns agent token
+await client.wallet.registerOffer();
+
+const sandbox = await client.sandbox.create({
+  tier: 'gpu_small',
+  template: 'ubuntu22-cuda12-pytorch',
+  durationSecs: 1800,
+  egress: false,
 });
 
-// Sats stream automatically per epoch
-console.log(session.channelId); // lnbc...`,
+const out = await client.sandbox.exec(sandbox.sandboxId, {
+  command: 'python train.py --epochs 1',
+});
 
-  Python: `from sockt import Agent
+console.log(out.stdout);`,
+
+  Python: `from satoshi_compute_client import SatoshiComputeClient
 import os
 
-agent = Agent(
-    api_key=os.environ["SOCKT_KEY"],
-    budget_sats=50_000,
-    fallback_key=os.environ["ANTHROPIC_KEY"]
+client = SatoshiComputeClient(
+    base_url="https://api.satoshicompute.io",
+    bolt12_offer=os.environ["BOLT12_OFFER"]
 )
 
-session = agent.provision(
-    gpu="H100",
-    count=2,
-    duration="30m"
+client.wallet.register_offer()
+
+sandbox = client.sandbox.create(
+    tier="gpu_large",
+    template="ubuntu22-cuda12-pytorch",
+    duration_secs=1800,
+    egress=False,
 )
 
-print(session.channel_id)  # lnbc...`,
+result = client.sandbox.exec(
+    sandbox["sandbox_id"],
+    command="python train.py --epochs 1"
+)
+
+print(result["stdout"])
+`,
 
   Go: `package main
 
 import (
+    "bytes"
+    "encoding/json"
     "fmt"
-    "github.com/sockt/go-sdk"
+    "net/http"
 )
 
 func main() {
-    agent := sockt.NewAgent(sockt.Config{
-        APIKey:     os.Getenv("SOCKT_KEY"),
-        BudgetSats: 50_000,
-    })
+    payload := map[string]any{
+        "tier": "standard",
+        "template": "ubuntu22-python",
+        "duration_secs": 900,
+    }
 
-    session, _ := agent.Provision(sockt.ProvisionRequest{
-        GPU:      "H100",
-        Count:    2,
-        Duration: "30m",
-    })
+    body, _ := json.Marshal(payload)
+    req, _ := http.NewRequest("POST", "https://api.satoshicompute.io/v1/sandbox/create", bytes.NewReader(body))
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("X-Agent-Token", "<agent_jwt>")
+    req.Header.Set("Authorization", "L402 <macaroon>:<preimage>")
 
-    fmt.Println(session.ChannelID)
+    resp, err := http.DefaultClient.Do(req)
+    if err != nil {
+        panic(err)
+    }
+    defer resp.Body.Close()
+    fmt.Println("create status:", resp.StatusCode)
 }`,
 
-  CLI: `# Install the Sockt CLI
-npm install -g @sockt/cli
+  CLI: `# Install the client
+pip install satoshi-compute-client
 
-# Authenticate with your Lightning node
-sockt auth --node lnbc1pvjluez...
+# Register wallet offer (BOLT12)
+sc wallet offer register --offer "$BOLT12_OFFER"
 
-# Provision GPU compute
-sockt provision \\
-  --gpu H100 \\
-  --count 2 \\
-  --duration 30m \\
-  --budget 50000
+# Create sandbox
+sc sandbox create \
+  --tier gpu_small \
+  --template ubuntu22-cuda12-pytorch \
+  --duration-secs 1800
 
-# Monitor active sessions
-sockt status`,
+# Run command
+sc sandbox exec --id <sandbox_id> --command "python train.py --epochs 1"
+
+# Pause and resume lifecycle
+sc sandbox pause --id <sandbox_id>
+sc sandbox resume --id <sandbox_id>
+sc billing history`,
 };
 
 export default function SDKSection() {
@@ -109,9 +134,14 @@ export default function SDKSection() {
       <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
         <div style={{ display: 'flex', alignItems: 'flex-end', gap: '24px', marginBottom: '64px' }}>
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: '72px', color: 'var(--bg-border)', lineHeight: 1 }}>06</span>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-display)', fontWeight: 800, color: 'var(--text-primary)', lineHeight: 0.9 }}>
-            AGENT SDK
-          </h2>
+          <div>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-display)', fontWeight: 800, color: 'var(--text-primary)', lineHeight: 0.9 }}>
+              AGENT SDKS
+            </h2>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '15px', color: 'var(--text-secondary)', marginTop: '10px' }}>
+              PRD v2 flow: wallet offer registration, L402-authenticated calls, sandbox lifecycle, and billing history.
+            </p>
+          </div>
         </div>
 
         <div style={{ display: 'flex', gap: '48px' }}>

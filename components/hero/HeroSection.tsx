@@ -10,7 +10,7 @@ import {
 } from '@chenglou/pretext';
 import HeroConsole from './HeroConsole';
 
-const HEADLINE = ['COMPUTE', 'FOR AGENTS', 'THAT PAY IN SATS.'];
+const HEADLINE_TEXT = 'COMPUTE FOR AGENTS THAT PAY IN SATS.';
 const TAGLINE = 'Autonomous AI infrastructure. Agents procure compute resources, settle in milliseconds via Lightning, and scale without human intervention.';
 
 type DynamicLine = {
@@ -18,22 +18,74 @@ type DynamicLine = {
   xOffset: number;
 };
 
+type CursorPoint = {
+  x: number;
+  y: number;
+};
+
+function buildReactiveLines(
+  prepared: ReturnType<typeof prepareWithSegments>,
+  width: number,
+  lineHeight: number,
+  cursor: CursorPoint | null,
+  radius: number,
+  pullWidth: number,
+  minWidth: number,
+  shiftX: number
+): DynamicLine[] {
+  let cursorState: LayoutCursor = { segmentIndex: 0, graphemeIndex: 0 };
+  let y = 0;
+  let guard = 0;
+  const lines: DynamicLine[] = [];
+
+  while (guard < 60) {
+    const lineCenterY = y + lineHeight / 2;
+    let influence = 0;
+    let signedX = 0;
+
+    if (cursor) {
+      const deltaY = Math.abs(lineCenterY - cursor.y);
+      if (deltaY < radius) {
+        influence = (radius - deltaY) / radius;
+        signedX = cursor.x / width - 0.5;
+      }
+    }
+
+    const dynamicWidth = Math.max(minWidth, width - influence * pullWidth);
+    const range = layoutNextLineRange(prepared, cursorState, dynamicWidth);
+    if (!range) break;
+
+    const line = materializeLineRange(prepared, range);
+    lines.push({
+      text: line.text,
+      xOffset: signedX * influence * shiftX,
+    });
+
+    cursorState = range.end;
+    y += lineHeight;
+    guard += 1;
+  }
+
+  return lines;
+}
+
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const headlineRefs = useRef<(HTMLDivElement | null)[]>([]);
   const chevronRef = useRef<HTMLDivElement>(null);
+  const headlineBoxRef = useRef<HTMLDivElement>(null);
   const taglineBoxRef = useRef<HTMLDivElement>(null);
-  const lastCursorRef = useRef<{ x: number; y: number } | null>(null);
+  const lastCursorRef = useRef<{ clientX: number; clientY: number } | null>(null);
+  const preparedHeadlineRef = useRef<ReturnType<typeof prepareWithSegments> | null>(null);
+  const preparedTaglineRef = useRef<ReturnType<typeof prepareWithSegments> | null>(null);
+  const headlineLineHeightRef = useRef(110);
+  const taglineLineHeightRef = useRef(27);
   const hoverRafRef = useRef<number | null>(null);
-  const [dynamicLines, setDynamicLines] = useState<DynamicLine[]>([]);
-  const [pretextMetrics, setPretextMetrics] = useState<{ lineCount: number; height: number }>({
-    lineCount: 0,
-    height: 0,
-  });
+  const [headlineLines, setHeadlineLines] = useState<DynamicLine[]>([]);
+  const [taglineLines, setTaglineLines] = useState<DynamicLine[]>([]);
 
   useEffect(() => {
-    // Headline stagger entry
-    gsap.from(headlineRefs.current.filter(Boolean), {
+    const headlineNodes = sectionRef.current?.querySelectorAll('.hero-headline-line');
+    gsap.from(headlineNodes || [], {
       y: 120,
       opacity: 0,
       duration: 0.9,
@@ -61,65 +113,75 @@ export default function HeroSection() {
   }, []);
 
   useEffect(() => {
-    const box = taglineBoxRef.current;
-    if (!box) return;
+    const headlineBox = headlineBoxRef.current;
+    const taglineBox = taglineBoxRef.current;
+    if (!headlineBox || !taglineBox) return;
 
-    const style = window.getComputedStyle(box);
-    const fontWeight = style.fontWeight || '400';
-    const fontSize = style.fontSize || '16px';
-    const fontFamily = style.fontFamily || 'sans-serif';
-    const font = `${fontWeight} ${fontSize} ${fontFamily}`;
-    const lineHeight = Number.parseFloat(style.lineHeight) || 27;
-    const prepared = prepareWithSegments(TAGLINE, font);
-    const radius = 92;
+    const headlineStyle = window.getComputedStyle(headlineBox);
+    const headlineFont = `${headlineStyle.fontWeight || '800'} ${headlineStyle.fontSize || '64px'} ${headlineStyle.fontFamily || 'sans-serif'}`;
+    headlineLineHeightRef.current = Number.parseFloat(headlineStyle.lineHeight) || 110;
+    preparedHeadlineRef.current = prepareWithSegments(HEADLINE_TEXT, headlineFont);
 
-    const rebuild = (cursor: { x: number; y: number } | null) => {
-      const width = box.clientWidth;
-      if (!width) return;
+    const taglineStyle = window.getComputedStyle(taglineBox);
+    const taglineFont = `${taglineStyle.fontWeight || '400'} ${taglineStyle.fontSize || '16px'} ${taglineStyle.fontFamily || 'sans-serif'}`;
+    taglineLineHeightRef.current = Number.parseFloat(taglineStyle.lineHeight) || 27;
+    preparedTaglineRef.current = prepareWithSegments(TAGLINE, taglineFont);
 
-      let cursorState: LayoutCursor = { segmentIndex: 0, graphemeIndex: 0 };
-      let y = 0;
-      let guard = 0;
-      const nextLines: DynamicLine[] = [];
+    const rebuild = (cursorX: number | null, cursorY: number | null) => {
+      const preparedHeadline = preparedHeadlineRef.current;
+      const preparedTagline = preparedTaglineRef.current;
+      if (!preparedHeadline || !preparedTagline) return;
 
-      while (guard < 40) {
-        const lineCenterY = y + lineHeight / 2;
-        let influence = 0;
-        let signedX = 0;
+      const hRect = headlineBox.getBoundingClientRect();
+      const tRect = taglineBox.getBoundingClientRect();
 
-        if (cursor) {
-          const deltaY = Math.abs(lineCenterY - cursor.y);
-          if (deltaY < radius) {
-            influence = (radius - deltaY) / radius;
-            signedX = cursor.x / width - 0.5;
-          }
-        }
+      const hCursor = cursorX === null || cursorY === null
+        ? null
+        : {
+            x: Math.max(0, Math.min(hRect.width, cursorX - hRect.left)),
+            y: Math.max(0, Math.min(hRect.height, cursorY - hRect.top)),
+          };
+      const tCursor = cursorX === null || cursorY === null
+        ? null
+        : {
+            x: Math.max(0, Math.min(tRect.width, cursorX - tRect.left)),
+            y: Math.max(0, Math.min(tRect.height, cursorY - tRect.top)),
+          };
 
-        const dynamicWidth = Math.max(180, width - influence * 110);
-        const range = layoutNextLineRange(prepared, cursorState, dynamicWidth);
-        if (!range) break;
+      setHeadlineLines(
+        buildReactiveLines(
+          preparedHeadline,
+          hRect.width,
+          headlineLineHeightRef.current,
+          hCursor,
+          120,
+          180,
+          420,
+          34
+        )
+      );
 
-        const line = materializeLineRange(prepared, range);
-        nextLines.push({
-          text: line.text,
-          xOffset: signedX * influence * 28,
-        });
-
-        cursorState = range.end;
-        y += lineHeight;
-        guard += 1;
-      }
-
-      setDynamicLines(nextLines);
-      setPretextMetrics({
-        lineCount: nextLines.length,
-        height: Math.round(nextLines.length * lineHeight),
-      });
+      setTaglineLines(
+        buildReactiveLines(
+          preparedTagline,
+          tRect.width,
+          taglineLineHeightRef.current,
+          tCursor,
+          92,
+          110,
+          180,
+          28
+        )
+      );
     };
 
-    rebuild(null);
-    const resizeObserver = new ResizeObserver(() => rebuild(lastCursorRef.current));
-    resizeObserver.observe(box);
+    rebuild(null, null);
+    const resizeObserver = new ResizeObserver(() => {
+      const last = lastCursorRef.current;
+      rebuild(last?.clientX ?? null, last?.clientY ?? null);
+    });
+    resizeObserver.observe(headlineBox);
+    resizeObserver.observe(taglineBox);
 
     return () => {
       resizeObserver.disconnect();
@@ -127,100 +189,88 @@ export default function HeroSection() {
   }, []);
 
   const handleMouseMove = (event: React.MouseEvent<HTMLElement>) => {
-    const box = taglineBoxRef.current;
-    if (!box) return;
+    const headlineBox = headlineBoxRef.current;
+    const taglineBox = taglineBoxRef.current;
+    const preparedHeadline = preparedHeadlineRef.current;
+    const preparedTagline = preparedTaglineRef.current;
+    if (!headlineBox || !taglineBox || !preparedHeadline || !preparedTagline) return;
 
-    const boxRect = box.getBoundingClientRect();
-    const cursor = {
-      x: Math.max(0, Math.min(boxRect.width, event.clientX - boxRect.left)),
-      y: Math.max(0, Math.min(boxRect.height, event.clientY - boxRect.top)),
-    };
-
-    lastCursorRef.current = cursor;
+    lastCursorRef.current = { clientX: event.clientX, clientY: event.clientY };
     if (hoverRafRef.current) cancelAnimationFrame(hoverRafRef.current);
 
     hoverRafRef.current = requestAnimationFrame(() => {
-      const boxNow = taglineBoxRef.current;
-      if (!boxNow) return;
+      const hRect = headlineBox.getBoundingClientRect();
+      const tRect = taglineBox.getBoundingClientRect();
 
-      const style = window.getComputedStyle(boxNow);
-      const fontWeight = style.fontWeight || '400';
-      const fontSize = style.fontSize || '16px';
-      const fontFamily = style.fontFamily || 'sans-serif';
-      const font = `${fontWeight} ${fontSize} ${fontFamily}`;
-      const lineHeight = Number.parseFloat(style.lineHeight) || 27;
-      const prepared = prepareWithSegments(TAGLINE, font);
-      const radius = 92;
-      const width = boxNow.clientWidth;
+      const hCursor = {
+        x: Math.max(0, Math.min(hRect.width, event.clientX - hRect.left)),
+        y: Math.max(0, Math.min(hRect.height, event.clientY - hRect.top)),
+      };
+      const tCursor = {
+        x: Math.max(0, Math.min(tRect.width, event.clientX - tRect.left)),
+        y: Math.max(0, Math.min(tRect.height, event.clientY - tRect.top)),
+      };
 
-      if (!width) return;
+      setHeadlineLines(
+        buildReactiveLines(
+          preparedHeadline,
+          hRect.width,
+          headlineLineHeightRef.current,
+          hCursor,
+          120,
+          180,
+          420,
+          34
+        )
+      );
 
-      let cursorState: LayoutCursor = { segmentIndex: 0, graphemeIndex: 0 };
-      let y = 0;
-      let guard = 0;
-      const nextLines: DynamicLine[] = [];
-
-      while (guard < 40) {
-        const lineCenterY = y + lineHeight / 2;
-        const deltaY = Math.abs(lineCenterY - cursor.y);
-        const influence = deltaY < radius ? (radius - deltaY) / radius : 0;
-        const signedX = cursor.x / width - 0.5;
-        const dynamicWidth = Math.max(180, width - influence * 110);
-        const range = layoutNextLineRange(prepared, cursorState, dynamicWidth);
-        if (!range) break;
-
-        const line = materializeLineRange(prepared, range);
-        nextLines.push({
-          text: line.text,
-          xOffset: signedX * influence * 28,
-        });
-
-        cursorState = range.end;
-        y += lineHeight;
-        guard += 1;
-      }
-
-      setDynamicLines(nextLines);
-      setPretextMetrics({
-        lineCount: nextLines.length,
-        height: Math.round(nextLines.length * lineHeight),
-      });
+      setTaglineLines(
+        buildReactiveLines(
+          preparedTagline,
+          tRect.width,
+          taglineLineHeightRef.current,
+          tCursor,
+          92,
+          110,
+          180,
+          28
+        )
+      );
     });
   };
 
   const handleMouseLeave = () => {
+    const headlineBox = headlineBoxRef.current;
+    const taglineBox = taglineBoxRef.current;
+    const preparedHeadline = preparedHeadlineRef.current;
+    const preparedTagline = preparedTaglineRef.current;
+    if (!headlineBox || !taglineBox || !preparedHeadline || !preparedTagline) return;
+
     lastCursorRef.current = null;
-    const box = taglineBoxRef.current;
-    if (!box) return;
-
-    const style = window.getComputedStyle(box);
-    const fontWeight = style.fontWeight || '400';
-    const fontSize = style.fontSize || '16px';
-    const fontFamily = style.fontFamily || 'sans-serif';
-    const font = `${fontWeight} ${fontSize} ${fontFamily}`;
-    const lineHeight = Number.parseFloat(style.lineHeight) || 27;
-    const prepared = prepareWithSegments(TAGLINE, font);
-    const width = box.clientWidth;
-    if (!width) return;
-
-    let cursorState: LayoutCursor = { segmentIndex: 0, graphemeIndex: 0 };
-    let guard = 0;
-    const nextLines: DynamicLine[] = [];
-
-    while (guard < 40) {
-      const range = layoutNextLineRange(prepared, cursorState, width);
-      if (!range) break;
-      const line = materializeLineRange(prepared, range);
-      nextLines.push({ text: line.text, xOffset: 0 });
-      cursorState = range.end;
-      guard += 1;
-    }
-
-    setDynamicLines(nextLines);
-    setPretextMetrics({
-      lineCount: nextLines.length,
-      height: Math.round(nextLines.length * lineHeight),
-    });
+    setHeadlineLines(
+      buildReactiveLines(
+        preparedHeadline,
+        headlineBox.clientWidth,
+        headlineLineHeightRef.current,
+        null,
+        120,
+        180,
+        420,
+        34
+      )
+    );
+    setTaglineLines(
+      buildReactiveLines(
+        preparedTagline,
+        taglineBox.clientWidth,
+        taglineLineHeightRef.current,
+        null,
+        92,
+        110,
+        180,
+        28
+      )
+    );
   };
 
   return (
@@ -257,23 +307,31 @@ export default function HeroSection() {
         >
           {/* Headline */}
           <div style={{ flex: 1 }}>
-            {HEADLINE.map((line, i) => (
-              <div
-                key={i}
-                ref={(el) => { headlineRefs.current[i] = el; }}
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'var(--text-hero)',
-                  fontWeight: 800,
-                  lineHeight: 0.92,
-                  color: i === 2 ? 'var(--accent-btc)' : 'var(--text-primary)',
-                  marginBottom: i < 2 ? '4px' : '0',
-                  display: 'block',
-                }}
-              >
-                {line}
-              </div>
-            ))}
+            <div
+              ref={headlineBoxRef}
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'var(--text-hero)',
+                fontWeight: 800,
+                lineHeight: 0.92,
+                maxWidth: '820px',
+              }}
+            >
+              {headlineLines.map((line, index) => (
+                <div
+                  key={`${index}-${line.text.length}`}
+                  className="hero-headline-line"
+                  style={{
+                    transform: `translateX(${line.xOffset}px)`,
+                    transition: 'transform 110ms ease-out',
+                    marginBottom: index < headlineLines.length - 1 ? '4px' : '0',
+                    color: line.text.includes('SATS') ? 'var(--accent-btc)' : 'var(--text-primary)',
+                  }}
+                >
+                  {line.text}
+                </div>
+              ))}
+            </div>
 
             {/* Tagline */}
             <div
@@ -287,7 +345,7 @@ export default function HeroSection() {
                 maxWidth: '480px',
               }}
             >
-              {dynamicLines.map((line, index) => (
+              {taglineLines.map((line, index) => (
                 <div
                   key={`${index}-${line.text.length}`}
                   style={{
@@ -299,18 +357,6 @@ export default function HeroSection() {
                   {line.text}
                 </div>
               ))}
-            </div>
-
-            <div
-              style={{
-                marginTop: '10px',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '11px',
-                color: 'var(--accent-amber)',
-                letterSpacing: '0.05em',
-              }}
-            >
-              HOVER REACTIVE PRETEXT: {pretextMetrics.lineCount} LINES / {Math.round(pretextMetrics.height)}PX
             </div>
 
             {/* CTA */}
