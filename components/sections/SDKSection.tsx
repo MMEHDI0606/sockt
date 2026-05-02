@@ -6,51 +6,39 @@ import gsap from 'gsap';
 const TABS = ['TypeScript', 'Python', 'Go', 'CLI'];
 
 const CODE: Record<string, string> = {
-  TypeScript: `import { SatoshiComputeClient } from 'satoshi-compute-client';
+  TypeScript: `import { SocktClient } from '@sockt/sdk';
 
-const client = new SatoshiComputeClient({
-  baseUrl: 'https://api.satoshicompute.io',
-  wallet: {
-    bolt12Offer: process.env.BOLT12_OFFER!,
-  },
+const client = new SocktClient({
+  apiKey: process.env.SOCKT_API_KEY,
 });
 
-// Registers wallet offer and returns agent token
-await client.wallet.registerOffer();
-
-const sandbox = await client.sandbox.create({
-  tier: 'gpu_small',
-  template: 'ubuntu22-cuda12-pytorch',
-  durationSecs: 1800,
-  egress: false,
+const session = await client.sandbox.create({
+  profile: 'compute-pro',
+  duration: '30m',
 });
 
-const out = await client.sandbox.exec(sandbox.sandboxId, {
-  command: 'python train.py --epochs 1',
+const run = await client.sandbox.exec(session.id, {
+  command: 'python task.py --mode eval',
 });
 
-console.log(out.stdout);`,
+console.log(run.stdout);
+await client.sandbox.pause(session.id);`,
 
-  Python: `from satoshi_compute_client import SatoshiComputeClient
+  Python: `from sockt import SocktClient
 import os
 
-client = SatoshiComputeClient(
-    base_url="https://api.satoshicompute.io",
-    bolt12_offer=os.environ["BOLT12_OFFER"]
+client = SocktClient(
+    api_key=os.environ["SOCKT_API_KEY"]
 )
 
-client.wallet.register_offer()
-
 sandbox = client.sandbox.create(
-    tier="gpu_large",
-    template="ubuntu22-cuda12-pytorch",
-    duration_secs=1800,
-    egress=False,
+    profile="compute-pro",
+    duration="30m",
 )
 
 result = client.sandbox.exec(
-    sandbox["sandbox_id"],
-    command="python train.py --epochs 1"
+    sandbox["id"],
+    command="python task.py --mode eval"
 )
 
 print(result["stdout"])
@@ -59,52 +47,42 @@ print(result["stdout"])
   Go: `package main
 
 import (
-    "bytes"
-    "encoding/json"
     "fmt"
-    "net/http"
+    sockt "github.com/sockt/go-sdk"
 )
 
 func main() {
-    payload := map[string]any{
-        "tier": "standard",
-        "template": "ubuntu22-python",
-        "duration_secs": 900,
-    }
+    client := sockt.NewClient(sockt.Config{
+        APIKey: "<SOCKT_API_KEY>",
+    })
 
-    body, _ := json.Marshal(payload)
-    req, _ := http.NewRequest("POST", "https://api.satoshicompute.io/v1/sandbox/create", bytes.NewReader(body))
-    req.Header.Set("Content-Type", "application/json")
-    req.Header.Set("X-Agent-Token", "<agent_jwt>")
-    req.Header.Set("Authorization", "L402 <macaroon>:<preimage>")
-
-    resp, err := http.DefaultClient.Do(req)
+    session, err := client.CreateSandbox(sockt.CreateSandboxRequest{
+        Profile:  "compute-pro",
+        Duration: "30m",
+    })
     if err != nil {
         panic(err)
     }
-    defer resp.Body.Close()
-    fmt.Println("create status:", resp.StatusCode)
+
+    out, _ := client.Exec(session.ID, "python task.py --mode eval")
+    fmt.Println(out.Stdout)
 }`,
 
   CLI: `# Install the client
-pip install satoshi-compute-client
-
-# Register wallet offer (BOLT12)
-sc wallet offer register --offer "$BOLT12_OFFER"
+npm install -g @sockt/cli
 
 # Create sandbox
-sc sandbox create \
-  --tier gpu_small \
-  --template ubuntu22-cuda12-pytorch \
-  --duration-secs 1800
+sockt sandbox create \
+  --profile compute-pro \
+  --duration 30m
 
 # Run command
-sc sandbox exec --id <sandbox_id> --command "python train.py --epochs 1"
+sockt sandbox exec --id <sandbox_id> --command "python task.py --mode eval"
 
 # Pause and resume lifecycle
-sc sandbox pause --id <sandbox_id>
-sc sandbox resume --id <sandbox_id>
-sc billing history`,
+sockt sandbox pause --id <sandbox_id>
+sockt sandbox resume --id <sandbox_id>
+sockt billing history`,
 };
 
 export default function SDKSection() {
@@ -139,7 +117,7 @@ export default function SDKSection() {
               AGENT SDKS
             </h2>
             <p style={{ fontFamily: 'var(--font-body)', fontSize: '15px', color: 'var(--text-secondary)', marginTop: '10px' }}>
-              PRD v2 flow: wallet offer registration, L402-authenticated calls, sandbox lifecycle, and billing history.
+              Reference integration patterns for sandbox lifecycle, command execution, and billing visibility.
             </p>
           </div>
         </div>
