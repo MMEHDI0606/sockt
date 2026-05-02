@@ -7,6 +7,8 @@ const STEPS = [
   {
     num: '01',
     title: 'Agent Initializes',
+    outcome: 'Start in minutes with a single client setup and budget guardrails.',
+    reassurance: 'If wallet flow is unavailable, continue via api_key with the same sandbox lifecycle.',
     code: `import { SocktAgent } from '@sockt/sdk';
 
 const agent = new SocktAgent({
@@ -21,6 +23,8 @@ const agent = new SocktAgent({
   {
     num: '02',
     title: 'Channel Opens',
+    outcome: 'Agent receives payment-ready access for compute without manual intervention.',
+    reassurance: 'Fallback keeps requests running instead of blocking on one payment path.',
     code: `// Lightning channel established
 const channel = await agent.openChannel({
   capacity: 100_000, // sats
@@ -33,6 +37,8 @@ const channel = await agent.openChannel({
   {
     num: '03',
     title: 'GPU Provisioned',
+    outcome: 'Workloads get compute capacity with clear state transitions and budget visibility.',
+    reassurance: 'When preferred capacity is unavailable, fallback route prevents downtime.',
     code: `- gpu: null
 + gpu: H100_SXM5_2x
 
@@ -45,6 +51,8 @@ const channel = await agent.openChannel({
   {
     num: '04',
     title: 'Epoch Settled',
+    outcome: 'Costs stay predictable with interval receipts and a clean billing trail.',
+    reassurance: 'Pause and resume controls preserve progress while keeping spend under control.',
     code: `INVOICE → PAID → RECEIPT
 
 invoice_id: lnbc1240n1...
@@ -139,6 +147,28 @@ export default function HowItWorksSection() {
               >
                 {step.title}
               </h3>
+              <p
+                style={{
+                  fontFamily: 'var(--font-body)',
+                  fontSize: '15px',
+                  lineHeight: 1.7,
+                  color: 'var(--text-primary)',
+                  marginBottom: '12px',
+                }}
+              >
+                {step.outcome}
+              </p>
+              <p
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '11px',
+                  lineHeight: 1.6,
+                  color: 'var(--text-secondary)',
+                  marginBottom: '18px',
+                }}
+              >
+                {step.reassurance}
+              </p>
               <pre
                 style={{
                   fontFamily: 'var(--font-mono)',

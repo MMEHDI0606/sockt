@@ -93,7 +93,7 @@ export default function Nav() {
             letterSpacing: '0.08em',
           }}
         >
-          {['Docs', 'Agents', 'Pricing', 'Status'].map((link) => (
+          {['Use Cases', 'Docs', 'Pricing', 'Status'].map((link) => (
             <a
               key={link}
               href="#"
@@ -128,7 +128,7 @@ export default function Nav() {
             e.currentTarget.style.color = 'var(--accent-btc)';
           }}
         >
-          Connect Agent
+          Start Sandbox
         </a>
       </div>
     </nav>

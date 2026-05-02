@@ -377,7 +377,7 @@ export default function HeroSection() {
                   display: 'inline-block',
                 }}
               >
-                Start wallet-native path →
+                Run your first paid task →
               </a>
               <a
                 href="#"
@@ -388,8 +388,20 @@ export default function HeroSection() {
                   letterSpacing: '0.04em',
                 }}
               >
-                Use website api_key fallback →
+                See 90-second flow →
               </a>
+            </div>
+
+            <div
+              style={{
+                marginTop: '14px',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '11px',
+                color: 'var(--text-secondary)',
+                letterSpacing: '0.05em',
+              }}
+            >
+              Wallet-native and api_key fallback both supported.
             </div>
           </div>
 

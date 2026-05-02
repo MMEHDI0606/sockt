@@ -3,29 +3,42 @@
 import { useEffect, useRef } from 'react';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 
-const QUOTES = [
+const PROOF_METRICS = [
   {
-    text: '"The only infrastructure that actually lets agents spend money without a human in the loop."',
-    author: '— @autonomy_lab, AI researcher',
+    label: 'Median sandbox ready time',
+    value: '< 90s (GPU) / < 1s (warm micro)',
   },
   {
-    text: '"Sats-native compute is the missing primitive. Sockt fills the gap."',
-    author: '— @builder_eth, agent developer',
+    label: 'Billing visibility',
+    value: 'Interval-level sats receipts + history endpoint',
   },
   {
-    text: '"MCP fallback means I ship without fear. My keys, my control, their GPUs."',
-    author: '— @void_ptr, systems architect',
+    label: 'Lifecycle control',
+    value: 'Create, exec, pause, resume, terminate',
   },
 ];
 
-const LOGOS = ['ANTHROPIC', 'OPENAI', 'DEEPMIND', 'MISTRAL', 'COHERE'];
+const OUTCOMES = [
+  {
+    title: 'Agent teams',
+    detail: 'Run paid tasks continuously without adding manual procurement loops.',
+  },
+  {
+    title: 'Infra leads',
+    detail: 'Keep control with wallet-native flow and api_key fallback in one platform.',
+  },
+  {
+    title: 'Product teams',
+    detail: 'Launch pilots quickly, then scale by tier without changing integration patterns.',
+  },
+];
 
 export default function TrustedBySection() {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from('.quote-item', {
+      gsap.from('.proof-item', {
         opacity: 0,
         y: 20,
         duration: 0.6,
@@ -57,62 +70,42 @@ export default function TrustedBySection() {
           </h2>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '40px', marginBottom: '80px' }}>
-          {QUOTES.map((q, i) => (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '14px', marginBottom: '24px' }}>
+          {PROOF_METRICS.map((metric, i) => (
             <div
               key={i}
-              className="quote-item"
-              style={{ borderLeft: '2px solid var(--bg-border)', paddingLeft: '24px' }}
+              className="proof-item"
+              style={{ border: '1px solid var(--bg-border)', borderRadius: '6px', padding: '18px', backgroundColor: 'var(--bg-surface)' }}
             >
-              <p
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '14px',
-                  fontStyle: 'italic',
-                  color: 'var(--text-primary)',
-                  lineHeight: 1.6,
-                  marginBottom: '8px',
-                }}
-              >
-                {q.text}
-              </p>
               <span
                 style={{
                   fontFamily: 'var(--font-mono)',
-                  fontSize: '12px',
+                  fontSize: '11px',
                   color: 'var(--text-secondary)',
+                  letterSpacing: '0.06em',
+                  display: 'block',
+                  marginBottom: '8px',
                 }}
               >
-                {q.author}
+                {metric.label}
               </span>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: 'var(--text-primary)', lineHeight: 1.6 }}>
+                {metric.value}
+              </p>
             </div>
           ))}
         </div>
 
-        <div
-          style={{
-            display: 'flex',
-            gap: '48px',
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderTop: '1px solid var(--bg-border)',
-            paddingTop: '48px',
-          }}
-        >
-          {LOGOS.map((logo) => (
-            <span
-              key={logo}
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '11px',
-                color: 'var(--bg-raised)',
-                letterSpacing: '0.12em',
-                fontWeight: 600,
-                filter: 'grayscale(1)',
-              }}
-            >
-              {logo}
-            </span>
+        <div style={{ borderTop: '1px solid var(--bg-border)', paddingTop: '24px' }}>
+          {OUTCOMES.map((item, i) => (
+            <div key={i} className="proof-item" style={{ display: 'flex', gap: '14px', padding: '10px 0', borderBottom: i < OUTCOMES.length - 1 ? '1px solid var(--bg-border)' : 'none' }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--accent-amber)', minWidth: '118px' }}>
+                {item.title.toUpperCase()}
+              </span>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+                {item.detail}
+              </p>
+            </div>
           ))}
         </div>
       </div>

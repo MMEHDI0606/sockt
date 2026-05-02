@@ -8,6 +8,8 @@ const TIERS = [
     minBudget: '10,000 sats',
     channelType: 'Custodial',
     maxAgents: '1',
+    bestFor: 'Prototype agents and early iteration',
+    monthlyExample: '~126k sats / month at 10 epochs/day',
     recommended: false,
   },
   {
@@ -17,6 +19,8 @@ const TIERS = [
     minBudget: '25,000 sats',
     channelType: 'Self-custody opt',
     maxAgents: '10',
+    bestFor: 'Production agents with steady throughput',
+    monthlyExample: '~252k sats / month at 10 epochs/day',
     recommended: true,
   },
   {
@@ -26,6 +30,8 @@ const TIERS = [
     minBudget: '50,000 sats',
     channelType: 'Full self-custody',
     maxAgents: 'Unlimited',
+    bestFor: 'High-throughput teams and latency-sensitive tasks',
+    monthlyExample: '~372k sats / month at 10 epochs/day',
     recommended: false,
   },
 ];
@@ -34,6 +40,8 @@ const ROWS = [
   { key: 'gpu', label: 'GPU Type' },
   { key: 'sats', label: 'Sats / epoch' },
   { key: 'minBudget', label: 'Min budget' },
+  { key: 'bestFor', label: 'Best for' },
+  { key: 'monthlyExample', label: 'Monthly example' },
   { key: 'channelType', label: 'Channel type' },
   { key: 'mcp', label: 'MCP fallback' },
   { key: 'maxAgents', label: 'Max concurrent agents' },
@@ -128,6 +136,8 @@ export default function PricingSection() {
                       fontFamily: 'var(--font-mono)',
                       fontSize: '12px',
                       color: 'var(--text-primary)',
+                      textAlign: 'right',
+                      maxWidth: '165px',
                     }}
                   >
                     {row.key === 'mcp' ? '✓' : (tier as any)[row.key]}
@@ -156,6 +166,21 @@ export default function PricingSection() {
               </a>
             </div>
           ))}
+        </div>
+
+        <div
+          style={{
+            marginTop: '28px',
+            border: '1px solid var(--bg-border)',
+            borderRadius: '6px',
+            padding: '16px 18px',
+            backgroundColor: 'var(--bg-surface)',
+          }}
+        >
+          <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
+            Billing is usage-based per compute epoch. Example: if you run CURRENT for 100 epochs in a week,
+            cost is about 84,000 sats. Fallback path keeps the same lifecycle and billing visibility.
+          </p>
         </div>
       </div>
     </section>
