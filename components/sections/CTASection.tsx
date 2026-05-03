@@ -85,7 +85,7 @@ export default function CTASection() {
 
       <div className="cta-sub" style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '16px', marginBottom: '24px', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}>
         <a
-          href="#"
+          href="/sandbox"
           style={{
             fontFamily: 'var(--font-mono)',
             fontSize: '15px',
@@ -102,7 +102,7 @@ export default function CTASection() {
           Start Sandbox →
         </a>
         <a
-          href="#"
+          href="/start-with-api-key"
           style={{
             fontFamily: 'var(--font-mono)',
             fontSize: '15px',

@@ -102,7 +102,7 @@ export default function Footer() {
                   {col.items?.map((item) => (
                     <a
                       key={item}
-                      href="#"
+                      href={`/${item.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
                       style={{
                         fontFamily: 'var(--font-body)',
                         fontSize: '13px',

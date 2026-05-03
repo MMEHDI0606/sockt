@@ -1,12 +1,38 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { createClient } from '@/utils/supabase/client';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { useIsMobile } from '@/hooks/useIsMobile';
+import { useState } from 'react';
 
 export default function Nav() {
   const navRef = useRef<HTMLElement>(null);
   const isMobile = useIsMobile();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authLoaded, setAuthLoaded] = useState(false);
+
+  useEffect(() => {
+    const supabase = createClient();
+    let mounted = true;
+
+    supabase.auth.getUser().then(({ data }) => {
+      if (!mounted) return;
+      setIsAuthenticated(Boolean(data.user));
+      setAuthLoaded(true);
+    });
+
+    const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!mounted) return;
+      setIsAuthenticated(Boolean(session?.user));
+      setAuthLoaded(true);
+    });
+
+    return () => {
+      mounted = false;
+      subscription.subscription.unsubscribe();
+    };
+  }, []);
 
   useEffect(() => {
     const nav = navRef.current;
@@ -98,42 +124,95 @@ export default function Nav() {
               letterSpacing: '0.08em',
             }}
           >
-            {['Use Cases', 'Docs', 'Pricing', 'Status'].map((link) => (
+            {[
+              { label: 'Use Cases', href: '/use-cases' },
+              { label: 'Docs', href: '/docs' },
+              { label: 'Pricing', href: '/pricing' },
+              { label: 'Status', href: '/status' },
+            ].map((link) => (
               <a
-                key={link}
-                href="#"
+                key={link.label}
+                href={link.href}
                 style={{ color: 'inherit', transition: 'none' }}
                 onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
                 onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
               >
-                {link}
+                {link.label}
               </a>
             ))}
           </div>
         )}
-        <a
-          href="#"
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: '14px',
-            color: 'var(--accent-btc)',
-            border: '1px solid var(--accent-btc)',
-            padding: '7px 17px',
-            borderRadius: '100px',
-            letterSpacing: '0.04em',
-            transition: 'background-color 0.15s, color 0.15s',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = 'var(--accent-btc)';
-            e.currentTarget.style.color = 'var(--bg-void)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'transparent';
-            e.currentTarget.style.color = 'var(--accent-btc)';
-          }}
-        >
-          Start Sandbox
-        </a>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          {authLoaded && isAuthenticated ? (
+            <a
+              href="/dashboard"
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: '14px',
+                color: 'var(--accent-btc)',
+                border: '1px solid var(--accent-btc)',
+                padding: '7px 17px',
+                borderRadius: '100px',
+                letterSpacing: '0.04em',
+                transition: 'background-color 0.15s, color 0.15s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = 'var(--accent-btc)';
+                e.currentTarget.style.color = 'var(--bg-void)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'transparent';
+                e.currentTarget.style.color = 'var(--accent-btc)';
+              }}
+            >
+              Dashboard
+            </a>
+          ) : (
+            <>
+              <a
+                href="/login"
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '12px',
+                  color: 'var(--text-secondary)',
+                  letterSpacing: '0.06em',
+                  padding: '7px 10px',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = 'var(--text-primary)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = 'var(--text-secondary)';
+                }}
+              >
+                Log In
+              </a>
+              <a
+                href="/signup"
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: '14px',
+                  color: 'var(--accent-btc)',
+                  border: '1px solid var(--accent-btc)',
+                  padding: '7px 17px',
+                  borderRadius: '100px',
+                  letterSpacing: '0.04em',
+                  transition: 'background-color 0.15s, color 0.15s',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = 'var(--accent-btc)';
+                  e.currentTarget.style.color = 'var(--bg-void)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'transparent';
+                  e.currentTarget.style.color = 'var(--accent-btc)';
+                }}
+              >
+                Create Account
+              </a>
+            </>
+          )}
+        </div>
       </div>
     </nav>
   );

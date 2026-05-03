@@ -149,7 +149,7 @@ export default function PricingSection() {
               ))}
 
               <a
-                href="#"
+                href="/open-channel"
                 style={{
                   display: 'block',
                   marginTop: '28px',
