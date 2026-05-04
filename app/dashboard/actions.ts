@@ -43,7 +43,7 @@ function hashApiKey(fullKey: string): string {
 export async function createApiKeyAction(): Promise<CreateKeyResult> {
   try {
     const { supabase, user } = await getAuthenticatedClient();
-    const fullKey = `SEK-B1-${crypto.randomUUID()}`;
+    const fullKey = `sockt_live_${crypto.randomUUID()}`;
     const keyPrefix = buildKeyPrefix(fullKey);
     const keyHash = hashApiKey(fullKey);
 

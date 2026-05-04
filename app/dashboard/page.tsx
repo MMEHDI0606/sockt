@@ -53,7 +53,7 @@ export default async function DashboardPage() {
       Boolean(value)
     );
 
-  const balance = Number(profile?.balance ?? 0);
+  const balance = Number(profile?.credit_balance_usd_cents ?? 0);
 
   return (
     <main style={{ minHeight: '100vh', padding: '28px 20px 40px' }}>
