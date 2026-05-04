@@ -4,49 +4,58 @@ import { useIsMobile } from '@/hooks/useIsMobile';
 
 const TIERS = [
   {
-    name: 'SPARK',
-    gpu: 'A10G',
-    sats: '420',
-    minBudget: '10,000 sats',
-    channelType: 'Custodial',
-    maxAgents: '1',
-    bestFor: 'Prototype agents and early iteration',
-    monthlyExample: '~126k sats / month at 10 epochs/day',
+    name: 'NANO',
+    vcpu: '0.25',
+    ram: '256 MB',
+    runtime: 'Firecracker microVM',
+    host: 'c2-standard-16 (shared)',
+    satsPerSecond: '~0.5',
     recommended: false,
   },
   {
-    name: 'CURRENT',
-    gpu: 'A100',
-    sats: '840',
-    minBudget: '25,000 sats',
-    channelType: 'Self-custody opt',
-    maxAgents: '10',
-    bestFor: 'Production agents with steady throughput',
-    monthlyExample: '~252k sats / month at 10 epochs/day',
+    name: 'MICRO',
+    vcpu: '1',
+    ram: '1 GB',
+    runtime: 'Firecracker microVM',
+    host: 'c2-standard-16 (shared)',
+    satsPerSecond: '~2',
     recommended: true,
   },
   {
-    name: 'CHANNEL',
-    gpu: 'H100',
-    sats: '1,240',
-    minBudget: '50,000 sats',
-    channelType: 'Full self-custody',
-    maxAgents: 'Unlimited',
-    bestFor: 'High-throughput teams and latency-sensitive tasks',
-    monthlyExample: '~372k sats / month at 10 epochs/day',
+    name: 'STANDARD',
+    vcpu: '2-4',
+    ram: '4-8 GB',
+    runtime: 'Firecracker or dedicated VM',
+    host: 'c2-standard-16 / n2-standard-4',
+    satsPerSecond: '~8',
+    recommended: false,
+  },
+  {
+    name: 'GPU_SMALL',
+    vcpu: '4 + T4',
+    ram: '16 GB',
+    runtime: 'Dedicated VM (full)',
+    host: 'n1-standard-8 + T4 GPU',
+    satsPerSecond: '~80',
+    recommended: false,
+  },
+  {
+    name: 'GPU_LARGE',
+    vcpu: '8 + A100',
+    ram: '40-80 GB',
+    runtime: 'Dedicated VM (full)',
+    host: 'a2-highgpu-1g',
+    satsPerSecond: '~400',
     recommended: false,
   },
 ];
 
 const ROWS = [
-  { key: 'gpu', label: 'GPU Type' },
-  { key: 'sats', label: 'Sats / epoch' },
-  { key: 'minBudget', label: 'Min budget' },
-  { key: 'bestFor', label: 'Best for' },
-  { key: 'monthlyExample', label: 'Monthly example' },
-  { key: 'channelType', label: 'Channel type' },
-  { key: 'mcp', label: 'MCP fallback' },
-  { key: 'maxAgents', label: 'Max concurrent agents' },
+  { key: 'vcpu', label: 'vCPU' },
+  { key: 'ram', label: 'RAM' },
+  { key: 'runtime', label: 'Runtime' },
+  { key: 'host', label: 'GCP Host' },
+  { key: 'satsPerSecond', label: 'Sats / sec' },
 ];
 
 export default function PricingSection() {
@@ -143,7 +152,7 @@ export default function PricingSection() {
                       maxWidth: '165px',
                     }}
                   >
-                    {row.key === 'mcp' ? '✓' : (tier as any)[row.key]}
+                    {(tier as any)[row.key]}
                   </span>
                 </div>
               ))}
@@ -181,8 +190,8 @@ export default function PricingSection() {
           }}
         >
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-            Billing is usage-based per compute epoch. Example: if you run CURRENT for 100 epochs in a week,
-            cost is about 84,000 sats. Fallback path uses dashboard-issued api_key and account credits with the same lifecycle visibility.
+            API pricing is sourced from the PRD tier table. Billing accrues by sats/sec with settlement on short intervals
+            (10s ticker in the billing engine). Fallback path uses dashboard-issued api_key and account credits with the same lifecycle visibility.
           </p>
         </div>
       </div>
