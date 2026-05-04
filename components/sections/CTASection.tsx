@@ -60,11 +60,11 @@ export default function CTASection() {
       <h2
         style={{
           fontFamily: 'var(--font-display)',
-          fontSize: 'var(--text-hero)',
+          fontSize: isMobile ? 'clamp(2.2rem, 11vw, 3.4rem)' : 'var(--text-hero)',
           fontWeight: 800,
-          lineHeight: 0.92,
+          lineHeight: isMobile ? 0.98 : 0.92,
           color: 'var(--text-primary)',
-          marginBottom: '56px',
+          marginBottom: isMobile ? '36px' : '56px',
         }}
       >
         {LINES.map((line, li) => (
@@ -88,10 +88,10 @@ export default function CTASection() {
           href="/sandbox"
           style={{
             fontFamily: 'var(--font-mono)',
-            fontSize: '15px',
+            fontSize: isMobile ? '13px' : '15px',
             backgroundColor: 'var(--accent-btc)',
             color: 'var(--bg-void)',
-            padding: '14px 32px',
+            padding: isMobile ? '12px 22px' : '14px 32px',
             borderRadius: '4px',
             fontWeight: 600,
             letterSpacing: '0.04em',
@@ -105,10 +105,10 @@ export default function CTASection() {
           href="/start-with-api-key"
           style={{
             fontFamily: 'var(--font-mono)',
-            fontSize: '15px',
+            fontSize: isMobile ? '13px' : '15px',
             color: 'var(--text-secondary)',
             border: '1px solid var(--bg-border)',
-            padding: '14px 32px',
+            padding: isMobile ? '12px 22px' : '14px 32px',
             borderRadius: '4px',
             letterSpacing: '0.04em',
             display: 'inline-block',

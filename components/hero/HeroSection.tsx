@@ -74,12 +74,13 @@ export default function HeroSection() {
               className="hero-headline-line"
               style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: isMobile ? 'clamp(2.6rem, 10vw, 5rem)' : 'var(--text-hero)',
+                // 0.8x headline scale versus prior values for better viewport fit.
+                fontSize: isMobile ? 'clamp(2.1rem, 8vw, 4rem)' : 'clamp(3.2rem, 8vw, 7.2rem)',
                 fontWeight: 800,
                 lineHeight: 0.96,
                 letterSpacing: '-0.02em',
                 color: 'var(--text-primary)',
-                maxWidth: isMobile ? '100%' : '900px',
+                maxWidth: isMobile ? '100%' : '760px',
                 textWrap: 'balance',
               }}
             >

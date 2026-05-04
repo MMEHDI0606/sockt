@@ -77,7 +77,7 @@ export default function Nav() {
         style={{
           maxWidth: '1280px',
           margin: '0 auto',
-          padding: '0 32px',
+          padding: isMobile ? '0 14px' : '0 32px',
           height: '67px',
           display: 'flex',
           alignItems: 'center',
@@ -90,7 +90,7 @@ export default function Nav() {
             style={{
               fontFamily: 'var(--font-mono)',
               fontWeight: 400,
-              fontSize: '18px',
+              fontSize: isMobile ? '16px' : '18px',
               color: 'var(--accent-btc)',
               letterSpacing: '-0.01em',
               lineHeight: 1,
@@ -102,7 +102,7 @@ export default function Nav() {
             style={{
               fontFamily: 'var(--font-display)',
               fontWeight: 500,
-              fontSize: '18px',
+              fontSize: isMobile ? '16px' : '18px',
               color: 'var(--text-primary)',
               letterSpacing: '0.01em',
               lineHeight: 1,
@@ -142,16 +142,16 @@ export default function Nav() {
             ))}
           </div>
         )}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '6px' : '10px' }}>
           {authLoaded && isAuthenticated ? (
             <a
               href="/dashboard"
               style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: '14px',
+                fontSize: isMobile ? '12px' : '14px',
                 color: 'var(--accent-btc)',
                 border: '1px solid var(--accent-btc)',
-                padding: '7px 17px',
+                padding: isMobile ? '6px 10px' : '7px 17px',
                 borderRadius: '100px',
                 letterSpacing: '0.04em',
                 transition: 'background-color 0.15s, color 0.15s',
@@ -173,10 +173,10 @@ export default function Nav() {
                 href="/login"
                 style={{
                   fontFamily: 'var(--font-mono)',
-                  fontSize: '12px',
+                  fontSize: isMobile ? '11px' : '12px',
                   color: 'var(--text-secondary)',
                   letterSpacing: '0.06em',
-                  padding: '7px 10px',
+                  padding: isMobile ? '6px 8px' : '7px 10px',
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.color = 'var(--text-primary)';
@@ -191,10 +191,10 @@ export default function Nav() {
                 href="/signup"
                 style={{
                   fontFamily: 'var(--font-display)',
-                  fontSize: '14px',
+                  fontSize: isMobile ? '12px' : '14px',
                   color: 'var(--accent-btc)',
                   border: '1px solid var(--accent-btc)',
-                  padding: '7px 17px',
+                  padding: isMobile ? '6px 10px' : '7px 17px',
                   borderRadius: '100px',
                   letterSpacing: '0.04em',
                   transition: 'background-color 0.15s, color 0.15s',

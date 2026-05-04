@@ -69,22 +69,22 @@ export default function PricingSection() {
     >
       <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
         <div style={{ display: 'flex', alignItems: 'flex-end', gap: '24px', marginBottom: '64px' }}>
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '72px', color: 'var(--bg-border)', lineHeight: 1 }}>05</span>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: isMobile ? '48px' : '72px', color: 'var(--bg-border)', lineHeight: 1 }}>05</span>
           <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-display)', fontWeight: 800, color: 'var(--text-primary)', lineHeight: 0.9 }}>
             PRICING
           </h2>
         </div>
 
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'center', alignItems: 'stretch' }}>
           {TIERS.map((tier) => (
             <div
               key={tier.name}
               style={{
-                flex: isMobile ? '1 1 100%' : '0 0 320px',
+                flex: isMobile ? '1 1 100%' : '1 1 280px',
                 backgroundColor: 'var(--bg-surface)',
                 border: `1px solid ${tier.recommended ? 'var(--accent-btc)' : 'var(--bg-border)'}`,
                 borderRadius: '6px',
-                padding: '32px',
+                padding: isMobile ? '24px 20px' : '32px',
                 boxShadow: tier.recommended ? '0 0 0 1px var(--accent-amber)' : 'none',
                 position: 'relative',
               }}
@@ -129,9 +129,10 @@ export default function PricingSection() {
                   style={{
                     display: 'flex',
                     justifyContent: 'space-between',
-                    alignItems: 'center',
+                    alignItems: 'flex-start',
                     padding: '10px 0',
                     borderBottom: '1px solid var(--bg-border)',
+                    gap: '10px',
                   }}
                 >
                   <span
@@ -149,7 +150,7 @@ export default function PricingSection() {
                       fontSize: '12px',
                       color: 'var(--text-primary)',
                       textAlign: 'right',
-                      maxWidth: '165px',
+                      maxWidth: isMobile ? '58%' : '165px',
                     }}
                   >
                     {(tier as any)[row.key]}

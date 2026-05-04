@@ -2,9 +2,11 @@
 
 import { useEffect, useRef } from 'react';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 export default function FallbackSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -45,13 +47,13 @@ export default function FallbackSection() {
     <section
       ref={sectionRef}
       style={{
-        padding: '120px 32px',
+        padding: isMobile ? '80px 16px' : '120px 32px',
         borderTop: '1px solid var(--bg-border)',
       }}
     >
       <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-        <div style={{ display: 'flex', alignItems: 'flex-end', gap: '24px', marginBottom: '64px' }}>
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '72px', color: 'var(--bg-border)', lineHeight: 1 }}>07</span>
+        <div style={{ display: 'flex', alignItems: isMobile ? 'flex-start' : 'flex-end', gap: isMobile ? '12px' : '24px', marginBottom: isMobile ? '32px' : '64px' }}>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: isMobile ? '48px' : '72px', color: 'var(--bg-border)', lineHeight: 1 }}>07</span>
           <div>
             <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-display)', fontWeight: 800, color: 'var(--text-primary)', lineHeight: 0.9 }}>
               FALLBACK LAYER
@@ -62,13 +64,20 @@ export default function FallbackSection() {
           </div>
         </div>
 
-        <svg
-          id="fallback"
-          viewBox="0 0 900 400"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          style={{ width: '100%', maxWidth: '900px', margin: '0 auto', display: 'block' }}
+        <div
+          style={{
+            width: '100%',
+            overflowX: isMobile ? 'auto' : 'visible',
+            WebkitOverflowScrolling: 'touch',
+          }}
         >
+          <svg
+            id="fallback"
+            viewBox="0 0 900 400"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            style={{ width: '100%', minWidth: isMobile ? '820px' : 'auto', maxWidth: '900px', margin: '0 auto', display: 'block' }}
+          >
           {/* AI Agent */}
           <rect className="node-box" x="350" y="20" width="200" height="52" rx="4" fill="var(--bg-raised)" stroke="var(--bg-border)" strokeWidth="1" />
           <text x="450" y="50" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="12" fill="var(--text-primary)">AI AGENT</text>
@@ -112,12 +121,13 @@ export default function FallbackSection() {
           <text x="450" y="352" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="12" fill="var(--text-primary)">SOCKT API KEY + CREDITS</text>
           <text x="450" y="370" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="10" fill="var(--text-secondary)">Revoke / rotate anytime</text>
 
-          <defs>
-            <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-              <path d="M0,0 L0,6 L8,3 z" fill="var(--bg-border)" />
-            </marker>
-          </defs>
-        </svg>
+            <defs>
+              <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L8,3 z" fill="var(--bg-border)" />
+              </marker>
+            </defs>
+          </svg>
+        </div>
       </div>
     </section>
   );
