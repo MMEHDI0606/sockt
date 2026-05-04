@@ -34,7 +34,7 @@ export default async function DashboardPage() {
     .maybeSingle();
 
   const { data: rawKeys } = await supabase
-    .from('user_api_keys')
+    .from('api_keys')
     .select('*')
     .eq('user_id', user.id)
     .order('created_at', { ascending: false });

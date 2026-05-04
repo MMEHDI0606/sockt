@@ -45,7 +45,7 @@ export async function createApiKeyAction(): Promise<CreateKeyResult> {
     // Try common column name first.
     {
       const { data, error } = await supabase
-        .from('user_api_keys')
+        .from('api_keys')
         .insert({ user_id: user.id, api_key: fullKey })
         .select('id, created_at')
         .single();
@@ -58,7 +58,7 @@ export async function createApiKeyAction(): Promise<CreateKeyResult> {
     // Fallback for schemas using `key` instead of `api_key`.
     if (!keyRow) {
       const { data, error } = await supabase
-        .from('user_api_keys')
+        .from('api_keys')
         .insert({ user_id: user.id, key: fullKey })
         .select('id, created_at')
         .single();
@@ -99,7 +99,7 @@ export async function revokeApiKeyAction(keyId: string): Promise<ActionResult> {
     const { supabase, user } = await getAuthenticatedClient();
 
     const { error } = await supabase
-      .from('user_api_keys')
+      .from('api_keys')
       .delete()
       .eq('id', keyId)
       .eq('user_id', user.id);
