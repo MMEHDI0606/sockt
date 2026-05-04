@@ -14,8 +14,9 @@ const client = new SocktClient({
 });
 
 const session = await client.sandbox.create({
-  profile: 'compute-pro',
-  duration: '30m',
+  tier: 'MICRO',
+  billingMethod: 'credits',
+  ttlSeconds: 1800,
 });
 
 const run = await client.sandbox.exec(session.id, {
@@ -33,8 +34,9 @@ client = SocktClient(
 )
 
 sandbox = client.sandbox.create(
-    profile="compute-pro",
-    duration="30m",
+  tier="MICRO",
+  billing_method="credits",
+  ttl_seconds=1800,
 )
 
 result = client.sandbox.exec(
@@ -58,8 +60,9 @@ func main() {
     })
 
     session, err := client.CreateSandbox(sockt.CreateSandboxRequest{
-        Profile:  "compute-pro",
-        Duration: "30m",
+      Tier:          "MICRO",
+      BillingMethod: "credits",
+      TTLSeconds:    1800,
     })
     if err != nil {
         panic(err)
@@ -74,8 +77,9 @@ npm install -g @sockt/cli
 
 # Create sandbox
 sockt sandbox create \
-  --profile compute-pro \
-  --duration 30m
+  --tier MICRO \
+  --billing-method credits \
+  --ttl-seconds 1800
 
 # Run command
 sockt sandbox exec --id <sandbox_id> --command "python task.py --mode eval"

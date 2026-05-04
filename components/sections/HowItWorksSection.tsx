@@ -7,61 +7,54 @@ import { useIsMobile } from '@/hooks/useIsMobile';
 const STEPS = [
   {
     num: '01',
-    title: 'Agent Initializes',
-    outcome: 'Your agent has a budget ceiling and a payment identity before the first request fires.',
-    reassurance: 'No Lightning wallet yet? Generate a Sockt api_key in the dashboard and keep the same lifecycle guarantees.',
+    title: 'Access Path Selected',
+    outcome: 'Start Lightning-native with L402 or use a dashboard-issued api_key fallback.',
+    reassurance: 'Both paths reach the same sandbox lifecycle: create, exec, pause, resume, terminate.',
     code: `import { SocktAgent } from '@sockt/sdk';
 
 const agent = new SocktAgent({
-  apiKey: process.env.SOCKT_KEY,
-  budget: { sats: 50_000 },
-  fallback: {
-    provider: 'anthropic',
-    apiKey: process.env.ANTHROPIC_KEY
-  }
+  apiKey: process.env.SOCKT_KEY, // fallback path
+  budget: { sats: 50_000 }
 });`,
   },
   {
     num: '02',
-    title: 'Channel Opens',
-    outcome: 'Compute access is payment-ready in milliseconds — no human approval step.',
-    reassurance: 'Dual-path design means a failed payment route never halts your agent.',
-    code: `// Lightning channel established
-const channel = await agent.openChannel({
-  capacity: 100_000, // sats
-  peer: 'SOCKT_NODE',
+    title: 'Sandbox Created',
+    outcome: 'Control plane provisions a sandbox and returns routing details for active work.',
+    reassurance: 'Tier and billing mode are explicit, so spend and capacity are predictable.',
+    code: `const sandbox = await agent.sandbox.create({
+  tier: 'MICRO',
+  billingMethod: 'credits',
+  ttlSeconds: 1800,
 });
 
-// channel_id: lnbc1pvjluez...
-// status: ACTIVE`,
+console.log(sandbox.id);`,
   },
   {
     num: '03',
-    title: 'GPU Provisioned',
-    outcome: 'Agent gets exactly the capacity it declared — visible state, bounded cost.',
-    reassurance: 'When preferred capacity is full, fallback route routes instantly to avoid downtime.',
-    code: `- gpu: null
-+ gpu: H100_SXM5_2x
+    title: 'Work Loop Runs',
+    outcome: 'Execute commands, edit files, and attach shell from one session.',
+    reassurance: 'Data-plane operations stay direct and fast while lifecycle stays controlled.',
+    code: `const run = await agent.sandbox.exec(sandbox.id, {
+  command: 'python3 task.py',
+});
 
-- status: pending
-+ status: provisioned
-
-- allocated_sats: 0
-+ allocated_sats: 50_000`,
+await agent.sandbox.writeFile(sandbox.id, {
+  path: 'task.py',
+  content: 'print("hello")',
+});`,
   },
   {
     num: '04',
-    title: 'Epoch Settled',
-    outcome: 'Every epoch closes with a receipt. Spend is auditable, predictable, and stoppable.',
-    reassurance: 'Pause and resume preserve progress without burning the remaining budget.',
-    code: `INVOICE → PAID → RECEIPT
-
-invoice_id: lnbc1240n1...
-amount:     1,240 sats
-epoch:      #00142
-settle_ms:  128
-
-✓ Receipt confirmed`,
+    title: 'Metering + Lifecycle',
+    outcome: 'Usage is metered continuously and low-balance hints trigger top-up flow.',
+    reassurance: 'Pause, resume, and terminate remain available at every stage.',
+    code: `> usage.tick      -- sats/sec metering active
+> low_balance     -- deposit_required
+> wallet.deposit  -- pay BOLT11 invoice
+> sandbox.pause   -- state preserved
+> sandbox.resume  -- continue work
+> sandbox.terminate -- done`,
   },
 ];
 
