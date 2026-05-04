@@ -5,15 +5,11 @@ import { signOutAction } from '@/app/dashboard/actions';
 import ApiKeysPanel from '@/components/dashboard/ApiKeysPanel';
 
 type ApiKeyRow = {
-  id: string;
-  api_key?: string | null;
-  key?: string | null;
+  key_hash: string;
+  key_prefix?: string | null;
+  is_active?: boolean | null;
   created_at?: string | null;
 };
-
-function maskKey(fullKey: string): string {
-  return fullKey.startsWith('SEK-B1-') ? 'SEK-B1-****' : '****';
-}
 
 export default async function DashboardPage() {
   const cookieStore = await cookies();
@@ -28,27 +24,28 @@ export default async function DashboardPage() {
   }
 
   const { data: profile } = await supabase
-    .from('profiles')
-    .select('balance')
+    .from('users')
+    .select('credit_balance_usd_cents')
     .eq('id', user.id)
     .maybeSingle();
 
   const { data: rawKeys } = await supabase
     .from('api_keys')
-    .select('*')
+    .select('key_hash, key_prefix, is_active, created_at')
     .eq('user_id', user.id)
+    .eq('is_active', true)
     .order('created_at', { ascending: false });
 
   const apiKeys = ((rawKeys ?? []) as ApiKeyRow[])
     .map((row) => {
-      const fullKey = row.api_key || row.key || '';
-      if (!fullKey) {
+      const prefix = row.key_prefix ?? '';
+      if (!prefix || row.is_active === false) {
         return null;
       }
 
       return {
-        id: row.id,
-        preview: maskKey(fullKey),
+        id: row.key_hash,
+        preview: `${prefix}****`,
         createdAt: row.created_at ?? null,
       };
     })
@@ -160,7 +157,7 @@ export default async function DashboardPage() {
               letterSpacing: '-0.02em',
             }}
           >
-            {balance.toLocaleString(undefined, { maximumFractionDigits: 8 })}
+           $ {(balance/100).toFixed(2)}
           </p>
         </section>
 

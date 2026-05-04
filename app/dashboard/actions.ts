@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
+import { createHash } from 'crypto';
 import { createClient } from '@/utils/supabase/server';
 
 type ActionResult = {
@@ -31,56 +32,48 @@ async function getAuthenticatedClient() {
   return { supabase, user };
 }
 
-function maskKey(fullKey: string): string {
-  return fullKey.startsWith('SEK-B1-') ? 'SEK-B1-****' : '****';
+function buildKeyPrefix(fullKey: string): string {
+  return fullKey.slice(0, 7);
+}
+
+function hashApiKey(fullKey: string): string {
+  return createHash('sha256').update(fullKey).digest('hex');
 }
 
 export async function createApiKeyAction(): Promise<CreateKeyResult> {
   try {
     const { supabase, user } = await getAuthenticatedClient();
     const fullKey = `SEK-B1-${crypto.randomUUID()}`;
+    const keyPrefix = buildKeyPrefix(fullKey);
+    const keyHash = hashApiKey(fullKey);
 
-    let keyRow: { id: string; created_at?: string | null } | null = null;
+    const { data, error } = await supabase
+      .from('api_keys')
+      .insert({
+        user_id: user.id,
+        key_hash: keyHash,
+        key_prefix: keyPrefix,
+        name: 'Default',
+        is_active: true,
+      })
+      .select('key_hash, created_at')
+      .single();
 
-    // Try common column name first.
-    {
-      const { data, error } = await supabase
-        .from('api_keys')
-        .insert({ user_id: user.id, api_key: fullKey })
-        .select('id, created_at')
-        .single();
-
-      if (!error && data) {
-        keyRow = data as { id: string; created_at?: string | null };
-      }
-    }
-
-    // Fallback for schemas using `key` instead of `api_key`.
-    if (!keyRow) {
-      const { data, error } = await supabase
-        .from('api_keys')
-        .insert({ user_id: user.id, key: fullKey })
-        .select('id, created_at')
-        .single();
-
-      if (error || !data) {
-        return {
-          ok: false,
-          error: error?.message || 'Failed to store API key.',
-        };
-      }
-
-      keyRow = data as { id: string; created_at?: string | null };
+    if (error || !data) {
+      return {
+        ok: false,
+        error: error?.message || 'Failed to store API key.',
+      };
     }
 
     revalidatePath('/dashboard');
 
     return {
       ok: true,
-      keyId: keyRow.id,
+      keyId: data.key_hash,
       fullKey,
-      preview: maskKey(fullKey),
-      createdAt: keyRow.created_at ?? null,
+      preview: `${keyPrefix}****`,
+      createdAt: data.created_at ?? null,
     };
   } catch (error) {
     return {
@@ -100,8 +93,8 @@ export async function revokeApiKeyAction(keyId: string): Promise<ActionResult> {
 
     const { error } = await supabase
       .from('api_keys')
-      .delete()
-      .eq('id', keyId)
+      .update({ is_active: false })
+      .eq('key_hash', keyId)
       .eq('user_id', user.id);
 
     if (error) {
