@@ -91,7 +91,7 @@ export default function HowItWorksSection() {
 
   if (isMobile) {
     return (
-      <section style={{ borderTop: '1px solid var(--bg-border)', padding: '80px 24px' }}>
+      <section id="flow" style={{ borderTop: '1px solid var(--bg-border)', padding: '80px 24px' }}>
         {STEPS.map((step, i) => (
           <div key={i} style={{ marginBottom: i < STEPS.length - 1 ? '72px' : 0 }}>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '48px', fontWeight: 700, color: 'var(--bg-raised)', display: 'block', marginBottom: '12px', lineHeight: 1 }}>{step.num}</span>
@@ -113,6 +113,7 @@ export default function HowItWorksSection() {
 
   return (
     <section
+      id="flow"
       ref={sectionRef}
       style={{ overflow: 'hidden', borderTop: '1px solid var(--bg-border)' }}
     >

@@ -50,6 +50,7 @@ export default function PricingSection() {
   const isMobile = useIsMobile();
   return (
     <section
+      id="pricing"
       style={{
         padding: isMobile ? '80px 24px' : '120px 32px',
         borderTop: '1px solid var(--bg-border)',

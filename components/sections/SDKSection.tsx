@@ -110,6 +110,7 @@ export default function SDKSection() {
 
   return (
     <section
+      id="sdk"
       style={{
         padding: isMobile ? '80px 24px' : '120px 32px',
         borderTop: '1px solid var(--bg-border)',

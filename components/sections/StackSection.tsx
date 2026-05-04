@@ -78,6 +78,7 @@ export default function StackSection() {
 
   return (
     <section
+      id="stack"
       ref={sectionRef}
       style={{
         minHeight: isMobile ? 'auto' : '100vh',
