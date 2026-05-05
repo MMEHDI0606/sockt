@@ -7,24 +7,21 @@ import { useIsMobile } from '@/hooks/useIsMobile';
 const TABS = ['TypeScript', 'Python', 'Go', 'CLI'];
 
 const CODE: Record<string, string> = {
-  TypeScript: `import { SocktClient } from '@sockt/sdk';
+  TypeScript: `import { ComputeClient } from '@sockt/client';
 
-const client = new SocktClient({
+const client = new ComputeClient({
   apiKey: process.env.SOCKT_API_KEY,
 });
 
-const session = await client.sandbox.create({
-  tier: 'MICRO',
+const sandbox = await client.createSandbox({
+  tier: 'micro',
   billingMethod: 'credits',
-  ttlSeconds: 1800,
 });
 
-const run = await client.sandbox.exec(session.id, {
-  command: 'python task.py --mode eval',
-});
+const run = await sandbox.exec('python task.py --mode eval');
 
 console.log(run.stdout);
-await client.sandbox.pause(session.id);`,
+await sandbox.pause();`,
 
   Python: `from sockt import SocktClient
 import os

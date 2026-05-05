@@ -125,9 +125,9 @@ export default function Nav() {
             }}
           >
             {[
-              { label: 'Use Cases', href: '/use-cases' },
+              { label: 'Use Cases', href: '/#use-cases' },
               { label: 'Docs', href: '/docs' },
-              { label: 'Pricing', href: '/pricing' },
+              { label: 'Pricing', href: '/#pricing' },
               { label: 'Status', href: '/status' },
             ].map((link) => (
               <a

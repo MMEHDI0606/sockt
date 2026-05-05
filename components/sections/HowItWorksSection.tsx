@@ -1,245 +1,136 @@
-'use client';
+﻿'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { useIsMobile } from '@/hooks/useIsMobile';
 
-const STEPS = [
+const USE_CASES = [
   {
-    num: '01',
-    title: 'Access Path Selected',
-    outcome: 'Start Lightning-native with L402 or use a dashboard-issued api_key fallback.',
-    reassurance: 'Both paths reach the same sandbox lifecycle: create, exec, pause, resume, terminate.',
-    code: `import { SocktAgent } from '@sockt/sdk';
-
-const agent = new SocktAgent({
-  apiKey: process.env.SOCKT_KEY, // fallback path
-  budget: { sats: 50_000 }
-});`,
+    title: 'Autonomous Model Training',
+    summary: 'Agent spins up a GPU sandbox, pays via Lightning, trains, then returns metrics and artifacts.',
+    steps: [
+      'Create sandbox on A100 tier',
+      'Pay invoice from wallet MCP tool',
+      'Write train script and dataset config',
+      'Run training and report results',
+    ],
   },
   {
-    num: '02',
-    title: 'Sandbox Created',
-    outcome: 'Control plane provisions a sandbox and returns routing details for active work.',
-    reassurance: 'Tier and billing mode are explicit, so spend and capacity are predictable.',
-    code: `const sandbox = await agent.sandbox.create({
-  tier: 'MICRO',
-  billingMethod: 'credits',
-  ttlSeconds: 1800,
-});
-
-console.log(sandbox.id);`,
+    title: 'Codebase Evaluation Loops',
+    summary: 'Agent runs repeatable eval jobs in isolated compute and streams sats-based usage while executing.',
+    steps: [
+      'Create micro or standard sandbox',
+      'Run unit and regression workloads',
+      'Collect output, traces, and cost totals',
+      'Terminate sandbox when loop finishes',
+    ],
   },
   {
-    num: '03',
-    title: 'Work Loop Runs',
-    outcome: 'Execute commands, edit files, and attach shell from one session.',
-    reassurance: 'Data-plane operations stay direct and fast while lifecycle stays controlled.',
-    code: `const run = await agent.sandbox.exec(sandbox.id, {
-  command: 'python3 task.py',
-});
-
-await agent.sandbox.writeFile(sandbox.id, {
-  path: 'task.py',
-  content: 'print("hello")',
-});`,
-  },
-  {
-    num: '04',
-    title: 'Metering + Lifecycle',
-    outcome: 'Usage is metered continuously and low-balance hints trigger top-up flow.',
-    reassurance: 'Pause, resume, and terminate remain available at every stage.',
-    code: `> usage.tick      -- sats/sec metering active
-> low_balance     -- deposit_required
-> wallet.deposit  -- pay BOLT11 invoice
-> sandbox.pause   -- state preserved
-> sandbox.resume  -- continue work
-> sandbox.terminate -- done`,
+    title: 'Research Batch Processing',
+    summary: 'Agent schedules paid compute bursts for simulations, embeddings, or dataset transforms without humans.',
+    steps: [
+      'Provision high-memory tier',
+      'Upload scripts and input files',
+      'Execute batch commands in sequence',
+      'Return files and sats settlement summary',
+    ],
   },
 ];
 
 export default function HowItWorksSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [activeDot, setActiveDot] = useState(0);
   const isMobile = useIsMobile();
 
   useEffect(() => {
-    if (isMobile) return;
     const ctx = gsap.context(() => {
-      const track = trackRef.current;
-      if (!track) return;
-
-      gsap.to(track, {
-        x: () => -(track.scrollWidth - window.innerWidth),
-        ease: 'none',
+      gsap.from('.use-case-card', {
+        opacity: 0,
+        y: 24,
+        duration: 0.55,
+        ease: 'power2.out',
+        stagger: 0.12,
         scrollTrigger: {
           trigger: sectionRef.current,
-          pin: true,
-          scrub: 1,
-          start: 'top top',
-          end: () => `+=${track.scrollWidth - window.innerWidth}`,
-          onUpdate: (self) => {
-            setActiveDot(Math.min(Math.floor(self.progress * STEPS.length), STEPS.length - 1));
-          },
+          start: 'top 72%',
         },
       });
     }, sectionRef);
 
     return () => ctx.revert();
-  }, [isMobile]);
-
-  if (isMobile) {
-    return (
-      <section id="flow" style={{ borderTop: '1px solid var(--bg-border)', padding: '80px 24px' }}>
-        {STEPS.map((step, i) => (
-          <div key={i} style={{ marginBottom: i < STEPS.length - 1 ? '72px' : 0 }}>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '48px', fontWeight: 700, color: 'var(--bg-raised)', display: 'block', marginBottom: '12px', lineHeight: 1 }}>{step.num}</span>
-            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.5rem, 6vw, 2rem)', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '16px' }}>{step.title}</h3>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: '15px', lineHeight: 1.7, color: 'var(--text-primary)', marginBottom: '8px' }}>{step.outcome}</p>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '16px' }}>{step.reassurance}</p>
-            <pre style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', lineHeight: 1.6, backgroundColor: 'var(--bg-surface)', border: '1px solid var(--bg-border)', borderRadius: '6px', padding: '16px', color: 'var(--text-mono)', overflow: 'auto', whiteSpace: 'pre-wrap' }}>
-              <code dangerouslySetInnerHTML={{ __html: step.code
-                .replace(/^(\+ .+)$/gm, '<span style="color:var(--accent-green)">$1</span>')
-                .replace(/^(- .+)$/gm, '<span style="color:var(--accent-red)">$1</span>')
-                .replace(/(✓.+)/g, '<span style="color:var(--accent-green)">$1</span>'),
-              }} />
-            </pre>
-          </div>
-        ))}
-      </section>
-    );
-  }
+  }, []);
 
   return (
     <section
-      id="flow"
+      id="use-cases"
       ref={sectionRef}
-      style={{ overflow: 'hidden', borderTop: '1px solid var(--bg-border)' }}
+      style={{
+        padding: isMobile ? '96px 24px' : '140px 32px',
+        borderTop: '1px solid var(--bg-border)',
+      }}
     >
-      <div
-        ref={trackRef}
-        style={{ display: 'flex', width: `${STEPS.length * 100}vw` }}
-      >
-        {STEPS.map((step, i) => (
-          <div
-            key={i}
-            style={{
-              width: '100vw',
-              height: '100vh',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '80px 10vw',
-              flexShrink: 0,
-              position: 'relative',
-            }}
-          >
-            {/* Step number background */}
-            <span
+      <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-end', gap: '24px', marginBottom: isMobile ? '42px' : '72px' }}>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: isMobile ? '48px' : '72px', color: 'var(--bg-border)', lineHeight: 1 }}>03</span>
+          <div>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-display)', fontWeight: 800, color: 'var(--text-primary)', lineHeight: 0.9 }}>
+              USE CASES
+            </h2>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: isMobile ? '15px' : '17px', color: 'var(--text-secondary)', marginTop: '12px', maxWidth: '760px', lineHeight: 1.7 }}>
+              Real workflows where an agent creates compute, pays in sats, executes tasks, and delivers output end-to-end.
+            </p>
+          </div>
+        </div>
+
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, minmax(0, 1fr))',
+            gap: isMobile ? '14px' : '16px',
+          }}
+        >
+          {USE_CASES.map((item, i) => (
+            <article
+              key={item.title}
+              className="use-case-card"
               style={{
-                position: 'absolute',
-                left: '8vw',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                fontFamily: 'var(--font-mono)',
-                fontSize: 'clamp(120px, 20vw, 200px)',
-                fontWeight: 700,
-                color: 'var(--bg-raised)',
-                lineHeight: 1,
-                userSelect: 'none',
-                pointerEvents: 'none',
+                border: '1px solid var(--bg-border)',
+                borderRadius: '8px',
+                backgroundColor: 'var(--bg-surface)',
+                padding: isMobile ? '22px' : '28px',
               }}
             >
-              {step.num}
-            </span>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--accent-amber)', letterSpacing: '0.09em' }}>
+                  USE CASE {String(i + 1).padStart(2, '0')}
+                </span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--text-secondary)', letterSpacing: '0.08em' }}>
+                  AGENT-RUN
+                </span>
+              </div>
 
-            <div style={{ position: 'relative', zIndex: 1, maxWidth: '640px', width: '100%' }}>
-              <h3
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(2rem, 4vw, 3rem)',
-                  fontWeight: 800,
-                  color: 'var(--text-primary)',
-                  marginBottom: '32px',
-                }}
-              >
-                {step.title}
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: isMobile ? '1.4rem' : '1.65rem', color: 'var(--text-primary)', lineHeight: 1.08, marginBottom: '12px' }}>
+                {item.title}
               </h3>
-              <p
-                style={{
-                  fontFamily: 'var(--font-body)',
-                  fontSize: '15px',
-                  lineHeight: 1.7,
-                  color: 'var(--text-primary)',
-                  marginBottom: '12px',
-                }}
-              >
-                {step.outcome}
-              </p>
-              <p
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '11px',
-                  lineHeight: 1.6,
-                  color: 'var(--text-secondary)',
-                  marginBottom: '18px',
-                }}
-              >
-                {step.reassurance}
-              </p>
-              <pre
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '13px',
-                  lineHeight: 1.7,
-                  backgroundColor: 'var(--bg-surface)',
-                  border: '1px solid var(--bg-border)',
-                  borderRadius: '6px',
-                  padding: '24px',
-                  color: 'var(--text-mono)',
-                  overflow: 'auto',
-                  whiteSpace: 'pre-wrap',
-                }}
-              >
-                <code
-                  dangerouslySetInnerHTML={{
-                    __html: step.code
-                      .replace(/^(\+ .+)$/gm, '<span style="color:var(--accent-green)">$1</span>')
-                      .replace(/^(- .+)$/gm, '<span style="color:var(--accent-red)">$1</span>')
-                      .replace(/(✓.+)/g, '<span style="color:var(--accent-green)">$1</span>'),
-                  }}
-                />
-              </pre>
-            </div>
-          </div>
-        ))}
-      </div>
 
-      {/* Progress dots */}
-      <div
-        style={{
-          position: 'fixed',
-          bottom: '32px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          display: 'flex',
-          gap: '8px',
-          zIndex: 10,
-        }}
-      >
-        {STEPS.map((_, i) => (
-          <div
-            key={i}
-            style={{
-              width: '8px',
-              height: '8px',
-              borderRadius: '50%',
-              backgroundColor: i === activeDot ? 'var(--accent-btc)' : 'var(--bg-border)',
-              transition: 'background-color 0.3s ease',
-            }}
-          />
-        ))}
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '16px' }}>
+                {item.summary}
+              </p>
+
+              <div style={{ borderTop: '1px solid var(--bg-border)', paddingTop: '14px' }}>
+                {item.steps.map((step) => (
+                  <div key={step} style={{ display: 'flex', gap: '8px', alignItems: 'flex-start', marginBottom: '8px' }}>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--accent-btc)', lineHeight: 1.4 }}>
+                      {'>'}
+                    </span>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--text-mono)', lineHeight: 1.5 }}>
+                      {step}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );

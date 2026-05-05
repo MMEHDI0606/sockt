@@ -6,7 +6,7 @@ import HeroConsole from './HeroConsole';
 import { useIsMobile } from '@/hooks/useIsMobile';
 
 const HEADLINE_TEXT = 'COMPUTE FOR AGENTS THAT PAY IN SATS.';
-const TAGLINE = 'Your agent shouldn’t pause and wait for a human to provision compute. Sockt gives it a wallet, a channel, and a GPU — autonomous and settled in under 90 seconds.';
+const TAGLINE = 'Sockt gives agents the compute they can pay for autonomously — open a Lightning channel, get a GPU, settle in sats. No human in the loop. Any Lightning wallet, including your own MCP-connected wallet, works out of the box.';
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -108,7 +108,9 @@ export default function HeroSection() {
             {/* CTA */}
             <div style={{ marginTop: '40px', display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
               <a
-                href="/sandbox"
+                href="https://sockt.dev/mcp"
+                target="_blank"
+                rel="noopener noreferrer"
                 style={{
                   fontFamily: 'var(--font-mono)',
                   fontSize: '13px',
@@ -123,7 +125,7 @@ export default function HeroSection() {
                   display: 'inline-block',
                 }}
               >
-                Run your first paid task →
+                Agent pays for its own sandbox →
               </a>
               <a
                 href="/flow"
@@ -134,7 +136,7 @@ export default function HeroSection() {
                   letterSpacing: '0.04em',
                 }}
               >
-                See 90-second flow →
+                See the flow →
               </a>
             </div>
 
@@ -147,7 +149,7 @@ export default function HeroSection() {
                 letterSpacing: '0.05em',
               }}
             >
-              Wallet-native path or dashboard-generated api_key fallback.
+              Any Lightning wallet can be added as an MCP server — or use api_key fallback.
             </div>
           </div>
 

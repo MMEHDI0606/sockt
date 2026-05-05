@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 72" shape-rendering="crispEdges" role="img" aria-label="Sockt mascot pack">
+  <defs>
+    <!-- base body -->
+    <g id="body">
+      <rect x="4" y="3" width="8" height="8" fill="#c27a36"/>
+      <rect x="2" y="6" width="2" height="1" fill="#c27a36"/>
+      <rect x="12" y="6" width="2" height="1" fill="#c27a36"/>
+
+      <rect x="8" y="1" width="1" height="1" fill="#c27a36"/>
+      <rect x="7" y="2" width="3" height="1" fill="#c27a36"/>
+
+      <rect x="5" y="11" width="1" height="3" fill="#c27a36"/>
+      <rect x="10" y="11" width="1" height="3" fill="#c27a36"/>
+      <rect x="4" y="14" width="2" height="1" fill="#c27a36"/>
+      <rect x="10" y="14" width="2" height="1" fill="#c27a36"/>
+    </g>
+
+    <!-- blinking -->
+    <symbol id="sockt-blink" viewBox="0 0 16 16">
+      <use href="#body"/>
+
+      <g>
+        <animate attributeName="opacity" values="1;1;1;0;0;1" dur="3s" repeatCount="indefinite"/>
+        <rect x="6" y="5" width="1" height="1" fill="#080808"/>
+        <rect x="9" y="5" width="1" height="1" fill="#080808"/>
+      </g>
+
+      <g opacity="0">
+        <animate attributeName="opacity" values="0;0;0;1;1;0" dur="3s" repeatCount="indefinite"/>
+        <rect x="6" y="5" width="1" height="1" fill="#080808"/>
+        <rect x="9" y="5" width="1" height="1" fill="#080808"/>
+        <rect x="6" y="5" width="1" height="0.4" fill="#080808"/>
+        <rect x="9" y="5" width="1" height="0.4" fill="#080808"/>
+      </g>
+
+      <rect x="7" y="8" width="2" height="1" fill="#080808"/>
+    </symbol>
+
+    <!-- sleeping -->
+    <symbol id="sockt-sleep" viewBox="0 0 16 16">
+      <use href="#body"/>
+
+      <rect x="6" y="5" width="1" height="0.4" fill="#080808"/>
+      <rect x="9" y="5" width="1" height="0.4" fill="#080808"/>
+      <rect x="7" y="8" width="2" height="1" fill="#080808"/>
+
+      <g>
+        <animateTransform
+          attributeName="transform"
+          type="translate"
+          values="0 0;0 -0.5;0 0"
+          dur="2s"
+          repeatCount="indefinite"/>
+        <text x="13" y="3" font-size="3" font-family="monospace" fill="#c27a36">z</text>
+      </g>
+    </symbol>
+
+    <!-- waving -->
+    <symbol id="sockt-wave" viewBox="0 0 16 16">
+      <use href="#body"/>
+
+      <rect x="6" y="5" width="1" height="1" fill="#080808"/>
+      <rect x="9" y="5" width="1" height="1" fill="#080808"/>
+      <rect x="7" y="8" width="2" height="1" fill="#080808"/>
+
+      <g>
+        <animateTransform
+          attributeName="transform"
+          type="rotate"
+          values="0 12 6;-12 12 6;8 12 6;0 12 6"
+          dur="0.8s"
+          repeatCount="indefinite"/>
+        <rect x="12" y="5" width="3" height="1" fill="#c27a36"/>
+      </g>
+    </symbol>
+
+    <!-- carrying cursor -->
+    <symbol id="sockt-cursor" viewBox="0 0 16 16">
+      <use href="#body"/>
+
+      <rect x="6" y="5" width="1" height="1" fill="#080808"/>
+      <rect x="9" y="5" width="1" height="1" fill="#080808"/>
+      <rect x="7" y="8" width="2" height="1" fill="#080808"/>
+
+      <path d="M13 4 L15 8 L14 8 L15 11 L14 11 L13 8 L12 9 Z" fill="#c27a36"/>
+    </symbol>
+  </defs>
+
+  <g transform="translate(8 12) scale(3)">
+    <use href="#sockt-blink"/>
+  </g>
+
+  <g transform="translate(64 12) scale(3)">
+    <use href="#sockt-sleep"/>
+  </g>
+
+  <g transform="translate(120 12) scale(3)">
+    <use href="#sockt-wave"/>
+  </g>
+
+  <g transform="translate(176 12) scale(3)">
+    <use href="#sockt-cursor"/>
+  </g>
+</svg>

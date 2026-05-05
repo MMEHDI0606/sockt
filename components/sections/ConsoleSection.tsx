@@ -23,17 +23,6 @@ const LIVE_LINES = [
   '> [00:00:13] sats.stream — 1,240 sats/epoch',
 ];
 
-const METRICS = [
-  { value: '14,203', label: 'ACTIVE AGENTS' },
-  { value: '99.97%', label: 'UPTIME' },
-  { value: '2,847', label: 'GPU NODES' },
-  { value: '1,240', label: 'SATS/EPOCH' },
-  { value: '128 ms', label: 'AVG SETTLE' },
-  { value: '4,102', label: 'CHANNELS' },
-  { value: '₿ 0.00031', label: 'TOTAL FLOW' },
-  { value: 'ONLINE ●', label: 'NET STATUS', green: true },
-];
-
 export default function ConsoleSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const [lines, setLines] = useState(INITIAL_LINES);
@@ -84,8 +73,8 @@ export default function ConsoleSection() {
         </div>
 
         <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '32px' }}>
-          {/* Agent Log */}
-          <div style={{ flex: '0 0 55%' }}>
+          {/* Agent Log - full width */}
+          <div style={{ flex: 1 }}>
             <div
               style={{
                 fontFamily: 'var(--font-mono)',
@@ -103,7 +92,7 @@ export default function ConsoleSection() {
                 border: '1px solid var(--bg-border)',
                 borderRadius: '6px',
                 padding: '20px',
-                height: isMobile ? '240px' : '360px',
+                height: isMobile ? '240px' : '480px',
                 overflowY: 'auto',
               }}
             >
@@ -127,64 +116,6 @@ export default function ConsoleSection() {
             </div>
           </div>
 
-          {/* Metrics Panel */}
-          <div style={{ flex: 1 }}>
-            <div
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '11px',
-                color: 'var(--text-secondary)',
-                letterSpacing: '0.08em',
-                marginBottom: '12px',
-              }}
-            >
-              METRICS PANEL
-            </div>
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: '2px',
-                backgroundColor: 'var(--bg-border)',
-                border: '1px solid var(--bg-border)',
-                borderRadius: '6px',
-                overflow: 'hidden',
-              }}
-            >
-              {METRICS.map((m, i) => (
-                <div
-                  key={i}
-                  style={{
-                    backgroundColor: 'var(--bg-surface)',
-                    padding: '20px',
-                  }}
-                >
-                  <div
-                    style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: 'clamp(1.2rem, 2vw, 1.6rem)',
-                      fontWeight: 600,
-                      color: (m as any).green ? 'var(--accent-green)' : 'var(--text-primary)',
-                      lineHeight: 1,
-                      marginBottom: '6px',
-                    }}
-                  >
-                    {m.value}
-                  </div>
-                  <div
-                    style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '10px',
-                      color: 'var(--text-secondary)',
-                      letterSpacing: '0.1em',
-                    }}
-                  >
-                    {m.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
     </section>

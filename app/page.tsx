@@ -3,8 +3,8 @@
 import dynamic from 'next/dynamic';
 import Nav from '@/components/nav/Nav';
 import HeroSection from '@/components/hero/HeroSection';
+import WalkingCharacter from '@/components/docs/WalkingCharacter';
 
-const WhatIsSection = dynamic(() => import('@/components/sections/WhatIsSection'), { ssr: false });
 const StackSection = dynamic(() => import('@/components/sections/StackSection'), { ssr: false });
 const HowItWorksSection = dynamic(() => import('@/components/sections/HowItWorksSection'), { ssr: false });
 const ConsoleSection = dynamic(() => import('@/components/sections/ConsoleSection'), { ssr: false });
@@ -18,10 +18,10 @@ const Footer = dynamic(() => import('@/components/sections/Footer'), { ssr: fals
 export default function Home() {
   return (
     <>
+      <WalkingCharacter />
       <Nav />
       <main>
         <HeroSection />
-        <WhatIsSection />
         <StackSection />
         <HowItWorksSection />
         <ConsoleSection />
