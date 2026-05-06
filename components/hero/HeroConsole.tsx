@@ -36,34 +36,35 @@ export default function HeroConsole() {
     <div
       ref={containerRef}
       style={{
-        width: '200px',
-        minHeight: '200px',
+        width: '380px',
+        minHeight: '280px',
         backgroundColor: 'var(--bg-surface)',
         border: '1px solid var(--bg-border)',
-        borderRadius: '4px',
-        padding: '12px 14px',
+        borderRadius: '8px',
+        padding: '20px 24px',
         fontFamily: 'var(--font-mono)',
-        fontSize: '12px',
+        fontSize: '14px',
         flexShrink: 0,
+        boxShadow: '0 24px 48px rgba(0,0,0,0.4)',
       }}
     >
       <div
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '6px',
-          marginBottom: '10px',
+          gap: '8px',
+          marginBottom: '16px',
           borderBottom: '1px solid var(--bg-border)',
-          paddingBottom: '8px',
+          paddingBottom: '12px',
         }}
       >
         {['#e53e3e', '#fbbf24', '#22d07a'].map((c, i) => (
           <span
             key={i}
-            style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: c }}
+            style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: c }}
           />
         ))}
-        <span style={{ color: 'var(--text-secondary)', fontSize: '10px', marginLeft: '4px' }}>
+        <span style={{ color: 'var(--text-secondary)', fontSize: '11px', marginLeft: '6px' }}>
           sockt-runtime
         </span>
       </div>

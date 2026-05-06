@@ -64,7 +64,7 @@ export default function HeroSection() {
           style={{
             display: 'flex',
             flexDirection: isMobile ? 'column' : 'row',
-            gap: isMobile ? '32px' : '48px',
+            gap: isMobile ? '32px' : '80px',
             alignItems: 'flex-start',
           }}
         >
