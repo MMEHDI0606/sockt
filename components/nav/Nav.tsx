@@ -39,19 +39,20 @@ export default function Nav() {
     if (!nav) return;
 
     const trigger = ScrollTrigger.create({
-      start: 60,
+      start: 20,
       onEnter: () =>
         gsap.to(nav, {
-          backgroundColor: 'var(--bg-surface)',
+          backgroundColor: 'rgba(15, 15, 15, 0.6)',
           borderBottomColor: 'var(--bg-border)',
-          duration: 0.3,
+          duration: 0.4,
           ease: 'power2.out',
         }),
       onLeaveBack: () =>
         gsap.to(nav, {
-          backgroundColor: 'transparent',
+          backgroundColor: 'rgba(15, 15, 15, 0)',
           borderBottomColor: 'transparent',
-          duration: 0.2,
+          duration: 0.3,
+          ease: 'power2.inOut',
         }),
     });
 
@@ -128,7 +129,6 @@ export default function Nav() {
               { label: 'Use Cases', href: '/#use-cases' },
               { label: 'Docs', href: '/docs' },
               { label: 'Pricing', href: '/#pricing' },
-              { label: 'Status', href: '/status' },
             ].map((link) => (
               <a
                 key={link.label}
