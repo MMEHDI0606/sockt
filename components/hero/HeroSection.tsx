@@ -108,10 +108,8 @@ export default function HeroSection() {
 
             {/* CTA */}
             <div style={{ marginTop: '40px', display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
-              <a
-                href="https://sockt.dev/docs"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/docs"
                 style={{
                   fontFamily: 'var(--font-mono)',
                   fontSize: '13px',
@@ -127,8 +125,8 @@ export default function HeroSection() {
                 }}
               >
                 View Docs →
-              </a>
-              <Link
+              </Link>
+              {/* <Link
                 href="/flow"
                 style={{
                   fontFamily: 'var(--font-mono)',
@@ -138,7 +136,7 @@ export default function HeroSection() {
                 }}
               >
                 See the flow →
-              </Link>
+              </Link> */}
             </div>
 
             <div
