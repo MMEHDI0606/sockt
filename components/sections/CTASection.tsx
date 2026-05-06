@@ -52,7 +52,9 @@ export default function CTASection() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: isMobile ? '80px 24px' : '120px 32px',
+        padding: isMobile ? '80px 24px' : '120px 64px',
+        maxWidth: '1280px',
+        margin: '0 auto',
         borderTop: '1px solid var(--bg-border)',
         textAlign: 'center',
       }}

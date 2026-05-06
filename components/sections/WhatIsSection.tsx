@@ -71,16 +71,16 @@ export default function WhatIsSection() {
     <section
       ref={sectionRef}
       style={{
-        padding: isMobile ? '80px 24px' : '120px 32px',
+        padding: isMobile ? '80px 24px' : '120px 64px',
         maxWidth: '1280px',
         margin: '0 auto',
         borderTop: '1px solid var(--bg-border)',
       }}
     >
-      <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: isMobile ? '40px' : '80px', alignItems: 'flex-start' }}>
+      <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: isMobile ? '40px' : '80px', alignItems: 'center' }}>
         {/* Left: counter + headline + body */}
         <div ref={leftRef} style={{ flex: isMobile ? '1 1 100%' : '0 0 55%' }}>
-          <span
+          {/* <span
             style={{
               fontFamily: 'var(--font-mono)',
               fontSize: '72px',
@@ -92,7 +92,7 @@ export default function WhatIsSection() {
             }}
           >
             01
-          </span>
+          </span> */}
           <h2
             style={{
               fontFamily: 'var(--font-display)',
@@ -171,7 +171,7 @@ export default function WhatIsSection() {
               border: '1px solid var(--bg-border)',
               borderRadius: '6px',
               padding: '20px',
-              height: isMobile ? '240px' : '480px',
+              height: isMobile ? '240px' : '380px',
               overflowY: 'auto',
             }}
           >

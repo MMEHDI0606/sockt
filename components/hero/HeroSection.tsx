@@ -54,7 +54,7 @@ export default function HeroSection() {
           flex: 1,
           display: 'flex',
           justifyContent: 'center',
-          padding: isMobile ? '48px 24px 80px' : '80px 32px 120px',
+          padding: isMobile ? '48px 24px 80px' : '80px 64px 120px',
           maxWidth: '1280px',
           margin: '0 auto',
           width: '100%',

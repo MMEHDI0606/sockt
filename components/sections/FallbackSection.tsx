@@ -87,13 +87,15 @@ export default function FallbackSection() {
     <section
       ref={sectionRef}
       style={{
-        padding: isMobile ? '80px 16px' : '120px 32px',
+        padding: isMobile ? '80px 24px' : '120px 64px',
+        maxWidth: '1280px',
+        margin: '0 auto',
         borderTop: '1px solid var(--bg-border)',
       }}
     >
-      <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+      <div>
         <div style={{ display: 'flex', alignItems: isMobile ? 'flex-start' : 'flex-end', gap: isMobile ? '12px' : '24px', marginBottom: isMobile ? '32px' : '64px' }}>
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: isMobile ? '48px' : '72px', color: 'var(--bg-border)', lineHeight: 1 }}>07</span>
+          {/* <span style={{ fontFamily: 'var(--font-mono)', fontSize: isMobile ? '48px' : '72px', color: 'var(--bg-border)', lineHeight: 1 }}>07</span> */}
           <div>
             <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-display)', fontWeight: 800, color: 'var(--text-primary)', lineHeight: 0.9 }}>
               AGENT IN ACTION

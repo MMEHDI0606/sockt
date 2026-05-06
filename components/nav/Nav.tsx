@@ -78,7 +78,7 @@ export default function Nav() {
         style={{
           maxWidth: '1280px',
           margin: '0 auto',
-          padding: isMobile ? '0 14px' : '0 32px',
+          padding: isMobile ? '0 14px' : '0 64px',
           height: '67px',
           display: 'flex',
           alignItems: 'center',

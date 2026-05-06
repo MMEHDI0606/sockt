@@ -57,13 +57,15 @@ export default function PricingSection() {
     <section
       id="pricing"
       style={{
-        padding: isMobile ? '80px 24px' : '120px 32px',
+        padding: isMobile ? '80px 24px' : '120px 64px',
+        maxWidth: '1280px',
+        margin: '0 auto',
         borderTop: '1px solid var(--bg-border)',
       }}
     >
-      <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+      <div>
         <div style={{ display: 'flex', alignItems: 'flex-end', gap: '24px', marginBottom: '64px' }}>
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: isMobile ? '48px' : '72px', color: 'var(--bg-border)', lineHeight: 1 }}>05</span>
+          {/* <span style={{ fontFamily: 'var(--font-mono)', fontSize: isMobile ? '48px' : '72px', color: 'var(--bg-border)', lineHeight: 1 }}>05</span> */}
           <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-display)', fontWeight: 800, color: 'var(--text-primary)', lineHeight: 0.9 }}>
             PRICING
           </h2>

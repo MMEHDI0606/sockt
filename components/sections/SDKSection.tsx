@@ -109,11 +109,13 @@ export default function SDKSection() {
     <section
       id="sdk"
       style={{
-        padding: isMobile ? '80px 24px' : '120px 32px',
+        padding: isMobile ? '80px 24px' : '120px 64px',
+        maxWidth: '1280px',
+        margin: '0 auto',
         borderTop: '1px solid var(--bg-border)',
       }}
     >
-      <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+      <div>
         <div style={{ display: 'flex', alignItems: 'flex-end', gap: '24px', marginBottom: '64px' }}>
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: '72px', color: 'var(--bg-border)', lineHeight: 1 }}>06</span>
           <div>

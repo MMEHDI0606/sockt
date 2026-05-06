@@ -85,11 +85,14 @@ export default function StackSection() {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        padding: isMobile ? '80px 24px' : '80px 32px',
+        padding: isMobile ? '80px 24px' : '80px 64px',
+        maxWidth: '1280px',
+        margin: '0 auto',
+        width: '100%',
         borderTop: '1px solid var(--bg-border)',
       }}
     >
-      <div style={{ maxWidth: '1280px', margin: '0 auto', width: '100%' }}>
+      <div style={{ width: '100%' }}>
         <div style={{ marginBottom: '64px', display: 'flex', alignItems: 'flex-end', gap: '24px' }}>
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: '72px', color: 'var(--bg-border)', lineHeight: 1 }}>02</span>
           <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-display)', fontWeight: 800, color: 'var(--text-primary)', lineHeight: 0.9 }}>
