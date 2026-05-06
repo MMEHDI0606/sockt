@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Link from 'next/link';
 import gsap from 'gsap';
 import { useIsMobile } from '@/hooks/useIsMobile';
 
@@ -99,22 +100,49 @@ export default function Footer() {
                 </>
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                  {col.items?.map((item) => (
-                    <a
-                      key={item}
-                      href={`/${item.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
-                      style={{
-                        fontFamily: 'var(--font-body)',
-                        fontSize: '13px',
-                        color: 'var(--text-secondary)',
-                        transition: 'none',
-                      }}
-                      onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
-                      onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
-                    >
-                      {item}
-                    </a>
-                  ))}
+                  {col.items?.map((item) => {
+                    const slug = item.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+                    const href = (slug === 'x-twitter' || slug === 'github' || slug === 'contact') ? 
+                      (slug === 'x-twitter' ? 'https://x.com/socktdev' : 
+                       slug === 'github' ? 'https://github.com/socktdev' : 
+                       'mailto:hello@sockt.dev') : `/${slug}`;
+                    
+                    const isExternal = href.startsWith('http') || href.startsWith('mailto');
+                    
+                    return isExternal ? (
+                      <a
+                        key={item}
+                        href={href}
+                        target={href.startsWith('http') ? "_blank" : undefined}
+                        rel={href.startsWith('http') ? "noopener noreferrer" : undefined}
+                        style={{
+                          fontFamily: 'var(--font-body)',
+                          fontSize: '13px',
+                          color: 'var(--text-secondary)',
+                          transition: 'none',
+                        }}
+                        onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
+                        onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
+                      >
+                        {item}
+                      </a>
+                    ) : (
+                      <Link
+                        key={item}
+                        href={href}
+                        style={{
+                          fontFamily: 'var(--font-body)',
+                          fontSize: '13px',
+                          color: 'var(--text-secondary)',
+                          transition: 'none',
+                        }}
+                        onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
+                        onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
+                      >
+                        {item}
+                      </Link>
+                    );
+                  })}
                 </div>
               )}
             </div>

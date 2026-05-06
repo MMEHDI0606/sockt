@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 type PageProps = {
   params: {
     slug: string[];
@@ -47,15 +49,15 @@ export default function PlaceholderPage({ params }: PageProps) {
             justifyContent: 'space-between',
           }}
         >
-          <a href="/" style={{ display: 'flex', alignItems: 'baseline', gap: '5px', textDecoration: 'none' }}>
+          <Link href="/" style={{ display: 'flex', alignItems: 'baseline', gap: '5px', textDecoration: 'none' }}>
             <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 400, fontSize: '18px', color: 'var(--accent-btc)', letterSpacing: '-0.01em', lineHeight: 1 }}>
               {'{*}'}
             </span>
             <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '18px', color: 'var(--text-primary)', letterSpacing: '0.01em', lineHeight: 1 }}>
               Sockt
             </span>
-          </a>
-          <a
+          </Link>
+          <Link
             href="/"
             style={{
               fontFamily: 'var(--font-mono)',
@@ -65,7 +67,7 @@ export default function PlaceholderPage({ params }: PageProps) {
             }}
           >
             ← Back
-          </a>
+          </Link>
         </div>
       </nav>
 
@@ -134,7 +136,7 @@ export default function PlaceholderPage({ params }: PageProps) {
 
         {/* CTA */}
         <div style={{ marginTop: '56px', display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
-          <a
+          <Link
             href="/"
             style={{
               fontFamily: 'var(--font-mono)',
@@ -149,8 +151,8 @@ export default function PlaceholderPage({ params }: PageProps) {
             }}
           >
             Back to Home →
-          </a>
-          <a
+          </Link>
+          <Link
             href="/docs"
             style={{
               fontFamily: 'var(--font-mono)',
@@ -160,7 +162,7 @@ export default function PlaceholderPage({ params }: PageProps) {
             }}
           >
             View Docs →
-          </a>
+          </Link>
         </div>
       </main>
 

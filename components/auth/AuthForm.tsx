@@ -68,62 +68,27 @@ export default function AuthForm({ mode }: AuthFormProps) {
       return;
     }
 
-    setMessage('Account created. Check your email to verify your account, then sign in.');
+    setMessage('Account created. Check your email to verify your account.');
     setBusy(false);
   }
 
   return (
-    <main
-      style={{
-        minHeight: '100vh',
-        display: 'grid',
-        placeItems: 'center',
-        padding: '32px 20px',
-      }}
-    >
-      <section
-        style={{
-          width: 'min(460px, 100%)',
-          border: '1px solid var(--bg-border)',
-          borderRadius: '14px',
-          backgroundColor: 'var(--bg-surface)',
-          padding: '28px',
-          boxShadow: '0 16px 64px rgba(0, 0, 0, 0.45)',
-        }}
-      >
-        <p
-          style={{
-            fontFamily: 'var(--font-mono)',
-            color: 'var(--accent-btc)',
-            letterSpacing: '0.1em',
-            fontSize: '11px',
-            marginBottom: '12px',
-          }}
-        >
-          AUTH GATE
-        </p>
-
-        <h1
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(1.6rem, 8vw, 2.2rem)',
-            lineHeight: 1,
-            marginBottom: '10px',
-          }}
-        >
-          {isLogin ? 'Sign in to Dashboard' : 'Create Dashboard Account'}
+    <main className="min-h-screen grid place-items-center px-4 py-8">
+      <section className="w-full max-w-[440px] border border-[var(--bg-border)] rounded-2xl bg-[var(--bg-surface)] p-8 shadow-2xl">
+        <h1 className="font-display text-4xl mb-2 text-white">
+          {isLogin ? 'Sign in' : 'Create Account'}
         </h1>
 
-        <p style={{ color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '22px' }}>
+        <p className="text-[var(--text-secondary)] text-sm mb-8">
           {isLogin
-            ? 'Use your email and password to access the protected control panel.'
-            : 'Sign up with email and password. Your session uses PKCE-compatible Supabase auth flow.'}
+            ? 'Welcome back. Enter your credentials to continue.'
+            : 'Get started with Sockt today.'}
         </p>
 
-        <form onSubmit={onSubmit} style={{ display: 'grid', gap: '12px' }}>
-          <label style={{ display: 'grid', gap: '6px' }}>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--text-secondary)' }}>
-              EMAIL
+        <form onSubmit={onSubmit} className="grid gap-5">
+          <div className="grid gap-2">
+            <span className="text-[11px] font-mono text-[var(--text-secondary)] uppercase tracking-wider">
+              Email
             </span>
             <input
               type="email"
@@ -131,22 +96,14 @@ export default function AuthForm({ mode }: AuthFormProps) {
               onChange={(event) => setEmail(event.target.value)}
               required
               autoComplete="email"
-              style={{
-                width: '100%',
-                backgroundColor: '#0a0a0a',
-                border: '1px solid var(--bg-border)',
-                borderRadius: '8px',
-                color: 'var(--text-primary)',
-                padding: '12px 14px',
-                fontFamily: 'var(--font-body)',
-                fontSize: '14px',
-              }}
+              className="w-full bg-black border border-[var(--bg-border)] rounded-lg text-[var(--text-primary)] px-4 py-3 text-sm focus:outline-none focus:border-[var(--accent-btc)] transition-colors"
+              placeholder="name@company.com"
             />
-          </label>
+          </div>
 
-          <label style={{ display: 'grid', gap: '6px' }}>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--text-secondary)' }}>
-              PASSWORD
+          <div className="grid gap-2">
+            <span className="text-[11px] font-mono text-[var(--text-secondary)] uppercase tracking-wider">
+              Password
             </span>
             <input
               type="password"
@@ -155,68 +112,41 @@ export default function AuthForm({ mode }: AuthFormProps) {
               required
               minLength={8}
               autoComplete={isLogin ? 'current-password' : 'new-password'}
-              style={{
-                width: '100%',
-                backgroundColor: '#0a0a0a',
-                border: '1px solid var(--bg-border)',
-                borderRadius: '8px',
-                color: 'var(--text-primary)',
-                padding: '12px 14px',
-                fontFamily: 'var(--font-body)',
-                fontSize: '14px',
-              }}
+              className="w-full bg-black border border-[var(--bg-border)] rounded-lg text-[var(--text-primary)] px-4 py-3 text-sm focus:outline-none focus:border-[var(--accent-btc)] transition-colors"
+              placeholder="••••••••"
             />
-          </label>
+          </div>
 
-          {error ? (
-            <p
-              style={{
-                color: 'var(--accent-red)',
-                fontSize: '13px',
-                lineHeight: 1.5,
-              }}
-            >
+          {error && (
+            <p className="text-[var(--accent-red)] text-xs leading-relaxed">
               {error}
             </p>
-          ) : null}
+          )}
 
-          {message ? (
-            <p
-              style={{
-                color: 'var(--accent-green)',
-                fontSize: '13px',
-                lineHeight: 1.5,
-              }}
-            >
+          {message && (
+            <p className="text-[var(--accent-green)] text-xs leading-relaxed">
               {message}
             </p>
-          ) : null}
+          )}
 
           <button
             type="submit"
             disabled={busy}
-            style={{
-              marginTop: '2px',
-              border: '1px solid var(--accent-btc)',
-              backgroundColor: busy ? '#6f4b24' : 'var(--accent-btc)',
-              color: 'var(--bg-void)',
-              borderRadius: '8px',
-              padding: '12px 14px',
-              fontFamily: 'var(--font-mono)',
-              fontSize: '12px',
-              letterSpacing: '0.08em',
-              cursor: busy ? 'not-allowed' : 'pointer',
-            }}
+            className={`mt-2 font-mono text-xs tracking-widest py-4 rounded-lg transition-all ${
+              busy 
+                ? 'bg-[#6f4b24] cursor-not-allowed opacity-70' 
+                : 'bg-[var(--accent-btc)] text-black hover:opacity-90'
+            }`}
           >
             {busy ? 'PROCESSING...' : isLogin ? 'SIGN IN' : 'CREATE ACCOUNT'}
           </button>
         </form>
 
-        <p style={{ marginTop: '16px', color: 'var(--text-secondary)', fontSize: '13px' }}>
-          {isLogin ? 'Need an account?' : 'Already have an account?'}{' '}
+        <p className="mt-8 text-center text-sm text-[var(--text-secondary)]">
+          {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
           <Link
             href={isLogin ? '/signup' : '/login'}
-            style={{ color: 'var(--accent-btc)', fontFamily: 'var(--font-mono)', letterSpacing: '0.04em' }}
+            className="text-[var(--accent-btc)] hover:underline decoration-1 underline-offset-4"
           >
             {isLogin ? 'Sign up' : 'Log in'}
           </Link>

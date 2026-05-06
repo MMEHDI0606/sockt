@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Link from 'next/link';
 import gsap from 'gsap';
 import HeroConsole from './HeroConsole';
 import { useIsMobile } from '@/hooks/useIsMobile';
@@ -127,7 +128,7 @@ export default function HeroSection() {
               >
                 View Docs →
               </a>
-              {/* <a
+              <Link
                 href="/flow"
                 style={{
                   fontFamily: 'var(--font-mono)',
@@ -137,7 +138,7 @@ export default function HeroSection() {
                 }}
               >
                 See the flow →
-              </a> */}
+              </Link>
             </div>
 
             <div

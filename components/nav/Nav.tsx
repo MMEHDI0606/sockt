@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import { createClient } from '@/utils/supabase/client';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { useIsMobile } from '@/hooks/useIsMobile';
-import { useState } from 'react';
 
 export default function Nav() {
   const navRef = useRef<HTMLElement>(null);
@@ -86,7 +86,7 @@ export default function Nav() {
         }}
       >
         {/* Left: Logo mark */}
-        <a href="/" style={{ display: 'flex', alignItems: 'baseline', gap: '5px', textDecoration: 'none' }}>
+        <Link href="/" style={{ display: 'flex', alignItems: 'baseline', gap: '5px', textDecoration: 'none' }}>
           <span
             style={{
               fontFamily: 'var(--font-mono)',
@@ -111,7 +111,7 @@ export default function Nav() {
           >
             Sockt
           </span>
-        </a>
+        </Link>
 
         {/* Center: Nav links */}
         {!isMobile && (
@@ -130,7 +130,7 @@ export default function Nav() {
               { label: 'Docs', href: '/docs' },
               { label: 'Pricing', href: '/#pricing' },
             ].map((link) => (
-              <a
+              <Link
                 key={link.label}
                 href={link.href}
                 style={{ color: 'inherit', transition: 'none' }}
@@ -138,13 +138,13 @@ export default function Nav() {
                 onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </div>
         )}
         <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '6px' : '10px' }}>
           {authLoaded && isAuthenticated ? (
-            <a
+            <Link
               href="/dashboard"
               style={{
                 fontFamily: 'var(--font-display)',
@@ -166,10 +166,10 @@ export default function Nav() {
               }}
             >
               Dashboard
-            </a>
+            </Link>
           ) : (
             <>
-              <a
+              <Link
                 href="/login"
                 style={{
                   fontFamily: 'var(--font-mono)',
@@ -186,8 +186,8 @@ export default function Nav() {
                 }}
               >
                 Log In
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/signup"
                 style={{
                   fontFamily: 'var(--font-display)',
@@ -208,8 +208,8 @@ export default function Nav() {
                   e.currentTarget.style.color = 'var(--accent-btc)';
                 }}
               >
-                Create Account
-              </a>
+                Sign Up
+              </Link>
             </>
           )}
         </div>

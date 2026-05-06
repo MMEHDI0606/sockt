@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Link from 'next/link';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { useIsMobile } from '@/hooks/useIsMobile';
 
@@ -86,7 +87,7 @@ export default function CTASection() {
       </h2>
 
       <div className="cta-sub" style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '16px', marginBottom: '24px', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}>
-        <a
+        <Link
           href="/sandbox"
           style={{
             fontFamily: 'var(--font-mono)',
@@ -102,9 +103,9 @@ export default function CTASection() {
           }}
         >
           Start Sandbox →
-        </a>
-        <a
-          href="/start-with-api-key"
+        </Link>
+        <Link
+          href="/signup"
           style={{
             fontFamily: 'var(--font-mono)',
             fontSize: isMobile ? '13px' : '15px',
@@ -118,7 +119,7 @@ export default function CTASection() {
           }}
         >
           Start with api_key →
-        </a>
+        </Link>
       </div>
 
       <span

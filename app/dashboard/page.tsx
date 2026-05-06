@@ -56,113 +56,39 @@ export default async function DashboardPage() {
   const balance = Number(profile?.credit_balance_usd_cents ?? 0);
 
   return (
-    <main style={{ minHeight: '100vh', padding: '28px 20px 40px' }}>
-      <section
-        style={{
-          maxWidth: '1080px',
-          margin: '0 auto',
-          display: 'grid',
-          gap: '16px',
-        }}
-      >
-        <header
-          style={{
-            border: '1px solid var(--bg-border)',
-            borderRadius: '12px',
-            padding: '20px',
-            background: 'linear-gradient(135deg, rgba(15,15,15,0.96), rgba(8,8,8,0.96))',
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'flex-start',
-              gap: '14px',
-              flexWrap: 'wrap',
-            }}
-          >
-            <div>
-              <p
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '11px',
-                  letterSpacing: '0.1em',
-                  color: 'var(--accent-btc)',
-                  marginBottom: '8px',
-                }}
-              >
-                CYBER-INDUSTRIAL DASHBOARD
-              </p>
-              <h1
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(1.7rem, 5vw, 2.8rem)',
-                  marginBottom: '8px',
-                  lineHeight: 1,
-                }}
-              >
-                Welcome, {user.email}
-              </h1>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>
-                All reads and writes are scoped to your authenticated user id via RLS.
-              </p>
-            </div>
-
-            <form action={signOutAction}>
-              <button
-                type="submit"
-                style={{
-                  border: '1px solid var(--bg-border)',
-                  backgroundColor: '#111',
-                  color: 'var(--text-primary)',
-                  borderRadius: '8px',
-                  padding: '10px 12px',
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '11px',
-                  letterSpacing: '0.07em',
-                  cursor: 'pointer',
-                }}
-              >
-                SIGN OUT
-              </button>
-            </form>
+    <main className="min-h-screen p-6 md:p-12">
+      <div className="max-w-5xl mx-auto grid gap-6">
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pb-6 border-b border-[var(--bg-border)]">
+          <div>
+            <h1 className="font-display text-4xl text-white mb-2">Dashboard</h1>
+            <p className="text-[var(--text-secondary)] text-sm">
+              Manage your account and API access for {user.email}
+            </p>
           </div>
+
+          <form action={signOutAction}>
+            <button
+              type="submit"
+              className="px-4 py-2 border border-[var(--bg-border)] bg-black hover:bg-[#111] text-white rounded-lg text-xs font-mono tracking-wider transition-colors"
+            >
+              SIGN OUT
+            </button>
+          </form>
         </header>
 
-        <section
-          style={{
-            border: '1px solid var(--bg-border)',
-            borderRadius: '12px',
-            backgroundColor: 'var(--bg-surface)',
-            padding: '20px',
-          }}
-        >
-          <p
-            style={{
-              fontFamily: 'var(--font-mono)',
-              color: 'var(--text-secondary)',
-              fontSize: '11px',
-              letterSpacing: '0.08em',
-              marginBottom: '6px',
-            }}
-          >
-            ACCOUNT BALANCE
-          </p>
-          <p
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(1.9rem, 4.2vw, 2.8rem)',
-              color: 'var(--accent-sats)',
-              letterSpacing: '-0.02em',
-            }}
-          >
-           $ {(balance/100).toFixed(2)}
-          </p>
-        </section>
+        <div className="grid md:grid-cols-2 gap-6">
+          <section className="border border-[var(--bg-border)] rounded-xl bg-[var(--bg-surface)] p-6">
+            <h2 className="text-[11px] font-mono text-[var(--accent-btc)] uppercase tracking-[0.2em] mb-4">
+              Balance
+            </h2>
+            <p className="font-display text-5xl text-white">
+              ${(balance / 100).toFixed(2)}
+            </p>
+          </section>
 
-        <ApiKeysPanel initialKeys={apiKeys} />
-      </section>
+          <ApiKeysPanel initialKeys={apiKeys} />
+        </div>
+      </div>
     </main>
   );
 }
