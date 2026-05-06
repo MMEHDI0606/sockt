@@ -9,8 +9,8 @@ const NAV_ITEMS: { id: Section; label: string }[] = [
   { id: 'overview', label: 'Overview' },
   { id: 'mcp', label: 'MCP Server' },
   { id: 'sdk', label: 'SDK' },
-  { id: 'sandbox', label: 'Sandbox API' },
-  { id: 'billing', label: 'Billing & Tiers' },
+  // { id: 'sandbox', label: 'Sandbox API' },
+  // { id: 'billing', label: 'Billing & Tiers' },
 ];
 
 const CODE = {
@@ -68,7 +68,7 @@ sandbox.terminate()`,
 POST https://api.sockt.dev/v1/mcp
 X-Agent-Id: <uuid>
 
-// 2. Server returns 402 with Lightning invoice
+// 2. If Authorization header is missing, server returns 402 with Lightning invoice
 {
   "macaroon": "...",
   "invoice": "lnbc...",
@@ -76,7 +76,7 @@ X-Agent-Id: <uuid>
   "expires_at": "..."
 }
 
-// 3. Agent pays invoice via wallet MCP tool, then retries with L402 header
+// 3. Agent pays invoice via a Lightning wallet MCP (e.g. lnbot), then retries with L402 header
 Authorization: L402 <base64_macaroon>:<preimage_hex>`,
 };
 
@@ -194,13 +194,11 @@ export default function DocsPage() {
             margin: '0 auto',
             display: 'flex',
             alignItems: 'center',
+            justifyContent: 'center',
             gap: '6px',
             height: '52px',
           }}
         >
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', color: 'var(--accent-amber)', marginRight: '16px', letterSpacing: '0.08em' }}>
-            DOCS
-          </span>
           {NAV_ITEMS.map((item) => (
             <button
               key={item.id}
@@ -250,33 +248,34 @@ export default function DocsPage() {
           <CodeBlock code="https://api.sockt.dev" />
           <h3 style={h3Style}>Authentication</h3>
           <p style={bodyText}>
-            All authenticated requests use <span style={mono}>Authorization: Bearer &lt;token&gt;</span>.
-            Two token types are accepted on sandbox routes:
+            For credits billing, send <span style={mono}>Authorization: Bearer sockt_...</span>.
+            If the <span style={mono}>Authorization</span> header is missing, the server returns a Lightning
+            invoice in a <span style={mono}>402</span> response that the agent must pay.
           </p>
           <table style={tableStyle}>
             <thead>
               <tr>
-                <th style={thStyle}>Type</th>
-                <th style={thStyle}>Format</th>
-                <th style={thStyle}>Billing</th>
+                <th style={thStyle}>Mode</th>
+                <th style={thStyle}>Request</th>
+                <th style={thStyle}>What happens</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td style={tdStyle}>API Key</td>
-                <td style={tdStyle}><span style={mono}>sockt_live_...</span></td>
-                <td style={tdStyle}>Credits (USD)</td>
+                <td style={tdStyle}>Credits</td>
+                <td style={tdStyle}><span style={mono}>Authorization: Bearer sockt_...</span></td>
+                <td style={tdStyle}>Request is billed to your credits balance.</td>
               </tr>
               <tr>
-                <td style={tdStyle}>L402 / Lightning</td>
-                <td style={tdStyle}><span style={mono}>L402 &lt;macaroon&gt;:&lt;preimage&gt;</span></td>
-                <td style={tdStyle}>Sats per second</td>
+                <td style={tdStyle}>No auth header</td>
+                <td style={tdStyle}><span style={mono}>Authorization</span> omitted</td>
+                <td style={tdStyle}>Server returns a Lightning invoice; the agent pays it (e.g. via lnbot MCP) and retries.</td>
               </tr>
             </tbody>
           </table>
           <p style={bodyText}>
-            Agents that do not supply credentials receive a <span style={mono}>402</span> response containing a
-            Lightning invoice. Once paid, the agent retries with the L402 header. See the{' '}
+            After invoice payment, the agent retries with <span style={mono}>Authorization: L402 &lt;macaroon&gt;:&lt;preimage&gt;</span>.
+            See the{' '}
             <span style={{ ...mono, cursor: 'pointer', color: 'var(--accent-btc)' }} onClick={() => setActive('mcp')}>
               MCP Server
             </span>{' '}
@@ -368,51 +367,87 @@ export default function DocsPage() {
         </div>
 
         {/* SDK */}
-        <div style={active === 'sdk' ? activeSectionStyle : sectionStyle}>
-          <SectionHeading label="SDK" number="02" />
-          <p style={bodyText}>
-            The <span style={mono}>@sockt/client</span> package provides a typed client for TypeScript and JavaScript.
-            Python and Go clients are available under the <span style={mono}>sockt</span> package name on their respective registries.
-          </p>
-          <h3 style={h3Style}>Install</h3>
-          <CodeBlock code={`npm install @sockt/client\n# or\npip install sockt`} />
+        <div style={{ ...(active === 'sdk' ? activeSectionStyle : sectionStyle), position: 'relative' }}>
+          <div style={{ filter: 'blur(5px)', pointerEvents: 'none', userSelect: 'none' }}>
+            <SectionHeading label="SDK" number="02" />
+            <p style={bodyText}>
+              The <span style={mono}>@sockt/client</span> package provides a typed client for TypeScript and JavaScript.
+              Python and Go clients are available under the <span style={mono}>sockt</span> package name on their respective registries.
+            </p>
+            <h3 style={h3Style}>Install</h3>
+            <CodeBlock code={`npm install @sockt/client\n# or\npip install sockt`} />
 
-          <h3 style={h3Style}>TypeScript</h3>
-          <CodeBlock code={CODE.sdkTs} />
+            <h3 style={h3Style}>TypeScript</h3>
+            <CodeBlock code={CODE.sdkTs} />
 
-          <h3 style={h3Style}>Python</h3>
-          <CodeBlock code={CODE.sdkPy} />
+            <h3 style={h3Style}>Python</h3>
+            <CodeBlock code={CODE.sdkPy} />
 
-          <h3 style={h3Style}>ComputeClient methods</h3>
-          <table style={tableStyle}>
-            <thead>
-              <tr>
-                <th style={thStyle}>Method</th>
-                <th style={thStyle}>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                { m: 'createSandbox({ tier, billingMethod })', d: 'Create and start a sandbox. Returns sandbox object.' },
-                { m: 'sandbox.exec(command)', d: 'Run a shell command. Returns { stdout, stderr, exitCode }.' },
-                { m: 'sandbox.writeFile(path, content)', d: 'Write a file to the sandbox filesystem.' },
-                { m: 'sandbox.readFile(path)', d: 'Read a file from the sandbox filesystem.' },
-                { m: 'sandbox.pause()', d: 'Pause billing and freeze execution.' },
-                { m: 'sandbox.resume()', d: 'Resume from paused state.' },
-                { m: 'sandbox.terminate()', d: 'Destroy sandbox and stop billing.' },
-                { m: 'sandbox.status()', d: 'Get current sandbox state.' },
-              ].map(({ m, d }) => (
-                <tr key={m}>
-                  <td style={tdStyle}><span style={mono}>{m}</span></td>
-                  <td style={tdStyle}>{d}</td>
+            <h3 style={h3Style}>ComputeClient methods</h3>
+            <table style={tableStyle}>
+              <thead>
+                <tr>
+                  <th style={thStyle}>Method</th>
+                  <th style={thStyle}>Description</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {[
+                  { m: 'createSandbox({ tier, billingMethod })', d: 'Create and start a sandbox. Returns sandbox object.' },
+                  { m: 'sandbox.exec(command)', d: 'Run a shell command. Returns { stdout, stderr, exitCode }.' },
+                  { m: 'sandbox.writeFile(path, content)', d: 'Write a file to the sandbox filesystem.' },
+                  { m: 'sandbox.readFile(path)', d: 'Read a file from the sandbox filesystem.' },
+                  { m: 'sandbox.pause()', d: 'Pause billing and freeze execution.' },
+                  { m: 'sandbox.resume()', d: 'Resume from paused state.' },
+                  { m: 'sandbox.terminate()', d: 'Destroy sandbox and stop billing.' },
+                  { m: 'sandbox.status()', d: 'Get current sandbox state.' },
+                ].map(({ m, d }) => (
+                  <tr key={m}>
+                    <td style={tdStyle}><span style={mono}>{m}</span></td>
+                    <td style={tdStyle}>{d}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Coming Soon Overlay */}
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 10,
+              pointerEvents: 'none',
+            }}
+          >
+            <div
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '24px',
+                fontWeight: 700,
+                color: 'var(--accent-amber)',
+                letterSpacing: '0.2em',
+                backgroundColor: 'rgba(0,0,0,0.4)',
+                padding: '20px 40px',
+                borderRadius: '8px',
+                border: '1px solid var(--accent-amber)',
+                backdropFilter: 'blur(2px)',
+                boxShadow: '0 0 40px rgba(194,122,54,0.2)',
+              }}
+            >
+              COMING SOON
+            </div>
+          </div>
         </div>
 
         {/* Sandbox API */}
-        <div style={active === 'sandbox' ? activeSectionStyle : sectionStyle}>
+        {/* <div style={active === 'sandbox' ? activeSectionStyle : sectionStyle}>
           <SectionHeading label="Sandbox API" number="03" />
           <p style={bodyText}>
             All sandbox endpoints are under <span style={mono}>POST /v1/sandbox</span> and require
@@ -465,10 +500,10 @@ export default function DocsPage() {
   }
 }`}
           />
-        </div>
+        </div> */}
 
         {/* Billing */}
-        <div style={active === 'billing' ? activeSectionStyle : sectionStyle}>
+        {/* <div style={active === 'billing' ? activeSectionStyle : sectionStyle}>
           <SectionHeading label="Billing & Tiers" number="04" />
           <p style={bodyText}>
             Sandboxes are billed per second from the moment they reach <span style={mono}>running</span> state.
@@ -548,7 +583,7 @@ export default function DocsPage() {
   { "Tier": "a100",     "MsatsPerSecond": 15000, "USDCentsPerSecondX100": 0 }
 ]`}
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );
