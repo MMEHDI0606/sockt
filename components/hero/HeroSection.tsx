@@ -35,7 +35,7 @@ export default function HeroSection() {
       });
     }
 
-    return () => {};
+    return () => { };
   }, []);
 
   return (
@@ -108,7 +108,7 @@ export default function HeroSection() {
             {/* CTA */}
             <div style={{ marginTop: '40px', display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
               <a
-                href="https://sockt.dev/mcp"
+                href="https://sockt.dev/docs"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
@@ -125,9 +125,9 @@ export default function HeroSection() {
                   display: 'inline-block',
                 }}
               >
-                Agent pays for its own sandbox →
+                View Docs →
               </a>
-              <a
+              {/* <a
                 href="/flow"
                 style={{
                   fontFamily: 'var(--font-mono)',
@@ -137,7 +137,7 @@ export default function HeroSection() {
                 }}
               >
                 See the flow →
-              </a>
+              </a> */}
             </div>
 
             <div
