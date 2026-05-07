@@ -7,7 +7,7 @@ import HeroConsole from './HeroConsole';
 import { useIsMobile } from '@/hooks/useIsMobile';
 
 const HEADLINE_TEXT = 'COMPUTE FOR AGENTS THAT PAY IN SATS.';
-const TAGLINE = 'Sockt gives agents the compute they can pay for autonomously — open a Lightning channel, get a GPU, settle in sats. No human in the loop. Any Lightning wallet, including your own MCP-connected wallet, works out of the box.';
+const TAGLINE = 'Sockt gives agents the compute they can pay for using sats. The agent autonomously creates sandboxes, pays, runs tasks, and terminates. Connect any external Lightning wallet as an MCP server, or use the api_key path.';
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -109,7 +109,7 @@ export default function HeroSection() {
             {/* CTA */}
             <div style={{ marginTop: '40px', display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
               <Link
-                href="/docs"
+                href="/docs/mcp"
                 style={{
                   fontFamily: 'var(--font-mono)',
                   fontSize: '13px',
@@ -124,7 +124,7 @@ export default function HeroSection() {
                   display: 'inline-block',
                 }}
               >
-                View Docs →
+                Run your first paid task →
               </Link>
               {/* <Link
                 href="/flow"

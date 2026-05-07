@@ -102,7 +102,7 @@ export default function CTASection() {
             cursor: 'pointer',
           }}
         >
-          Start Sandbox →
+          Let Agent Create + Pay Sandbox →
         </Link>
         <Link
           href="/signup"
@@ -131,7 +131,7 @@ export default function CTASection() {
           letterSpacing: '0.08em',
         }}
       >
-        Wallet-native path or website login with dashboard api_key, credits billing, and key rotation.
+        Agent autonomously creates a sandbox, pays for compute in sats, runs the task, and terminates.
       </span>
     </section>
   );

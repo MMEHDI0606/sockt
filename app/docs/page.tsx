@@ -17,27 +17,18 @@ const CODE = {
   mcpJson: `{
   "mcpServers": {
     "sockt": {
-      "url": "https://api.sockt.dev/v1/mcp",
-      "headers": {
-        "Authorization": "Bearer sockt_live_..."
-      }
+      "url": "https://api.sockt.dev/v1/mcp"
     }
   }
 }`,
-  mcpRpc: `// Single JSON-RPC 2.0 POST per tool call
-POST https://api.sockt.dev/v1/mcp
-Authorization: Bearer sockt_live_...
-Content-Type: application/json
-
-{
-  "jsonrpc": "2.0",
-  "id": 1,
-  "method": "tools/call",
-  "params": {
-    "name": "sandbox_create",
-    "arguments": {
-      "tier": "micro",
-      "billing_method": "credits"
+  walletMcp: `{
+  "mcpServers": {
+    "lnbot": {
+      "type": "url",
+      "url": "https://api.ln.bot/v1/wallets/wal_sp28n1b9lj2ueemoip4n1qpxm3y0/mcp",
+      "headers": {
+        "Authorization": "Bearer uk_x53uqf3q7rl2zxom4zwmwet12lril07fhff7v4q3glbm7hoyprzlhf4rdeld"
+      }
     }
   }
 }`,
@@ -64,20 +55,6 @@ result = sandbox.exec("python eval.py --dataset cifar10")
 print(result.stdout)
 
 sandbox.terminate()`,
-  l402Flow: `// 1. Agent sends request without credentials
-POST https://api.sockt.dev/v1/mcp
-X-Agent-Id: <uuid>
-
-// 2. If Authorization header is missing, server returns 402 with Lightning invoice
-{
-  "macaroon": "...",
-  "invoice": "lnbc...",
-  "payment_hash": "...",
-  "expires_at": "..."
-}
-
-// 3. Agent pays invoice via a Lightning wallet MCP (e.g. lnbot), then retries with L402 header
-Authorization: L402 <base64_macaroon>:<preimage_hex>`,
 };
 
 const MCP_TOOLS = [
@@ -91,17 +68,6 @@ const MCP_TOOLS = [
   { name: 'sandbox_resume', desc: 'Resume a paused sandbox.' },
   { name: 'sandbox_terminate', desc: 'Destroy the sandbox and stop billing.' },
   { name: 'sandbox_extend_balance', desc: 'Add more sats or credits to a running sandbox.' },
-  { name: 'wallet_balance', desc: 'Query the agent Lightning wallet balance in msats.' },
-  { name: 'wallet_deposit', desc: 'Generate a Lightning invoice to deposit funds into the agent wallet.' },
-  { name: 'wallet_deposit_status', desc: 'Check payment status of a deposit invoice.' },
-];
-
-const TIERS = [
-  { name: 'nano', sats: '0.5', desc: 'Lightweight CPU tasks', specs: '2 vCPU · 2 GB RAM' },
-  { name: 'micro', sats: '2', desc: 'Standard eval and inference', specs: '4 vCPU · 8 GB RAM' },
-  { name: 'standard', sats: '4', desc: 'Mid-tier batch workloads', specs: '8 vCPU · 16 GB RAM' },
-  { name: 'rtx-5090', sats: '8', desc: 'GPU-accelerated compute', specs: 'RTX 5090 · 32 GB VRAM' },
-  { name: 'a100', sats: '15', desc: 'High-memory model training', specs: 'A100 · 80 GB VRAM' },
 ];
 
 function CodeBlock({ code }: { code: string }) {
@@ -249,8 +215,7 @@ export default function DocsPage() {
           <h3 style={h3Style}>Authentication</h3>
           <p style={bodyText}>
             For credits billing, send <span style={mono}>Authorization: Bearer sockt_...</span>.
-            If the <span style={mono}>Authorization</span> header is missing, the server returns a Lightning
-            invoice in a <span style={mono}>402</span> response that the agent must pay.
+            For sats billing, connect any external Lightning wallet as an MCP server and let the agent pay autonomously.
           </p>
           <table style={tableStyle}>
             <thead>
@@ -267,20 +232,12 @@ export default function DocsPage() {
                 <td style={tdStyle}>Request is billed to your credits balance.</td>
               </tr>
               <tr>
-                <td style={tdStyle}>No auth header</td>
-                <td style={tdStyle}><span style={mono}>Authorization</span> omitted</td>
-                <td style={tdStyle}>Server returns a Lightning invoice; the agent pays it (e.g. via lnbot MCP) and retries.</td>
+                <td style={tdStyle}>Lightning wallet MCP</td>
+                <td style={tdStyle}><span style={mono}>External wallet server connected</span></td>
+                <td style={tdStyle}>Agent creates and pays for sandboxes in sats using your connected wallet.</td>
               </tr>
             </tbody>
           </table>
-          <p style={bodyText}>
-            After invoice payment, the agent retries with <span style={mono}>Authorization: L402 &lt;macaroon&gt;:&lt;preimage&gt;</span>.
-            See the{' '}
-            <span style={{ ...mono, cursor: 'pointer', color: 'var(--accent-btc)' }} onClick={() => setActive('mcp')}>
-              MCP Server
-            </span>{' '}
-            section for the full flow.
-          </p>
           <h3 style={h3Style}>Rate Limits</h3>
           <p style={bodyText}>
             300 requests/minute per API key. Excess requests receive <span style={mono}>429 rate limited</span>.
@@ -291,45 +248,18 @@ export default function DocsPage() {
         <div style={active === 'mcp' ? activeSectionStyle : sectionStyle}>
           <SectionHeading label="MCP Server" number="01" />
           <p style={bodyText}>
-            The Sockt MCP server implements <strong style={{ color: 'var(--text-primary)' }}>JSON-RPC 2.0 over HTTP</strong> — one POST per tool call.
-            Any MCP-compatible client (Cursor, Claude Desktop, custom agents) can connect by pointing at{' '}
+            Configure Sockt in your MCP client by pointing to{' '}
             <span style={mono}>https://api.sockt.dev/v1/mcp</span>.
           </p>
 
-          <h3 style={h3Style}>Cursor / mcp.json</h3>
+          <h3 style={h3Style}>Sockt MCP Setup</h3>
           <CodeBlock code={CODE.mcpJson} />
 
-          <h3 style={h3Style}>Raw JSON-RPC</h3>
-          <CodeBlock code={CODE.mcpRpc} />
-
-          <h3 style={h3Style}>Supported Methods</h3>
-          <table style={tableStyle}>
-            <thead>
-              <tr>
-                <th style={thStyle}>Method</th>
-                <th style={thStyle}>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                { m: 'initialize', d: 'Start an MCP session. Returns protocolVersion, capabilities, session ID.' },
-                { m: 'tools/list', d: 'List all available tools with full JSON Schema input descriptors.' },
-                { m: 'tools/call', d: 'Invoke a tool by name with arguments.' },
-                { m: 'ping', d: 'Health check — returns empty result object.' },
-              ].map(({ m, d }) => (
-                <tr key={m}>
-                  <td style={tdStyle}><span style={mono}>{m}</span></td>
-                  <td style={tdStyle}>{d}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-          <h3 style={h3Style}>Lightning / L402 Agent Flow</h3>
+          <h3 style={h3Style}>External Wallet MCP (Example: lnbot)</h3>
           <p style={bodyText}>
-            Agents without an API key can pay per sandbox in sats. The handshake is automatic:
+            Sockt does not provide the wallet. Connect any Lightning wallet MCP server for agent payments.
           </p>
-          <CodeBlock code={CODE.l402Flow} />
+          <CodeBlock code={CODE.walletMcp} />
 
           <h3 style={h3Style}>Available Tools</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '14px' }}>
@@ -446,144 +376,6 @@ export default function DocsPage() {
           </div>
         </div>
 
-        {/* Sandbox API */}
-        {/* <div style={active === 'sandbox' ? activeSectionStyle : sectionStyle}>
-          <SectionHeading label="Sandbox API" number="03" />
-          <p style={bodyText}>
-            All sandbox endpoints are under <span style={mono}>POST /v1/sandbox</span> and require
-            authentication (API key or L402 macaroon).
-          </p>
-          <h3 style={h3Style}>Lifecycle</h3>
-          <table style={tableStyle}>
-            <thead>
-              <tr>
-                <th style={thStyle}>State</th>
-                <th style={thStyle}>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                { s: 'provisioning', d: 'Sandbox is being allocated. Not yet ready for commands.' },
-                { s: 'running', d: 'Sandbox is live and billing. Commands can be sent.' },
-                { s: 'paused', d: 'Billing stopped. Execution frozen. Resume to continue.' },
-                { s: 'terminated', d: 'Sandbox destroyed. No further commands possible.' },
-                { s: 'error', d: 'Provisioning or runtime failure. Check logs.' },
-              ].map(({ s, d }) => (
-                <tr key={s}>
-                  <td style={tdStyle}><span style={mono}>{s}</span></td>
-                  <td style={tdStyle}>{d}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-          <h3 style={h3Style}>Sandbox ownership</h3>
-          <p style={bodyText}>
-            Credits/API-key callers must match <span style={mono}>sandbox.UserID</span>.
-            Lightning/L402 callers must match <span style={mono}>sandbox.AgentID</span>.
-            Mismatches yield <span style={mono}>403 forbidden</span>.
-          </p>
-
-          <h3 style={h3Style}>Error format</h3>
-          <CodeBlock
-            code={`// REST errors (most handlers)
-{ "code": "not_found", "error": "sandbox not found", "message": "..." }
-
-// MCP tool errors (always HTTP 200, error in JSON-RPC envelope)
-{
-  "jsonrpc": "2.0",
-  "id": 1,
-  "error": {
-    "code": -32000,
-    "message": "sandbox terminated",
-    "data": { "error_slug": "sandbox_terminated" }
-  }
-}`}
-          />
-        </div> */}
-
-        {/* Billing */}
-        {/* <div style={active === 'billing' ? activeSectionStyle : sectionStyle}>
-          <SectionHeading label="Billing & Tiers" number="04" />
-          <p style={bodyText}>
-            Sandboxes are billed per second from the moment they reach <span style={mono}>running</span> state.
-            Pause to stop the clock. Billing resumes on resume.
-            Terminate to end billing permanently.
-          </p>
-
-          <h3 style={h3Style}>Tiers</h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '14px', marginBottom: '28px' }}>
-            {TIERS.map((tier) => (
-              <div
-                key={tier.name}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '14px 20px',
-                  border: '1px solid var(--bg-border)',
-                  borderRadius: '6px',
-                  backgroundColor: 'var(--bg-surface)',
-                }}
-              >
-                <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--text-primary)', minWidth: '100px' }}>
-                    {tier.name}
-                  </span>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--text-secondary)' }}>
-                    {tier.specs}
-                  </span>
-                </div>
-                <div style={{ textAlign: 'right' }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '14px', color: 'var(--accent-btc)' }}>
-                    {tier.sats} sats/sec
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <h3 style={h3Style}>Billing methods</h3>
-          <table style={tableStyle}>
-            <thead>
-              <tr>
-                <th style={thStyle}>Method</th>
-                <th style={thStyle}>Token</th>
-                <th style={thStyle}>Notes</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style={tdStyle}>Credits</td>
-                <td style={tdStyle}><span style={mono}>billingMethod: 'credits'</span></td>
-                <td style={tdStyle}>Pre-funded USD credit balance. Requires API key.</td>
-              </tr>
-              <tr>
-                <td style={tdStyle}>Lightning (L402)</td>
-                <td style={tdStyle}><span style={mono}>billingMethod: 'lightning'</span></td>
-                <td style={tdStyle}>Pay-per-second in sats. Agent pays its own invoice. Any Lightning wallet works.</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <h3 style={h3Style}>Pricing endpoint</h3>
-          <p style={bodyText}>
-            Live tier pricing is available publicly at <span style={mono}>GET /v1/pricing</span> — returns an array of{' '}
-            <span style={mono}>{'{ Tier, MsatsPerSecond, USDCentsPerSecondX100 }'}</span> rows.
-          </p>
-          <CodeBlock
-            code={`GET https://api.sockt.dev/v1/pricing
-
-// Response
-[
-  { "Tier": "nano",     "MsatsPerSecond": 500,   "USDCentsPerSecondX100": 0 },
-  { "Tier": "micro",    "MsatsPerSecond": 2000,  "USDCentsPerSecondX100": 0 },
-  { "Tier": "standard", "MsatsPerSecond": 4000,  "USDCentsPerSecondX100": 0 },
-  { "Tier": "rtx5090",  "MsatsPerSecond": 8000,  "USDCentsPerSecondX100": 0 },
-  { "Tier": "a100",     "MsatsPerSecond": 15000, "USDCentsPerSecondX100": 0 }
-]`}
-          />
-        </div> */}
       </div>
     </div>
   );

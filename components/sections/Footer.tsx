@@ -13,15 +13,11 @@ const COLS = [
   },
   {
     title: 'PRODUCT',
-    items: ['Agents', 'Pricing', 'Docs', 'Status', 'Changelog'],
+    items: ['Docs', 'Pricing', 'Terms & Conditions', 'Privacy Policy'],
   },
   {
-    title: 'DEVELOPERS',
-    items: ['SDK Reference', 'MCP Server', 'Go Client', 'Python Client', 'TypeScript'],
-  },
-  {
-    title: 'COMPANY',
-    items: ['About', 'Blog', 'X / Twitter', 'GitHub', 'Contact'],
+    title: 'SOCIALS',
+    items: ['X / Twitter', 'GitHub', 'Contact'],
   },
 ];
 
@@ -48,7 +44,7 @@ export default function Footer() {
       }}
     >
       <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: isMobile ? '32px' : '48px', marginBottom: '64px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)', gap: isMobile ? '32px' : '48px', marginBottom: '64px' }}>
           {COLS.map((col) => (
             <div key={col.title}>
               <div
@@ -101,11 +97,17 @@ export default function Footer() {
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                   {col.items?.map((item) => {
-                    const slug = item.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-                    const href = (slug === 'x-twitter' || slug === 'github' || slug === 'contact') ? 
-                      (slug === 'x-twitter' ? 'https://x.com/socktdev' : 
-                       slug === 'github' ? 'https://github.com/socktdev' : 
-                       'mailto:hello@sockt.dev') : `/${slug}`;
+                    const routeMap: Record<string, string> = {
+                      'Docs': '/docs',
+                      'Pricing': '/#pricing',
+                      'Terms & Conditions': '/terms',
+                      'Privacy Policy': '/privacy',
+                      'X / Twitter': 'https://x.com/socktdev',
+                      'GitHub': 'https://github.com/socktdev',
+                      'Contact': 'mailto:hello@sockt.dev',
+                    };
+
+                    const href = routeMap[item] ?? '/';
                     
                     const isExternal = href.startsWith('http') || href.startsWith('mailto');
                     
