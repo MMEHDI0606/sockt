@@ -109,7 +109,7 @@ export default function HeroSection() {
             {/* CTA */}
             <div style={{ marginTop: '40px', display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
               <Link
-                href="/docs/mcp"
+                href="/docs"
                 style={{
                   fontFamily: 'var(--font-mono)',
                   fontSize: '13px',
@@ -124,7 +124,7 @@ export default function HeroSection() {
                   display: 'inline-block',
                 }}
               >
-                Run your first paid task →
+                View Docs →
               </Link>
               {/* <Link
                 href="/flow"

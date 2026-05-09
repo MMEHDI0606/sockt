@@ -102,7 +102,7 @@ export default function CTASection() {
             cursor: 'pointer',
           }}
         >
-          Let Agent Create + Pay Sandbox →
+          Create Pay Sandbox →
         </Link>
         <Link
           href="/signup"
