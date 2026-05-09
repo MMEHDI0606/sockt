@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
+import { gsap, ScrollTrigger } from '@/lib/gsap';
 
 const LINES = [
   '> initializing runtime',
@@ -29,7 +29,24 @@ export default function HeroConsole() {
         clearInterval(interval);
       }
     }, 320);
-    return () => clearInterval(interval);
+
+    const ctx = gsap.context(() => {
+      gsap.to(containerRef.current, {
+        y: 100, // Parallax lag effect
+        ease: 'none',
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top 30%',
+          end: 'bottom top',
+          scrub: true,
+        },
+      });
+    }, containerRef);
+
+    return () => {
+      clearInterval(interval);
+      ctx.revert();
+    };
   }, []);
 
   return (

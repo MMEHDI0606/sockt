@@ -1,6 +1,8 @@
 ﻿'use client';
 
 import { useIsMobile } from '@/hooks/useIsMobile';
+import { useEffect, useRef } from 'react';
+import { gsap, ScrollTrigger } from '@/lib/gsap';
 
 const TIERS = [
   {
@@ -52,10 +54,32 @@ const ROWS = [
 ];
 
 export default function PricingSection() {
+  const sectionRef = useRef<HTMLElement>(null);
   const isMobile = useIsMobile();
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from('.pricing-card', {
+        scale: 0.9,
+        opacity: 0,
+        y: 30,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: 'back.out(1.5)',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 75%',
+        },
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section
       id="pricing"
+      ref={sectionRef}
       style={{
         padding: isMobile ? '80px 24px' : '120px 64px',
         maxWidth: '1280px',
@@ -82,11 +106,21 @@ export default function PricingSection() {
           {TIERS.map((tier) => (
             <div
               key={tier.name}
+              className="pricing-card"
               style={{
                 backgroundColor: 'var(--bg-surface)',
                 border: tier.borderStyle,
                 borderRadius: '6px',
                 padding: isMobile ? '24px 20px' : '28px 24px',
+                transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-4px)';
+                e.currentTarget.style.boxShadow = `0 12px 30px -10px ${tier.accentColor}`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'none';
+                e.currentTarget.style.boxShadow = 'none';
               }}
             >
               <h3

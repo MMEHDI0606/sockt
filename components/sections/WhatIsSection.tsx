@@ -45,6 +45,17 @@ export default function WhatIsSection() {
           onEnter: () => setConsoleStarted(true),
         },
       });
+
+      gsap.from('.what-is-headline', {
+        clipPath: 'inset(100% 0 0 0)',
+        y: 40,
+        duration: 1,
+        ease: 'expo.out',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 75%',
+        },
+      });
     }, sectionRef);
 
     return () => ctx.revert();
@@ -94,6 +105,7 @@ export default function WhatIsSection() {
             01
           </span> */}
           <h2
+            className="what-is-headline"
             style={{
               fontFamily: 'var(--font-display)',
               fontSize: 'var(--text-display)',
@@ -101,6 +113,7 @@ export default function WhatIsSection() {
               lineHeight: 0.9,
               color: 'var(--text-primary)',
               marginBottom: '32px',
+              clipPath: 'inset(0 0 0 0)',
             }}
           >
             AGENTS BUY

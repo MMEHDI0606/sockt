@@ -101,6 +101,12 @@ export default function CTASection() {
             display: 'inline-block',
             cursor: 'pointer',
           }}
+          onMouseEnter={(e) => {
+            gsap.to(e.currentTarget, { scale: 1.05, boxShadow: '0 0 20px rgba(247, 147, 26, 0.4)', duration: 0.2 });
+          }}
+          onMouseLeave={(e) => {
+            gsap.to(e.currentTarget, { scale: 1, boxShadow: 'none', duration: 0.2 });
+          }}
         >
           Create Sandbox →
         </Link>
@@ -116,6 +122,12 @@ export default function CTASection() {
             letterSpacing: '0.04em',
             display: 'inline-block',
             cursor: 'pointer',
+          }}
+          onMouseEnter={(e) => {
+            gsap.to(e.currentTarget, { color: 'var(--text-primary)', borderColor: 'var(--text-secondary)', duration: 0.2 });
+          }}
+          onMouseLeave={(e) => {
+            gsap.to(e.currentTarget, { color: 'var(--text-secondary)', borderColor: 'var(--bg-border)', duration: 0.2 });
           }}
         >
           Start with api_key →
