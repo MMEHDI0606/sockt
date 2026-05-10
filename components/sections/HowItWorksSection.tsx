@@ -99,7 +99,6 @@ export default function HowItWorksSection() {
                 borderRadius: '8px',
                 backgroundColor: 'var(--bg-surface)',
                 padding: isMobile ? '22px' : '28px',
-                transition: 'transform 0.2s ease, border-color 0.2s ease',
               }}
               onMouseEnter={(e) => {
                 gsap.to(e.currentTarget, { y: -5, borderColor: 'var(--accent-sats)', duration: 0.2 });

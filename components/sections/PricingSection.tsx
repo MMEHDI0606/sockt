@@ -112,15 +112,12 @@ export default function PricingSection() {
                 border: tier.borderStyle,
                 borderRadius: '6px',
                 padding: isMobile ? '24px 20px' : '28px 24px',
-                transition: 'transform 0.2s ease, box-shadow 0.2s ease',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-4px)';
-                e.currentTarget.style.boxShadow = `0 12px 30px -10px ${tier.accentColor}`;
+                gsap.to(e.currentTarget, { y: -4, duration: 0.2 });
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'none';
-                e.currentTarget.style.boxShadow = 'none';
+                gsap.to(e.currentTarget, { y: 0, duration: 0.2 });
               }}
             >
               <h3
