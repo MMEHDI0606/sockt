@@ -4,7 +4,6 @@ import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import gsap from 'gsap';
 import HeroConsole from './HeroConsole';
-import { useIsMobile } from '@/hooks/useIsMobile';
 
 const HEADLINE_TEXT = 'COMPUTE FOR AGENTS THAT PAY IN SATS.';
 const TAGLINE = 'Sockt gives agents the compute they can pay for using sats. The agent autonomously creates sandboxes, pays, runs tasks, and terminates. Connect any external Lightning wallet as an MCP server, or use the api_key path.';
@@ -12,18 +11,29 @@ const TAGLINE = 'Sockt gives agents the compute they can pay for using sats. The
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const chevronRef = useRef<HTMLDivElement>(null);
-  const isMobile = useIsMobile();
 
   useEffect(() => {
     const headlineNodes = sectionRef.current?.querySelectorAll('.hero-headline-line');
-    gsap.from(headlineNodes || [], {
-      y: 120,
-      opacity: 0,
+    const animElements = sectionRef.current?.querySelectorAll('.hero-anim-element');
+
+    const tl = gsap.timeline();
+
+    tl.to(headlineNodes || [], {
+      y: 0,
+      opacity: 1,
       duration: 0.9,
       ease: 'expo.out',
       stagger: 0.1,
       delay: 0.2,
     });
+
+    tl.to(animElements || [], {
+      y: 0,
+      opacity: 1,
+      duration: 0.9,
+      ease: 'expo.out',
+      stagger: 0.1,
+    }, "-=0.6");
 
     // Chevron bounce loop
     if (chevronRef.current) {
@@ -51,38 +61,24 @@ export default function HeroSection() {
       }}
     >
       <div
-        style={{
-          flex: 1,
-          display: 'flex',
-          justifyContent: 'center',
-          padding: isMobile ? '48px 24px 80px' : '80px 64px 120px',
-          maxWidth: '1280px',
-          margin: '0 auto',
-          width: '100%',
-        }}
+        className="flex-1 flex justify-center px-[24px] pt-[48px] pb-[80px] md:px-[64px] md:pt-[80px] md:pb-[120px] max-w-[1280px] mx-auto w-full"
       >
         <div
-          style={{
-            display: 'flex',
-            flexDirection: isMobile ? 'column' : 'row',
-            gap: isMobile ? '32px' : '80px',
-            alignItems: 'flex-start',
-          }}
+          className="flex flex-col md:flex-row gap-[32px] md:gap-[80px] items-start w-full"
         >
           {/* Headline */}
           <div style={{ flex: 1, minWidth: 0 }}>
             <h1
-              className="hero-headline-line"
+              className="hero-headline-line text-[clamp(2.1rem,8vw,4rem)] md:text-[clamp(3.2rem,8vw,7.2rem)] max-w-full md:max-w-[760px]"
               style={{
                 fontFamily: 'var(--font-display)',
-                // 0.8x headline scale versus prior values for better viewport fit.
-                fontSize: isMobile ? 'clamp(2.1rem, 8vw, 4rem)' : 'clamp(3.2rem, 8vw, 7.2rem)',
                 fontWeight: 800,
                 lineHeight: 0.96,
                 letterSpacing: '-0.02em',
                 color: 'var(--text-primary)',
-                maxWidth: isMobile ? '100%' : '760px',
                 textWrap: 'balance',
+                opacity: 0,
+                transform: 'translateY(120px)',
               }}
             >
               {HEADLINE_TEXT.split(/(SATS\.)/).map((part, i) => (
@@ -94,20 +90,20 @@ export default function HeroSection() {
 
             {/* Tagline */}
             <p
+              className="mt-[24px] md:mt-[32px] text-[15px] md:text-[18px] max-w-full md:max-w-[620px] hero-anim-element"
               style={{
-                marginTop: isMobile ? '24px' : '32px',
                 fontFamily: 'var(--font-body)',
-                fontSize: isMobile ? '15px' : '18px',
                 lineHeight: 1.8,
                 color: 'var(--text-secondary)',
-                maxWidth: isMobile ? '100%' : '620px',
+                opacity: 0,
+                transform: 'translateY(20px)',
               }}
             >
               {TAGLINE}
             </p>
 
             {/* CTA */}
-            <div style={{ marginTop: '40px', display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
+            <div className="hero-anim-element" style={{ marginTop: '40px', display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap', opacity: 0, transform: 'translateY(20px)' }}>
               <Link
                 href="/docs"
                 style={{
@@ -140,12 +136,15 @@ export default function HeroSection() {
             </div>
 
             <div
+              className="hero-anim-element"
               style={{
                 marginTop: '14px',
                 fontFamily: 'var(--font-mono)',
                 fontSize: '11px',
                 color: 'var(--text-secondary)',
                 letterSpacing: '0.05em',
+                opacity: 0,
+                transform: 'translateY(20px)',
               }}
             >
               Any Lightning wallet can be added as an MCP server — or use api_key fallback.
@@ -153,7 +152,9 @@ export default function HeroSection() {
           </div>
 
           {/* Console */}
-          {!isMobile && <HeroConsole />}
+          <div className="hidden md:block">
+            <HeroConsole />
+          </div>
         </div>
       </div>
 
