@@ -28,7 +28,7 @@ export default function HeroConsole() {
       } else {
         clearInterval(interval);
       }
-    }, 320);
+    }, 650);
 
     const ctx = gsap.context(() => {
       gsap.to(containerRef.current, {

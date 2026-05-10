@@ -68,7 +68,7 @@ export default function PricingSection() {
         ease: 'back.out(1.5)',
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 75%',
+          start: 'top 60%',
         },
       });
     }, sectionRef);

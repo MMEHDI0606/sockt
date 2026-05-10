@@ -23,7 +23,7 @@ export default function CTASection() {
           stagger: 0.012,
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: 'top 70%',
+            start: 'top 60%',
           },
         });
       }
@@ -36,7 +36,7 @@ export default function CTASection() {
         delay: 0.6,
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 70%',
+          start: 'top 60%',
         },
       });
     }, sectionRef);

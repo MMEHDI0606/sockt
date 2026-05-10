@@ -41,7 +41,7 @@ export default function WhatIsSection() {
         stagger: 0.15,
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 75%',
+          start: 'top 60%',
           onEnter: () => setConsoleStarted(true),
         },
       });
@@ -53,7 +53,7 @@ export default function WhatIsSection() {
         ease: 'expo.out',
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 75%',
+          start: 'top 60%',
         },
       });
     }, sectionRef);

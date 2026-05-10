@@ -48,7 +48,7 @@ export default function TrustedBySection() {
         stagger: 0.15,
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 70%',
+          start: 'top 60%',
         },
       });
     }, sectionRef);

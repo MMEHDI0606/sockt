@@ -51,7 +51,7 @@ export default function HowItWorksSection() {
         stagger: 0.12,
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 72%',
+          start: 'top 60%',
         },
       });
     }, sectionRef);
