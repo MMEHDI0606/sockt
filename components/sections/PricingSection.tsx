@@ -23,7 +23,7 @@ const CPU_TIERS: Tier[] = [
     sats: '56 sats',
     usdAlt: '≈ $0.10 / hr',
     satsAlt: '≈ 201,600 sats / hr',
-    specs: ['0.5 vCPU', '512 MB RAM', 'Shared sandbox', 'Up to 1 hr session'],
+    specs: ['0.5 vCPU', '512 MB RAM'],
   },
   {
     name: 'Small',
@@ -31,7 +31,7 @@ const CPU_TIERS: Tier[] = [
     sats: '112 sats',
     usdAlt: '≈ $0.20 / hr',
     satsAlt: '≈ 403,200 sats / hr',
-    specs: ['1 vCPU', '1 GB RAM', 'Isolated microVM', 'Up to 24 hr session'],
+    specs: ['1 vCPU', '1 GB RAM'],
   },
   {
     name: 'Medium',
@@ -39,7 +39,7 @@ const CPU_TIERS: Tier[] = [
     sats: '276 sats',
     usdAlt: '≈ $0.50 / hr',
     satsAlt: '≈ 993,600 sats / hr',
-    specs: ['2 vCPU', '4 GB RAM', 'Isolated microVM', 'Up to 24 hr session'],
+    specs: ['2 vCPU', '4 GB RAM'],
   },
   {
     name: 'Large',
@@ -47,7 +47,7 @@ const CPU_TIERS: Tier[] = [
     sats: '554 sats',
     usdAlt: '≈ $1.00 / hr',
     satsAlt: '≈ 1,994,400 sats / hr',
-    specs: ['4 vCPU', '8 GB RAM', 'Isolated microVM', 'Up to 24 hr session'],
+    specs: ['4 vCPU', '8 GB RAM'],
   },
 ];
 
@@ -60,7 +60,7 @@ const GPU_TIERS: Tier[] = [
     sats: '833 sats',
     usdAlt: '≈ $1.50 / hr',
     satsAlt: '≈ 3,000,000 sats / hr',
-    specs: ['NVIDIA RTX 5090', '32 GB GDDR7 VRAM', 'CUDA + cuDNN preloaded', 'Up to 24 hr session'],
+    specs: ['NVIDIA RTX 5090', '32 GB GDDR7 VRAM'],
   },
   {
     name: 'GPU Large',
@@ -70,7 +70,7 @@ const GPU_TIERS: Tier[] = [
     sats: '1,666 sats',
     usdAlt: '≈ $3.00 / hr',
     satsAlt: '≈ 6,000,000 sats / hr',
-    specs: ['NVIDIA A100 SXM', '80 GB HBM2e VRAM', 'NVLink + high-bandwidth', 'Up to 24 hr session'],
+    specs: ['NVIDIA A100 SXM', '80 GB HBM2e VRAM'],
   },
 ];
 
