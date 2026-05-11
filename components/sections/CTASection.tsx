@@ -108,7 +108,7 @@ export default function CTASection() {
             gsap.to(e.currentTarget, { scale: 1, boxShadow: 'none', duration: 0.2 });
           }}
         >
-          Create Sandbox →
+          Start Sandbox
         </Link>
         <Link
           href="/signup"
