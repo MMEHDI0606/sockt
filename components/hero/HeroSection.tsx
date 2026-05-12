@@ -4,13 +4,15 @@ import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import gsap from 'gsap';
 import HeroConsole from './HeroConsole';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 const HEADLINE_TEXT = 'COMPUTE FOR AGENTS THAT PAY IN SATS.';
-const TAGLINE = 'Sockt gives agents the compute they can pay for using sats. The agent autonomously creates sandboxes, pays, runs tasks, and terminates. Connect any external Lightning wallet as an MCP server, or use the api_key path.';
+const TAGLINE = 'Agents create compute, pay, run, and terminate on their own.';
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const chevronRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const headlineNodes = sectionRef.current?.querySelectorAll('.hero-headline-line');
@@ -61,10 +63,10 @@ export default function HeroSection() {
       }}
     >
       <div
-        className="flex-1 flex justify-center px-[24px] pt-[48px] pb-[80px] md:px-[64px] md:pt-[80px] md:pb-[120px] max-w-[1280px] mx-auto w-full"
+        className="flex-1 flex justify-center px-[16px] pt-[32px] pb-[56px] md:px-[64px] md:pt-[80px] md:pb-[120px] max-w-[1280px] mx-auto w-full"
       >
         <div
-          className="flex flex-col md:flex-row gap-[32px] md:gap-[80px] items-start w-full"
+          className="flex flex-col md:flex-row gap-[24px] md:gap-[80px] items-start w-full"
         >
           {/* Headline */}
           <div style={{ flex: 1, minWidth: 0 }}>
@@ -90,10 +92,10 @@ export default function HeroSection() {
 
             {/* Tagline */}
             <p
-              className="mt-[24px] md:mt-[32px] text-[15px] md:text-[18px] max-w-full md:max-w-[620px] hero-anim-element"
+              className="mt-[16px] md:mt-[32px] text-[14px] md:text-[18px] max-w-full md:max-w-[620px] hero-anim-element"
               style={{
                 fontFamily: 'var(--font-body)',
-                lineHeight: 1.8,
+                lineHeight: isMobile ? 1.55 : 1.8,
                 color: 'var(--text-secondary)',
                 opacity: 0,
                 transform: 'translateY(20px)',
@@ -103,7 +105,7 @@ export default function HeroSection() {
             </p>
 
             {/* CTA */}
-            <div className="hero-anim-element" style={{ marginTop: '40px', display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap', opacity: 0, transform: 'translateY(20px)' }}>
+            <div className="hero-anim-element" style={{ marginTop: isMobile ? '24px' : '40px', display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap', opacity: 0, transform: 'translateY(20px)' }}>
               <Link
                 href="/docs"
                 style={{
@@ -135,20 +137,22 @@ export default function HeroSection() {
               </Link> */}
             </div>
 
-            <div
-              className="hero-anim-element"
-              style={{
-                marginTop: '14px',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '11px',
-                color: 'var(--text-secondary)',
-                letterSpacing: '0.05em',
-                opacity: 0,
-                transform: 'translateY(20px)',
-              }}
-            >
-              Any Lightning wallet can be added as an MCP server — or use api_key fallback.
-            </div>
+            {!isMobile ? (
+              <div
+                className="hero-anim-element"
+                style={{
+                  marginTop: '14px',
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '11px',
+                  color: 'var(--text-secondary)',
+                  letterSpacing: '0.05em',
+                  opacity: 0,
+                  transform: 'translateY(20px)',
+                }}
+              >
+                Any Lightning wallet can be added as an MCP server — or use api_key fallback.
+              </div>
+            ) : null}
           </div>
 
           {/* Console */}
@@ -159,21 +163,23 @@ export default function HeroSection() {
       </div>
 
       {/* Scroll chevron */}
-      <div
-        ref={chevronRef}
-        style={{
-          position: 'absolute',
-          bottom: '40px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          opacity: 0.4,
-          color: 'var(--text-secondary)',
-          fontSize: '20px',
-          cursor: 'pointer',
-        }}
-      >
-        ↓
-      </div>
+      {!isMobile ? (
+        <div
+          ref={chevronRef}
+          style={{
+            position: 'absolute',
+            bottom: '40px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            opacity: 0.4,
+            color: 'var(--text-secondary)',
+            fontSize: '20px',
+            cursor: 'pointer',
+          }}
+        >
+          ↓
+        </div>
+      ) : null}
     </section>
   );
 }

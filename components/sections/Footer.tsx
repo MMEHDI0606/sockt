@@ -40,11 +40,11 @@ export default function Footer() {
     <footer
       style={{
         borderTop: '1px solid var(--bg-border)',
-        padding: isMobile ? '64px 24px 32px' : '80px 32px 40px',
+        padding: isMobile ? '44px 16px 20px' : '80px 32px 40px',
       }}
     >
       <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)', gap: isMobile ? '32px' : '48px', marginBottom: '64px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(3, 1fr)', gap: isMobile ? '20px' : '48px', marginBottom: isMobile ? '24px' : '64px' }}>
           {COLS.map((col) => (
             <div key={col.title}>
               <div
@@ -61,17 +61,19 @@ export default function Footer() {
 
               {col.desc ? (
                 <>
-                  <p
-                    style={{
-                      fontFamily: 'var(--font-body)',
-                      fontSize: '13px',
-                      color: 'var(--text-secondary)',
-                      lineHeight: 1.6,
-                      marginBottom: '16px',
-                    }}
-                  >
-                    {col.desc}
-                  </p>
+                  {!isMobile ? (
+                    <p
+                      style={{
+                        fontFamily: 'var(--font-body)',
+                        fontSize: '13px',
+                        color: 'var(--text-secondary)',
+                        lineHeight: 1.6,
+                        marginBottom: '16px',
+                      }}
+                    >
+                      {col.desc}
+                    </p>
+                  ) : null}
                   <div
                     style={{
                       display: 'flex',
@@ -152,41 +154,43 @@ export default function Footer() {
         </div>
 
         {/* Logo watermark */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'baseline',
-            gap: '12px',
-            margin: '64px 0 48px',
-            userSelect: 'none',
-            pointerEvents: 'none',
-          }}
-        >
-          <span
+        {!isMobile ? (
+          <div
             style={{
-              fontFamily: 'var(--font-mono)',
-              fontWeight: 400,
-              fontSize: 'clamp(64px, 12vw, 160px)',
-              color: 'var(--bg-border)',
-              letterSpacing: '-0.02em',
-              lineHeight: 1,
+              display: 'flex',
+              alignItems: 'baseline',
+              gap: '12px',
+              margin: '64px 0 48px',
+              userSelect: 'none',
+              pointerEvents: 'none',
             }}
           >
-            {'{*}'}
-          </span>
-          <span
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontWeight: 600,
-              fontSize: 'clamp(60px, 11vw, 150px)',
-              color: 'var(--bg-border)',
-              letterSpacing: '-0.02em',
-              lineHeight: 1,
-            }}
-          >
-            Sockt
-          </span>
-        </div>
+            <span
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontWeight: 400,
+                fontSize: 'clamp(64px, 12vw, 160px)',
+                color: 'var(--bg-border)',
+                letterSpacing: '-0.02em',
+                lineHeight: 1,
+              }}
+            >
+              {'{*}'}
+            </span>
+            <span
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontWeight: 600,
+                fontSize: 'clamp(60px, 11vw, 150px)',
+                color: 'var(--bg-border)',
+                letterSpacing: '-0.02em',
+                lineHeight: 1,
+              }}
+            >
+              Sockt
+            </span>
+          </div>
+        ) : null}
 
         {/* Bottom bar */}
         <div
@@ -195,7 +199,7 @@ export default function Footer() {
             justifyContent: 'space-between',
             alignItems: 'center',
             borderTop: '1px solid var(--bg-border)',
-            paddingTop: '24px',
+            paddingTop: isMobile ? '14px' : '24px',
           }}
         >
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--text-secondary)' }}>

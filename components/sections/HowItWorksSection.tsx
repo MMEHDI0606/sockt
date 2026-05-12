@@ -64,7 +64,7 @@ export default function HowItWorksSection() {
       id="use-cases"
       ref={sectionRef}
       style={{
-        padding: isMobile ? '96px 24px' : '140px 64px',
+        padding: isMobile ? '56px 16px' : '140px 64px',
         maxWidth: '1280px',
         margin: '0 auto',
         borderTop: '1px solid var(--bg-border)',
@@ -77,9 +77,11 @@ export default function HowItWorksSection() {
             <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-display)', fontWeight: 800, color: 'var(--text-primary)', lineHeight: 0.9 }}>
               USE CASES
             </h2>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: isMobile ? '15px' : '17px', color: 'var(--text-secondary)', marginTop: '12px', maxWidth: '760px', lineHeight: 1.7 }}>
-              Real workflows where an agent creates compute, pays in sats, executes tasks, and delivers output end-to-end.
-            </p>
+            {!isMobile ? (
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '17px', color: 'var(--text-secondary)', marginTop: '12px', maxWidth: '760px', lineHeight: 1.7 }}>
+                Real workflows where an agent creates compute, pays in sats, executes tasks, and delivers output end-to-end.
+              </p>
+            ) : null}
           </div>
         </div>
 
@@ -121,11 +123,11 @@ export default function HowItWorksSection() {
               </h3>
 
               <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '16px' }}>
-                {item.summary}
+                {isMobile ? `${item.summary.split('.')[0]}.` : item.summary}
               </p>
 
               <div style={{ borderTop: '1px solid var(--bg-border)', paddingTop: '14px' }}>
-                {item.steps.map((step) => (
+                {(isMobile ? item.steps.slice(0, 2) : item.steps).map((step) => (
                   <div key={step} style={{ display: 'flex', gap: '8px', alignItems: 'flex-start', marginBottom: '8px' }}>
                     <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--accent-btc)', lineHeight: 1.4 }}>
                       {'>'}

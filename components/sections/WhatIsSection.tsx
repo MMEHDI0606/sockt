@@ -82,13 +82,13 @@ export default function WhatIsSection() {
     <section
       ref={sectionRef}
       style={{
-        padding: isMobile ? '80px 24px' : '120px 64px',
+        padding: isMobile ? '56px 16px' : '120px 64px',
         maxWidth: '1280px',
         margin: '0 auto',
         borderTop: '1px solid var(--bg-border)',
       }}
     >
-      <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: isMobile ? '40px' : '80px', alignItems: 'center' }}>
+      <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: isMobile ? '20px' : '80px', alignItems: 'center' }}>
         {/* Left: counter + headline + body */}
         <div ref={leftRef} style={{ flex: isMobile ? '1 1 100%' : '0 0 55%' }}>
           {/* <span
@@ -108,11 +108,11 @@ export default function WhatIsSection() {
             className="what-is-headline"
             style={{
               fontFamily: 'var(--font-display)',
-              fontSize: 'var(--text-display)',
+              fontSize: isMobile ? 'clamp(28px, 10vw, 38px)' : 'var(--text-display)',
               fontWeight: 800,
               lineHeight: 0.9,
               color: 'var(--text-primary)',
-              marginBottom: '32px',
+              marginBottom: isMobile ? '18px' : '32px',
               clipPath: 'inset(0 0 0 0)',
             }}
           >
@@ -126,13 +126,15 @@ export default function WhatIsSection() {
           <p
             style={{
               fontFamily: 'var(--font-body)',
-              fontSize: '16px',
-              lineHeight: 1.7,
+              fontSize: isMobile ? '14px' : '16px',
+              lineHeight: isMobile ? 1.55 : 1.7,
               color: 'var(--text-secondary)',
-              marginBottom: '32px',
+              marginBottom: isMobile ? '14px' : '32px',
             }}
           >
-            Sockt is the compute layer your agents actually pay for. They open a Lightning channel, provision GPU capacity, and settle per epoch — no human in the loop. Not on Lightning yet? Log in on the website, generate a Sockt api_key, and run the same sandbox lifecycle with credit-based billing.
+            {isMobile
+              ? 'Agents spin up compute, pay, run jobs, and shut down automatically.'
+              : 'Sockt is the compute layer your agents actually pay for. They open a Lightning channel, provision GPU capacity, and settle per epoch — no human in the loop. Not on Lightning yet? Log in on the website, generate a Sockt api_key, and run the same sandbox lifecycle with credit-based billing.'}
           </p>
 
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
@@ -149,24 +151,27 @@ export default function WhatIsSection() {
             >
               ⚡ Lightning settled
             </span>
-            <span
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '12px',
-                color: 'var(--text-secondary)',
-                border: '1px solid var(--bg-border)',
-                padding: '5px 12px',
-                borderRadius: '100px',
-                letterSpacing: '0.04em',
-              }}
-            >
-              🔑 Dashboard api_key, credits billing
-            </span>
+            {!isMobile ? (
+              <span
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '12px',
+                  color: 'var(--text-secondary)',
+                  border: '1px solid var(--bg-border)',
+                  padding: '5px 12px',
+                  borderRadius: '100px',
+                  letterSpacing: '0.04em',
+                }}
+              >
+                🔑 Dashboard api_key, credits billing
+              </span>
+            ) : null}
           </div>
         </div>
 
         {/* Right: console */}
-        <div ref={rightRef} style={{ flex: 1, width: '100%', paddingTop: isMobile ? '0' : '16px' }}>
+        {!isMobile ? (
+          <div ref={rightRef} style={{ flex: 1, width: '100%', paddingTop: '16px' }}>
           <div
             style={{
               fontFamily: 'var(--font-mono)',
@@ -206,7 +211,8 @@ export default function WhatIsSection() {
             ))}
             <span className="cursor-blink" style={{ color: 'var(--accent-green)', fontFamily: 'var(--font-mono)' }}>_</span>
           </div>
-        </div>
+          </div>
+        ) : null}
       </div>
     </section>
   );

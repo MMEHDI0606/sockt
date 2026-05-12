@@ -48,12 +48,12 @@ export default function CTASection() {
     <section
       ref={sectionRef}
       style={{
-        minHeight: '100vh',
+        minHeight: isMobile ? '70vh' : '100vh',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: isMobile ? '80px 24px' : '120px 64px',
+        padding: isMobile ? '56px 16px' : '120px 64px',
         maxWidth: '1280px',
         margin: '0 auto',
         borderTop: '1px solid var(--bg-border)',
@@ -67,7 +67,7 @@ export default function CTASection() {
           fontWeight: 800,
           lineHeight: isMobile ? 0.98 : 0.92,
           color: 'var(--text-primary)',
-          marginBottom: isMobile ? '36px' : '56px',
+          marginBottom: isMobile ? '24px' : '56px',
         }}
       >
         {LINES.map((line, li) => (
@@ -86,7 +86,7 @@ export default function CTASection() {
         ))}
       </h2>
 
-      <div className="cta-sub" style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '16px', marginBottom: '24px', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}>
+      <div className="cta-sub" style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '12px', marginBottom: isMobile ? '12px' : '24px', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}>
         <Link
           href="/sandbox"
           style={{
@@ -134,17 +134,19 @@ export default function CTASection() {
         </Link>
       </div>
 
-      <span
-        className="cta-sub"
-        style={{
-          fontFamily: 'var(--font-mono)',
-          fontSize: '11px',
-          color: 'var(--text-secondary)',
-          letterSpacing: '0.08em',
-        }}
-      >
-        Agent autonomously creates a sandbox, pays for compute in sats, runs the task, and terminates.
-      </span>
+      {!isMobile ? (
+        <span
+          className="cta-sub"
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: '11px',
+            color: 'var(--text-secondary)',
+            letterSpacing: '0.08em',
+          }}
+        >
+          Agent autonomously creates a sandbox, pays for compute in sats, runs the task, and terminates.
+        </span>
+      ) : null}
     </section>
   );
 }

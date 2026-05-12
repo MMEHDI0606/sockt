@@ -197,6 +197,7 @@ export default function PricingSection() {
                 color: 'var(--text-secondary)',
                 marginTop: isMobile ? '4px' : '6px',
                 minHeight: isMobile ? '14px' : '18px',
+                display: isMobile ? 'none' : 'block',
               }}
             >
               {isSats ? tier.satsAlt : tier.usdAlt}
