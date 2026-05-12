@@ -19,26 +19,26 @@ type Tier = {
 const CPU_TIERS: Tier[] = [
   {
     name: 'Nano',
-    usd: '$0.000012',
-    sats: '14 msats',
-    usdAlt: '≈ $0.04 / hr',
-    satsAlt: '≈ 51 sats / hr',
+    usd: '$0.0000125',
+    sats: '20.62 msats',
+    usdAlt: '$0.045 / hr',
+    satsAlt: '74,250 msats / hr',
     specs: ['1 vCPU', '2 GB RAM'],
   },
   {
     name: 'Micro',
-    usd: '$0.000023',
-    sats: '29 msats',
-    usdAlt: '≈ $0.08 / hr',
-    satsAlt: '≈ 103 sats / hr',
+    usd: '$0.000025',
+    sats: '41.25 msats',
+    usdAlt: '$0.090 / hr',
+    satsAlt: '148,500 msats / hr',
     specs: ['2 vCPU', '4 GB RAM'],
   },
   {
     name: 'Micro+',
-    usd: '$0.000047',
-    sats: '57 msats',
-    usdAlt: '≈ $0.17 / hr',
-    satsAlt: '≈ 205 sats / hr',
+    usd: '$0.000050',
+    sats: '82.50 msats',
+    usdAlt: '$0.180 / hr',
+    satsAlt: '297,000 msats / hr',
     specs: ['4 vCPU', '8 GB RAM'],
   },
 ];
@@ -48,20 +48,20 @@ const GPU_TIERS: Tier[] = [
     name: 'GPU Small',
     gpu: true,
     gpuBadge: 'RTX 5090',
-    usd: '$0.000350',
-    sats: '427 msats',
-    usdAlt: '≈ $1.26 / hr',
-    satsAlt: '≈ 1,539 sats / hr',
+    usd: '$0.000375',
+    sats: '618.75 msats',
+    usdAlt: '$1.350 / hr',
+    satsAlt: '2,227,500 msats / hr',
     specs: ['NVIDIA RTX 5090', '32 GB GDDR7 VRAM'],
   },
   {
     name: 'GPU Large',
     gpu: true,
     gpuBadge: 'A100',
-    usd: '$0.000583',
-    sats: '712 msats',
-    usdAlt: '≈ $2.10 / hr',
-    satsAlt: '≈ 2,565 sats / hr',
+    usd: '$0.000875',
+    sats: '1,443.75 msats',
+    usdAlt: '$3.150 / hr',
+    satsAlt: '5,197,500 msats / hr',
     specs: ['NVIDIA A100 PCIe', '80 GB HBM2e VRAM'],
   },
 ];
@@ -103,7 +103,7 @@ export default function PricingSection() {
           backgroundColor: 'var(--bg-surface)',
           border: `1px solid ${borderColor}`,
           borderRadius: '4px',
-          padding: isMobile ? '22px 20px' : '24px',
+          padding: isMobile ? '16px 14px' : '24px',
           position: 'relative',
           overflow: 'hidden',
           minHeight: '100%',
@@ -134,7 +134,7 @@ export default function PricingSection() {
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
-              marginBottom: '20px',
+              marginBottom: isMobile ? '12px' : '20px',
               flexWrap: 'wrap',
             }}
           >
@@ -168,11 +168,11 @@ export default function PricingSection() {
             ) : null}
           </div>
 
-          <div style={{ marginBottom: '20px' }}>
+          <div style={{ marginBottom: isMobile ? '12px' : '20px' }}>
             <div
               style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: isMobile ? '24px' : '26px',
+                fontSize: isMobile ? '20px' : '26px',
                 fontWeight: 700,
                 color: 'var(--text-primary)',
                 lineHeight: 1,
@@ -184,7 +184,7 @@ export default function PricingSection() {
             <div
               style={{
                 fontFamily: 'var(--font-mono)',
-                fontSize: '11px',
+                fontSize: isMobile ? '10px' : '11px',
                 color: 'var(--text-secondary)',
               }}
             >
@@ -193,10 +193,10 @@ export default function PricingSection() {
             <div
               style={{
                 fontFamily: 'var(--font-mono)',
-                fontSize: '12px',
+                fontSize: isMobile ? '10px' : '12px',
                 color: 'var(--text-secondary)',
-                marginTop: '6px',
-                minHeight: '18px',
+                marginTop: isMobile ? '4px' : '6px',
+                minHeight: isMobile ? '14px' : '18px',
               }}
             >
               {isSats ? tier.satsAlt : tier.usdAlt}
@@ -206,10 +206,10 @@ export default function PricingSection() {
           <div
             style={{
               borderTop: '1px solid var(--bg-border)',
-              paddingTop: '16px',
+              paddingTop: isMobile ? '10px' : '16px',
               display: 'flex',
               flexDirection: 'column',
-              gap: '8px',
+              gap: isMobile ? '6px' : '8px',
             }}
           >
             {tier.specs.map((spec) => {
@@ -224,7 +224,7 @@ export default function PricingSection() {
                     gap: '8px',
                     alignItems: 'flex-start',
                     fontFamily: 'var(--font-mono)',
-                    fontSize: '12px',
+                    fontSize: isMobile ? '11px' : '12px',
                     color: 'var(--text-secondary)',
                     lineHeight: 1.5,
                   }}
@@ -248,14 +248,14 @@ export default function PricingSection() {
       id="pricing"
       ref={sectionRef}
       style={{
-        padding: isMobile ? '80px 24px' : '120px 64px',
+        padding: isMobile ? '64px 16px' : '120px 64px',
         maxWidth: '1280px',
         margin: '0 auto',
         borderTop: '1px solid var(--bg-border)',
       }}
     >
       <div>
-        <div style={{ marginBottom: '48px' }}>
+        <div style={{ marginBottom: isMobile ? '28px' : '48px' }}>
           <div
             style={{
               fontFamily: 'var(--font-display)',
@@ -292,17 +292,19 @@ export default function PricingSection() {
           >
             Pay per second.<br />In USD or sats.
           </h2>
-          <p
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '13px',
-              color: 'var(--text-secondary)',
-              lineHeight: 1.7,
-              maxWidth: '540px',
-            }}
-          >
-            Billing starts when a sandbox is created and stops the moment it terminates. No minimums, no seats, no idle charges. Agents pay exactly for what they use.
-          </p>
+          {!isMobile ? (
+            <p
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '13px',
+                color: 'var(--text-secondary)',
+                lineHeight: 1.7,
+                maxWidth: '540px',
+              }}
+            >
+              Billing starts when a sandbox is created and stops the moment it terminates. No minimums, no seats, no idle charges. Agents pay exactly for what they use.
+            </p>
+          ) : null}
         </div>
 
         <div
@@ -310,7 +312,7 @@ export default function PricingSection() {
             display: 'flex',
             alignItems: 'center',
             gap: '16px',
-            marginBottom: '48px',
+            marginBottom: isMobile ? '24px' : '48px',
             flexWrap: isMobile ? 'wrap' : 'nowrap',
           }}
         >
@@ -380,19 +382,7 @@ export default function PricingSection() {
           >
             SATS ₿
           </span>
-          <div
-            style={{
-              marginLeft: isMobile ? '0' : 'auto',
-              fontFamily: 'var(--font-mono)',
-              fontSize: '11px',
-              color: 'var(--text-secondary)',
-              display: isMobile ? 'none' : 'flex',
-              alignItems: 'center',
-              gap: '6px',
-            }}
-          >
-            sats floor priced at <span style={{ color: 'var(--accent-btc)' }}>$50,000/BTC</span> — volatile-safe margins
-          </div>
+          <div style={{ marginLeft: isMobile ? '0' : 'auto' }} />
         </div>
 
         <div
@@ -416,8 +406,8 @@ export default function PricingSection() {
           style={{
             display: 'grid',
             gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(240px, 1fr))',
-            gap: '12px',
-            marginBottom: '40px',
+            gap: isMobile ? '8px' : '12px',
+            marginBottom: isMobile ? '24px' : '40px',
           }}
         >
           {CPU_TIERS.map(renderTierCard)}
@@ -450,57 +440,10 @@ export default function PricingSection() {
           style={{
             display: 'grid',
             gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(240px, 1fr))',
-            gap: '12px',
+            gap: isMobile ? '8px' : '12px',
           }}
         >
           {GPU_TIERS.map(renderTierCard)}
-        </div>
-
-        <div
-          style={{
-            marginTop: '48px',
-            border: '1px solid var(--bg-border)',
-            borderLeft: '2px solid var(--accent-btc)',
-            padding: isMobile ? '18px 20px' : '20px 24px',
-            background: 'rgba(247, 147, 26, 0.03)',
-            borderRadius: '2px',
-          }}
-        >
-          <div
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '10px',
-              letterSpacing: '0.25em',
-              textTransform: 'uppercase',
-              color: 'var(--accent-btc)',
-              marginBottom: '10px',
-            }}
-          >
-            Sats conversion formula
-          </div>
-          <code
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '13px',
-              color: 'var(--text-primary)',
-              display: 'block',
-              lineHeight: 1.8,
-              whiteSpace: 'normal',
-            }}
-          >
-            USD Amount = (Sats × BTC Price in USD) ÷ 100,000,000
-          </code>
-          <p
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '11px',
-              color: 'var(--text-secondary)',
-              marginTop: '10px',
-              lineHeight: 1.6,
-            }}
-          >
-            Sat prices are calculated using a conservative floor of $50,000/BTC to ensure agents are never undercharged during BTC volatility. Current BTC ≈ $81,224. The sat rate will not change with market price — it is fixed at issuance.
-          </p>
         </div>
       </div>
     </section>
