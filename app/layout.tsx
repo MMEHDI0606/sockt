@@ -43,6 +43,11 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  verification: {
+    other: {
+      'msvalidate.01': '5E288081AE005BFF3B6F06BF9AD578F3',
+    },
+  },
   icons: {
     icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }],
   },
