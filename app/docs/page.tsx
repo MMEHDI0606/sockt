@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import Nav from '@/components/nav/Nav';
 
 type Section = 'overview' | 'mcp' | 'sdk' | 'sandbox' | 'billing';
@@ -376,6 +377,34 @@ export default function DocsPage() {
           </div>
         </div>
 
+        <div
+          style={{
+            marginTop: '44px',
+            paddingTop: '24px',
+            borderTop: '1px solid var(--bg-border)',
+          }}
+        >
+          <div
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: '11px',
+              color: 'var(--text-secondary)',
+              letterSpacing: '0.08em',
+              marginBottom: '10px',
+            }}
+          >
+            RELATED
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+            <Link href="/pricing" style={relatedLinkStyle}>Pricing</Link>
+            <Link href="/sdk" style={relatedLinkStyle}>SDK overview</Link>
+            <Link href="/use-cases" style={relatedLinkStyle}>Use cases</Link>
+            <Link href="/" style={relatedLinkStyle}>Homepage</Link>
+            <Link href="/terms" style={relatedLinkStyle}>Terms</Link>
+            <Link href="/privacy" style={relatedLinkStyle}>Privacy</Link>
+          </div>
+        </div>
+
       </div>
     </div>
   );
@@ -456,4 +485,14 @@ const tdStyle: React.CSSProperties = {
   color: 'var(--text-secondary)',
   lineHeight: 1.5,
   verticalAlign: 'top',
+};
+
+const relatedLinkStyle: React.CSSProperties = {
+  fontFamily: 'var(--font-mono)',
+  fontSize: '12px',
+  color: 'var(--text-secondary)',
+  border: '1px solid var(--bg-border)',
+  padding: '8px 12px',
+  borderRadius: '4px',
+  letterSpacing: '0.05em',
 };

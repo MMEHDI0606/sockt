@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import Script from 'next/script';
 import Nav from '@/components/nav/Nav';
 import HeroSection from '@/components/hero/HeroSection';
@@ -61,6 +62,41 @@ export default function Home() {
         <PricingSection />
         {/* <SDKSection /> */}
         <FallbackSection />
+        <section
+          style={{
+            maxWidth: '1280px',
+            margin: '0 auto',
+            padding: '44px 16px',
+            borderTop: '1px solid var(--bg-border)',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '10px',
+              alignItems: 'center',
+            }}
+          >
+            <span
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '11px',
+                color: 'var(--text-secondary)',
+                letterSpacing: '0.08em',
+                marginRight: '6px',
+              }}
+            >
+              EXPLORE
+            </span>
+            <Link href="/docs" style={quickLinkStyle}>Docs</Link>
+            <Link href="/pricing" style={quickLinkStyle}>Pricing</Link>
+            <Link href="/sdk" style={quickLinkStyle}>SDK</Link>
+            <Link href="/use-cases" style={quickLinkStyle}>Use Cases</Link>
+            <Link href="/terms" style={quickLinkStyle}>Terms</Link>
+            <Link href="/privacy" style={quickLinkStyle}>Privacy</Link>
+          </div>
+        </section>
         {/* <TrustedBySection /> */}
         <CTASection />
       </main>
@@ -68,3 +104,13 @@ export default function Home() {
     </>
   );
 }
+
+const quickLinkStyle: React.CSSProperties = {
+  fontFamily: 'var(--font-mono)',
+  fontSize: '12px',
+  color: 'var(--text-secondary)',
+  border: '1px solid var(--bg-border)',
+  padding: '8px 12px',
+  borderRadius: '4px',
+  letterSpacing: '0.05em',
+};
