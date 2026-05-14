@@ -5,16 +5,13 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sockt.dev';
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes = [
     '/',
+    '/about',
     '/docs',
     '/pricing',
-    '/privacy',
     '/sdk',
-    '/stack',
-    '/terms',
     '/use-cases',
-    '/flow',
-    '/login',
-    '/signup',
+    '/privacy',
+    '/terms',
   ];
 
   const now = new Date();
