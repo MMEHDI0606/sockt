@@ -48,12 +48,12 @@ export default function CTASection() {
     <section
       ref={sectionRef}
       style={{
-        minHeight: isMobile ? '70vh' : '100vh',
+        minHeight: isMobile ? 'auto' : '100vh',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
-        padding: isMobile ? '56px 16px' : '120px 64px',
+        justifyContent: isMobile ? 'flex-start' : 'center',
+        padding: isMobile ? '36px 16px' : '120px 64px',
         maxWidth: '1280px',
         margin: '0 auto',
         borderTop: '1px solid var(--bg-border)',

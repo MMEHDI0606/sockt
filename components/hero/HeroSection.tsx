@@ -55,7 +55,7 @@ export default function HeroSection() {
     <section
       ref={sectionRef}
       style={{
-        minHeight: '100vh',
+        minHeight: isMobile ? 'auto' : '100vh',
         paddingTop: '67px',
         display: 'flex',
         flexDirection: 'column',
@@ -63,7 +63,7 @@ export default function HeroSection() {
       }}
     >
       <div
-        className="flex-1 flex justify-center px-[16px] pt-[32px] pb-[56px] md:px-[64px] md:pt-[80px] md:pb-[120px] max-w-[1280px] mx-auto w-full"
+        className="flex-1 flex justify-center px-[16px] pt-[24px] pb-[20px] md:px-[64px] md:pt-[80px] md:pb-[120px] max-w-[1280px] mx-auto w-full"
       >
         <div
           className="flex flex-col md:flex-row gap-[24px] md:gap-[80px] items-start w-full"
