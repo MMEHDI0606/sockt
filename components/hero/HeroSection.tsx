@@ -6,8 +6,8 @@ import gsap from 'gsap';
 import HeroConsole from './HeroConsole';
 import { useIsMobile } from '@/hooks/useIsMobile';
 
-const HEADLINE_TEXT = 'COMPUTE FOR AGENTS THAT PAY IN SATS.';
-const TAGLINE = 'Agents create compute, pay, run, and terminate on their own.';
+const HEADLINE_TEXT = 'AI AGENT COMPUTE PAID IN SATS.';
+const TAGLINE = 'Provision GPU and CPU sandboxes, settle over Lightning, run workloads, and terminate automatically.';
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);

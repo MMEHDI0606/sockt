@@ -1,4 +1,20 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy',
+  description:
+    'Read Sockt privacy policy for data handling, authentication metadata, usage data, and support contact details.',
+  alternates: {
+    canonical: '/privacy',
+  },
+  openGraph: {
+    title: 'Sockt Privacy Policy',
+    description: 'How Sockt handles service data, billing metadata, and privacy requests.',
+    url: '/privacy',
+    type: 'article',
+  },
+};
 
 export default function PrivacyPage() {
   return (
