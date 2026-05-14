@@ -67,6 +67,11 @@ export default function FallbackSection() {
   const isMobile = useIsMobile();
 
   useEffect(() => {
+    if (isMobile) {
+      setVisibleSteps(STEPS.length);
+      return;
+    }
+
     const trigger = ScrollTrigger.create({
       trigger: sectionRef.current,
       start: 'top 60%',
@@ -81,7 +86,7 @@ export default function FallbackSection() {
       once: true,
     });
     return () => trigger.kill();
-  }, []);
+  }, [isMobile]);
 
   return (
     <section
@@ -123,9 +128,9 @@ export default function FallbackSection() {
               style={{
                 display: 'flex',
                 gap: '0',
-                opacity: i < visibleSteps ? 1 : 0,
-                transform: i < visibleSteps ? 'translateY(0)' : 'translateY(12px)',
-                transition: 'opacity 0.35s ease, transform 0.35s ease',
+                opacity: isMobile || i < visibleSteps ? 1 : 0,
+                transform: isMobile || i < visibleSteps ? 'translateY(0)' : 'translateY(12px)',
+                transition: isMobile ? 'none' : 'opacity 0.35s ease, transform 0.35s ease',
               }}
             >
               {/* Timeline */}

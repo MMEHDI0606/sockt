@@ -42,6 +42,8 @@ export default function HowItWorksSection() {
   const isMobile = useIsMobile();
 
   useEffect(() => {
+    if (isMobile) return;
+
     const ctx = gsap.context(() => {
       gsap.from('.use-case-card', {
         opacity: 0,
@@ -57,7 +59,7 @@ export default function HowItWorksSection() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [isMobile]);
 
   return (
     <section
@@ -103,9 +105,11 @@ export default function HowItWorksSection() {
                 padding: isMobile ? '22px' : '28px',
               }}
               onMouseEnter={(e) => {
+                if (isMobile) return;
                 gsap.to(e.currentTarget, { y: -5, borderColor: 'var(--accent-sats)', duration: 0.2 });
               }}
               onMouseLeave={(e) => {
+                if (isMobile) return;
                 gsap.to(e.currentTarget, { y: 0, borderColor: 'var(--bg-border)', duration: 0.2 });
               }}
             >

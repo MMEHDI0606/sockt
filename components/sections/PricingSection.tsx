@@ -73,6 +73,8 @@ export default function PricingSection() {
   const gpuAccent = 'var(--accent-btc)';
 
   useEffect(() => {
+    if (isMobile) return;
+
     const ctx = gsap.context(() => {
       gsap.from('.pricing-card', {
         scale: 0.9,
@@ -89,7 +91,7 @@ export default function PricingSection() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [isMobile]);
 
   const renderTierCard = (tier: Tier) => {
     const accentColor = tier.gpu ? gpuAccent : 'var(--accent-green)';
@@ -110,9 +112,11 @@ export default function PricingSection() {
           boxShadow: tier.gpu ? 'inset 0 0 0 1px rgba(247, 147, 26, 0.08)' : 'none',
         }}
         onMouseEnter={(e) => {
+          if (isMobile) return;
           gsap.to(e.currentTarget, { y: -4, duration: 0.2 });
         }}
         onMouseLeave={(e) => {
+          if (isMobile) return;
           gsap.to(e.currentTarget, { y: 0, duration: 0.2 });
         }}
       >
