@@ -1,57 +1,70 @@
-'use client';
-
-import { useEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
+import type { Metadata, Viewport } from 'next';
+import SmoothScrollProvider from '@/components/providers/SmoothScrollProvider';
 import './globals.css';
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sockt.dev';
+
+export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: 'Sockt | Agent Compute Paid in Sats',
+    template: '%s | Sockt',
+  },
+  description:
+    'Autonomous AI infrastructure where agents provision compute, pay in sats, execute tasks, and terminate automatically.',
+  applicationName: 'Sockt',
+  keywords: [
+    'AI agents',
+    'agent infrastructure',
+    'lightning payments',
+    'bitcoin sats',
+    'gpu sandbox',
+    'autonomous compute',
+  ],
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    type: 'website',
+    url: '/',
+    title: 'Sockt | Agent Compute Paid in Sats',
+    description:
+      'Agents create compute sandboxes, pay via Lightning, run workloads, and shut down automatically.',
+    siteName: 'Sockt',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Sockt | Agent Compute Paid in Sats',
+    description:
+      'Autonomous agent compute with pay-per-second settlement in sats.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  verification: {
+    other: {
+      'msvalidate.01': '5E288081AE005BFF3B6F06BF9AD578F3',
+    },
+  },
+  icons: {
+    icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }],
+  },
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
+
 export default function RootLayout({ children }: { children: ReactNode }) {
-  const lenisRef = useRef<any>(null);
-
-  useEffect(() => {
-    let lenis: any;
-    let rafId: number;
-
-    async function initLenis() {
-      const { default: Lenis } = await import('lenis');
-      const { gsap } = await import('gsap');
-      const { ScrollTrigger } = await import('gsap/ScrollTrigger');
-      gsap.registerPlugin(ScrollTrigger);
-
-      lenis = new Lenis({
-        duration: 1.15,
-        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        smoothWheel: true,
-        wheelMultiplier: 0.85,
-      });
-
-      lenisRef.current = lenis;
-
-      function raf(time: number) {
-        lenis.raf(time);
-        ScrollTrigger.update();
-        rafId = requestAnimationFrame(raf);
-      }
-      rafId = requestAnimationFrame(raf);
-    }
-
-    initLenis();
-
-    return () => {
-      if (rafId) cancelAnimationFrame(rafId);
-      if (lenis) lenis.destroy();
-    };
-  }, []);
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <title>Sockt</title>
-        <meta name="description" content="Autonomous AI infrastructure. Agents procure compute resources, settle in milliseconds via Lightning, and scale without human intervention." />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-
-      </head>
-      <body>{children}</body>
+      <body>
+        <SmoothScrollProvider>{children}</SmoothScrollProvider>
+      </body>
     </html>
   );
 }

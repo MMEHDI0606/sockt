@@ -67,6 +67,11 @@ export default function FallbackSection() {
   const isMobile = useIsMobile();
 
   useEffect(() => {
+    if (isMobile) {
+      setVisibleSteps(STEPS.length);
+      return;
+    }
+
     const trigger = ScrollTrigger.create({
       trigger: sectionRef.current,
       start: 'top 60%',
@@ -81,13 +86,13 @@ export default function FallbackSection() {
       once: true,
     });
     return () => trigger.kill();
-  }, []);
+  }, [isMobile]);
 
   return (
     <section
       ref={sectionRef}
       style={{
-        padding: isMobile ? '80px 24px' : '120px 64px',
+        padding: isMobile ? '56px 16px' : '120px 64px',
         maxWidth: '1280px',
         margin: '0 auto',
         borderTop: '1px solid var(--bg-border)',
@@ -100,9 +105,11 @@ export default function FallbackSection() {
             <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-display)', fontWeight: 800, color: 'var(--text-primary)', lineHeight: 0.9 }}>
               AGENT IN ACTION
             </h2>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: '15px', color: 'var(--text-secondary)', marginTop: '12px', maxWidth: '560px' }}>
-              The agent autonomously creates a sandbox, pays in sats via its wallet, runs the job, and terminates — no human intervention.
-            </p>
+            {!isMobile ? (
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '15px', color: 'var(--text-secondary)', marginTop: '12px', maxWidth: '560px' }}>
+                The agent autonomously creates a sandbox, pays in sats via its wallet, runs the job, and terminates — no human intervention.
+              </p>
+            ) : null}
           </div>
         </div>
 
@@ -115,15 +122,15 @@ export default function FallbackSection() {
             gap: '0',
           }}
         >
-          {STEPS.map((step, i) => (
+          {(isMobile ? STEPS.slice(0, 4) : STEPS).map((step, i, steps) => (
             <div
               key={i}
               style={{
                 display: 'flex',
                 gap: '0',
-                opacity: i < visibleSteps ? 1 : 0,
-                transform: i < visibleSteps ? 'translateY(0)' : 'translateY(12px)',
-                transition: 'opacity 0.35s ease, transform 0.35s ease',
+                opacity: isMobile || i < visibleSteps ? 1 : 0,
+                transform: isMobile || i < visibleSteps ? 'translateY(0)' : 'translateY(12px)',
+                transition: isMobile ? 'none' : 'opacity 0.35s ease, transform 0.35s ease',
               }}
             >
               {/* Timeline */}
@@ -145,7 +152,7 @@ export default function FallbackSection() {
                 >
                   {step.icon}
                 </div>
-                {i < STEPS.length - 1 && (
+                {i < steps.length - 1 && (
                   <div
                     style={{
                       width: '1px',
@@ -158,7 +165,7 @@ export default function FallbackSection() {
               </div>
 
               {/* Content */}
-              <div style={{ paddingLeft: '16px', paddingBottom: i < STEPS.length - 1 ? '24px' : '0', flex: 1 }}>
+              <div style={{ paddingLeft: isMobile ? '12px' : '16px', paddingBottom: i < steps.length - 1 ? (isMobile ? '16px' : '24px') : '0', flex: 1 }}>
                 <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '6px' }}>
                   <span
                     style={{
@@ -189,9 +196,9 @@ export default function FallbackSection() {
                 <p
                   style={{
                     fontFamily: step.mono ? 'var(--font-mono)' : 'var(--font-body)',
-                    fontSize: step.mono ? '12px' : '14px',
+                      fontSize: isMobile ? '12px' : step.mono ? '12px' : '14px',
                     color: step.mono ? 'var(--text-mono)' : 'var(--text-secondary)',
-                    lineHeight: 1.6,
+                      lineHeight: isMobile ? 1.45 : 1.6,
                     backgroundColor: step.mono ? 'var(--bg-surface)' : 'transparent',
                     border: step.mono ? '1px solid var(--bg-border)' : 'none',
                     borderRadius: step.mono ? '4px' : '0',
