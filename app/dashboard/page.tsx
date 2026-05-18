@@ -1,8 +1,10 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
-import { signOutAction } from '@/app/dashboard/actions';
+import { signOutAction, createTopupCheckoutAction } from '@/app/dashboard/actions';
 import ApiKeysPanel from '@/components/dashboard/ApiKeysPanel';
+import SyncCredits from './SyncCredits';
+import { Suspense } from 'react';
 
 type ApiKeyRow = {
   key_hash: string;
@@ -78,12 +80,25 @@ export default async function DashboardPage() {
 
         <div className="grid md:grid-cols-2 gap-6">
           <section className="border border-[var(--bg-border)] rounded-xl bg-[var(--bg-surface)] p-6">
-            <h2 className="text-[11px] font-mono text-[var(--accent-btc)] uppercase tracking-[0.2em] mb-4">
-              Balance
-            </h2>
+            <div className="flex justify-between items-start mb-4">
+              <h2 className="text-[11px] font-mono text-[var(--accent-btc)] uppercase tracking-[0.2em]">
+                Balance
+              </h2>
+              <form action={createTopupCheckoutAction}>
+                <button
+                  type="submit"
+                  className="px-3 py-1.5 border border-[var(--accent-btc)] text-[var(--accent-btc)] hover:bg-[var(--accent-btc)] hover:text-black rounded-lg text-xs font-mono tracking-wider transition-colors"
+                >
+                  TOP UP
+                </button>
+              </form>
+            </div>
             <p className="font-display text-5xl text-white">
               ${(balance / 100).toFixed(2)}
             </p>
+            <Suspense fallback={null}>
+              <SyncCredits currentBalance={balance} />
+            </Suspense>
           </section>
 
           <ApiKeysPanel initialKeys={apiKeys} />

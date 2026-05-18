@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { createHash } from 'crypto';
 import { createClient } from '@/utils/supabase/server';
+import { Polar } from '@polar-sh/sdk';
 
 type ActionResult = {
   ok: boolean;
@@ -28,7 +29,6 @@ async function getAuthenticatedClient() {
   if (!user) {
     throw new Error('Unauthorized');
   }
-
   return { supabase, user };
 }
 
@@ -106,8 +106,42 @@ export async function revokeApiKeyAction(keyId: string): Promise<ActionResult> {
   } catch (error) {
     return {
       ok: false,
-      error: error instanceof Error ? error.message : 'Unexpected error while revoking key.',
+      error: error instanceof Error ? error.message : 'Unexpected error while revoking API key.',
     };
+  }
+}
+
+export async function createTopupCheckoutAction() {
+  const { user } = await getAuthenticatedClient();
+
+  if (!process.env.POLAR_ACCESS_TOKEN) {
+    throw new Error('Missing POLAR_ACCESS_TOKEN');
+  }
+  
+  if (!process.env.POLAR_TOPUP_PRODUCT_ID) {
+    throw new Error('Missing POLAR_TOPUP_PRODUCT_ID');
+  }
+
+  const polar = new Polar({
+    accessToken: process.env.POLAR_ACCESS_TOKEN,
+    server: 'sandbox',
+  });
+
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+
+  const checkout = await polar.checkouts.create({
+    products: [process.env.POLAR_TOPUP_PRODUCT_ID],
+    successUrl: `${baseUrl}/dashboard?status=success&checkout_id={CHECKOUT_ID}`,
+    metadata: {
+      userId: user.id,
+    },
+    customerEmail: user.email,
+  });
+
+  if (checkout.url) {
+    redirect(checkout.url);
+  } else {
+    throw new Error('Failed to create Polar checkout session.');
   }
 }
 
