@@ -123,8 +123,7 @@ export async function createTopupCheckoutAction() {
   }
 
   const polar = new Polar({
-    accessToken: process.env.POLAR_ACCESS_TOKEN,
-    server: 'sandbox',
+    accessToken: process.env.POLAR_ACCESS_TOKEN
   });
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
