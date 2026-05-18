@@ -15,20 +15,28 @@ const NAV_ITEMS: { id: Section; label: string }[] = [
 ];
 
 const CODE = {
-  mcpJson: `{
+  cursorMcp: `{
   "mcpServers": {
     "sockt": {
       "url": "https://api.sockt.dev/v1/mcp"
     }
   }
 }`,
+  vscodeMcp: `{
+  "github.copilot.chat.mcpServers": {
+    "sockt": {
+      "url": "https://api.sockt.dev/v1/mcp"
+    }
+  }
+}`,
+  claudeCodeMcp: `claude mcp add sockt https://api.sockt.dev/v1/mcp`,
   walletMcp: `{
   "mcpServers": {
     "lnbot": {
       "type": "url",
-      "url": "https://api.ln.bot/v1/wallets/wal_sp28n1b9lj2ueemoip4n1qpxm3y0/mcp",
+      "url": "https://api.ln.bot/v1/wallets/wal_.../mcp",
       "headers": {
-        "Authorization": "Bearer uk_x53uqf3q7rl2zxom4zwmwet12lril07fhff7v4q3glbm7hoyprzlhf4rdeld"
+        "Authorization": "Bearer uk_..."
       }
     }
   }
@@ -254,8 +262,23 @@ export default function DocsPage() {
             <span style={mono}>https://api.sockt.dev/v1/mcp</span>.
           </p>
 
-          <h3 style={h3Style}>Sockt MCP Setup</h3>
-          <CodeBlock code={CODE.mcpJson} />
+          <h3 style={h3Style}>Claude Code</h3>
+          <p style={bodyText}>
+            Add the Sockt MCP server using the CLI:
+          </p>
+          <CodeBlock code={CODE.claudeCodeMcp} />
+
+          <h3 style={h3Style}>VS Code (GitHub Copilot)</h3>
+          <p style={bodyText}>
+            Add the server in your VS Code <span style={mono}>settings.json</span>:
+          </p>
+          <CodeBlock code={CODE.vscodeMcp} />
+
+          <h3 style={h3Style}>Cursor</h3>
+          <p style={bodyText}>
+            Add via Settings &gt; Features &gt; MCP Servers, or configure in <span style={mono}>.cursor/mcp.json</span>:
+          </p>
+          <CodeBlock code={CODE.cursorMcp} />
 
           <h3 style={h3Style}>External Wallet MCP (Example: lnbot)</h3>
           <p style={bodyText}>

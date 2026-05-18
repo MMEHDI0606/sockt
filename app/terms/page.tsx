@@ -35,7 +35,7 @@ export default function TermsPage() {
           Terms & Conditions
         </h1>
         <p style={{ ...pStyle, fontSize: '0.9rem', color: 'var(--text-tertiary)' }}>Last Updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
-        
+
         <p style={pStyle}>
           Welcome to Sockt. By accessing or using our platform, website, and services, you agree to comply with and be bound by the following Terms and Conditions ("Terms"). If you do not agree to these Terms, please do not use our services.
         </p>
@@ -91,7 +91,7 @@ export default function TermsPage() {
         <p style={{ ...pStyle, marginTop: '48px' }}>
           For support or legal inquiries, please contact us at <a href="mailto:hello@sockt.dev" style={{ color: 'var(--accent-btc)', textDecoration: 'underline' }}>hello@sockt.dev</a>.
         </p>
-        
+
         <Link
           href="/"
           style={{
