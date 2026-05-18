@@ -86,14 +86,14 @@ export default function HowItWorksSection({ hideViewAll = false }: { hideViewAll
             ) : null}
           </div>
           {!hideViewAll && (
-            <Link 
+            <Link
               href="/use-cases"
-              style={{ 
-                display: 'inline-flex', 
-                alignItems: 'center', 
-                fontFamily: 'var(--font-mono)', 
-                fontSize: '13px', 
-                color: 'var(--accent-amber)', 
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '13px',
+                color: 'var(--accent-amber)',
                 textDecoration: 'none',
                 padding: '10px 20px',
                 border: '1px solid var(--accent-amber)',

@@ -110,9 +110,9 @@ export default function Footer() {
                     };
 
                     const href = routeMap[item] ?? '/';
-                    
+
                     const isExternal = href.startsWith('http') || href.startsWith('mailto');
-                    
+
                     return isExternal ? (
                       <a
                         key={item}
