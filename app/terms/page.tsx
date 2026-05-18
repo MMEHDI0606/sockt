@@ -1,20 +1,4 @@
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Terms and Conditions',
-  description:
-    'Review Sockt terms and conditions covering platform usage, billing, and service availability.',
-  alternates: {
-    canonical: '/terms',
-  },
-  openGraph: {
-    title: 'Sockt Terms and Conditions',
-    description: 'Terms for using Sockt autonomous agent compute services.',
-    url: '/terms',
-    type: 'article',
-  },
-};
 
 export default function TermsPage() {
   const pStyle = { fontFamily: 'var(--font-body)', color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '24px' };

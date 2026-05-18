@@ -23,7 +23,7 @@ export default function CTASection() {
           stagger: 0.012,
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: 'top 60%',
+            start: 'top 70%',
           },
         });
       }
@@ -36,7 +36,7 @@ export default function CTASection() {
         delay: 0.6,
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 60%',
+          start: 'top 70%',
         },
       });
     }, sectionRef);
@@ -48,12 +48,12 @@ export default function CTASection() {
     <section
       ref={sectionRef}
       style={{
-        minHeight: isMobile ? 'auto' : '100vh',
+        minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: isMobile ? 'flex-start' : 'center',
-        padding: isMobile ? '36px 16px' : '120px 64px',
+        justifyContent: 'center',
+        padding: isMobile ? '80px 24px' : '120px 64px',
         maxWidth: '1280px',
         margin: '0 auto',
         borderTop: '1px solid var(--bg-border)',
@@ -67,7 +67,7 @@ export default function CTASection() {
           fontWeight: 800,
           lineHeight: isMobile ? 0.98 : 0.92,
           color: 'var(--text-primary)',
-          marginBottom: isMobile ? '24px' : '56px',
+          marginBottom: isMobile ? '36px' : '56px',
         }}
       >
         {LINES.map((line, li) => (
@@ -86,7 +86,7 @@ export default function CTASection() {
         ))}
       </h2>
 
-      <div className="cta-sub" style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '12px', marginBottom: isMobile ? '12px' : '24px', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}>
+      <div className="cta-sub" style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '16px', marginBottom: '24px', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}>
         <Link
           href="/docs"
           style={{
@@ -101,14 +101,8 @@ export default function CTASection() {
             display: 'inline-block',
             cursor: 'pointer',
           }}
-          onMouseEnter={(e) => {
-            gsap.to(e.currentTarget, { scale: 1.05, boxShadow: '0 0 20px rgba(247, 147, 26, 0.4)', duration: 0.2 });
-          }}
-          onMouseLeave={(e) => {
-            gsap.to(e.currentTarget, { scale: 1, boxShadow: 'none', duration: 0.2 });
-          }}
         >
-          Start Sandbox
+          Let Agent Create + Pay Sandbox →
         </Link>
         <Link
           href="/signup"
@@ -123,30 +117,22 @@ export default function CTASection() {
             display: 'inline-block',
             cursor: 'pointer',
           }}
-          onMouseEnter={(e) => {
-            gsap.to(e.currentTarget, { color: 'var(--text-primary)', borderColor: 'var(--text-secondary)', duration: 0.2 });
-          }}
-          onMouseLeave={(e) => {
-            gsap.to(e.currentTarget, { color: 'var(--text-secondary)', borderColor: 'var(--bg-border)', duration: 0.2 });
-          }}
         >
           Start with api_key →
         </Link>
       </div>
 
-      {!isMobile ? (
-        <span
-          className="cta-sub"
-          style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: '11px',
-            color: 'var(--text-secondary)',
-            letterSpacing: '0.08em',
-          }}
-        >
-          Agent autonomously creates a sandbox, pays for compute in sats, runs the task, and terminates.
-        </span>
-      ) : null}
+      <span
+        className="cta-sub"
+        style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: '11px',
+          color: 'var(--text-secondary)',
+          letterSpacing: '0.08em',
+        }}
+      >
+        Agent autonomously creates a sandbox, pays for compute in sats, runs the task, and terminates.
+      </span>
     </section>
   );
 }

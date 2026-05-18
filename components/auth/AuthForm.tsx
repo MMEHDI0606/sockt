@@ -29,11 +29,13 @@ export default function AuthForm({ mode }: AuthFormProps) {
     setError(null);
     setMessage(null);
 
+    const normalizedEmail = email.trim().toLowerCase();
+
     const supabase = createClient();
 
     if (isLogin) {
       const { error: signInError } = await supabase.auth.signInWithPassword({
-        email,
+        email: normalizedEmail,
         password,
       });
 
@@ -49,7 +51,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
     }
 
     const { data, error: signUpError } = await supabase.auth.signUp({
-      email,
+      email: normalizedEmail,
       password,
       options: {
         emailRedirectTo: typeof window !== 'undefined' ? `${window.location.origin}/dashboard` : undefined,
@@ -58,6 +60,13 @@ export default function AuthForm({ mode }: AuthFormProps) {
 
     if (signUpError) {
       setError(signUpError.message);
+      setBusy(false);
+      return;
+    }
+
+    // Supabase can return an obfuscated "success" for existing users when email confirmation is enabled.
+    if (data.user && !data.session && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
+      setError('An account with this email already exists. Please log in instead.');
       setBusy(false);
       return;
     }
@@ -140,6 +149,17 @@ export default function AuthForm({ mode }: AuthFormProps) {
           >
             {busy ? 'PROCESSING...' : isLogin ? 'SIGN IN' : 'CREATE ACCOUNT'}
           </button>
+
+          {isLogin && (
+            <div className="text-right">
+              <Link
+                href="/forgot-password"
+                className="text-[var(--accent-btc)] text-xs font-mono hover:underline decoration-1 underline-offset-4"
+              >
+                Forgot password?
+              </Link>
+            </div>
+          )}
         </form>
 
         <p className="mt-8 text-center text-sm text-[var(--text-secondary)]">
