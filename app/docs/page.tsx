@@ -61,6 +61,8 @@ sandbox.terminate()`,
 const MCP_TOOLS = [
   { name: 'sandbox_create', desc: 'Provision a new sandbox on the specified tier. Returns sandbox ID and proxy URL.' },
   { name: 'sandbox_exec', desc: 'Run a shell command inside a sandbox. Returns stdout, stderr, and exit code.' },
+  { name: 'sandbox_exec_result', desc: 'Get the result of a background shell command.' },
+  { name: 'sandbox_exec_cancel', desc: 'Cancel a running shell command.' },
   { name: 'sandbox_write_file', desc: 'Write a file into the sandbox filesystem at a given path.' },
   { name: 'sandbox_read_file', desc: 'Read the contents of a file from the sandbox filesystem.' },
   { name: 'sandbox_list_files', desc: 'List files at a path inside the sandbox.' },
@@ -68,7 +70,6 @@ const MCP_TOOLS = [
   { name: 'sandbox_pause', desc: 'Pause billing and execution for an idle sandbox.' },
   { name: 'sandbox_resume', desc: 'Resume a paused sandbox.' },
   { name: 'sandbox_terminate', desc: 'Destroy the sandbox and stop billing.' },
-  { name: 'sandbox_extend_balance', desc: 'Add more sats or credits to a running sandbox.' },
 ];
 
 function CodeBlock({ code }: { code: string }) {
@@ -396,10 +397,10 @@ export default function DocsPage() {
             RELATED
           </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-            <Link href="/pricing" style={relatedLinkStyle}>Pricing</Link>
-            <Link href="/sdk" style={relatedLinkStyle}>SDK overview</Link>
-            <Link href="/use-cases" style={relatedLinkStyle}>Use cases</Link>
-            <Link href="/" style={relatedLinkStyle}>Homepage</Link>
+            <Link href="/#pricing" style={relatedLinkStyle}>Pricing</Link>
+            {/* <Link href="/sdk" style={relatedLinkStyle}>SDK overview</Link> */}
+            <Link href="/#use-cases" style={relatedLinkStyle}>Use cases</Link>
+            {/* <Link href="/" style={relatedLinkStyle}>Homepage</Link> */}
             <Link href="/terms" style={relatedLinkStyle}>Terms</Link>
             <Link href="/privacy" style={relatedLinkStyle}>Privacy</Link>
           </div>

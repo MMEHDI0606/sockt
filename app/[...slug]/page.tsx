@@ -1,11 +1,12 @@
 'use client';
 
+import { use } from 'react';
 import Link from 'next/link';
 
 type PageProps = {
-  params: {
+  params: Promise<{
     slug: string[];
-  };
+  }>;
 };
 
 function prettify(part: string): string {
@@ -17,7 +18,8 @@ function prettify(part: string): string {
 }
 
 export default function PlaceholderPage({ params }: PageProps) {
-  const slugParts = params.slug ?? [];
+  const resolvedParams = use(params);
+  const slugParts = resolvedParams.slug ?? [];
   const path = `/${slugParts.join('/')}`;
   const title = slugParts.map(prettify).join(' / ') || 'Page';
 
@@ -89,7 +91,7 @@ export default function PlaceholderPage({ params }: PageProps) {
             marginBottom: '28px',
           }}
         >
-          SOCKT / {slugParts.map(prettify).join(' / ').toUpperCase()}
+          SOCKT / NOT FOUND
         </p>
 
         {/* Headline */}
@@ -104,7 +106,7 @@ export default function PlaceholderPage({ params }: PageProps) {
             marginBottom: '40px',
           }}
         >
-          {title.toUpperCase()}.
+          404.
         </h1>
 
         {/* Divider */}
@@ -121,7 +123,7 @@ export default function PlaceholderPage({ params }: PageProps) {
             marginBottom: '20px',
           }}
         >
-          This page is scaffolded. Production content is on the way.
+          The page you're looking for doesn't exist or has been moved.
         </p>
         <p
           style={{

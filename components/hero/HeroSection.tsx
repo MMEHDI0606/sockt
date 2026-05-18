@@ -124,6 +124,25 @@ export default function HeroSection() {
               >
                 View Docs →
               </Link>
+              <Link
+                href="/about"
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '13px',
+                  backgroundColor: 'transparent',
+                  color: 'var(--text-primary)',
+                  padding: '11px 24px',
+                  borderRadius: '4px',
+                  fontWeight: 600,
+                  letterSpacing: '0.04em',
+                  border: '1px solid var(--text-tertiary)',
+                  cursor: 'pointer',
+                  display: 'inline-block',
+                  transition: 'border-color 0.2s ease',
+                }}
+              >
+                Learn More →
+              </Link>
               {/* <Link
                 href="/flow"
                 style={{

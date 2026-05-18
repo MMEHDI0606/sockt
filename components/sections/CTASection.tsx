@@ -88,7 +88,7 @@ export default function CTASection() {
 
       <div className="cta-sub" style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '12px', marginBottom: isMobile ? '12px' : '24px', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}>
         <Link
-          href="/sandbox"
+          href="/docs"
           style={{
             fontFamily: 'var(--font-mono)',
             fontSize: isMobile ? '13px' : '15px',

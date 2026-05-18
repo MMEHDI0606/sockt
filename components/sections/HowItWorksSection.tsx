@@ -1,5 +1,6 @@
 ﻿'use client';
 
+import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { useIsMobile } from '@/hooks/useIsMobile';
@@ -37,7 +38,7 @@ const USE_CASES = [
   },
 ];
 
-export default function HowItWorksSection() {
+export default function HowItWorksSection({ hideViewAll = false }: { hideViewAll?: boolean }) {
   const sectionRef = useRef<HTMLElement>(null);
   const isMobile = useIsMobile();
 
@@ -73,8 +74,7 @@ export default function HowItWorksSection() {
       }}
     >
       <div>
-        <div style={{ display: 'flex', alignItems: 'flex-end', gap: '24px', marginBottom: isMobile ? '42px' : '72px' }}>
-          {/* <span style={{ fontFamily: 'var(--font-mono)', fontSize: isMobile ? '48px' : '72px', color: 'var(--bg-border)', lineHeight: 1 }}>03</span> */}
+        <div style={{ display: 'flex', alignItems: isMobile ? 'flex-start' : 'center', justifyContent: 'space-between', flexDirection: isMobile ? 'column' : 'row', gap: '24px', marginBottom: isMobile ? '42px' : '72px' }}>
           <div>
             <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-display)', fontWeight: 800, color: 'var(--text-primary)', lineHeight: 0.9 }}>
               USE CASES
@@ -85,6 +85,35 @@ export default function HowItWorksSection() {
               </p>
             ) : null}
           </div>
+          {!hideViewAll && (
+            <Link 
+              href="/use-cases"
+              style={{ 
+                display: 'inline-flex', 
+                alignItems: 'center', 
+                fontFamily: 'var(--font-mono)', 
+                fontSize: '13px', 
+                color: 'var(--accent-amber)', 
+                textDecoration: 'none',
+                padding: '10px 20px',
+                border: '1px solid var(--accent-amber)',
+                backgroundColor: 'transparent',
+                borderRadius: '4px',
+                whiteSpace: 'nowrap',
+                transition: 'background-color 0.2s, color 0.2s'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = 'var(--accent-amber)';
+                e.currentTarget.style.color = 'var(--bg-void)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'transparent';
+                e.currentTarget.style.color = 'var(--accent-amber)';
+              }}
+            >
+              DEEP DIVE →
+            </Link>
+          )}
         </div>
 
         <div

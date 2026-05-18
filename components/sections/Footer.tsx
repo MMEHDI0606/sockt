@@ -203,7 +203,7 @@ export default function Footer() {
           }}
         >
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--text-secondary)' }}>
-            © 2025 Sockt
+            © {new Date().getFullYear()} Sockt
           </span>
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--text-secondary)' }}>
             Built on Bitcoin.

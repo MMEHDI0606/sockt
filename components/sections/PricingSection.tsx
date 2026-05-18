@@ -34,7 +34,7 @@ const CPU_TIERS: Tier[] = [
     specs: ['2 vCPU', '4 GB RAM'],
   },
   {
-    name: 'Micro+',
+    name: 'Standard',
     usd: '$0.000050',
     sats: '82.50 msats',
     usdAlt: '$0.180 / hr',
@@ -261,29 +261,7 @@ export default function PricingSection() {
     >
       <div>
         <div style={{ marginBottom: isMobile ? '28px' : '48px' }}>
-          <div
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: '11px',
-              letterSpacing: '0.25em',
-              textTransform: 'uppercase',
-              color: 'var(--accent-btc)',
-              marginBottom: '16px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-            }}
-          >
-            <span
-              style={{
-                display: 'block',
-                width: '24px',
-                height: '1px',
-                background: 'var(--accent-btc)',
-              }}
-            />
-            Pricing
-          </div>
+
           <h2
             style={{
               fontFamily: 'var(--font-display)',

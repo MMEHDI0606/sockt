@@ -1,6 +1,9 @@
+'use client';
+
 import Link from 'next/link';
 import Nav from '@/components/nav/Nav';
 import Footer from '@/components/sections/Footer';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sockt.dev';
 
@@ -42,6 +45,7 @@ const accentLinkStyle: React.CSSProperties = {
 };
 
 export default function AboutPage() {
+  const isMobile = useIsMobile();
   return (
     <>
       <script
@@ -93,7 +97,7 @@ export default function AboutPage() {
         >
           Sockt is autonomous AI compute infrastructure. We give AI agents the ability
           to provision on-demand compute sandboxes, pay per second using Bitcoin Lightning
-          (msats), execute tasks, and terminate — without human intervention.
+          (msats), execute tasks, and terminate — without human intervention. CPU and GPU tiers available, billed to the second.
         </p>
 
         {/* Mission */}
@@ -228,6 +232,94 @@ export default function AboutPage() {
           </p>
         </section>
 
+        {/* FAQ — structured for Google rich results */}
+        <section
+          style={{
+            marginBottom: '56px',
+            borderTop: '1px solid var(--bg-border)',
+            paddingTop: '56px',
+          }}
+        >
+          <p
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: '11px',
+              color: 'var(--accent-btc)',
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              marginBottom: '20px',
+            }}
+          >
+            FAQ
+          </p>
+          <h2
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(1.3rem, 3vw, 1.8rem)',
+              fontWeight: 700,
+              marginBottom: '32px',
+              color: 'var(--text-primary)',
+            }}
+          >
+            Frequently asked questions
+          </h2>
+          <dl style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+            {[
+              {
+                q: 'What is Sockt?',
+                a: 'Sockt is autonomous AI compute infrastructure. It lets AI agents provision on-demand CPU and GPU sandboxes, pay per second using Bitcoin Lightning (msats), run tasks, and terminate — without human involvement.',
+              },
+              {
+                q: 'How does billing work?',
+                a: 'Billing is per second. The agent pays a prepaid balance via Lightning invoice to start the sandbox. When the agent terminates it, the remaining amount is credited back to the agent\'s wallet.',
+              },
+              {
+                q: 'Can AI agents pay for compute autonomously?',
+                a: 'Yes. Sockt is designed for agent-native payment flows. Agents settle invoices programmatically over the Bitcoin Lightning Network in milliseconds — no human credit card or approval needed.',
+              },
+              {
+                q: 'What compute tiers are available?',
+                a: 'Sockt offers CPU tiers (Nano, Micro, Standard) and GPU tiers (GPU Small, GPU Large), all billed per second. Pricing is viewable in USD or millisatoshis (msats).',
+              },
+              {
+                q: 'How do I integrate Sockt into an agent?',
+                a: 'Sockt provides an MCP server and a TypeScript/Python SDK. Agents connect via the Model Context Protocol or import the SDK directly to provision sandboxes and manage compute.',
+              },
+            ].map(({ q, a }, i, arr) => (
+              <div
+                key={q}
+                style={{
+                  borderBottom: i < arr.length - 1 ? '1px solid var(--bg-border)' : 'none',
+                  padding: '20px 0',
+                }}
+              >
+                <dt
+                  style={{
+                    fontFamily: 'var(--font-display)',
+                    fontSize: '1rem',
+                    fontWeight: 600,
+                    color: 'var(--text-primary)',
+                    marginBottom: '8px',
+                  }}
+                >
+                  {q}
+                </dt>
+                <dd
+                  style={{
+                    fontFamily: 'var(--font-body)',
+                    fontSize: '0.95rem',
+                    lineHeight: 1.7,
+                    color: 'var(--text-secondary)',
+                    margin: 0,
+                  }}
+                >
+                  {a}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+
         {/* CTA links */}
         <section
           style={{
@@ -248,9 +340,8 @@ export default function AboutPage() {
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
             <Link href="/docs" style={accentLinkStyle}>Read the Docs</Link>
-            <Link href="/pricing" style={linkStyle}>View Pricing</Link>
-            <Link href="/sdk" style={linkStyle}>SDK Reference</Link>
-            <Link href="/use-cases" style={linkStyle}>Use Cases</Link>
+            <Link href="/#pricing" style={linkStyle}>View Pricing</Link>
+            <Link href="/#use-cases" style={linkStyle}>Use Cases</Link>
           </div>
         </section>
       </main>

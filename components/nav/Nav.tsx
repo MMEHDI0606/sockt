@@ -126,9 +126,10 @@ export default function Nav() {
             }}
           >
             {[
-              { label: 'Use Cases', href: '/#use-cases' },
+              // { label: 'Use Cases', href: '/#use-cases' },
               { label: 'Docs', href: '/docs' },
               { label: 'Pricing', href: '/#pricing' },
+              { label: 'About', href: '/about' },
             ].map((link) => (
               <Link
                 key={link.label}
