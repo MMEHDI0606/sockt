@@ -44,6 +44,8 @@
   --accent-sats:   #d9a060;
   --accent-green:  #22d07a;
   --accent-red:    #e53e3e;
+  --logo-mark-color: #c27a36;
+  --nav-glass: rgba(15, 15, 15, 0.6);
 
   /* Font families */
   --font-display:  'Geist', sans-serif;
@@ -64,6 +66,23 @@
   --text-xl:      clamp(1.25rem, 2vw, 1.75rem);
   --text-body:    1rem;
   --text-mono-sm: 0.75rem;
+}
+
+[data-theme='light'] {
+  --bg-void:     #f0ece4;
+  --bg-surface:  #f6f2ea;
+  --bg-raised:   #fbf8f2;
+  --bg-border:   #d8d1c5;
+
+  --text-primary:   #080808;
+  --text-secondary: #3f3b34;
+  --text-mono:      #2f2b25;
+
+  --accent-btc:     #f7931a;
+  --accent-amber:   #e88411;
+  --accent-sats:    #f7a53e;
+  --logo-mark-color: #f7931a;
+  --nav-glass: rgba(240, 236, 228, 0.78);
 }
 
 * {
