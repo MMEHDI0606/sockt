@@ -48,6 +48,7 @@ export default async function DashboardAccountPage() {
   const userInitials = initialsFromName(displayName);
 
   const navItems: Array<{ label: string; href: string; active?: boolean }> = [
+    { label: 'Home', href: '/' },
     { label: 'Dashboard', href: '/dashboard' },
     { label: 'Sandboxes', href: '/dashboard#sandboxes' },
     { label: 'Billing', href: '/dashboard#billing' },

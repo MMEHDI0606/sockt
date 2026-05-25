@@ -2,6 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Geist';
+  src: url('/fonts/Geist-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('/fonts/GeistMono-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist Pixel';
+  src: url('/fonts/GeistPixel-Square.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* Background family */
   --bg-void:     #080808;
@@ -29,12 +53,14 @@
   --dashboard-text:    #f2f2f2;
   --dashboard-muted:   #9a9a9a;
   --dashboard-accent:  #F7AC27;
+  --logo-mark-color:   #c27a36;
+  --nav-glass:         rgba(15, 15, 15, 0.6);
 
   /* Font families */
-  --font-display:  var(--font-geist-sans), sans-serif;
-  --font-body:     var(--font-geist-sans), sans-serif;
-  --font-mono:     var(--font-geist-mono), monospace;
-  --font-pixel:    var(--font-geist-pixel), monospace;
+  --font-display:  'Geist', sans-serif;
+  --font-body:     'Geist', sans-serif;
+  --font-mono:     'Geist Mono', monospace;
+  --font-pixel:    'Geist Pixel', monospace;
 
   /* Motion */
   --ease-expo:   cubic-bezier(0.16, 1, 0.3, 1);
@@ -59,6 +85,8 @@
   --dashboard-text:    #080808;
   --dashboard-muted:   #4f4a41;
   --dashboard-accent:  #F7AC27;
+  --logo-mark-color:   #F7931A;
+  --nav-glass:         rgba(240, 236, 228, 0.78);
 }
 
 @media (prefers-color-scheme: light) {
@@ -70,6 +98,8 @@
     --dashboard-text:    #080808;
     --dashboard-muted:   #4f4a41;
     --dashboard-accent:  #F7AC27;
+    --logo-mark-color:   #F7931A;
+    --nav-glass:         rgba(240, 236, 228, 0.78);
   }
 }
 

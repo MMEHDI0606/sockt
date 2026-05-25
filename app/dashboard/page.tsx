@@ -83,6 +83,7 @@ export default async function DashboardPage() {
   const userInitials = initialsFromName(displayName);
 
   const navItems: Array<{ label: string; href: string; active?: boolean }> = [
+    { label: 'Home', href: '/' },
     { label: 'Dashboard', href: '/dashboard', active: true },
     { label: 'Sandboxes', href: '/dashboard#sandboxes' },
     { label: 'Billing', href: '/dashboard#billing' },
@@ -170,6 +171,12 @@ export default async function DashboardPage() {
 
               <div className="flex flex-wrap gap-2">
                 <Link
+                  href="/"
+                  className="rounded-lg border-[0.5px] border-[var(--dashboard-border)] px-4 py-2 text-sm font-display text-[var(--dashboard-text)] hover:border-[var(--dashboard-accent)] hover:text-[var(--dashboard-accent)]"
+                >
+                  Home
+                </Link>
+                <Link
                   href="/docs"
                   className="rounded-lg border-[0.5px] border-[var(--dashboard-border)] px-4 py-2 text-sm font-display text-[var(--dashboard-text)] hover:border-[var(--dashboard-accent)] hover:text-[var(--dashboard-accent)]"
                 >
@@ -255,42 +262,36 @@ export default async function DashboardPage() {
             </div>
 
             <section id="recent-logs" className="rounded-xl border-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-card)] p-5">
-              <div className="mb-3 flex items-center justify-between">
+              <div className="mb-4 flex items-center justify-between">
                 <h2 className="font-display text-xl text-[var(--dashboard-text)]">Recent logs</h2>
+                <span className="rounded-full border-[0.5px] border-[var(--dashboard-border)] px-2.5 py-1 text-[10px] font-mono uppercase tracking-[0.12em] text-[var(--dashboard-muted)]">
+                  Live feed
+                </span>
               </div>
 
-              <div className="overflow-x-auto">
-                <table className="w-full min-w-[520px] border-collapse">
-                  <thead>
-                    <tr className="border-b-[0.5px] border-[var(--dashboard-border)] text-left text-[11px] font-mono uppercase tracking-[0.14em] text-[var(--dashboard-muted)]">
-                      <th className="py-2 pr-4">Timestamp</th>
-                      <th className="py-2 pr-4">Event</th>
-                      <th className="py-2">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {recentLogs.length ? (
-                      recentLogs.map((log, index) => (
-                        <tr key={`${log.timestamp}-${index}`} className="border-b-[0.5px] border-[var(--dashboard-border)] text-sm">
-                          <td className="py-3 pr-4 text-[var(--dashboard-muted)]">{log.timestamp}</td>
-                          <td className="py-3 pr-4 text-[var(--dashboard-text)]">{log.event}</td>
-                          <td className="py-3">
-                            <span className="inline-flex rounded-full border-[0.5px] border-[var(--dashboard-accent)] px-2 py-0.5 text-[10px] font-mono uppercase tracking-[0.12em] text-[var(--dashboard-accent)]">
-                              {log.status}
-                            </span>
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td className="py-5 text-sm text-[var(--dashboard-muted)]" colSpan={3}>
-                          No recent logs yet.
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
+              {recentLogs.length ? (
+                <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                  {recentLogs.map((log, index) => (
+                    <article
+                      key={`${log.timestamp}-${index}`}
+                      className="rounded-xl border-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-bg)] p-4"
+                    >
+                      <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-[var(--dashboard-muted)]">
+                        {log.timestamp}
+                      </p>
+                      <p className="mt-2 text-sm text-[var(--dashboard-text)]">{log.event}</p>
+                      <span className="mt-3 inline-flex rounded-full border-[0.5px] border-[var(--dashboard-accent)] px-2 py-0.5 text-[10px] font-mono uppercase tracking-[0.12em] text-[var(--dashboard-accent)]">
+                        {log.status}
+                      </span>
+                    </article>
+                  ))}
+                </div>
+              ) : (
+                <div className="rounded-xl border-[0.5px] border-dashed border-[var(--dashboard-border)] bg-[var(--dashboard-bg)] p-6 text-center">
+                  <p className="font-display text-xl text-[var(--dashboard-text)]">No recent logs</p>
+                  <p className="mt-1 text-sm text-[var(--dashboard-muted)]">Events will appear here as soon as your workspace becomes active.</p>
+                </div>
+              )}
             </section>
           </section>
         </div>
