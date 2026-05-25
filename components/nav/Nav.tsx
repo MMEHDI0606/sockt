@@ -5,28 +5,13 @@ import Link from 'next/link';
 import { createClient } from '@/utils/supabase/client';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { useIsMobile } from '@/hooks/useIsMobile';
+import ThemeToggle from '@/components/theme/ThemeToggle';
 
 export default function Nav() {
   const navRef = useRef<HTMLElement>(null);
   const isMobile = useIsMobile();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authLoaded, setAuthLoaded] = useState(false);
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
-
-  useEffect(() => {
-    const root = document.documentElement;
-    const stored = localStorage.getItem('theme');
-    const initial = stored === 'light' || stored === 'dark' ? stored : 'dark';
-    root.setAttribute('data-theme', initial);
-    setTheme(initial);
-  }, []);
-
-  const toggleTheme = () => {
-    const nextTheme = theme === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', nextTheme);
-    localStorage.setItem('theme', nextTheme);
-    setTheme(nextTheme);
-  };
 
   useEffect(() => {
     const supabase = createClient();
@@ -160,25 +145,7 @@ export default function Nav() {
           </div>
         )}
         <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '6px' : '10px' }}>
-          <button
-            onClick={toggleTheme}
-            type="button"
-            aria-label="Toggle light mode"
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: isMobile ? '10px' : '11px',
-              color: 'var(--text-secondary)',
-              border: '1px solid var(--bg-border)',
-              backgroundColor: 'transparent',
-              padding: isMobile ? '6px 8px' : '7px 10px',
-              borderRadius: '100px',
-              letterSpacing: '0.06em',
-              cursor: 'pointer',
-              lineHeight: 1,
-            }}
-          >
-            {theme === 'dark' ? 'LIGHT' : 'DARK'}
-          </button>
+          <ThemeToggle compact={isMobile} />
           {authLoaded && isAuthenticated ? (
             <Link
               href="/dashboard"

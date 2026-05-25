@@ -27,6 +27,7 @@
 }
 
 :root {
+  color-scheme: dark;
   /* Background family */
   --bg-void:     #080808;
   --bg-surface:  #0f0f0f;
@@ -78,6 +79,17 @@
 }
 
 [data-theme='light'] {
+  color-scheme: light;
+  --bg-void:         #f5efe4;
+  --bg-surface:      #f7f2e9;
+  --bg-raised:       #fffaf2;
+  --bg-border:       #d8ccb3;
+  --text-primary:    #17130d;
+  --text-secondary:  #6c6254;
+  --text-mono:       #52483b;
+  --accent-btc:      #b4671e;
+  --accent-amber:    #c57927;
+  --accent-sats:     #e09f48;
   --dashboard-bg:      #f0ece4;
   --dashboard-sidebar: #ebe5da;
   --dashboard-card:    #f7f2e9;
@@ -91,6 +103,17 @@
 
 @media (prefers-color-scheme: light) {
   :root:not([data-theme]) {
+    color-scheme: light;
+    --bg-void:         #f5efe4;
+    --bg-surface:      #f7f2e9;
+    --bg-raised:       #fffaf2;
+    --bg-border:       #d8ccb3;
+    --text-primary:    #17130d;
+    --text-secondary:  #6c6254;
+    --text-mono:       #52483b;
+    --accent-btc:      #b4671e;
+    --accent-amber:    #c57927;
+    --accent-sats:     #e09f48;
     --dashboard-bg:      #f0ece4;
     --dashboard-sidebar: #ebe5da;
     --dashboard-card:    #f7f2e9;
@@ -112,16 +135,19 @@
 html,
 body {
   max-width: 100vw;
+  min-height: 100%;
   overflow-x: hidden;
   background-color: var(--bg-void);
   color: var(--text-primary);
   font-family: var(--font-body);
+  transition: background-color var(--dur-fast) ease, color var(--dur-fast) ease;
 }
 
 /* Topology grid background */
 body {
   background-image: radial-gradient(circle, var(--bg-border) 1px, transparent 1px);
   background-size: 24px 24px;
+  transition: background-color var(--dur-fast) ease, color var(--dur-fast) ease, background-image var(--dur-fast) ease;
 }
 
 a {

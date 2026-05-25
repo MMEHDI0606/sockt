@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
 import { signOutAction, createTopupCheckoutAction } from '@/app/dashboard/actions';
 import ApiKeysPanel from '@/components/dashboard/ApiKeysPanel';
+import ThemeToggle from '@/components/theme/ThemeToggle';
 import SyncCredits from './SyncCredits';
 import { Suspense } from 'react';
 
@@ -170,6 +171,7 @@ export default async function DashboardPage() {
               </div>
 
               <div className="flex flex-wrap gap-2">
+                <ThemeToggle className="rounded-lg border-[0.5px] border-[var(--dashboard-border)] px-4 py-2 text-sm font-mono uppercase tracking-[0.08em] text-[var(--dashboard-text)] hover:border-[var(--dashboard-accent)] hover:text-[var(--dashboard-accent)]" />
                 <Link
                   href="/"
                   className="rounded-lg border-[0.5px] border-[var(--dashboard-border)] px-4 py-2 text-sm font-display text-[var(--dashboard-text)] hover:border-[var(--dashboard-accent)] hover:text-[var(--dashboard-accent)]"

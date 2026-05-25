@@ -3,6 +3,16 @@ import type { Metadata, Viewport } from 'next';
 import SmoothScrollProvider from '@/components/providers/SmoothScrollProvider';
 import './globals.css';
 
+const themeBootstrapScript = `
+(() => {
+  const stored = window.localStorage.getItem('theme');
+  const theme = stored === 'light' || stored === 'dark'
+    ? stored
+    : (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  document.documentElement.setAttribute('data-theme', theme);
+})();
+`;
+
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sockt.dev';
 
 export const metadata: Metadata = {
@@ -59,9 +69,11 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
-
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript }} />
+      </head>
       <body>
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
       </body>

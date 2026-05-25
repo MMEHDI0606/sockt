@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
 import { signOutAction } from '@/app/dashboard/actions';
+import ThemeToggle from '@/components/theme/ThemeToggle';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -113,9 +114,12 @@ export default async function DashboardAccountPage() {
           </aside>
 
           <section className="flex min-w-0 flex-1 flex-col p-4 md:p-6">
-            <header className="mb-6 border-b-[0.5px] border-[var(--dashboard-border)] pb-5">
-              <h1 className="font-display text-3xl leading-tight text-[var(--dashboard-text)]">Account</h1>
-              <p className="mt-1 text-sm text-[var(--dashboard-muted)]">Identity and profile details from your active session</p>
+            <header className="mb-6 flex flex-col gap-4 border-b-[0.5px] border-[var(--dashboard-border)] pb-5 lg:flex-row lg:items-start lg:justify-between">
+              <div>
+                <h1 className="font-display text-3xl leading-tight text-[var(--dashboard-text)]">Account</h1>
+                <p className="mt-1 text-sm text-[var(--dashboard-muted)]">Identity and profile details from your active session</p>
+              </div>
+              <ThemeToggle className="rounded-lg border-[0.5px] border-[var(--dashboard-border)] px-4 py-2 text-sm font-mono uppercase tracking-[0.08em] text-[var(--dashboard-text)] hover:border-[var(--dashboard-accent)] hover:text-[var(--dashboard-accent)]" />
             </header>
 
             <div className="grid gap-4 lg:grid-cols-2">
