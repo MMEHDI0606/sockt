@@ -2,30 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: 'Geist';
-  src: url('/fonts/Geist-Variable.woff2') format('woff2');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Geist Mono';
-  src: url('/fonts/GeistMono-Variable.woff2') format('woff2');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Geist Pixel';
-  src: url('/fonts/GeistPixel-Square.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
 :root {
   /* Background family */
   --bg-void:     #080808;
@@ -44,14 +20,21 @@
   --accent-sats:   #d9a060;
   --accent-green:  #22d07a;
   --accent-red:    #e53e3e;
-  --logo-mark-color: #c27a36;
-  --nav-glass: rgba(15, 15, 15, 0.6);
+
+  /* Dashboard shell tokens */
+  --dashboard-bg:      #0a0a0a;
+  --dashboard-sidebar: #111111;
+  --dashboard-card:    #151515;
+  --dashboard-border:  #2a2a2a;
+  --dashboard-text:    #f2f2f2;
+  --dashboard-muted:   #9a9a9a;
+  --dashboard-accent:  #F7AC27;
 
   /* Font families */
-  --font-display:  'Geist', sans-serif;
-  --font-body:     'Geist', sans-serif;
-  --font-mono:     'Geist Mono', monospace;
-  --font-pixel:    'Geist Pixel', monospace;
+  --font-display:  var(--font-geist-sans), sans-serif;
+  --font-body:     var(--font-geist-sans), sans-serif;
+  --font-mono:     var(--font-geist-mono), monospace;
+  --font-pixel:    var(--font-geist-pixel), monospace;
 
   /* Motion */
   --ease-expo:   cubic-bezier(0.16, 1, 0.3, 1);
@@ -69,20 +52,25 @@
 }
 
 [data-theme='light'] {
-  --bg-void:     #f0ece4;
-  --bg-surface:  #f6f2ea;
-  --bg-raised:   #fbf8f2;
-  --bg-border:   #d8d1c5;
+  --dashboard-bg:      #f0ece4;
+  --dashboard-sidebar: #ebe5da;
+  --dashboard-card:    #f7f2e9;
+  --dashboard-border:  #d5c8ad;
+  --dashboard-text:    #080808;
+  --dashboard-muted:   #4f4a41;
+  --dashboard-accent:  #F7AC27;
+}
 
-  --text-primary:   #080808;
-  --text-secondary: #3f3b34;
-  --text-mono:      #2f2b25;
-
-  --accent-btc:     #f7931a;
-  --accent-amber:   #e88411;
-  --accent-sats:    #f7a53e;
-  --logo-mark-color: #f7931a;
-  --nav-glass: rgba(240, 236, 228, 0.78);
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --dashboard-bg:      #f0ece4;
+    --dashboard-sidebar: #ebe5da;
+    --dashboard-card:    #f7f2e9;
+    --dashboard-border:  #d5c8ad;
+    --dashboard-text:    #080808;
+    --dashboard-muted:   #4f4a41;
+    --dashboard-accent:  #F7AC27;
+  }
 }
 
 * {
