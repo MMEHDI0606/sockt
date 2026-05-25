@@ -67,6 +67,8 @@ Primary dependency snapshot is in package.json, including:
 
 ### App route
 - /dashboard
+- /dashboard/account
+- /dashboard/settings
 
 ### System/SEO routes
 - /robots.txt (via app/robots.ts)
@@ -97,6 +99,18 @@ The dashboard is now implemented as a full shell layout:
     - API Keys panel (generate action + list/empty state)
   - Recent logs table (timestamp, event, status tag)
 
+### Dashboard information architecture (canonical labels)
+- Sockt
+- Agent infrastructure
+- Overview
+- Dashboard
+- Sandboxes
+- Billing
+- API Keys
+- Account
+- Logs
+- Settings
+
 ### Dashboard data wiring
 - Balance source: users.credit_balance_subcents
 - API keys source: api_keys where user_id = current user and is_active = true
@@ -111,6 +125,18 @@ The existing top-up/payment flow remains intact:
 - Dashboard top-up action creates Polar checkout
 - Webhook validates signature and increments credit_balance_subcents
 - Balance reflects updated subcents converted to USD in dashboard display
+
+### New dashboard child pages
+- /dashboard/account
+  - Protected route (same session guard model as /dashboard)
+  - Shows active user identity details sourced from Supabase auth session
+  - Surfaces account-level information (name, email, user id, current credit snapshot)
+  - Retains sidebar shell and shared sign-out footer action
+- /dashboard/settings
+  - Protected route with same sidebar shell and session guard
+  - Hosts settings-oriented panels for preferences and security entry points
+  - Links to existing password reset flow and account details page
+  - Uses tokenized dashboard design variables for dark/light compatibility
 
 ## 7) API Keys Lifecycle
 - Key creation:
@@ -222,6 +248,34 @@ Potential follow-up docs that would improve onboarding and maintenance:
 - RUNBOOK.md (incident response for webhook/auth failures)
 - ENV_MATRIX.md (local vs preview vs production variable requirements)
 - SECURITY_NOTES.md (token handling, key storage, rotation guidance)
+
+## 16) End-to-End User Journeys
+### New visitor journey
+1. Lands on marketing homepage and navigates docs/pricing/feature sections.
+2. Creates account via signup and email confirmation flow.
+3. Authenticates and enters /dashboard.
+
+### Returning user journey
+1. Signs in with credentials or magic-link flow.
+2. Opens /dashboard for balance and API key management.
+3. Uses top-up action to create checkout and add credits.
+
+### Password recovery journey
+1. User submits email in forgot-password request page.
+2. OTP is issued and validated via verify step.
+3. Reset token is consumed to update password.
+4. User is redirected to authenticated area after sign-in.
+
+### API key operation journey
+1. User generates a new key from API Keys panel.
+2. Full key is shown once in modal (must be copied immediately).
+3. User can revoke keys individually (is_active=false).
+
+## 17) Operational Boundaries
+- Business logic is server-trusted; client only triggers actions/routes.
+- Admin operations (service role) are isolated to server-only utilities.
+- Dashboard rendering depends on authenticated server session.
+- Visual shell changes are intended to be independent of billing/auth logic.
 
 ---
 This file is intended to be a living technical context reference for contributors and AI agents working inside the Sockt repository.

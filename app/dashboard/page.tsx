@@ -82,14 +82,14 @@ export default async function DashboardPage() {
     'Sockt User';
   const userInitials = initialsFromName(displayName);
 
-  const navItems = [
-    'Dashboard',
-    'Sandboxes',
-    'Billing',
-    'API Keys',
-    'Account',
-    'Logs',
-    'Settings',
+  const navItems: Array<{ label: string; href: string; active?: boolean }> = [
+    { label: 'Dashboard', href: '/dashboard', active: true },
+    { label: 'Sandboxes', href: '/dashboard#sandboxes' },
+    { label: 'Billing', href: '/dashboard#billing' },
+    { label: 'API Keys', href: '/dashboard#api-keys' },
+    { label: 'Account', href: '/dashboard/account' },
+    { label: 'Logs', href: '/dashboard#recent-logs' },
+    { label: 'Settings', href: '/dashboard/settings' },
   ];
 
   const tierRows = [
@@ -126,13 +126,17 @@ export default async function DashboardPage() {
             <div className="mb-3 font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--dashboard-muted)]">Overview</div>
             <nav className="grid gap-2">
               {navItems.map((item) => (
-                <a
-                  key={item}
-                  href="#"
-                  className="rounded-lg border-[0.5px] border-[var(--dashboard-border)] px-3 py-2.5 text-sm text-[var(--dashboard-text)] transition-colors hover:border-[var(--dashboard-accent)] hover:text-[var(--dashboard-accent)]"
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className={`rounded-lg border-[0.5px] px-3 py-2.5 text-sm transition-colors ${
+                    item.active
+                      ? 'border-[var(--dashboard-accent)] text-[var(--dashboard-accent)]'
+                      : 'border-[var(--dashboard-border)] text-[var(--dashboard-text)] hover:border-[var(--dashboard-accent)] hover:text-[var(--dashboard-accent)]'
+                  }`}
                 >
-                  {item}
-                </a>
+                  {item.label}
+                </Link>
               ))}
             </nav>
 
@@ -182,7 +186,7 @@ export default async function DashboardPage() {
               </div>
             </header>
 
-            <div className="mb-6 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+            <div id="sandboxes" className="mb-6 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
               <article className="rounded-xl border-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-card)] p-4">
                 <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--dashboard-muted)]">Balance</p>
                 <p className="mt-2 font-display text-4xl text-[var(--dashboard-text)]">${balanceUsd.toFixed(2)}</p>
@@ -209,7 +213,7 @@ export default async function DashboardPage() {
             </div>
 
             <div className="mb-6 grid gap-4 xl:grid-cols-2">
-              <section className="rounded-xl border-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-card)] p-5">
+              <section id="billing" className="rounded-xl border-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-card)] p-5">
                 <div className="mb-4 flex items-center justify-between">
                   <h2 className="font-display text-xl text-[var(--dashboard-text)]">Billing</h2>
                   <form action={createTopupCheckoutAction}>
@@ -245,10 +249,12 @@ export default async function DashboardPage() {
                 </Suspense>
               </section>
 
-              <ApiKeysPanel initialKeys={apiKeys} />
+              <div id="api-keys">
+                <ApiKeysPanel initialKeys={apiKeys} />
+              </div>
             </div>
 
-            <section className="rounded-xl border-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-card)] p-5">
+            <section id="recent-logs" className="rounded-xl border-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-card)] p-5">
               <div className="mb-3 flex items-center justify-between">
                 <h2 className="font-display text-xl text-[var(--dashboard-text)]">Recent logs</h2>
               </div>
