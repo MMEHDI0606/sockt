@@ -146,52 +146,10 @@ export default function Nav() {
         )}
         <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '6px' : '10px' }}>
           <ThemeToggle compact={isMobile} />
-          {authLoaded && isAuthenticated ? (
-            <Link
-              href="/dashboard"
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: isMobile ? '12px' : '14px',
-                color: 'var(--accent-btc)',
-                border: '1px solid var(--accent-btc)',
-                padding: isMobile ? '6px 10px' : '7px 17px',
-                borderRadius: '100px',
-                letterSpacing: '0.04em',
-                transition: 'background-color 0.15s, color 0.15s',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = 'var(--accent-btc)';
-                e.currentTarget.style.color = 'var(--bg-void)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'transparent';
-                e.currentTarget.style.color = 'var(--accent-btc)';
-              }}
-            >
-              Dashboard
-            </Link>
-          ) : (
-            <>
+          {authLoaded ? (
+            isAuthenticated ? (
               <Link
-                href="/login"
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: isMobile ? '11px' : '12px',
-                  color: 'var(--text-secondary)',
-                  letterSpacing: '0.06em',
-                  padding: isMobile ? '6px 8px' : '7px 10px',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = 'var(--text-primary)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = 'var(--text-secondary)';
-                }}
-              >
-                Log In
-              </Link>
-              <Link
-                href="/signup"
+                href="/dashboard"
                 style={{
                   fontFamily: 'var(--font-display)',
                   fontSize: isMobile ? '12px' : '14px',
@@ -211,10 +169,54 @@ export default function Nav() {
                   e.currentTarget.style.color = 'var(--accent-btc)';
                 }}
               >
-                Sign Up
+                Dashboard
               </Link>
-            </>
-          )}
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: isMobile ? '11px' : '12px',
+                    color: 'var(--text-secondary)',
+                    letterSpacing: '0.06em',
+                    padding: isMobile ? '6px 8px' : '7px 10px',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'var(--text-primary)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'var(--text-secondary)';
+                  }}
+                >
+                  Log In
+                </Link>
+                <Link
+                  href="/signup"
+                  style={{
+                    fontFamily: 'var(--font-display)',
+                    fontSize: isMobile ? '12px' : '14px',
+                    color: 'var(--accent-btc)',
+                    border: '1px solid var(--accent-btc)',
+                    padding: isMobile ? '6px 10px' : '7px 17px',
+                    borderRadius: '100px',
+                    letterSpacing: '0.04em',
+                    transition: 'background-color 0.15s, color 0.15s',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = 'var(--accent-btc)';
+                    e.currentTarget.style.color = 'var(--bg-void)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                    e.currentTarget.style.color = 'var(--accent-btc)';
+                  }}
+                >
+                  Sign Up
+                </Link>
+              </>
+            )
+          ) : null}
         </div>
       </div>
     </nav>
