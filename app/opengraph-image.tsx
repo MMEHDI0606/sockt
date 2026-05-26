@@ -12,6 +12,14 @@ export const size = {
 export const contentType = 'image/png';
 
 export default async function Image() {
+    const fontData = await fetch(
+        new URL('./public/fonts/Geist-Variable.woff2', import.meta.url)
+    ).then((res) => res.arrayBuffer());
+
+    const fontMonoData = await fetch(
+        new URL('./public/fonts/GeistMono-Variable.woff2', import.meta.url)
+    ).then((res) => res.arrayBuffer());
+
     return new ImageResponse(
         (
             <div
@@ -21,7 +29,7 @@ export default async function Image() {
                     display: 'flex',
                     flexDirection: 'column',
                     backgroundColor: '#0a0a0a',
-                    fontFamily: 'sans-serif',
+                    fontFamily: 'Geist',
                     backgroundImage:
                         'radial-gradient(circle at 25px 25px, #333 1px, transparent 0%)',
                     backgroundSize: '50px 50px',
@@ -47,18 +55,18 @@ export default async function Image() {
                             color: '#ffffff',
                         }}
                     >
-                        <span style={{ color: '#d97706', marginRight: '16px', fontFamily: 'monospace' }}>&#123;*&#125;</span>
+                        <span style={{ color: '#d97706', marginRight: '16px', fontFamily: 'Geist Mono' }}>&#123;*&#125;</span>
                         Sockt
                     </div>
                 </div>
 
-                {/* Main Content Area */}
+                    {/* Main Content Area */}
                 <div
                     style={{
                         display: 'flex',
                         flexDirection: 'row',
                         width: '100%',
-                        height: '100%',
+                        flex: 1, // Change height: 100% to flex: 1 to ensure it centers correctly
                         justifyContent: 'space-between',
                         alignItems: 'center',
                     }}
@@ -135,7 +143,7 @@ export default async function Image() {
                                     display: 'flex',
                                     marginLeft: '24px',
                                     color: '#71717a',
-                                    fontFamily: 'monospace',
+                                    fontFamily: 'Geist Mono',
                                     fontSize: '16px',
                                 }}
                             >
@@ -148,7 +156,7 @@ export default async function Image() {
                             style={{
                                 display: 'flex',
                                 flexDirection: 'column',
-                                fontFamily: 'monospace',
+                                fontFamily: 'Geist Mono',
                                 fontSize: '20px',
                                 color: '#d4d4d8',
                                 gap: '16px',
@@ -167,6 +175,18 @@ export default async function Image() {
         ),
         {
             ...size,
+            fonts: [
+                {
+                    name: 'Geist',
+                    data: fontData,
+                    style: 'normal',
+                },
+                {
+                    name: 'Geist Mono',
+                    data: fontMonoData,
+                    style: 'normal',
+                },
+            ],
         }
     );
 }
