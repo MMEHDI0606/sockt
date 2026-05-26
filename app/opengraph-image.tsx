@@ -20,54 +20,144 @@ export default async function Image() {
                     width: '100%',
                     display: 'flex',
                     flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    backgroundColor: '#0a0a0a',
-                    fontFamily: 'sans-serif',
-                    backgroundImage: 'radial-gradient(circle at 25px 25px, #333 2%, transparent 0%), radial-gradient(circle at 75px 75px, #333 2%, transparent 0%)',
-                    backgroundSize: '100px 100px',
-                }}
+          backgroundColor: '#0a0a0a',
+          fontFamily: 'sans-serif',
+          backgroundImage:
+            'radial-gradient(circle at 25px 25px, #333 1px, transparent 0%)',
+          backgroundSize: '50px 50px',
+          padding: '48px 64px',
+        }}
+      >
+        {/* Top Header - Centered Logo */}
+        <div
+          style={{
+            display: 'flex',
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: '40px',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              fontSize: '32px',
+              fontWeight: '600',
+              color: '#ffffff',
+            }}
+          >
+            <span style={{ color: '#d97706', marginRight: '16px', fontFamily: 'monospace' }}>&#123;*&#125;</span>
+            Sockt
+          </div>
+        </div>
+
+        {/* Main Content Area */}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            width: '100%',
+            height: '100%',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          {/* Left Side text */}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              width: '55%',
+            }}
+          >
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                fontSize: '85px',
+                fontWeight: 900,
+                lineHeight: 1.1,
+                letterSpacing: '-0.02em',
+                color: '#f4f4f5',
+                marginBottom: '24px',
+              }}
             >
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        padding: '40px 80px',
-                        backgroundColor: '#000000',
-                        border: '2px solid #333',
-                        borderRadius: '24px',
-                        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.8)',
-                    }}
-                >
-                    <div
-                        style={{
-                            fontSize: 90,
-                            fontWeight: 800,
-                            letterSpacing: '-0.02em',
-                            marginBottom: 16,
-                            color: '#ffffff',
-                        }}
-                    >
-                        Sockt
-                    </div>
-                    <div
-                        style={{
-                            fontSize: 48,
-                            fontWeight: 500,
-                            color: '#a1a1aa',
-                            textAlign: 'center',
-                            letterSpacing: '-0.01em',
-                        }}
-                    >
-                        Agent Compute Paid in Sats
-                    </div>
-                </div>
+              <span>AI AGENT</span>
+              <span>COMPUTE</span>
+              <span>PAID IN</span>
+              <span style={{ color: '#d97706' }}>SATS.</span>
             </div>
-        ),
-        {
-            ...size,
-        }
-    );
-}
+            <div
+              style={{
+                display: 'flex',
+                fontSize: '24px',
+                fontWeight: 400,
+                color: '#71717a',
+                lineHeight: 1.5,
+              }}
+            >
+              Provision GPU and CPU sandboxes, settle over Lightning, run
+              workloads, and terminate automatically.
+            </div>
+          </div>
+
+          {/* Right Side Terminal */}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              width: '40%',
+              backgroundColor: '#18181b',
+              borderRadius: '16px',
+              border: '1px solid #3f3f46',
+              padding: '24px',
+              boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
+            }}
+          >
+            {/* Terminal Header */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                borderBottom: '1px solid #3f3f46',
+                paddingBottom: '16px',
+                marginBottom: '24px',
+              }}
+            >
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <div style={{ width: '12px', height: '12px', borderRadius: '6px', backgroundColor: '#ef4444' }}></div>
+                <div style={{ width: '12px', height: '12px', borderRadius: '6px', backgroundColor: '#eab308' }}></div>
+                <div style={{ width: '12px', height: '12px', borderRadius: '6px', backgroundColor: '#22c55e' }}></div>
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  marginLeft: '24px',
+                  color: '#71717a',
+                  fontFamily: 'monospace',
+                  fontSize: '16px',
+                }}
+              >
+                sockt-runtime
+              </div>
+            </div>
+            
+            {/* Terminal Body */}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                fontFamily: 'monospace',
+                fontSize: '20px',
+                color: '#d4d4d8',
+                gap: '16px',
+              }}
+            >
+              <div style={{ display: 'flex' }}><span style={{ color: '#10b981', marginRight: '16px' }}>&gt;</span> initializing runtime</div>
+              <div style={{ display: 'flex' }}><span style={{ color: '#10b981', marginRight: '16px' }}>&gt;</span> gpu_type: H100 SXM5</div>
+              <div style={{ display: 'flex' }}><span style={{ color: '#10b981', marginRight: '16px' }}>&gt;</span> allocation: 2x</div>
+              <div style={{ display: 'flex' }}><span style={{ color: '#10b981', marginRight: '16px' }}>&gt;</span> channel_open: lnbc1pvjluezpp...</div>
+              <div style={{ display: 'flex' }}><span style={{ color: '#10b981', marginRight: '16px' }}>&gt;</span> balance: 128,400 sats</div>
+              <div style={{ display: 'flex' }}><span style={{ color: '#10b981', marginRight: '16px' }}>&gt;</span> status: READY ✓</div>
+            </div>
