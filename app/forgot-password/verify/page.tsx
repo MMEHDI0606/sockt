@@ -15,6 +15,7 @@ function VerifyOtpForm() {
   const email = useMemo(() => searchParams.get('email') || '', [searchParams]);
   const initialExpiresAt = useMemo(() => searchParams.get('expiresAt') || '', [searchParams]);
   const devOtp = useMemo(() => searchParams.get('devOtp') || '', [searchParams]);
+  const deliveryWarning = useMemo(() => searchParams.get('warning') || '', [searchParams]);
 
   const [otp, setOtp] = useState('');
   const [busy, setBusy] = useState(false);
@@ -102,6 +103,10 @@ function VerifyOtpForm() {
         <h1 className="font-display text-3xl mb-2 text-[var(--text-primary)]">Verify OTP</h1>
         <p className="text-[var(--text-secondary)] text-sm mb-3">Enter the 6-digit code sent to {email}.</p>
         <p className="text-[var(--text-secondary)] text-xs mb-6">Code expires in {formatSeconds(countdown)}</p>
+
+        {deliveryWarning && (
+          <p className="text-[var(--accent-amber)] text-xs leading-relaxed mb-4">{deliveryWarning}</p>
+        )}
 
         {devOtp && (
           <p className="text-[var(--accent-amber)] text-xs mb-4">Dev OTP: {devOtp}</p>

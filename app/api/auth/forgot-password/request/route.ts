@@ -15,15 +15,12 @@ function hashOtp(otp: string): string {
   return hashValue(`${otp}:${OTP_HASH_PEPPER}`);
 }
 
-async function sendOtpEmail(email: string, otpCode: string): Promise<void> {
+async function sendOtpEmail(email: string, otpCode: string): Promise<boolean> {
   const emailApiKey = process.env.RESEND_API_KEY;
   const emailFrom = process.env.EMAIL_FROM;
 
   if (!emailApiKey || !emailFrom) {
-    if (process.env.NODE_ENV === 'production') {
-      throw new Error('Missing email provider configuration');
-    }
-    return;
+    return false;
   }
 
   const html = `
@@ -52,6 +49,8 @@ async function sendOtpEmail(email: string, otpCode: string): Promise<void> {
   if (!response.ok) {
     throw new Error('Failed to send OTP email');
   }
+
+  return true;
 }
 
 export async function POST(request: Request) {
@@ -103,12 +102,25 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Unable to create OTP request.' }, { status: 500 });
     }
 
-    await sendOtpEmail(email, otpCode);
+    let emailDelivered = false;
+    let deliveryWarning: string | null = null;
+
+    try {
+      emailDelivered = await sendOtpEmail(email, otpCode);
+      if (!emailDelivered) {
+        deliveryWarning = 'Email delivery is not configured. Use the development OTP shown after submit.';
+      }
+    } catch (error) {
+      deliveryWarning = 'OTP was created, but the email could not be sent.';
+      console.error('Failed to send password reset OTP email:', error);
+    }
 
     const remaining = Math.max(0, getOtpRateLimitMax() - ((requestCount || 0) + 1));
 
     return NextResponse.json({
       ok: true,
+      emailDelivered,
+      warning: deliveryWarning,
       expiresAt: expiresAt.toISOString(),
       expirySeconds: getOtpExpirySeconds(),
       remainingRequestsThisHour: remaining,

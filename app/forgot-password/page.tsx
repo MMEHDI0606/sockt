@@ -38,6 +38,10 @@ export default function ForgotPasswordPage() {
       params.set('devOtp', data.devOtp);
     }
 
+    if (data.warning) {
+      params.set('warning', data.warning);
+    }
+
     router.push(`/forgot-password/verify?${params.toString()}`);
   }
 
