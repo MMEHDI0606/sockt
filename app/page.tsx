@@ -35,7 +35,7 @@ const websiteJsonLd = {
   name: 'Sockt',
   url: siteUrl,
   description:
-    'Autonomous AI infrastructure where agents provision compute, pay in sats, execute tasks, and terminate automatically.',
+    'On-demand compute sandboxes that AI agents can buy autonomously to run their code, settle over Lightning, and terminate automatically.',
   inLanguage: 'en',
 };
 
@@ -48,7 +48,7 @@ const faqJsonLd = {
       name: 'What is Sockt?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Sockt is autonomous AI compute infrastructure. It lets AI agents provision on-demand sandboxes (CPU and GPU), pay per second using Bitcoin Lightning (msats), run tasks, and terminate — without human involvement.',
+        text: 'Sockt is a platform where AI agents autonomously buy compute sandboxes. It lets AI agents provision on-demand sandboxes (CPU and GPU), pay per second using Bitcoin Lightning (msats), run tasks, and terminate — without human involvement.',
       },
     },
     {

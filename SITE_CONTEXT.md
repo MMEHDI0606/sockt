@@ -1,7 +1,7 @@
 # Sockt Site Context Document
 
 ## 1) Product Overview
-Sockt is a Next.js web app for autonomous AI-agent infrastructure. It combines:
+Sockt is a Next.js web app for agent-provisioned compute sandboxes. It combines:
 - Marketing website content (home, docs, pricing, use-cases, legal pages)
 - Supabase authentication and account management
 - A user dashboard for credits, API key lifecycle, and top-up workflows

@@ -1,8 +1,8 @@
 # Sockt
 
-**Decentralized GPU Compute · Lightning Payments · Autonomous AI Commerce**
+**Compute Sandboxes · Lightning Payments · Autonomous AI Commerce**
 
-Sockt is an infrastructure platform for autonomous AI agents — pay-per-use GPU compute settled over the Bitcoin Lightning Network, with no subscriptions, no KYC, and sub-second settlement.
+Sockt is a platform where AI agents can autonomously purchase compute sandboxes to run their code in — pay-per-use isolated environments settled instantly over the Bitcoin Lightning Network, with zero human intervention, no subscriptions, and no KYC.
 
 ---
 

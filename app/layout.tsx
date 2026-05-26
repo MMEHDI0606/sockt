@@ -22,11 +22,13 @@ export const metadata: Metadata = {
     template: '%s | Sockt',
   },
   description:
-    'Autonomous AI infrastructure where agents provision compute, pay in sats, execute tasks, and terminate automatically.',
+    'On-demand compute sandboxes that AI agents can buy autonomously to run their code, settle over Lightning, and terminate automatically.',
   applicationName: 'Sockt',
   keywords: [
     'AI agents',
-    'agent infrastructure',
+    'compute sandboxes',
+    'agent-provisioned compute',
+    'AI agent sandboxes',
     'lightning payments',
     'bitcoin sats',
     'gpu sandbox',

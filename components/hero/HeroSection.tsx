@@ -7,7 +7,7 @@ import HeroConsole from './HeroConsole';
 import { useIsMobile } from '@/hooks/useIsMobile';
 
 const HEADLINE_TEXT = 'AI AGENT COMPUTE PAID IN SATS.';
-const TAGLINE = 'Provision GPU and CPU sandboxes, settle over Lightning, run workloads, and terminate automatically.';
+const TAGLINE = 'Agents provision GPU and CPU sandboxes, settle over Lightning, run workloads, and terminate automatically.';
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
