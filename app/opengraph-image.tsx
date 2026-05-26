@@ -12,12 +12,20 @@ export const size = {
 export const contentType = 'image/png';
 
 export default async function Image() {
-    const fontData = await fetch(
-        new URL('../public/fonts/Geist-Variable.woff2', import.meta.url)
+    const geistRegular = await fetch(
+        new URL('../public/fonts/Geist-Regular.ttf', import.meta.url)
     ).then((res) => res.arrayBuffer());
 
-    const fontMonoData = await fetch(
-        new URL('../public/fonts/GeistMono-Variable.woff2', import.meta.url)
+    const geistSemiBold = await fetch(
+        new URL('../public/fonts/Geist-SemiBold.ttf', import.meta.url)
+    ).then((res) => res.arrayBuffer());
+
+    const geistBlack = await fetch(
+        new URL('../public/fonts/Geist-Black.ttf', import.meta.url)
+    ).then((res) => res.arrayBuffer());
+
+    const geistMonoRegular = await fetch(
+        new URL('../public/fonts/GeistMono-Regular.ttf', import.meta.url)
     ).then((res) => res.arrayBuffer());
 
     return new ImageResponse(
@@ -178,12 +186,26 @@ export default async function Image() {
             fonts: [
                 {
                     name: 'Geist',
-                    data: fontData,
+                    data: geistRegular,
+                    weight: 400,
+                    style: 'normal',
+                },
+                {
+                    name: 'Geist',
+                    data: geistSemiBold,
+                    weight: 600,
+                    style: 'normal',
+                },
+                {
+                    name: 'Geist',
+                    data: geistBlack,
+                    weight: 900,
                     style: 'normal',
                 },
                 {
                     name: 'Geist Mono',
-                    data: fontMonoData,
+                    data: geistMonoRegular,
+                    weight: 400,
                     style: 'normal',
                 },
             ],
