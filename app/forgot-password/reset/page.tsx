@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useMemo, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/utils/supabase/client';
 
@@ -8,17 +8,48 @@ function ResetPasswordForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const email = useMemo(() => searchParams.get('email') || '', [searchParams]);
-  const token = useMemo(() => searchParams.get('token') || '', [searchParams]);
-
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
+  const [recoveryReady, setRecoveryReady] = useState(false);
+  const [checkingRecovery, setCheckingRecovery] = useState(true);
+
+  useEffect(() => {
+    const supabase = createClient();
+
+    async function initRecoverySession() {
+      setCheckingRecovery(true);
+
+      const code = searchParams.get('code');
+      if (code) {
+        const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
+        if (exchangeError) {
+          setError('This reset link is invalid or expired. Please request a new one.');
+          setCheckingRecovery(false);
+          return;
+        }
+      }
+
+      const { data, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError || !data.session) {
+        setError('This reset link is invalid or expired. Please request a new one.');
+        setCheckingRecovery(false);
+        return;
+      }
+
+      setRecoveryReady(true);
+      setCheckingRecovery(false);
+    }
+
+    void initRecoverySession();
+  }, [searchParams]);
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
+    setMessage(null);
 
     if (password.length < 8) {
       setError('Password must be at least 8 characters long.');
@@ -31,41 +62,34 @@ function ResetPasswordForm() {
     }
 
     setBusy(true);
-
-    const res = await fetch('/api/auth/forgot-password/reset', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, resetToken: token, password }),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      setError(data.error || 'Could not reset password.');
-      setBusy(false);
-      return;
-    }
-
     const supabase = createClient();
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
 
-    if (signInError) {
-      setError('Password reset completed, but auto login failed. Please log in manually.');
+    const { error: updateError } = await supabase.auth.updateUser({ password });
+
+    if (updateError) {
+      setError(updateError.message || 'Could not reset password.');
       setBusy(false);
       return;
     }
 
+    setMessage('Password updated successfully. Redirecting to dashboard...');
+    setBusy(false);
     router.push('/dashboard');
     router.refresh();
   }
 
-  if (!email || !token) {
+  if (checkingRecovery) {
     return (
       <main className="min-h-screen grid place-items-center px-4 py-8 text-[var(--text-secondary)]">
-        Missing reset context. Please restart forgot password.
+        Validating reset link...
+      </main>
+    );
+  }
+
+  if (!recoveryReady) {
+    return (
+      <main className="min-h-screen grid place-items-center px-4 py-8 text-[var(--text-secondary)]">
+        Reset link is invalid or expired. Please request a new password reset.
       </main>
     );
   }
@@ -74,7 +98,7 @@ function ResetPasswordForm() {
     <main className="min-h-screen grid place-items-center px-4 py-8">
       <section className="w-full max-w-[440px] border border-[var(--bg-border)] rounded-2xl bg-[var(--bg-surface)] p-8 shadow-2xl">
         <h1 className="font-display text-3xl mb-2 text-[var(--text-primary)]">Set New Password</h1>
-        <p className="text-[var(--text-secondary)] text-sm mb-8">Create a new password for {email}.</p>
+        <p className="text-[var(--text-secondary)] text-sm mb-8">Create a new password for your account.</p>
 
         <form onSubmit={onSubmit} className="grid gap-5">
           <div className="grid gap-2">
@@ -104,6 +128,7 @@ function ResetPasswordForm() {
           </div>
 
           {error && <p className="text-[var(--accent-red)] text-xs leading-relaxed">{error}</p>}
+          {message && <p className="text-[var(--accent-green)] text-xs leading-relaxed">{message}</p>}
 
           <button
             type="submit"

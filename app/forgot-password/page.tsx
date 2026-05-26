@@ -1,48 +1,39 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { createClient } from '@/utils/supabase/client';
 
 export default function ForgotPasswordPage() {
-  const router = useRouter();
   const [email, setEmail] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setBusy(true);
     setError(null);
+    setMessage(null);
 
-    const res = await fetch('/api/auth/forgot-password/request', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
+    const normalizedEmail = email.trim().toLowerCase();
+    const supabase = createClient();
+
+    const { error: resetError } = await supabase.auth.resetPasswordForEmail(normalizedEmail, {
+      redirectTo:
+        typeof window !== 'undefined'
+          ? `${window.location.origin}/forgot-password/reset`
+          : undefined,
     });
 
-    const data = await res.json();
-
-    if (!res.ok) {
-      setError(data.error || 'Could not send OTP.');
+    if (resetError) {
+      setError(resetError.message || 'Could not send password reset email.');
       setBusy(false);
       return;
     }
 
-    const params = new URLSearchParams({
-      email: email.trim().toLowerCase(),
-      expiresAt: data.expiresAt,
-    });
-
-    if (data.devOtp) {
-      params.set('devOtp', data.devOtp);
-    }
-
-    if (data.warning) {
-      params.set('warning', data.warning);
-    }
-
-    router.push(`/forgot-password/verify?${params.toString()}`);
+    setMessage('If an account exists for this email, a reset link has been sent.');
+    setBusy(false);
   }
 
   return (
@@ -50,7 +41,7 @@ export default function ForgotPasswordPage() {
       <section className="w-full max-w-[440px] border border-[var(--bg-border)] rounded-2xl bg-[var(--bg-surface)] p-8 shadow-2xl">
         <h1 className="font-display text-3xl mb-2 text-[var(--text-primary)]">Forgot Password</h1>
         <p className="text-[var(--text-secondary)] text-sm mb-8">
-          Enter your email and we will send a 6-digit OTP.
+          Enter your email and we will send a secure reset link.
         </p>
 
         <form onSubmit={onSubmit} className="grid gap-5">
@@ -68,6 +59,7 @@ export default function ForgotPasswordPage() {
           </div>
 
           {error && <p className="text-[var(--accent-red)] text-xs leading-relaxed">{error}</p>}
+          {message && <p className="text-[var(--accent-green)] text-xs leading-relaxed">{message}</p>}
 
           <button
             type="submit"
@@ -75,7 +67,7 @@ export default function ForgotPasswordPage() {
             className={`mt-2 font-mono text-xs tracking-widest py-4 rounded-lg transition-all ${busy ? 'bg-[var(--bg-border)] text-[var(--text-secondary)] cursor-not-allowed opacity-50' : 'bg-[var(--accent-btc)] text-[var(--bg-void)] hover:opacity-90'
               }`}
           >
-            {busy ? 'SENDING...' : 'SEND OTP'}
+            {busy ? 'SENDING...' : 'SEND RESET LINK'}
           </button>
         </form>
 
