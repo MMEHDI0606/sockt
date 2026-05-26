@@ -40,7 +40,7 @@ export default function Footer() {
     >
       <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
         <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', justifyContent: 'space-between', gap: isMobile ? '40px' : '48px', marginBottom: isMobile ? '24px' : '64px' }}>
-          
+
           {/* Brand Info (Left Side) */}
           <div style={{ maxWidth: isMobile ? '100%' : '300px' }}>
             <div
