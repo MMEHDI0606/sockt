@@ -84,7 +84,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
   return (
     <main className="min-h-screen grid place-items-center px-4 py-8">
       <section className="w-full max-w-[440px] border border-[var(--bg-border)] rounded-2xl bg-[var(--bg-surface)] p-8 shadow-2xl">
-        <h1 className="font-display text-4xl mb-2 text-white">
+        <h1 className="font-display text-4xl mb-2 text-[var(--text-primary)]">
           {isLogin ? 'Sign in' : 'Create Account'}
         </h1>
 
@@ -105,7 +105,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
               onChange={(event) => setEmail(event.target.value)}
               required
               autoComplete="email"
-              className="w-full bg-black border border-[var(--bg-border)] rounded-lg text-[var(--text-primary)] px-4 py-3 text-sm focus:outline-none focus:border-[var(--accent-btc)] transition-colors"
+              className="w-full bg-[var(--bg-void)] border border-[var(--bg-border)] rounded-lg text-[var(--text-primary)] px-4 py-3 text-sm focus:outline-none focus:border-[var(--accent-btc)] transition-colors"
               placeholder="name@company.com"
             />
           </div>
@@ -121,7 +121,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
               required
               minLength={8}
               autoComplete={isLogin ? 'current-password' : 'new-password'}
-              className="w-full bg-black border border-[var(--bg-border)] rounded-lg text-[var(--text-primary)] px-4 py-3 text-sm focus:outline-none focus:border-[var(--accent-btc)] transition-colors"
+              className="w-full bg-[var(--bg-void)] border border-[var(--bg-border)] rounded-lg text-[var(--text-primary)] px-4 py-3 text-sm focus:outline-none focus:border-[var(--accent-btc)] transition-colors"
               placeholder="••••••••"
             />
           </div>
@@ -143,8 +143,8 @@ export default function AuthForm({ mode }: AuthFormProps) {
             disabled={busy}
             className={`mt-2 font-mono text-xs tracking-widest py-4 rounded-lg transition-all ${
               busy 
-                ? 'bg-[#6f4b24] cursor-not-allowed opacity-70' 
-                : 'bg-[var(--accent-btc)] text-black hover:opacity-90'
+                ? 'bg-[var(--bg-border)] text-[var(--text-secondary)] cursor-not-allowed opacity-50' 
+                : 'bg-[var(--accent-btc)] text-[var(--bg-void)] hover:opacity-90'
             }`}
           >
             {busy ? 'PROCESSING...' : isLogin ? 'SIGN IN' : 'CREATE ACCOUNT'}

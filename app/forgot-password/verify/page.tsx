@@ -99,7 +99,7 @@ function VerifyOtpForm() {
   return (
     <main className="min-h-screen grid place-items-center px-4 py-8">
       <section className="w-full max-w-[440px] border border-[var(--bg-border)] rounded-2xl bg-[var(--bg-surface)] p-8 shadow-2xl">
-        <h1 className="font-display text-3xl mb-2 text-white">Verify OTP</h1>
+        <h1 className="font-display text-3xl mb-2 text-[var(--text-primary)]">Verify OTP</h1>
         <p className="text-[var(--text-secondary)] text-sm mb-3">Enter the 6-digit code sent to {email}.</p>
         <p className="text-[var(--text-secondary)] text-xs mb-6">Code expires in {formatSeconds(countdown)}</p>
 
@@ -118,7 +118,7 @@ function VerifyOtpForm() {
               pattern="[0-9]{6}"
               required
               maxLength={6}
-              className="w-full bg-black border border-[var(--bg-border)] rounded-lg text-[var(--text-primary)] px-4 py-3 text-sm tracking-[0.3em] focus:outline-none focus:border-[var(--accent-btc)] transition-colors"
+              className="w-full bg-[var(--bg-void)] border border-[var(--bg-border)] rounded-lg text-[var(--text-primary)] px-4 py-3 text-sm tracking-[0.3em] focus:outline-none focus:border-[var(--accent-btc)] transition-colors"
               placeholder="123456"
             />
           </div>
@@ -129,7 +129,7 @@ function VerifyOtpForm() {
             type="submit"
             disabled={busy}
             className={`mt-2 font-mono text-xs tracking-widest py-4 rounded-lg transition-all ${
-              busy ? 'bg-[#6f4b24] cursor-not-allowed opacity-70' : 'bg-[var(--accent-btc)] text-black hover:opacity-90'
+              busy ? 'bg-[var(--bg-border)] text-[var(--text-secondary)] cursor-not-allowed opacity-50' : 'bg-[var(--accent-btc)] text-[var(--bg-void)] hover:opacity-90'
             }`}
           >
             {busy ? 'VERIFYING...' : 'VERIFY OTP'}

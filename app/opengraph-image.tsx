@@ -13,11 +13,11 @@ export const contentType = 'image/png';
 
 export default async function Image() {
     const fontData = await fetch(
-        new URL('./public/fonts/Geist-Variable.woff2', import.meta.url)
+        new URL('../public/fonts/Geist-Variable.woff2', import.meta.url)
     ).then((res) => res.arrayBuffer());
 
     const fontMonoData = await fetch(
-        new URL('./public/fonts/GeistMono-Variable.woff2', import.meta.url)
+        new URL('../public/fonts/GeistMono-Variable.woff2', import.meta.url)
     ).then((res) => res.arrayBuffer());
 
     return new ImageResponse(
