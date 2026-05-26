@@ -7,17 +7,12 @@ import { useIsMobile } from '@/hooks/useIsMobile';
 
 const COLS = [
   {
-    title: 'SOCKT',
-    items: null as null | string[],
-    desc: 'The execution layer for AI agents that pay in sats.',
-  },
-  {
     title: 'PRODUCT',
-    items: ['Docs', 'Pricing', 'Terms & Conditions', 'Privacy Policy'],
+    items: ['Docs', 'Pricing'],
   },
   {
-    title: 'SOCIALS',
-    items: ['X / Twitter', 'GitHub', 'Contact'],
+    title: 'LEGAL & CONTACT',
+    items: ['Terms & Conditions', 'Privacy Policy', 'Contact'],
   },
 ];
 
@@ -44,61 +39,75 @@ export default function Footer() {
       }}
     >
       <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(3, 1fr)', gap: isMobile ? '20px' : '48px', marginBottom: isMobile ? '24px' : '64px' }}>
-          {COLS.map((col) => (
-            <div key={col.title}>
-              <div
+        <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', justifyContent: 'space-between', gap: isMobile ? '40px' : '48px', marginBottom: isMobile ? '24px' : '64px' }}>
+          
+          {/* Brand Info (Left Side) */}
+          <div style={{ maxWidth: isMobile ? '100%' : '300px' }}>
+            <div
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '11px',
+                color: 'var(--text-secondary)',
+                letterSpacing: '0.1em',
+                marginBottom: '20px',
+              }}
+            >
+              SOCKT
+            </div>
+            {!isMobile ? (
+              <p
                 style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '11px',
+                  fontFamily: 'var(--font-body)',
+                  fontSize: '13px',
                   color: 'var(--text-secondary)',
-                  letterSpacing: '0.1em',
-                  marginBottom: '20px',
+                  lineHeight: 1.6,
+                  marginBottom: '16px',
                 }}
               >
-                {col.title}
-              </div>
+                The execution layer for AI agents that pay in sats.
+              </p>
+            ) : null}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '11px',
+              }}
+            >
+              <span
+                ref={dotRef}
+                style={{
+                  width: '6px',
+                  height: '6px',
+                  borderRadius: '50%',
+                  backgroundColor: 'var(--accent-btc)',
+                  flexShrink: 0,
+                }}
+              />
+              <span style={{ color: 'var(--accent-btc)' }}>MAINNET LIVE</span>
+            </div>
+          </div>
 
-              {col.desc ? (
-                <>
-                  {!isMobile ? (
-                    <p
-                      style={{
-                        fontFamily: 'var(--font-body)',
-                        fontSize: '13px',
-                        color: 'var(--text-secondary)',
-                        lineHeight: 1.6,
-                        marginBottom: '16px',
-                      }}
-                    >
-                      {col.desc}
-                    </p>
-                  ) : null}
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '11px',
-                    }}
-                  >
-                    <span
-                      ref={dotRef}
-                      style={{
-                        width: '6px',
-                        height: '6px',
-                        borderRadius: '50%',
-                        backgroundColor: 'var(--accent-btc)',
-                        flexShrink: 0,
-                      }}
-                    />
-                    <span style={{ color: 'var(--accent-btc)' }}>MAINNET LIVE</span>
-                  </div>
-                </>
-              ) : (
+          {/* Links (Right Side) */}
+          <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: isMobile ? '40px' : '80px' }}>
+            {COLS.map((col) => (
+              <div key={col.title}>
+                <div
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '11px',
+                    color: 'var(--text-secondary)',
+                    letterSpacing: '0.1em',
+                    marginBottom: '20px',
+                  }}
+                >
+                  {col.title}
+                </div>
+
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                  {col.items?.map((item) => {
+                  {col.items.map((item) => {
                     const routeMap: Record<string, string> = {
                       'Docs': '/docs',
                       'Pricing': '/#pricing',
@@ -148,9 +157,9 @@ export default function Footer() {
                     );
                   })}
                 </div>
-              )}
-            </div>
-          ))}
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Logo watermark */}
