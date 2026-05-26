@@ -128,9 +128,8 @@ function VerifyOtpForm() {
           <button
             type="submit"
             disabled={busy}
-            className={`mt-2 font-mono text-xs tracking-widest py-4 rounded-lg transition-all ${
-              busy ? 'bg-[var(--bg-border)] text-[var(--text-secondary)] cursor-not-allowed opacity-50' : 'bg-[var(--accent-btc)] text-[var(--bg-void)] hover:opacity-90'
-            }`}
+            className={`mt-2 font-mono text-xs tracking-widest py-4 rounded-lg transition-all ${busy ? 'bg-[var(--bg-border)] text-[var(--text-secondary)] cursor-not-allowed opacity-50' : 'bg-[var(--accent-btc)] text-[var(--bg-void)] hover:opacity-90'
+              }`}
           >
             {busy ? 'VERIFYING...' : 'VERIFY OTP'}
           </button>
