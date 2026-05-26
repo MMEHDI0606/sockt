@@ -5,11 +5,10 @@ import { gsap, ScrollTrigger } from '@/lib/gsap';
 
 const LINES = [
   '> initializing runtime',
-  '> gpu_type: H100 SXM5',
-  '> allocation: 2x',
-  '> channel_open: lnbc1pvjluezpp...',
+  '> gpu_type: A100 PCIe',
+  '> allocation: 1x',
   '> balance: 128,400 sats',
-  '> status: READY ✓',
+  '> status: READY',
 ];
 
 export default function HeroConsole() {

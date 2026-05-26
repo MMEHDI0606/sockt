@@ -42,7 +42,7 @@ async function main() {
                     style={{
                         display: 'flex',
                         alignItems: 'center',
-                        fontSize: '32px',
+                        fontSize: '68px',
                         fontWeight: 600,
                         color: '#ffffff',
                     }}
@@ -75,7 +75,7 @@ async function main() {
                         style={{
                             display: 'flex',
                             flexDirection: 'column',
-                            fontSize: '85px',
+                            fontSize: '76px',
                             fontWeight: 900,
                             lineHeight: 1.1,
                             letterSpacing: '-0.02em',
@@ -136,21 +136,18 @@ async function main() {
                             display: 'flex',
                             flexDirection: 'column',
                             fontFamily: 'Geist Mono',
-                            fontSize: '20px',
+                            fontSize: '28px',
                             color: '#d4d4d8',
                             gap: '16px',
                         }}
                     >
                         <div style={{ display: 'flex' }}><span style={{ color: '#10b981', marginRight: '16px' }}>&gt;</span> initializing runtime</div>
-                        <div style={{ display: 'flex' }}><span style={{ color: '#10b981', marginRight: '16px' }}>&gt;</span> gpu_type: H100 SXM5</div>
-                        <div style={{ display: 'flex' }}><span style={{ color: '#10b981', marginRight: '16px' }}>&gt;</span> allocation: 2x</div>
-                        <div style={{ display: 'flex' }}><span style={{ color: '#10b981', marginRight: '16px' }}>&gt;</span> channel_open: lnbc1pvjluezpp...</div>
+                        <div style={{ display: 'flex' }}><span style={{ color: '#10b981', marginRight: '16px' }}>&gt;</span> gpu_type: A100 PCIe</div>
+                        <div style={{ display: 'flex' }}><span style={{ color: '#10b981', marginRight: '16px' }}>&gt;</span> allocation: 1x</div>
                         <div style={{ display: 'flex' }}><span style={{ color: '#10b981', marginRight: '16px' }}>&gt;</span> balance: 128,400 sats</div>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                             <span style={{ color: '#10b981', marginRight: '16px' }}>&gt;</span> status: READY
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: '8px' }}>
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
+
                         </div>
                     </div>
                 </div>
