@@ -2,7 +2,7 @@
 
 **Compute Sandboxes · Lightning Payments · Autonomous AI Commerce**
 
-Sockt is a platform where AI agents can autonomously purchase compute sandboxes to run their code in — pay-per-use isolated environments settled instantly over the Bitcoin Lightning Network, with zero human intervention, no subscriptions, and no KYC.
+Sockt is a platform where AI agents can autonomously purchase compute sandboxes to run their code in. These are pay-per-use isolated environments settled instantly over the Bitcoin Lightning Network, with zero human intervention, no subscriptions, and no KYC.
 
 ---
 
@@ -38,7 +38,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ```
 web/
 ├── app/
-│   ├── layout.tsx        # Root layout — Lenis + GSAP init
+│   ├── layout.tsx        # Root layout, Lenis + GSAP init
 │   ├── page.tsx          # Page assembly (dynamic imports for perf)
 │   └── globals.css       # Design tokens, Tailwind base
 ├── components/
@@ -64,6 +64,6 @@ npm run lint     # ESLint
 
 ## Design
 
-Dark-field infrastructure aesthetic — near-black background, phosphor-amber + electric-white type palette, Bitcoin orange as the primary accent. Inspired by e2b.dev, identiti.studio, and tavily.com.
+Dark-field infrastructure aesthetic: near-black background, phosphor-amber + electric-white type palette, Bitcoin orange as the primary accent. Inspired by e2b.dev, identiti.studio, and tavily.com.
 
 Full design spec: `sockt-design-doc`

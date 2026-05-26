@@ -5,22 +5,22 @@ import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { useIsMobile } from '@/hooks/useIsMobile';
 
 const INITIAL_LINES = [
-  '> [00:00:01] agent.init — model: claude-4',
-  '> [00:00:02] gpu.request — H100 SXM5 x2',
-  '> [00:00:03] channel.open — lnbc1pvjluez...',
-  '> [00:00:04] balance.check — 128,400 sats OK',
-  '> [00:00:05] provision.start — node: sockt-us-1',
+  '> [00:00:01] agent.init - model: claude-4',
+  '> [00:00:02] gpu.request - H100 SXM5 x2',
+  '> [00:00:03] channel.open - lnbc1pvjluez...',
+  '> [00:00:04] balance.check - 128,400 sats OK',
+  '> [00:00:05] provision.start - node: sockt-us-1',
 ];
 
 const LIVE_LINES = [
-  '> [00:00:06] epoch.start — #00142',
-  '> [00:00:07] compute.running — 2x H100 active',
-  '> [00:00:08] sats.stream — 1,240 sats/epoch',
-  '> [00:00:09] latency: 128ms — OK',
-  '> [00:00:10] epoch.settle — PAID ✓',
-  '> [00:00:11] epoch.start — #00143',
-  '> [00:00:12] compute.running — 2x H100 active',
-  '> [00:00:13] sats.stream — 1,240 sats/epoch',
+  '> [00:00:06] epoch.start - #00142',
+  '> [00:00:07] compute.running - 2x H100 active',
+  '> [00:00:08] sats.stream - 1,240 sats/epoch',
+  '> [00:00:09] latency: 128ms - OK',
+  '> [00:00:10] epoch.settle - PAID ✓',
+  '> [00:00:11] epoch.start - #00143',
+  '> [00:00:12] compute.running - 2x H100 active',
+  '> [00:00:13] sats.stream - 1,240 sats/epoch',
 ];
 
 export default function WhatIsSection() {
@@ -134,7 +134,7 @@ export default function WhatIsSection() {
           >
             {isMobile
               ? 'Agents spin up compute, pay, run jobs, and shut down automatically.'
-              : 'Sockt is the compute layer your agents actually pay for. They open a Lightning channel, provision GPU capacity, and settle per epoch — no human in the loop. Not on Lightning yet? Log in on the website, generate a Sockt api_key, and run the same sandbox lifecycle with credit-based billing.'}
+              : 'Sockt is the compute layer your agents actually pay for. They open a Lightning channel, provision GPU capacity, and settle per epoch with no human in the loop. Not on Lightning yet? Log in on the website, generate a Sockt api_key, and run the same sandbox lifecycle with credit-based billing.'}
           </p>
 
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
@@ -172,45 +172,45 @@ export default function WhatIsSection() {
         {/* Right: console */}
         {!isMobile ? (
           <div ref={rightRef} style={{ flex: 1, width: '100%', paddingTop: '16px' }}>
-          <div
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '11px',
-              color: 'var(--text-secondary)',
-              letterSpacing: '0.08em',
-              marginBottom: '12px',
-            }}
-          >
-            AGENT LOG
-          </div>
-          <div
-            style={{
-              backgroundColor: 'var(--bg-surface)',
-              border: '1px solid var(--bg-border)',
-              borderRadius: '6px',
-              padding: '20px',
-              height: isMobile ? '240px' : '380px',
-              overflowY: 'auto',
-            }}
-          >
-            {lines.map((line, i) => (
-              <div
-                key={i}
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '12px',
-                  lineHeight: 1.8,
-                  color:
-                    typeof line === 'string' && line.includes('✓')
-                      ? 'var(--accent-green)'
-                      : 'var(--text-mono)',
-                }}
-              >
-                {typeof line === 'string' ? line : ''}
-              </div>
-            ))}
-            <span className="cursor-blink" style={{ color: 'var(--accent-green)', fontFamily: 'var(--font-mono)' }}>_</span>
-          </div>
+            <div
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '11px',
+                color: 'var(--text-secondary)',
+                letterSpacing: '0.08em',
+                marginBottom: '12px',
+              }}
+            >
+              AGENT LOG
+            </div>
+            <div
+              style={{
+                backgroundColor: 'var(--bg-surface)',
+                border: '1px solid var(--bg-border)',
+                borderRadius: '6px',
+                padding: '20px',
+                height: isMobile ? '240px' : '380px',
+                overflowY: 'auto',
+              }}
+            >
+              {lines.map((line, i) => (
+                <div
+                  key={i}
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '12px',
+                    lineHeight: 1.8,
+                    color:
+                      typeof line === 'string' && line.includes('✓')
+                        ? 'var(--accent-green)'
+                        : 'var(--text-mono)',
+                  }}
+                >
+                  {typeof line === 'string' ? line : ''}
+                </div>
+              ))}
+              <span className="cursor-blink" style={{ color: 'var(--accent-green)', fontFamily: 'var(--font-mono)' }}>_</span>
+            </div>
           </div>
         ) : null}
       </div>

@@ -213,7 +213,7 @@ export default function DocsPage() {
           <SectionHeading label="Overview" number="00" />
           <p style={bodyText}>
             Sockt is a compute-on-demand platform built for AI agents. Agents create sandboxes,
-            pay per second in sats via Lightning, execute commands, and terminate — no human in the loop.
+            pay per second in sats via Lightning, execute commands, and terminate with no human in the loop.
           </p>
           <p style={bodyText}>
             There are two integration paths: the <span style={mono}>MCP server</span> at{' '}

@@ -169,7 +169,7 @@ export default function HeroSection() {
                   transform: 'translateY(20px)',
                 }}
               >
-                Any Lightning wallet can be added as an MCP server — or use api_key fallback.
+                Any Lightning wallet can be added as an MCP server, or use an api_key fallback.
               </div>
             ) : null}
           </div>

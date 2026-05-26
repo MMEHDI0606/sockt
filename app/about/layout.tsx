@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'About Sockt',
     description:
-      'Learn how Sockt enables autonomous AI agents to provision and pay for compute using Bitcoin Lightning — per second, on demand.',
+      'Learn how Sockt enables autonomous AI agents to provision and pay for compute using Bitcoin Lightning, per second, on demand.',
     url: '/about',
     type: 'website',
   },

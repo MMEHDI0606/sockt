@@ -97,7 +97,7 @@ export default function AboutPage() {
         >
           Sockt is autonomous AI compute infrastructure. We give AI agents the ability
           to provision on-demand compute sandboxes, pay per second using Bitcoin Lightning
-          (msats), execute tasks, and terminate — without human intervention. CPU and GPU tiers available, billed to the second.
+          (msats), execute tasks, and terminate without human intervention. CPU and GPU tiers available, billed to the second.
         </p>
 
         {/* Mission */}
@@ -125,7 +125,7 @@ export default function AboutPage() {
             AI agents are becoming the primary operators of software. They need infrastructure
             that matches their nature: instant, autonomous, and economically programmable.
             Sockt eliminates the gap between an agent deciding to run a workload and the compute
-            being live and billed — with settlement over Lightning in milliseconds.
+            being live and billed, with settlement over Lightning in milliseconds.
           </p>
         </section>
 
@@ -150,7 +150,7 @@ export default function AboutPage() {
             }}
           >
             {[
-              { step: '01', title: 'Provision', body: 'The agent calls the Sockt MCP or SDK to spin up a sandbox — CPU or GPU — in under a second.' },
+              { step: '01', title: 'Provision', body: 'The agent calls the Sockt MCP or SDK to spin up a sandbox, CPU or GPU, in under a second.' },
               { step: '02', title: 'Pay', body: 'A Lightning invoice is generated and settled programmatically. Per-second billing starts immediately.' },
               { step: '03', title: 'Execute', body: 'The agent runs its workload: code execution, data processing, model inference, or agentic subtasks.' },
               { step: '04', title: 'Terminate', body: 'When the task is done, the agent terminates the sandbox. Billing stops. No idle waste.' },
@@ -232,7 +232,7 @@ export default function AboutPage() {
           </p>
         </section>
 
-        {/* FAQ — structured for Google rich results */}
+        {/* FAQ - structured for Google rich results */}
         <section
           style={{
             marginBottom: '56px',
@@ -267,7 +267,7 @@ export default function AboutPage() {
             {[
               {
                 q: 'What is Sockt?',
-                a: 'Sockt is autonomous AI compute infrastructure. It lets AI agents provision on-demand CPU and GPU sandboxes, pay per second using Bitcoin Lightning (msats), run tasks, and terminate — without human involvement.',
+                a: 'Sockt is autonomous AI compute infrastructure. It lets AI agents provision on-demand CPU and GPU sandboxes, pay per second using Bitcoin Lightning (msats), run tasks, and terminate without human involvement.',
               },
               {
                 q: 'How does billing work?',
@@ -275,7 +275,7 @@ export default function AboutPage() {
               },
               {
                 q: 'Can AI agents pay for compute autonomously?',
-                a: 'Yes. Sockt is designed for agent-native payment flows. Agents settle invoices programmatically over the Bitcoin Lightning Network in milliseconds — no human credit card or approval needed.',
+                a: 'Yes. Sockt is designed for agent-native payment flows. Agents settle invoices programmatically over the Bitcoin Lightning Network in milliseconds. No human credit card or approval needed.',
               },
               {
                 q: 'What compute tiers are available?',

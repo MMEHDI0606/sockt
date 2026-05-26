@@ -107,7 +107,7 @@ export default function FallbackSection() {
             </h2>
             {!isMobile ? (
               <p style={{ fontFamily: 'var(--font-body)', fontSize: '15px', color: 'var(--text-secondary)', marginTop: '12px', maxWidth: '560px' }}>
-                The agent autonomously creates a sandbox, pays in sats via its wallet, runs the job, and terminates — no human intervention.
+                The agent autonomously creates a sandbox, pays in sats via its wallet, runs the job, and terminates with no human intervention.
               </p>
             ) : null}
           </div>
@@ -196,9 +196,9 @@ export default function FallbackSection() {
                 <p
                   style={{
                     fontFamily: step.mono ? 'var(--font-mono)' : 'var(--font-body)',
-                      fontSize: isMobile ? '12px' : step.mono ? '12px' : '14px',
+                    fontSize: isMobile ? '12px' : step.mono ? '12px' : '14px',
                     color: step.mono ? 'var(--text-mono)' : 'var(--text-secondary)',
-                      lineHeight: isMobile ? 1.45 : 1.6,
+                    lineHeight: isMobile ? 1.45 : 1.6,
                     backgroundColor: step.mono ? 'var(--bg-surface)' : 'transparent',
                     border: step.mono ? '1px solid var(--bg-border)' : 'none',
                     borderRadius: step.mono ? '4px' : '0',

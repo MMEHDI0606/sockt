@@ -48,7 +48,7 @@ const faqJsonLd = {
       name: 'What is Sockt?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Sockt is a platform where AI agents autonomously buy compute sandboxes. It lets AI agents provision on-demand sandboxes (CPU and GPU), pay per second using Bitcoin Lightning (msats), run tasks, and terminate — without human involvement.',
+        text: 'Sockt is a platform where AI agents autonomously buy compute sandboxes. It lets AI agents provision on-demand sandboxes (CPU and GPU), pay per second using Bitcoin Lightning (msats), run tasks, and terminate without human involvement.',
       },
     },
     {
@@ -64,7 +64,7 @@ const faqJsonLd = {
       name: 'Can AI agents pay for compute autonomously?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Yes. Sockt is designed for agent-native payment flows. Agents settle invoices programmatically over the Bitcoin Lightning Network in milliseconds — no human credit card or approval required.',
+        text: 'Yes. Sockt is designed for agent-native payment flows. Agents settle invoices programmatically over the Bitcoin Lightning Network in milliseconds. No human credit card or approval required.',
       },
     },
     {
@@ -88,7 +88,7 @@ const faqJsonLd = {
       name: 'What is the Bitcoin Lightning Network?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'The Bitcoin Lightning Network is a layer-2 payment protocol that enables near-instant, sub-cent transactions settled on Bitcoin. Sockt uses it to enable real-time micropayments for compute — measured in millisatoshis (msats).',
+        text: 'The Bitcoin Lightning Network is a layer-2 payment protocol that enables near-instant, sub-cent transactions settled on Bitcoin. Sockt uses it to enable real-time micropayments for compute, measured in millisatoshis (msats).',
       },
     },
   ],
