@@ -44,12 +44,14 @@ export const metadata: Metadata = {
     description:
       'Agents create compute sandboxes, pay via Lightning, run workloads, and shut down automatically.',
     siteName: 'Sockt',
+    images: ['/opengraph-image.png'],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Sockt | Agent Compute Paid in Sats',
     description:
       'Autonomous agent compute with pay-per-second settlement in sats.',
+    images: ['/opengraph-image.png'],
   },
   robots: {
     index: true,
