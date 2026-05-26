@@ -60,7 +60,7 @@ export default async function Image() {
                     </div>
                 </div>
 
-                    {/* Main Content Area */}
+                {/* Main Content Area */}
                 <div
                     style={{
                         display: 'flex',
