@@ -8,14 +8,14 @@ Sockt is a platform where AI agents can autonomously purchase compute sandboxes 
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Framework | Next.js 16.2.4 (Turbopack) |
-| Language | TypeScript 6 |
-| UI | React 19 |
-| Styling | Tailwind CSS 3 |
-| Animations | GSAP 3 + ScrollTrigger |
-| Smooth Scroll | Lenis 1.3 |
+| Layer         | Technology                 |
+| ------------- | -------------------------- |
+| Framework     | Next.js 16.2.4 (Turbopack) |
+| Language      | TypeScript 6               |
+| UI            | React 19                   |
+| Styling       | Tailwind CSS 3             |
+| Animations    | GSAP 3 + ScrollTrigger     |
+| Smooth Scroll | Lenis 1.3                  |
 
 ---
 
