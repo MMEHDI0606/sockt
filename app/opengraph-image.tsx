@@ -175,7 +175,12 @@ export default async function Image() {
                             <div style={{ display: 'flex' }}><span style={{ color: '#10b981', marginRight: '16px' }}>&gt;</span> allocation: 2x</div>
                             <div style={{ display: 'flex' }}><span style={{ color: '#10b981', marginRight: '16px' }}>&gt;</span> channel_open: lnbc1pvjluezpp...</div>
                             <div style={{ display: 'flex' }}><span style={{ color: '#10b981', marginRight: '16px' }}>&gt;</span> balance: 128,400 sats</div>
-                            <div style={{ display: 'flex' }}><span style={{ color: '#10b981', marginRight: '16px' }}>&gt;</span> status: READY ✓</div>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <span style={{ color: '#10b981', marginRight: '16px' }}>&gt;</span> status: READY
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: '8px' }}>
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </div>
                         </div>
                     </div>
                 </div>
