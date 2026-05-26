@@ -51,12 +51,9 @@ export default async function DashboardAccountPage() {
   const navItems: Array<{ label: string; href: string; active?: boolean }> = [
     { label: 'Home', href: '/' },
     { label: 'Dashboard', href: '/dashboard' },
-    { label: 'Sandboxes', href: '/dashboard#sandboxes' },
-    { label: 'Billing', href: '/dashboard#billing' },
-    { label: 'API Keys', href: '/dashboard#api-keys' },
+    // { label: 'API Keys', href: '/dashboard#api-keys' },
     { label: 'Account', href: '/dashboard/account', active: true },
-    { label: 'Logs', href: '/dashboard#recent-logs' },
-    { label: 'Settings', href: '/dashboard/settings' },
+
   ];
 
   return (
@@ -67,12 +64,11 @@ export default async function DashboardAccountPage() {
       <div className="mx-auto min-h-screen w-full max-w-[1360px] p-4 md:p-6">
         <div className="flex min-h-[calc(100vh-2rem)] overflow-hidden rounded-2xl border-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-bg)]">
           <aside className="hidden w-[220px] shrink-0 border-r-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-sidebar)] p-4 md:flex md:flex-col">
-            <div className="mb-6 border-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-bg)] p-3">
-              <div className="mb-1 flex items-center gap-2">
-                <span className="inline-grid h-6 w-6 place-items-center rounded-md bg-[var(--dashboard-accent)] text-[var(--dashboard-bg)] font-mono text-xs">B</span>
-                <span className="font-display text-lg text-[var(--dashboard-text)]">Sockt</span>
-              </div>
-              <p className="font-body text-xs text-[var(--dashboard-muted)]">Agent infrastructure</p>
+            <div className="mb-8">
+              <Link href="/" className="flex items-baseline gap-[5px] no-underline">
+                <span className="font-mono text-lg text-[var(--dashboard-accent)]">{'{*}'}</span>
+                <span className="font-display text-lg font-medium text-[var(--dashboard-text)]">Sockt</span>
+              </Link>
             </div>
 
             <div className="mb-3 font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--dashboard-muted)]">Overview</div>
@@ -81,11 +77,10 @@ export default async function DashboardAccountPage() {
                 <Link
                   key={item.label}
                   href={item.href}
-                  className={`rounded-lg border-[0.5px] px-3 py-2.5 text-sm transition-colors ${
-                    item.active
-                      ? 'border-[var(--dashboard-accent)] text-[var(--dashboard-accent)]'
-                      : 'border-[var(--dashboard-border)] text-[var(--dashboard-text)] hover:border-[var(--dashboard-accent)] hover:text-[var(--dashboard-accent)]'
-                  }`}
+                  className={`rounded-lg border-[0.5px] px-3 py-2.5 text-sm transition-colors ${item.active
+                    ? 'border-[var(--dashboard-accent)] text-[var(--dashboard-accent)]'
+                    : 'border-[var(--dashboard-border)] text-[var(--dashboard-text)] hover:border-[var(--dashboard-accent)] hover:text-[var(--dashboard-accent)]'
+                    }`}
                 >
                   {item.label}
                 </Link>
@@ -151,12 +146,6 @@ export default async function DashboardAccountPage() {
                   <div>
                     <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--dashboard-muted)]">Actions</p>
                     <div className="mt-2 flex flex-wrap gap-2">
-                      <Link
-                        href="/dashboard/settings"
-                        className="rounded-lg border-[0.5px] border-[var(--dashboard-border)] px-3 py-2 text-xs font-mono uppercase tracking-[0.12em] text-[var(--dashboard-text)] hover:border-[var(--dashboard-accent)] hover:text-[var(--dashboard-accent)]"
-                      >
-                        Open settings
-                      </Link>
                       <Link
                         href="/forgot-password"
                         className="rounded-lg border-[0.5px] border-[var(--dashboard-border)] px-3 py-2 text-xs font-mono uppercase tracking-[0.12em] text-[var(--dashboard-text)] hover:border-[var(--dashboard-accent)] hover:text-[var(--dashboard-accent)]"

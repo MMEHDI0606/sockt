@@ -73,7 +73,6 @@ export default async function DashboardPage() {
 
   const balance = Number(profile?.credit_balance_subcents ?? 0);
   const balanceUsd = balance / 10000000;
-  const balanceSats = Math.floor(balanceUsd * 100000000);
 
   const userEmail = user.email || 'unknown@sockt.dev';
   const displayName =
@@ -86,28 +85,10 @@ export default async function DashboardPage() {
   const navItems: Array<{ label: string; href: string; active?: boolean }> = [
     { label: 'Home', href: '/' },
     { label: 'Dashboard', href: '/dashboard', active: true },
-    { label: 'Sandboxes', href: '/dashboard#sandboxes' },
-    { label: 'Billing', href: '/dashboard#billing' },
-    { label: 'API Keys', href: '/dashboard#api-keys' },
+    // { label: 'API Keys', href: '/dashboard#api-keys' },
     { label: 'Account', href: '/dashboard/account' },
-    { label: 'Logs', href: '/dashboard#recent-logs' },
-    { label: 'Settings', href: '/dashboard/settings' },
+
   ];
-
-  const tierRows = [
-    { tier: 'nano', resources: '0.25 vCPU · 256 MB', price: '0.3 sats/s' },
-    { tier: 'micro', resources: '1 vCPU · 1 GB', price: '0.8 sats/s' },
-    { tier: 'standard', resources: '2-4 vCPU · 8 GB', price: '4 sats/s' },
-    { tier: 'gpu_small', resources: '4 + T4 · 16 GB', price: '8 sats/s' },
-  ];
-
-  const recentLogs = apiKeys.slice(0, 5).map((key) => ({
-    timestamp: key.createdAt ? new Date(key.createdAt).toLocaleString() : 'Unknown',
-    event: `API key ${key.preview} active`,
-    status: 'active',
-  }));
-
-  const budgetUsedPercent = 0;
 
   return (
     <main
@@ -117,12 +98,11 @@ export default async function DashboardPage() {
       <div className="mx-auto min-h-screen w-full max-w-[1360px] p-4 md:p-6">
         <div className="flex min-h-[calc(100vh-2rem)] overflow-hidden rounded-2xl border-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-bg)]">
           <aside className="hidden w-[220px] shrink-0 border-r-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-sidebar)] p-4 md:flex md:flex-col">
-            <div className="mb-6 border-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-bg)] p-3">
-              <div className="mb-1 flex items-center gap-2">
-                <span className="inline-grid h-6 w-6 place-items-center rounded-md bg-[var(--dashboard-accent)] text-[var(--dashboard-bg)] font-mono text-xs">B</span>
-                <span className="font-display text-lg text-[var(--dashboard-text)]">Sockt</span>
-              </div>
-              <p className="font-body text-xs text-[var(--dashboard-muted)]">Agent infrastructure</p>
+            <div className="mb-8">
+              <Link href="/" className="flex items-baseline gap-[5px] no-underline">
+                <span className="font-mono text-lg text-[var(--dashboard-accent)]">{'{*}'}</span>
+                <span className="font-display text-lg font-medium text-[var(--dashboard-text)]">Sockt</span>
+              </Link>
             </div>
 
             <div className="mb-3 font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--dashboard-muted)]">Overview</div>
@@ -131,11 +111,10 @@ export default async function DashboardPage() {
                 <Link
                   key={item.label}
                   href={item.href}
-                  className={`rounded-lg border-[0.5px] px-3 py-2.5 text-sm transition-colors ${
-                    item.active
-                      ? 'border-[var(--dashboard-accent)] text-[var(--dashboard-accent)]'
-                      : 'border-[var(--dashboard-border)] text-[var(--dashboard-text)] hover:border-[var(--dashboard-accent)] hover:text-[var(--dashboard-accent)]'
-                  }`}
+                  className={`rounded-lg border-[0.5px] px-3 py-2.5 text-sm transition-colors ${item.active
+                    ? 'border-[var(--dashboard-accent)] text-[var(--dashboard-accent)]'
+                    : 'border-[var(--dashboard-border)] text-[var(--dashboard-text)] hover:border-[var(--dashboard-accent)] hover:text-[var(--dashboard-accent)]'
+                    }`}
                 >
                   {item.label}
                 </Link>
@@ -178,12 +157,6 @@ export default async function DashboardPage() {
                 >
                   Home
                 </Link>
-                <Link
-                  href="/docs"
-                  className="rounded-lg border-[0.5px] border-[var(--dashboard-border)] px-4 py-2 text-sm font-display text-[var(--dashboard-text)] hover:border-[var(--dashboard-accent)] hover:text-[var(--dashboard-accent)]"
-                >
-                  New sandbox
-                </Link>
                 <form action={createTopupCheckoutAction}>
                   <button
                     type="submit"
@@ -195,36 +168,10 @@ export default async function DashboardPage() {
               </div>
             </header>
 
-            <div id="sandboxes" className="mb-6 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-              <article className="rounded-xl border-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-card)] p-4">
-                <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--dashboard-muted)]">Balance</p>
-                <p className="mt-2 font-display text-4xl text-[var(--dashboard-text)]">${balanceUsd.toFixed(2)}</p>
-                <p className="mt-1 text-sm text-[var(--dashboard-muted)]">{balanceSats.toLocaleString()} sats</p>
-              </article>
-
-              <article className="rounded-xl border-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-card)] p-4">
-                <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--dashboard-muted)]">Active sandboxes</p>
-                <p className="mt-2 font-display text-4xl text-[var(--dashboard-text)]">0</p>
-                <p className="mt-1 text-sm text-[var(--dashboard-muted)]">0 running</p>
-              </article>
-
-              <article className="rounded-xl border-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-card)] p-4">
-                <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--dashboard-muted)]">Spent this month</p>
-                <p className="mt-2 font-display text-4xl text-[var(--dashboard-text)]">$0.00</p>
-                <p className="mt-1 text-sm text-[var(--dashboard-muted)]">0% vs last month</p>
-              </article>
-
-              <article className="rounded-xl border-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-card)] p-4">
-                <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--dashboard-muted)]">API calls (24h)</p>
-                <p className="mt-2 font-display text-4xl text-[var(--dashboard-text)]">-</p>
-                <p className="mt-1 text-sm text-[var(--dashboard-muted)]">No activity yet</p>
-              </article>
-            </div>
-
             <div className="mb-6 grid gap-4 xl:grid-cols-2">
               <section id="billing" className="rounded-xl border-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-card)] p-5">
                 <div className="mb-4 flex items-center justify-between">
-                  <h2 className="font-display text-xl text-[var(--dashboard-text)]">Billing</h2>
+                  <h2 className="font-display text-xl text-[var(--dashboard-text)]">Credit Balance</h2>
                   <form action={createTopupCheckoutAction}>
                     <button
                       type="submit"
@@ -235,23 +182,7 @@ export default async function DashboardPage() {
                   </form>
                 </div>
 
-                <p className="text-sm text-[var(--dashboard-muted)]">Lightning balance</p>
                 <p className="mt-1 font-display text-4xl text-[var(--dashboard-text)]">${balanceUsd.toFixed(2)} <span className="text-base text-[var(--dashboard-muted)]">USD</span></p>
-
-                <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-[var(--dashboard-border)]">
-                  <div className="h-full bg-[var(--dashboard-accent)]" style={{ width: `${budgetUsedPercent}%` }} />
-                </div>
-                <p className="mt-2 text-xs text-[var(--dashboard-muted)]">{budgetUsedPercent}% of monthly budget used</p>
-
-                <div className="mt-5 space-y-2">
-                  {tierRows.map((row) => (
-                    <div key={row.tier} className="grid grid-cols-[90px_1fr_auto] items-center gap-2 border-b-[0.5px] border-[var(--dashboard-border)] py-1.5 text-sm">
-                      <span className="font-mono uppercase text-[var(--dashboard-text)]">{row.tier}</span>
-                      <span className="text-[var(--dashboard-muted)]">{row.resources}</span>
-                      <span className="font-mono text-[var(--dashboard-text)]">{row.price}</span>
-                    </div>
-                  ))}
-                </div>
 
                 <Suspense fallback={null}>
                   <SyncCredits currentBalance={balance} />
@@ -262,39 +193,6 @@ export default async function DashboardPage() {
                 <ApiKeysPanel initialKeys={apiKeys} />
               </div>
             </div>
-
-            <section id="recent-logs" className="rounded-xl border-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-card)] p-5">
-              <div className="mb-4 flex items-center justify-between">
-                <h2 className="font-display text-xl text-[var(--dashboard-text)]">Recent logs</h2>
-                <span className="rounded-full border-[0.5px] border-[var(--dashboard-border)] px-2.5 py-1 text-[10px] font-mono uppercase tracking-[0.12em] text-[var(--dashboard-muted)]">
-                  Live feed
-                </span>
-              </div>
-
-              {recentLogs.length ? (
-                <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-                  {recentLogs.map((log, index) => (
-                    <article
-                      key={`${log.timestamp}-${index}`}
-                      className="rounded-xl border-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-bg)] p-4"
-                    >
-                      <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-[var(--dashboard-muted)]">
-                        {log.timestamp}
-                      </p>
-                      <p className="mt-2 text-sm text-[var(--dashboard-text)]">{log.event}</p>
-                      <span className="mt-3 inline-flex rounded-full border-[0.5px] border-[var(--dashboard-accent)] px-2 py-0.5 text-[10px] font-mono uppercase tracking-[0.12em] text-[var(--dashboard-accent)]">
-                        {log.status}
-                      </span>
-                    </article>
-                  ))}
-                </div>
-              ) : (
-                <div className="rounded-xl border-[0.5px] border-dashed border-[var(--dashboard-border)] bg-[var(--dashboard-bg)] p-6 text-center">
-                  <p className="font-display text-xl text-[var(--dashboard-text)]">No recent logs</p>
-                  <p className="mt-1 text-sm text-[var(--dashboard-muted)]">Events will appear here as soon as your workspace becomes active.</p>
-                </div>
-              )}
-            </section>
           </section>
         </div>
       </div>
