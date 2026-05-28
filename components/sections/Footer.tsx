@@ -64,7 +64,7 @@ export default function Footer() {
                   marginBottom: '16px',
                 }}
               >
-                The execution layer for AI agents that pay in sats.
+                The financial primitive for autonomous AI agents.
               </p>
             ) : null}
             <div

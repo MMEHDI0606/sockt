@@ -18,12 +18,12 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sockt.dev';
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'Sockt | Agent Compute Paid in Sats',
-    template: '%s | Sockt',
+    default: 'sockt.dev | Compute for Agents — Lightning & API Key',
+    template: '%s | sockt.dev',
   },
   description:
-    'On-demand compute sandboxes that AI agents can buy autonomously to run their code, settle over Lightning, and terminate automatically.',
-  applicationName: 'Sockt',
+    'The first compute infrastructure built for autonomous AI agents. Pay with Bitcoin Lightning sats or pre-loaded fiat credits — no human required after initial setup.',
+  applicationName: 'sockt.dev',
   keywords: [
     'AI agents',
     'compute sandboxes',
@@ -33,6 +33,16 @@ export const metadata: Metadata = {
     'bitcoin sats',
     'gpu sandbox',
     'autonomous compute',
+    'fiat credits',
+    'api key compute',
+    'agent autonomy',
+    'agentic compute',
+    'O(1) agent setup',
+    'agent economic actor',
+    'multi-agent compute',
+    'LangChain compute',
+    'AutoGen sandbox',
+    'CrewAI infrastructure',
   ],
   alternates: {
     canonical: '/',
@@ -40,17 +50,17 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: '/',
-    title: 'Sockt | Agent Compute Paid in Sats',
+    title: 'sockt.dev | Compute for Agents — Lightning & API Key',
     description:
-      'Agents create compute sandboxes, pay via Lightning, run workloads, and shut down automatically.',
-    siteName: 'Sockt',
+      'Agents provision compute and pay autonomously — via Bitcoin Lightning or fiat credits. No ongoing human involvement. The O(1) bootstrap model.',
+    siteName: 'sockt.dev',
     images: ['/opengraph-image.png'],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Sockt | Agent Compute Paid in Sats',
+    title: 'sockt.dev | Compute for Agents — Lightning & API Key',
     description:
-      'Autonomous agent compute with pay-per-second settlement in sats.',
+      'Agents provision compute and pay autonomously — via Bitcoin Lightning or fiat credits. No ongoing human involvement.',
     images: ['/opengraph-image.png'],
   },
   robots: {

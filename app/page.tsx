@@ -23,7 +23,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sockt.dev';
 const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'Sockt',
+  name: 'sockt.dev',
   url: siteUrl,
   logo: `${siteUrl}/favicon.svg`,
   sameAs: ['https://x.com/socktdev', 'https://github.com/socktdev'],
@@ -32,10 +32,10 @@ const organizationJsonLd = {
 const websiteJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: 'Sockt',
+  name: 'sockt.dev',
   url: siteUrl,
   description:
-    'On-demand compute sandboxes that AI agents can buy autonomously to run their code, settle over Lightning, and terminate automatically.',
+    'The first compute infrastructure built for autonomous AI agents. Pay with Bitcoin Lightning sats or pre-loaded fiat credits — no human required after initial setup.',
   inLanguage: 'en',
 };
 
@@ -45,18 +45,18 @@ const faqJsonLd = {
   mainEntity: [
     {
       '@type': 'Question',
-      name: 'What is Sockt?',
+      name: 'What is sockt.dev?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Sockt is a platform where AI agents autonomously buy compute sandboxes. It lets AI agents provision on-demand sandboxes (CPU and GPU), pay per second using Bitcoin Lightning (msats), run tasks, and terminate without human involvement.',
+        text: 'sockt.dev is the first compute infrastructure platform purpose-built for autonomous AI agents. We provide on-demand sandbox environments that agents can pay for directly — via Bitcoin Lightning sats or pre-loaded fiat credits — without credit card authorization flows, KYC re-verification, or human re-approval at the point of compute purchase.',
       },
     },
     {
       '@type': 'Question',
-      name: 'How does billing work on Sockt?',
+      name: 'How does billing work on sockt.dev?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Sockt uses per-second billing. The agent pays a prepaid balance via Lightning invoice to start the sandbox. When the agent terminates it, the remaining amount is credited back to the agent\'s wallet.',
+        text: 'Two billing models are available. Lightning: pay per second in Bitcoin sats via Lightning invoice; unused balance credited back to the agent\'s wallet. API Key Credits: purchase a fiat credit balance once; the agent draws it down autonomously per request. Credits are non-refundable — treat as compute budget allocation.',
       },
     },
     {
@@ -64,23 +64,31 @@ const faqJsonLd = {
       name: 'Can AI agents pay for compute autonomously?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Yes. Sockt is designed for agent-native payment flows. Agents settle invoices programmatically over the Bitcoin Lightning Network in milliseconds. No human credit card or approval required.',
+        text: 'Yes. Both pathways deliver full agent autonomy post-setup. Lightning: agents settle invoices programmatically over Bitcoin Lightning in milliseconds. API Key Credits: agents draw down a pre-loaded fiat credit balance autonomously per request. In neither case is human approval required after initial setup.',
       },
     },
     {
       '@type': 'Question',
-      name: 'What compute tiers does Sockt offer?',
+      name: 'What is the difference between the Lightning and API Key pathways?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Sockt offers CPU tiers (Nano, Micro, Standard) and GPU tiers (GPU Small, GPU Large), all billed per second. Pricing can be viewed in USD or millisatoshis (msats).',
+        text: 'Both deliver full agent autonomy post-setup. The difference is financial sovereignty and recirculability. Lightning agents hold and earn sats natively — they can receive payments and recirculate them into compute. API Key agents spend a pre-allocated credit budget. Lightning is the right choice for agents in revenue-generating loops; credits are the right choice for teams wanting simplicity without Lightning infrastructure.',
       },
     },
     {
       '@type': 'Question',
-      name: 'How do I integrate Sockt into an AI agent?',
+      name: 'What compute tiers does sockt.dev offer?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Sockt provides an MCP server and a TypeScript/Python SDK. Agents connect via the Model Context Protocol or import the SDK directly to provision sandboxes, execute code, and manage compute programmatically.',
+        text: 'sockt.dev offers CPU tiers (Nano, Micro, Standard) and GPU tiers (GPU Small, GPU Large), all billed per second. Pricing can be viewed in USD or millisatoshis (msats).',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How do I integrate sockt.dev into an AI agent?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'sockt.dev provides an MCP server and a TypeScript/Python SDK. Agents connect via the Model Context Protocol or import the SDK directly to provision sandboxes, execute code, and manage compute programmatically.',
       },
     },
     {
@@ -88,7 +96,7 @@ const faqJsonLd = {
       name: 'What is the Bitcoin Lightning Network?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'The Bitcoin Lightning Network is a layer-2 payment protocol that enables near-instant, sub-cent transactions settled on Bitcoin. Sockt uses it to enable real-time micropayments for compute, measured in millisatoshis (msats).',
+        text: 'The Bitcoin Lightning Network is a layer-2 payment protocol that enables near-instant, sub-cent transactions settled on Bitcoin. sockt.dev uses it to enable real-time micropayments for compute, measured in millisatoshis (msats).',
       },
     },
   ],

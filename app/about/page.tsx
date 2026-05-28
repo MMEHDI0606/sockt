@@ -83,7 +83,7 @@ export default function AboutPage() {
             color: 'var(--text-primary)',
           }}
         >
-          Compute for agents.<br />Billed per second in sats.
+          Compute for agents, not for their owners.
         </h1>
         <p
           style={{
@@ -95,9 +95,7 @@ export default function AboutPage() {
             maxWidth: '680px',
           }}
         >
-          Sockt is autonomous AI compute infrastructure. We give AI agents the ability
-          to provision on-demand compute sandboxes, pay per second using Bitcoin Lightning
-          (msats), execute tasks, and terminate without human intervention. CPU and GPU tiers available, billed to the second.
+          sockt.dev is the first compute infrastructure platform purpose-built for autonomous AI agents. We provide on-demand sandbox environments that agents can pay for directly — via Bitcoin Lightning sats or pre-loaded fiat credits — without credit card authorization flows, KYC re-verification, or human re-approval at the point of compute purchase.
         </p>
 
         {/* Mission */}
@@ -122,11 +120,154 @@ export default function AboutPage() {
               maxWidth: '680px',
             }}
           >
-            AI agents are becoming the primary operators of software. They need infrastructure
-            that matches their nature: instant, autonomous, and economically programmable.
-            Sockt eliminates the gap between an agent deciding to run a workload and the compute
-            being live and billed, with settlement over Lightning in milliseconds.
+            AI agents are becoming economic actors. Every existing compute platform requires a human to be present at the billing layer. sockt.dev eliminates that requirement through two parallel pathways — both of which give agents full operational autonomy after a single human setup step.
           </p>
+        </section>
+
+        {/* Choose your Pathway */}
+        <section style={{ marginBottom: '56px', borderTop: '1px solid var(--bg-border)', paddingTop: '40px' }}>
+          <h2
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: '1.4rem',
+              fontWeight: 600,
+              marginBottom: '20px',
+              color: 'var(--text-primary)',
+            }}
+          >
+            Choose Your Pathway
+          </h2>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+              gap: '20px',
+              marginBottom: '40px',
+            }}
+          >
+            {/* Lightning (Sats) Card */}
+            <div
+              style={{
+                border: '1px solid rgba(194, 122, 54, 0.3)',
+                borderRadius: '6px',
+                padding: '24px',
+                background: 'var(--bg-surface)',
+                boxShadow: 'inset 0 0 12px rgba(194, 122, 54, 0.04)',
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '10px',
+                  color: 'var(--accent-btc)',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  marginBottom: '12px',
+                }}
+              >
+                ⚡ PATHWAY 01
+              </div>
+              <h3
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: '1.25rem',
+                  fontWeight: 700,
+                  marginBottom: '14px',
+                  color: 'var(--text-primary)',
+                }}
+              >
+                Lightning (Sats)
+              </h3>
+              <p
+                style={{
+                  fontFamily: 'var(--font-body)',
+                  fontSize: '0.9rem',
+                  lineHeight: 1.6,
+                  color: 'var(--text-secondary)',
+                  marginBottom: '20px',
+                }}
+              >
+                Full financial sovereignty for agents in revenue-generating loops. Agents hold, receive, and spend Bitcoin sats natively.
+              </p>
+              <table style={{ width: '100%', fontSize: '12px', borderCollapse: 'collapse', fontFamily: 'var(--font-mono)' }}>
+                <tbody>
+                  <tr style={{ borderBottom: '1px solid var(--bg-border)' }}>
+                    <td style={{ padding: '8px 0', color: 'var(--text-secondary)' }}>Economic Model</td>
+                    <td style={{ padding: '8px 0', textAlign: 'right', color: 'var(--text-primary)' }}>Hold & recirculate sats</td>
+                  </tr>
+                  <tr style={{ borderBottom: '1px solid var(--bg-border)' }}>
+                    <td style={{ padding: '8px 0', color: 'var(--text-secondary)' }}>Billing Precision</td>
+                    <td style={{ padding: '8px 0', textAlign: 'right', color: 'var(--text-primary)' }}>Per second in msats</td>
+                  </tr>
+                  <tr>
+                    <td style={{ padding: '8px 0', color: 'var(--text-secondary)' }}>Initial Setup</td>
+                    <td style={{ padding: '8px 0', textAlign: 'right', color: 'var(--text-primary)' }}>Connect external wallet MCP</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            {/* API Key (Credits) Card */}
+            <div
+              style={{
+                border: '1px solid var(--bg-border)',
+                borderRadius: '6px',
+                padding: '24px',
+                background: 'var(--bg-surface)',
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '10px',
+                  color: 'var(--text-secondary)',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  marginBottom: '12px',
+                }}
+              >
+                🔑 PATHWAY 02
+              </div>
+              <h3
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: '1.25rem',
+                  fontWeight: 700,
+                  marginBottom: '14px',
+                  color: 'var(--text-primary)',
+                }}
+              >
+                API Key (Credits)
+              </h3>
+              <p
+                style={{
+                  fontFamily: 'var(--font-body)',
+                  fontSize: '0.9rem',
+                  lineHeight: 1.6,
+                  color: 'var(--text-secondary)',
+                  marginBottom: '20px',
+                }}
+              >
+                Instant deployment and simplicity. Pre-allocate compute budgets using standard fiat credits, drawing down per request.
+              </p>
+              <table style={{ width: '100%', fontSize: '12px', borderCollapse: 'collapse', fontFamily: 'var(--font-mono)' }}>
+                <tbody>
+                  <tr style={{ borderBottom: '1px solid var(--bg-border)' }}>
+                    <td style={{ padding: '8px 0', color: 'var(--text-secondary)' }}>Economic Model</td>
+                    <td style={{ padding: '8px 0', textAlign: 'right', color: 'var(--text-primary)' }}>Spend pre-allocated budget</td>
+                  </tr>
+                  <tr style={{ borderBottom: '1px solid var(--bg-border)' }}>
+                    <td style={{ padding: '8px 0', color: 'var(--text-secondary)' }}>Billing Precision</td>
+                    <td style={{ padding: '8px 0', textAlign: 'right', color: 'var(--text-primary)' }}>Per-request drawdowns</td>
+                  </tr>
+                  <tr>
+                    <td style={{ padding: '8px 0', color: 'var(--text-secondary)' }}>Initial Setup</td>
+                    <td style={{ padding: '8px 0', textAlign: 'right', color: 'var(--text-primary)' }}>Pre-load credits in dashboard</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </section>
 
         {/* How it works */}
@@ -150,8 +291,8 @@ export default function AboutPage() {
             }}
           >
             {[
-              { step: '01', title: 'Provision', body: 'The agent calls the Sockt MCP or SDK to spin up a sandbox, CPU or GPU, in under a second.' },
-              { step: '02', title: 'Pay', body: 'A Lightning invoice is generated and settled programmatically. Per-second billing starts immediately.' },
+              { step: '01', title: 'Provision', body: 'The agent calls the sockt.dev MCP or SDK to spin up a sandbox, CPU or GPU, in under a second.' },
+              { step: '02', title: 'Pay', body: 'A Lightning invoice or credits draw down is settled programmatically. Billing is fully autonomous.' },
               { step: '03', title: 'Execute', body: 'The agent runs its workload: code execution, data processing, model inference, or agentic subtasks.' },
               { step: '04', title: 'Terminate', body: 'When the task is done, the agent terminates the sandbox. Billing stops. No idle waste.' },
             ].map(({ step, title, body }) => (
@@ -202,7 +343,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Why Bitcoin Lightning */}
+        {/* Why No Credit Cards? */}
         <section style={{ marginBottom: '56px' }}>
           <h2
             style={{
@@ -213,23 +354,62 @@ export default function AboutPage() {
               color: 'var(--text-primary)',
             }}
           >
-            Why Bitcoin Lightning?
+            Why No Credit Cards?
           </h2>
-          <p
-            style={{
-              fontFamily: 'var(--font-body)',
-              fontSize: '1rem',
-              lineHeight: 1.75,
-              color: 'var(--text-secondary)',
-              maxWidth: '680px',
-            }}
-          >
-            Traditional payment rails add friction for autonomous agents: credit cards require human
-            accounts, bank transfers have daily limits, and both settle in days. The Bitcoin Lightning
-            Network settles in milliseconds, supports sub-cent denominations (msats), is programmable
-            via standard invoices, and requires no intermediary. This makes it the only payment layer
-            that can keep pace with agent-driven compute at scale.
-          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            <div>
+              <h3
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: '1.05rem',
+                  fontWeight: 600,
+                  marginBottom: '8px',
+                  color: 'var(--text-primary)',
+                }}
+              >
+                Why Lightning?
+              </h3>
+              <p
+                style={{
+                  fontFamily: 'var(--font-body)',
+                  fontSize: '1rem',
+                  lineHeight: 1.75,
+                  color: 'var(--text-secondary)',
+                  maxWidth: '680px',
+                }}
+              >
+                Traditional payment rails add friction for autonomous agents: credit cards require human
+                accounts, bank transfers have daily limits, and both settle in days. The Bitcoin Lightning
+                Network settles in milliseconds, supports sub-cent denominations (msats), is programmable
+                via standard invoices, and requires no intermediary. This makes it the only payment layer
+                that can keep pace with agent-driven compute at scale.
+              </p>
+            </div>
+            <div>
+              <h3
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: '1.05rem',
+                  fontWeight: 600,
+                  marginBottom: '8px',
+                  color: 'var(--text-primary)',
+                }}
+              >
+                Why Pre-Loaded Credits?
+              </h3>
+              <p
+                style={{
+                  fontFamily: 'var(--font-body)',
+                  fontSize: '1rem',
+                  lineHeight: 1.75,
+                  color: 'var(--text-secondary)',
+                  maxWidth: '680px',
+                }}
+              >
+                Non-refundable credits are a deliberate feature: they enable upfront compute capacity pre-allocation, align operators with intentional budgeting, mirror how enterprise reserved instances work, and create a natural upgrade path to Lightning. This delivers a seamless gateway for teams wanting simplicity without running Lightning nodes, without sacrificing agent autonomy.
+              </p>
+            </div>
+          </div>
         </section>
 
         {/* FAQ - structured for Google rich results */}
@@ -266,24 +446,28 @@ export default function AboutPage() {
           <dl style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
             {[
               {
-                q: 'What is Sockt?',
-                a: 'Sockt is autonomous AI compute infrastructure. It lets AI agents provision on-demand CPU and GPU sandboxes, pay per second using Bitcoin Lightning (msats), run tasks, and terminate without human involvement.',
+                q: 'What is sockt.dev?',
+                a: 'sockt.dev is the first compute infrastructure platform purpose-built for autonomous AI agents. We provide on-demand sandbox environments that agents can pay for directly — via Bitcoin Lightning sats or pre-loaded fiat credits — without credit card authorization flows, KYC re-verification, or human re-approval at the point of compute purchase.',
               },
               {
                 q: 'How does billing work?',
-                a: 'Billing is per second. The agent pays a prepaid balance via Lightning invoice to start the sandbox. When the agent terminates it, the remaining amount is credited back to the agent\'s wallet.',
+                a: 'Two billing models are available. Lightning: pay per second in Bitcoin sats via Lightning invoice; unused balance credited back to the agent\'s wallet. API Key Credits: purchase a fiat credit balance once; the agent draws it down autonomously per request. Credits are non-refundable — treat as compute budget allocation.',
               },
               {
                 q: 'Can AI agents pay for compute autonomously?',
-                a: 'Yes. Sockt is designed for agent-native payment flows. Agents settle invoices programmatically over the Bitcoin Lightning Network in milliseconds. No human credit card or approval needed.',
+                a: 'Yes. Both pathways deliver full agent autonomy post-setup. Lightning: agents settle invoices programmatically over Bitcoin Lightning in milliseconds. API Key Credits: agents draw down a pre-loaded fiat credit balance autonomously per request. In neither case is human approval required after initial setup.',
+              },
+              {
+                q: 'What is the difference between the Lightning and API Key pathways?',
+                a: 'Both deliver full agent autonomy post-setup. The difference is financial sovereignty and recirculability. Lightning agents hold and earn sats natively — they can receive payments and recirculate them into compute. API Key agents spend a pre-allocated credit budget. Lightning is the right choice for agents in revenue-generating loops; credits are the right choice for teams wanting simplicity without Lightning infrastructure.',
               },
               {
                 q: 'What compute tiers are available?',
-                a: 'Sockt offers CPU tiers (Nano, Micro, Standard) and GPU tiers (GPU Small, GPU Large), all billed per second. Pricing is viewable in USD or millisatoshis (msats).',
+                a: 'sockt.dev offers CPU tiers (Nano, Micro, Standard) and GPU tiers (GPU Small, GPU Large), all billed per second. Pricing is viewable in USD or millisatoshis (msats).',
               },
               {
-                q: 'How do I integrate Sockt into an agent?',
-                a: 'Sockt provides an MCP server and a TypeScript/Python SDK. Agents connect via the Model Context Protocol or import the SDK directly to provision sandboxes and manage compute.',
+                q: 'How do I integrate an agent?',
+                a: 'sockt.dev provides an MCP server and a TypeScript/Python SDK. Agents connect via the Model Context Protocol or import the SDK directly to provision sandboxes and manage compute.',
               },
             ].map(({ q, a }, i, arr) => (
               <div

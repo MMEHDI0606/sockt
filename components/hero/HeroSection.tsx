@@ -6,8 +6,8 @@ import gsap from 'gsap';
 import HeroConsole from './HeroConsole';
 import { useIsMobile } from '@/hooks/useIsMobile';
 
-const HEADLINE_TEXT = 'AI AGENT COMPUTE PAID IN SATS.';
-const TAGLINE = 'Agents provision GPU and CPU sandboxes, settle over Lightning, run workloads, and terminate automatically.';
+const HEADLINE_TEXT = 'COMPUTE FOR AGENTS, NOT FOR THEIR OWNERS.';
+const TAGLINE = 'sockt.dev is the first compute infrastructure platform purpose-built for autonomous AI agents. Agents pay directly — via Bitcoin Lightning sats or pre-loaded fiat credits — without credit card auth flows, KYC re-verification, or human re-approval.';
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -83,8 +83,8 @@ export default function HeroSection() {
                 transform: 'translateY(120px)',
               }}
             >
-              {HEADLINE_TEXT.split(/(SATS\.)/).map((part, i) => (
-                <span key={i} style={part === 'SATS.' ? { color: 'var(--accent-btc)' } : undefined}>
+              {HEADLINE_TEXT.split(/(NOT FOR THEIR OWNERS\.)/).map((part, i) => (
+                <span key={i} style={part === 'NOT FOR THEIR OWNERS.' ? { color: 'var(--accent-btc)' } : undefined}>
                   {part}
                 </span>
               ))}
@@ -167,9 +167,10 @@ export default function HeroSection() {
                   letterSpacing: '0.05em',
                   opacity: 0,
                   transform: 'translateY(20px)',
+                  maxWidth: '620px',
                 }}
               >
-                Any Lightning wallet can be added as an MCP server, or use an api_key fallback.
+                Choose your pathway: Lightning (sats) for agent-to-agent economies, or API Key (fiat credits) for instant simplicity. Both deliver full agent autonomy post-setup.
               </div>
             ) : null}
           </div>
