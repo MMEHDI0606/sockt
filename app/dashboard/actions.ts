@@ -150,3 +150,88 @@ export async function signOutAction() {
   await supabase.auth.signOut();
   redirect('/');
 }
+
+export async function updateNameAction(newName: string): Promise<ActionResult> {
+  try {
+    if (!newName || !newName.trim()) {
+      return { ok: false, error: 'Name cannot be empty.' };
+    }
+    const { supabase } = await getAuthenticatedClient();
+    const { error } = await supabase.auth.updateUser({
+      data: { full_name: newName.trim() },
+    });
+    if (error) {
+      return { ok: false, error: error.message };
+    }
+    revalidatePath('/dashboard/account');
+    revalidatePath('/dashboard');
+    return { ok: true };
+  } catch (error) {
+    return {
+      ok: false,
+      error: error instanceof Error ? error.message : 'Failed to update name.',
+    };
+  }
+}
+
+export async function updatePasswordAction(password: string): Promise<ActionResult> {
+  try {
+    if (!password || password.length < 8) {
+      return { ok: false, error: 'Password must be at least 8 characters long.' };
+    }
+    const { supabase } = await getAuthenticatedClient();
+    const { error } = await supabase.auth.updateUser({
+      password: password,
+    });
+    if (error) {
+      return { ok: false, error: error.message };
+    }
+    return { ok: true };
+  } catch (error) {
+    return {
+      ok: false,
+      error: error instanceof Error ? error.message : 'Failed to update password.',
+    };
+  }
+}
+
+export async function deleteAccountAction(): Promise<ActionResult> {
+  let success = false;
+  try {
+    const { supabase, user } = await getAuthenticatedClient();
+    
+    // 1. Delete user API keys
+    const { error: apiKeysError } = await supabase
+      .from('api_keys')
+      .delete()
+      .eq('user_id', user.id);
+
+    if (apiKeysError) {
+      return { ok: false, error: `Failed to delete API keys: ${apiKeysError.message}` };
+    }
+
+    // 2. Delete user profile row
+    const { error: profileError } = await supabase
+      .from('users')
+      .delete()
+      .eq('id', user.id);
+
+    if (profileError) {
+      return { ok: false, error: `Failed to delete profile: ${profileError.message}` };
+    }
+
+    // 3. Sign out user session
+    await supabase.auth.signOut();
+    success = true;
+  } catch (error) {
+    return {
+      ok: false,
+      error: error instanceof Error ? error.message : 'Failed to delete account.',
+    };
+  }
+
+  if (success) {
+    redirect('/');
+  }
+  return { ok: true };
+}

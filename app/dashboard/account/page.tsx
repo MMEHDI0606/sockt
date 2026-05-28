@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
 import { signOutAction } from '@/app/dashboard/actions';
 import ThemeToggle from '@/components/theme/ThemeToggle';
+import AccountSettingsForm from '@/components/dashboard/AccountSettingsForm';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -125,73 +126,13 @@ export default async function DashboardAccountPage() {
           </p>
         </div>
 
-        {/* Workspace Cards */}
-        <div className="grid gap-6 lg:grid-cols-2">
-          {/* Card 1: Profile */}
-          <section className="rounded-xl border-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-card)] p-6 flex flex-col justify-between">
-            <div>
-              <div className="mb-4 flex items-center justify-between">
-                <span className="font-mono text-xs uppercase tracking-[0.15em] text-[var(--dashboard-muted)]">
-                  Profile Details
-                </span>
-                <span className="flex items-center gap-1.5 font-mono text-[10px] text-[var(--dashboard-accent)] uppercase tracking-[0.1em]">
-                  <span className="h-2 w-2 rounded-full bg-[var(--dashboard-accent)] animate-pulse" />
-                  Verified Session
-                </span>
-              </div>
-              <dl className="space-y-4 text-sm mt-6">
-                <div>
-                  <dt className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--dashboard-muted)]">Name</dt>
-                  <dd className="mt-1 text-sm font-semibold text-[var(--dashboard-text)]">{displayName}</dd>
-                </div>
-                <div>
-                  <dt className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--dashboard-muted)]">Email</dt>
-                  <dd className="mt-1 text-sm font-semibold text-[var(--dashboard-text)]">{userEmail}</dd>
-                </div>
-                <div>
-                  <dt className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--dashboard-muted)]">User ID</dt>
-                  <dd className="mt-1 break-all font-mono text-xs text-[var(--dashboard-muted)]">{user.id}</dd>
-                </div>
-              </dl>
-            </div>
-          </section>
-
-          {/* Card 2: Account Status */}
-          <section className="rounded-xl border-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-card)] p-6 flex flex-col justify-between">
-            <div>
-              <div className="mb-4 flex items-center justify-between">
-                <span className="font-mono text-xs uppercase tracking-[0.15em] text-[var(--dashboard-muted)]">
-                  Account Security
-                </span>
-                <span className="flex items-center gap-1.5 font-mono text-[10px] text-[var(--accent-green)] uppercase tracking-[0.1em]">
-                  <span className="h-2 w-2 rounded-full bg-[var(--accent-green)]" />
-                  Secured
-                </span>
-              </div>
-              <div className="space-y-4 mt-6">
-                <div>
-                  <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--dashboard-muted)]">Credit Balance</p>
-                  <p className="mt-1 font-display text-4xl font-semibold text-[var(--dashboard-text)]">
-                    ${balanceUsd.toFixed(2)}{' '}
-                    <span className="text-base font-normal text-[var(--dashboard-muted)]">USD</span>
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-8 pt-6 border-t-[0.5px] border-[var(--dashboard-border)] flex items-center justify-between">
-              <span className="font-mono text-[10px] text-[var(--dashboard-muted)]">
-                Manage your credentials
-              </span>
-              <Link
-                href="/forgot-password"
-                className="rounded-lg border-[0.5px] border-[var(--dashboard-border)] px-4 py-2 text-xs font-mono uppercase tracking-[0.12em] font-semibold text-[var(--dashboard-text)] hover:border-[var(--dashboard-accent)] hover:text-[var(--dashboard-accent)] transition-colors"
-              >
-                Reset password
-              </Link>
-            </div>
-          </section>
-        </div>
+        {/* Account Settings Forms & Purge controls */}
+        <AccountSettingsForm
+          initialDisplayName={displayName}
+          initialEmail={userEmail}
+          userId={user.id}
+          balanceUsd={balanceUsd}
+        />
       </div>
     </main>
   );
