@@ -4,14 +4,13 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Nav from '@/components/nav/Nav';
 
-type Section = 'overview' | 'mcp' | 'sdk' | 'sandbox' | 'billing';
+type Section = 'overview' | 'mcp' | 'sdk' | 'api';
 
 const NAV_ITEMS: { id: Section; label: string }[] = [
   { id: 'overview', label: 'Overview' },
   { id: 'mcp', label: 'MCP Server' },
   { id: 'sdk', label: 'SDK' },
-  // { id: 'sandbox', label: 'Sandbox API' },
-  // { id: 'billing', label: 'Billing & Tiers' },
+  { id: 'api', label: 'API Reference' },
 ];
 
 const CODE = {
@@ -220,6 +219,35 @@ export default function DocsPage() {
             <span style={mono}>https://api.sockt.dev/v1/mcp</span> (for LLM agents using tool-use),
             and the <span style={mono}>@sockt/client</span> SDK (for programmatic access from TypeScript, Python, or Go).
           </p>
+
+          <h3 style={h3Style}>Video Walkthrough</h3>
+          <div style={{
+            position: 'relative',
+            paddingBottom: '56.25%', /* 16:9 aspect ratio */
+            height: 0,
+            overflow: 'hidden',
+            borderRadius: '8px',
+            border: '1px solid var(--bg-border)',
+            marginTop: '14px',
+            marginBottom: '28px',
+            boxShadow: '0 0 20px rgba(247, 147, 26, 0.1)'
+          }}>
+            <iframe
+              src="https://www.youtube.com/embed/_I2zN5MxLHY"
+              title="Sockt Demo Video"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                border: 'none',
+              }}
+            />
+          </div>
+
           <h3 style={h3Style}>Base URL</h3>
           <CodeBlock code="https://api.sockt.dev" />
           <h3 style={h3Style}>Authentication</h3>
@@ -323,7 +351,7 @@ export default function DocsPage() {
 
         {/* SDK */}
         <div style={{ ...(active === 'sdk' ? activeSectionStyle : sectionStyle), position: 'relative' }}>
-          <div style={{ filter: 'blur(5px)', pointerEvents: 'none', userSelect: 'none' }}>
+          <div>
             <SectionHeading label="SDK" number="02" />
             <p style={bodyText}>
               The <span style={mono}>@sockt/client</span> package provides a typed client for TypeScript and JavaScript.
@@ -365,39 +393,124 @@ export default function DocsPage() {
               </tbody>
             </table>
           </div>
+        </div>
 
-          {/* Coming Soon Overlay */}
-          <div
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              zIndex: 10,
-              pointerEvents: 'none',
-            }}
-          >
-            <div
-              style={{
+        {/* API Reference */}
+        <div style={active === 'api' ? activeSectionStyle : sectionStyle}>
+          <SectionHeading label="API Reference" number="03" />
+          <p style={bodyText}>
+            For direct HTTP client integrations, Sockt exposes a high-performance REST API.
+            All requests must include your API Key in the headers.
+          </p>
+
+          <h3 style={h3Style}>Base URL</h3>
+          <CodeBlock code="https://api.sockt.dev" />
+
+          <h3 style={h3Style}>Authentication</h3>
+          <p style={bodyText}>
+            Inject your generated credits API Key in the headers as Bearer authentication.
+          </p>
+          <CodeBlock code="Authorization: Bearer sockt_live_..." />
+
+          {/* Endpoint 1 */}
+          <div style={{ marginTop: '36px', borderTop: '1px solid var(--bg-border)', paddingTop: '24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
+              <span style={{
                 fontFamily: 'var(--font-mono)',
-                fontSize: '24px',
-                fontWeight: 700,
-                color: 'var(--accent-amber)',
-                letterSpacing: '0.2em',
-                backgroundColor: 'rgba(0,0,0,0.4)',
-                padding: '20px 40px',
-                borderRadius: '8px',
-                border: '1px solid var(--accent-amber)',
-                backdropFilter: 'blur(2px)',
-                boxShadow: '0 0 40px rgba(194,122,54,0.2)',
-              }}
-            >
-              COMING SOON
+                fontSize: '11px',
+                backgroundColor: 'rgba(34, 208, 122, 0.15)',
+                color: 'var(--accent-green)',
+                padding: '3px 8px',
+                borderRadius: '4px',
+                fontWeight: 600
+              }}>POST</span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '14px', color: 'var(--text-primary)' }}>/v1/sandboxes</span>
             </div>
+            <p style={bodyText}>Provision a new secure compute sandbox environment.</p>
+            <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '14px' }}>Request Body</h4>
+            <CodeBlock code={JSON.stringify({ tier: 'micro', billing_method: 'credits' }, null, 2)} />
+            <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '14px' }}>Response</h4>
+            <CodeBlock code={JSON.stringify({ id: 'sb_9f8a3d2e1c0b', status: 'running', tier: 'micro', created_at: '2026-05-28T12:00:00Z' }, null, 2)} />
+          </div>
+
+          {/* Endpoint 2 */}
+          <div style={{ marginTop: '36px', borderTop: '1px solid var(--bg-border)', paddingTop: '24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
+              <span style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '11px',
+                backgroundColor: 'rgba(34, 208, 122, 0.15)',
+                color: 'var(--accent-green)',
+                padding: '3px 8px',
+                borderRadius: '4px',
+                fontWeight: 600
+              }}>POST</span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '14px', color: 'var(--text-primary)' }}>/v1/sandboxes/{"{id}"}/exec</span>
+            </div>
+            <p style={bodyText}>Execute a shell command inside a provisioned sandbox.</p>
+            <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '14px' }}>Request Body</h4>
+            <CodeBlock code={JSON.stringify({ command: 'python eval.py --dataset cifar10' }, null, 2)} />
+            <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '14px' }}>Response</h4>
+            <CodeBlock code={JSON.stringify({ stdout: 'Accuracy: 92.4%...\n', stderr: '', exit_code: 0 }, null, 2)} />
+          </div>
+
+          {/* Endpoint 3 */}
+          <div style={{ marginTop: '36px', borderTop: '1px solid var(--bg-border)', paddingTop: '24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
+              <span style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '11px',
+                backgroundColor: 'rgba(34, 208, 122, 0.15)',
+                color: 'var(--accent-green)',
+                padding: '3px 8px',
+                borderRadius: '4px',
+                fontWeight: 600
+              }}>POST</span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '14px', color: 'var(--text-primary)' }}>/v1/sandboxes/{"{id}"}/files/write</span>
+            </div>
+            <p style={bodyText}>Write a file to the sandbox filesystem.</p>
+            <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '14px' }}>Request Body</h4>
+            <CodeBlock code={JSON.stringify({ path: '/workspace/eval.py', content: "print('training model')" }, null, 2)} />
+            <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '14px' }}>Response</h4>
+            <CodeBlock code={JSON.stringify({ success: true }, null, 2)} />
+          </div>
+
+          {/* Endpoint 4 */}
+          <div style={{ marginTop: '36px', borderTop: '1px solid var(--bg-border)', paddingTop: '24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
+              <span style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '11px',
+                backgroundColor: 'rgba(194, 122, 54, 0.15)',
+                color: 'var(--accent-btc)',
+                padding: '3px 8px',
+                borderRadius: '4px',
+                fontWeight: 600
+              }}>GET</span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '14px', color: 'var(--text-primary)' }}>/v1/sandboxes/{"{id}"}/files/read?path={"{path}"}</span>
+            </div>
+            <p style={bodyText}>Read the contents of a file from the sandbox.</p>
+            <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '14px' }}>Response</h4>
+            <CodeBlock code={JSON.stringify({ content: "print('training model')" }, null, 2)} />
+          </div>
+
+          {/* Endpoint 5 */}
+          <div style={{ marginTop: '36px', borderTop: '1px solid var(--bg-border)', paddingTop: '24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
+              <span style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '11px',
+                backgroundColor: 'rgba(229, 62, 62, 0.15)',
+                color: 'var(--accent-red)',
+                padding: '3px 8px',
+                borderRadius: '4px',
+                fontWeight: 600
+              }}>POST</span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '14px', color: 'var(--text-primary)' }}>/v1/sandboxes/{"{id}"}/terminate</span>
+            </div>
+            <p style={bodyText}>Destroy the sandbox environment and halt all active billing.</p>
+            <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '14px' }}>Response</h4>
+            <CodeBlock code={JSON.stringify({ success: true }, null, 2)} />
           </div>
         </div>
 
