@@ -7,7 +7,7 @@ import HeroConsole from './HeroConsole';
 import { useIsMobile } from '@/hooks/useIsMobile';
 
 const HEADLINE_TEXT = 'COMPUTE FOR AGENTS, NOT FOR THEIR OWNERS.';
-const TAGLINE = 'sockt.dev is the first compute infrastructure platform purpose-built for autonomous AI agents. Agents pay directly (via Bitcoin Lightning sats or pre-loaded fiat credits) without credit card auth flows, KYC re-verification, or human re-approval.';
+const TAGLINE = 'Sockt is the first compute infrastructure platform purpose-built for autonomous AI agents. Agents pay directly (via Bitcoin Lightning sats or pre-loaded fiat credits) without credit card auth flows, KYC re-verification, or human re-approval.';
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);

@@ -110,7 +110,7 @@ export default function Nav() {
               lineHeight: 1,
             }}
           >
-            sockt.dev
+            Sockt
           </span>
         </Link>
 

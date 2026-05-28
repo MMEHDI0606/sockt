@@ -95,7 +95,7 @@ export default function AboutPage() {
             maxWidth: '680px',
           }}
         >
-          sockt.dev is the first compute infrastructure platform purpose-built for autonomous AI agents. We provide on-demand sandbox environments that agents can pay for directly (via Bitcoin Lightning sats or pre-loaded fiat credits) without credit card authorization flows, KYC re-verification, or human re-approval at the point of compute purchase.
+          Sockt is the first compute infrastructure platform purpose-built for autonomous AI agents. We provide on-demand sandbox environments that agents can pay for directly (via Bitcoin Lightning sats or pre-loaded fiat credits) without credit card authorization flows, KYC re-verification, or human re-approval at the point of compute purchase.
         </p>
 
         {/* Mission */}
@@ -120,7 +120,7 @@ export default function AboutPage() {
               maxWidth: '680px',
             }}
           >
-            AI agents are becoming economic actors. Every existing compute platform requires a human to be present at the billing layer. sockt.dev eliminates that requirement through two parallel pathways, both of which give agents full operational autonomy after a single human setup step.
+            AI agents are becoming economic actors. Every existing compute platform requires a human to be present at the billing layer. Sockt eliminates that requirement through two parallel pathways, both of which give agents full operational autonomy after a single human setup step.
           </p>
         </section>
 
@@ -291,7 +291,7 @@ export default function AboutPage() {
             }}
           >
             {[
-              { step: '01', title: 'Provision', body: 'The agent calls the sockt.dev MCP or SDK to spin up a sandbox, CPU or GPU, in under a second.' },
+              { step: '01', title: 'Provision', body: 'The agent calls the Sockt MCP or SDK to spin up a sandbox, CPU or GPU, in under a second.' },
               { step: '02', title: 'Pay', body: 'A Lightning invoice or credits draw down is settled programmatically. Billing is fully autonomous.' },
               { step: '03', title: 'Execute', body: 'The agent runs its workload: code execution, data processing, model inference, or agentic subtasks.' },
               { step: '04', title: 'Terminate', body: 'When the task is done, the agent terminates the sandbox. Billing stops. No idle waste.' },
@@ -579,8 +579,8 @@ export default function AboutPage() {
           <dl style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
             {[
               {
-                q: 'What is sockt.dev?',
-                a: 'sockt.dev is the first compute infrastructure platform purpose-built for autonomous AI agents. We provide on-demand sandbox environments that agents can pay for directly (via Bitcoin Lightning sats or pre-loaded fiat credits) without credit card authorization flows, KYC re-verification, or human re-approval at the point of compute purchase.',
+                q: 'What is Sockt?',
+                a: 'Sockt is the first compute infrastructure platform purpose-built for autonomous AI agents. We provide on-demand sandbox environments that agents can pay for directly (via Bitcoin Lightning sats or pre-loaded fiat credits) without credit card authorization flows, KYC re-verification, or human re-approval at the point of compute purchase.',
               },
               {
                 q: 'How does billing work?',
@@ -596,11 +596,11 @@ export default function AboutPage() {
               },
               {
                 q: 'What compute tiers are available?',
-                a: 'sockt.dev offers CPU tiers (Nano, Micro, Standard) and GPU tiers (GPU Small, GPU Large), all billed per second. Pricing is viewable in USD or millisatoshis (msats).',
+                a: 'Sockt offers CPU tiers (Nano, Micro, Standard) and GPU tiers (GPU Small, GPU Large), all billed per second. Pricing is viewable in USD or millisatoshis (msats).',
               },
               {
                 q: 'How do I integrate an agent?',
-                a: 'sockt.dev provides an MCP server and a TypeScript/Python SDK. Agents connect via the Model Context Protocol or import the SDK directly to provision sandboxes and manage compute.',
+                a: 'Sockt provides an MCP server and a TypeScript/Python SDK. Agents connect via the Model Context Protocol or import the SDK directly to provision sandboxes and manage compute.',
               },
             ].map(({ q, a }, i, arr) => (
               <div

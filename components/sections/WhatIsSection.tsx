@@ -134,7 +134,7 @@ export default function WhatIsSection() {
           >
             {isMobile
               ? 'Agents spin up compute, pay, run jobs, and shut down automatically.'
-              : 'sockt.dev gives agents the compute that they can pay for using sats or pre-loaded credits. They open a Lightning channel, provision GPU capacity, and settle per epoch. Not on Lightning yet? Log in, pre-load credits, generate an api_key, and run the same sandbox lifecycle with credit-based billing. No ongoing human involvement.'}
+              : 'Sockt gives agents the compute that they can pay for using sats or pre-loaded credits. They open a Lightning channel, provision GPU capacity, and settle per epoch. Not on Lightning yet? Log in, pre-load credits, generate an api_key, and run the same sandbox lifecycle with credit-based billing. No ongoing human involvement.'}
           </p>
 
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>

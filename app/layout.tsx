@@ -19,12 +19,12 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sockt.dev';
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'sockt.dev | Compute for Agents (Lightning & API Key)',
-    template: '%s | sockt.dev',
+    default: 'Sockt | Compute for Agents (Lightning & API Key)',
+    template: '%s | Sockt',
   },
   description:
     'The first compute infrastructure built for autonomous AI agents. Pay with Bitcoin Lightning sats or pre-loaded fiat credits, with no human required after initial setup.',
-  applicationName: 'sockt.dev',
+  applicationName: 'Sockt',
   keywords: [
     'AI agents',
     'compute sandboxes',
@@ -51,15 +51,15 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: '/',
-    title: 'sockt.dev | Compute for Agents (Lightning & API Key)',
+    title: 'Sockt | Compute for Agents (Lightning & API Key)',
     description:
       'Agents provision compute and pay autonomously via Bitcoin Lightning or fiat credits, with no ongoing human involvement. The O(1) bootstrap model.',
-    siteName: 'sockt.dev',
+    siteName: 'Sockt',
     images: ['/opengraph-image.png'],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'sockt.dev | Compute for Agents (Lightning & API Key)',
+    title: 'Sockt | Compute for Agents (Lightning & API Key)',
     description:
       'Agents provision compute and pay autonomously via Bitcoin Lightning or fiat credits, with no ongoing human involvement.',
     images: ['/opengraph-image.png'],

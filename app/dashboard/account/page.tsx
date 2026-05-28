@@ -66,7 +66,7 @@ export default async function DashboardAccountPage() {
           <div className="flex items-center gap-4">
             <Link href="/" className="flex items-baseline gap-[5px] no-underline">
               <span className="font-mono text-lg text-[var(--dashboard-accent)]">{'{*}'}</span>
-              <span className="font-display text-lg font-medium text-[var(--dashboard-text)]">sockt.dev</span>
+              <span className="font-display text-lg font-medium text-[var(--dashboard-text)]">Sockt</span>
             </Link>
             <span className="font-mono text-sm text-[var(--dashboard-muted)]">/</span>
             <span className="font-mono text-xs text-[var(--dashboard-muted)]">Personal Workspace</span>
