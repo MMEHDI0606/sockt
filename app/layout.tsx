@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import type { Metadata, Viewport } from 'next';
 import SmoothScrollProvider from '@/components/providers/SmoothScrollProvider';
 import './globals.css';
+import { Analytics } from '@vercel/analytics/next';
 
 const themeBootstrapScript = `
 (() => {
@@ -80,6 +81,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body>
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
+        <Analytics />
       </body>
     </html>
   );
