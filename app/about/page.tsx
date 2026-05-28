@@ -412,6 +412,139 @@ export default function AboutPage() {
           </div>
         </section>
 
+        {/* Founders / Team */}
+        <section style={{ marginBottom: '56px', borderTop: '1px solid var(--bg-border)', paddingTop: '40px' }}>
+          <h2
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: '1.4rem',
+              fontWeight: 600,
+              marginBottom: '24px',
+              color: 'var(--text-primary)',
+            }}
+          >
+            Meet the Founders
+          </h2>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+              gap: '20px',
+              marginBottom: '40px',
+            }}
+          >
+            {[
+              {
+                name: 'Muhammad Mehdi',
+                role: 'CEO & Founder',
+                pfp: '/mehdipfp.jfif',
+                bio: 'Driving the vision for decentralizing agent economies, enabling machines to transact and provision cloud services autonomously.',
+                socials: [
+                  { label: 'Twitter / X', url: 'https://x.com/SocktDev' },
+                  { label: 'LinkedIn', url: 'https://www.linkedin.com/in/muhammad-mehdi-alvi/' },
+                  { label: 'Website', url: 'https://mehdisdone.dev' },
+                ],
+              },
+              {
+                name: 'Ali Aan',
+                role: 'CTO & Co-Founder',
+                pfp: '/alipfp.jfif',
+                bio: 'Leading the technical design and orchestration layer for on-demand GPU runtimes and lightning-native settlement mechanics.',
+                socials: [
+                  { label: 'Twitter / X', url: 'https://x.com/AanBuilds' },
+                  { label: 'LinkedIn', url: 'https://www.linkedin.com/in/aliaan/' },
+                  { label: 'Website', url: 'https://aliaan.vercel.app' },
+                ],
+              },
+            ].map((member) => (
+              <div
+                key={member.name}
+                style={{
+                  border: '1px solid var(--bg-border)',
+                  borderRadius: '6px',
+                  padding: '24px',
+                  background: 'var(--bg-surface)',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  gap: '20px',
+                  alignItems: 'flex-start',
+                }}
+              >
+                <img
+                  src={member.pfp}
+                  alt={member.name}
+                  style={{
+                    width: '80px',
+                    height: '80px',
+                    borderRadius: '50%',
+                    objectFit: 'cover',
+                    border: '2px solid var(--accent-btc)',
+                    flexShrink: 0,
+                  }}
+                />
+                <div>
+                  <h3
+                    style={{
+                      fontFamily: 'var(--font-display)',
+                      fontSize: '1.2rem',
+                      fontWeight: 700,
+                      color: 'var(--text-primary)',
+                      marginBottom: '2px',
+                    }}
+                  >
+                    {member.name}
+                  </h3>
+                  <div
+                    style={{
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '11px',
+                      color: 'var(--accent-btc)',
+                      letterSpacing: '0.06em',
+                      textTransform: 'uppercase',
+                      marginBottom: '12px',
+                    }}
+                  >
+                    {member.role}
+                  </div>
+                  <p
+                    style={{
+                      fontFamily: 'var(--font-body)',
+                      fontSize: '0.9rem',
+                      lineHeight: 1.55,
+                      color: 'var(--text-secondary)',
+                      marginBottom: '16px',
+                    }}
+                  >
+                    {member.bio}
+                  </p>
+                  <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                    {member.socials.map((social) => (
+                      <a
+                        key={social.label}
+                        href={social.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: '11px',
+                          color: 'var(--accent-amber)',
+                          textDecoration: 'none',
+                          borderBottom: '1px solid transparent',
+                          transition: 'border-color 0.2s',
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.borderBottomColor = 'var(--accent-amber)'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.borderBottomColor = 'transparent'; }}
+                      >
+                        {social.label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* FAQ - structured for Google rich results */}
         <section
           style={{
