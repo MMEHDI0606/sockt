@@ -64,7 +64,7 @@ export default function Footer() {
                   marginBottom: '16px',
                 }}
               >
-                The financial primitive for autonomous AI agents.
+                Sandboxed compute for autonomous agents.
               </p>
             ) : null}
             <div
