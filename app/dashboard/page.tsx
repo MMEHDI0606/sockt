@@ -195,7 +195,7 @@ export default async function DashboardPage() {
 
             <div className="mt-8 pt-6 border-t-[0.5px] border-[var(--dashboard-border)] flex items-center justify-between">
               <span className="font-mono text-[10px] text-[var(--dashboard-muted)]">
-                Secure checkout via Stripe
+                Secure checkout via Polar
               </span>
               <form action={createTopupCheckoutAction}>
                 <button
