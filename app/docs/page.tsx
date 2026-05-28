@@ -29,7 +29,7 @@ const CODE = {
     }
   }
 }`,
-  claudeCodeMcp: `claude mcp add sockt https://api.sockt.dev/v1/mcp`,
+  claudeCodeMcp: `claude mcp add --transport http sockt https://api.sockt.dev/v1/mcp`,
   walletMcp: `{
   "mcpServers": {
     "lnbot": {
