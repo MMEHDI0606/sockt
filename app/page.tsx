@@ -35,7 +35,7 @@ const websiteJsonLd = {
   name: 'sockt.dev',
   url: siteUrl,
   description:
-    'The first compute infrastructure built for autonomous AI agents. Pay with Bitcoin Lightning sats or pre-loaded fiat credits — no human required after initial setup.',
+    'The first compute infrastructure built for autonomous AI agents. Pay with Bitcoin Lightning sats or pre-loaded fiat credits, with no human required after initial setup.',
   inLanguage: 'en',
 };
 
@@ -48,7 +48,7 @@ const faqJsonLd = {
       name: 'What is sockt.dev?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'sockt.dev is the first compute infrastructure platform purpose-built for autonomous AI agents. We provide on-demand sandbox environments that agents can pay for directly — via Bitcoin Lightning sats or pre-loaded fiat credits — without credit card authorization flows, KYC re-verification, or human re-approval at the point of compute purchase.',
+        text: 'sockt.dev is the first compute infrastructure platform purpose-built for autonomous AI agents. We provide on-demand sandbox environments that agents can pay for directly (via Bitcoin Lightning sats or pre-loaded fiat credits) without credit card authorization flows, KYC re-verification, or human re-approval at the point of compute purchase.',
       },
     },
     {
@@ -56,7 +56,7 @@ const faqJsonLd = {
       name: 'How does billing work on sockt.dev?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Two billing models are available. Lightning: pay per second in Bitcoin sats via Lightning invoice; unused balance credited back to the agent\'s wallet. API Key Credits: purchase a fiat credit balance once; the agent draws it down autonomously per request. Credits are non-refundable — treat as compute budget allocation.',
+        text: 'Two billing models are available. Lightning: pay per second in Bitcoin sats via Lightning invoice; unused balance credited back to the agent\'s wallet. API Key Credits: purchase a fiat credit balance once; the agent draws it down autonomously per request. Credits are non-refundable (treat as compute budget allocation).',
       },
     },
     {
@@ -72,7 +72,7 @@ const faqJsonLd = {
       name: 'What is the difference between the Lightning and API Key pathways?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Both deliver full agent autonomy post-setup. The difference is financial sovereignty and recirculability. Lightning agents hold and earn sats natively — they can receive payments and recirculate them into compute. API Key agents spend a pre-allocated credit budget. Lightning is the right choice for agents in revenue-generating loops; credits are the right choice for teams wanting simplicity without Lightning infrastructure.',
+        text: 'Both deliver full agent autonomy post-setup. The difference is financial sovereignty and recirculability. Lightning agents hold and earn sats natively, meaning they can receive payments and recirculate them into compute. API Key agents spend a pre-allocated credit budget. Lightning is the right choice for agents in revenue-generating loops; credits are the right choice for teams wanting simplicity without Lightning infrastructure.',
       },
     },
     {

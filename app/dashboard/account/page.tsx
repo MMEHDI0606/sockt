@@ -48,114 +48,147 @@ export default async function DashboardAccountPage() {
     'Sockt User';
   const userInitials = initialsFromName(displayName);
 
-  const navItems: Array<{ label: string; href: string; active?: boolean }> = [
-    { label: 'Home', href: '/' },
-    { label: 'Dashboard', href: '/dashboard' },
-    // { label: 'API Keys', href: '/dashboard#api-keys' },
-    { label: 'Account', href: '/dashboard/account', active: true },
-
-  ];
-
   return (
     <main
       className="min-h-screen"
       style={{ backgroundColor: 'var(--dashboard-bg)', color: 'var(--dashboard-text)' }}
     >
-      <div className="mx-auto min-h-screen w-full max-w-[1360px] p-4 md:p-6">
-        <div className="flex min-h-[calc(100vh-2rem)] overflow-hidden rounded-2xl border-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-bg)]">
-          <aside className="hidden w-[220px] shrink-0 border-r-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-sidebar)] p-4 md:flex md:flex-col">
-            <div className="mb-8">
-              <Link href="/" className="flex items-baseline gap-[5px] no-underline">
-                <span className="font-mono text-lg text-[var(--dashboard-accent)]">{'{*}'}</span>
-                <span className="font-display text-lg font-medium text-[var(--dashboard-text)]">Sockt</span>
-              </Link>
-            </div>
+      {/* Sleek Vercel-style Top Navigation Header */}
+      <header
+        style={{
+          borderBottom: '1px solid var(--dashboard-border)',
+          backgroundColor: 'var(--dashboard-sidebar)',
+        }}
+      >
+        <div className="mx-auto flex max-w-[1280px] items-center justify-between px-6 py-4">
+          {/* Left Side: Logo & Workspace Breadcrumbs */}
+          <div className="flex items-center gap-4">
+            <Link href="/" className="flex items-baseline gap-[5px] no-underline">
+              <span className="font-mono text-lg text-[var(--dashboard-accent)]">{'{*}'}</span>
+              <span className="font-display text-lg font-medium text-[var(--dashboard-text)]">sockt.dev</span>
+            </Link>
+            <span className="font-mono text-sm text-[var(--dashboard-muted)]">/</span>
+            <span className="font-mono text-xs text-[var(--dashboard-muted)]">Personal Workspace</span>
+          </div>
 
-            <div className="mb-3 font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--dashboard-muted)]">Overview</div>
-            <nav className="grid gap-2">
-              {navItems.map((item) => (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className={`rounded-lg border-[0.5px] px-3 py-2.5 text-sm transition-colors ${item.active
-                    ? 'border-[var(--dashboard-accent)] text-[var(--dashboard-accent)]'
-                    : 'border-[var(--dashboard-border)] text-[var(--dashboard-text)] hover:border-[var(--dashboard-accent)] hover:text-[var(--dashboard-accent)]'
-                    }`}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
-
-            <div className="mt-auto border-t-[0.5px] border-[var(--dashboard-border)] pt-4">
-              <div className="mb-3 flex items-center gap-3">
-                <div className="grid h-9 w-9 place-items-center rounded-full bg-[var(--dashboard-accent)] text-[var(--dashboard-bg)] font-mono text-xs">
-                  {userInitials}
-                </div>
-                <div className="min-w-0">
-                  <p className="truncate text-sm font-display text-[var(--dashboard-text)]">{displayName}</p>
-                  <p className="truncate text-xs text-[var(--dashboard-muted)]">{userEmail}</p>
-                </div>
+          {/* Right Side: ThemeToggle, Profile and Sign Out */}
+          <div className="flex items-center gap-4">
+            <ThemeToggle className="rounded-lg border-[0.5px] border-[var(--dashboard-border)] px-3 py-1.5 text-xs font-mono uppercase tracking-[0.08em] text-[var(--dashboard-text)] hover:border-[var(--dashboard-accent)]" />
+            <div className="flex items-center gap-3 border-l-[1px] border-[var(--dashboard-border)] pl-4">
+              <div className="grid h-8 w-8 place-items-center rounded-full bg-[var(--dashboard-accent)] font-mono text-xs font-semibold text-[var(--dashboard-bg)]">
+                {userInitials}
+              </div>
+              <div className="hidden min-w-0 flex-col md:flex">
+                <span className="truncate text-xs font-semibold text-[var(--dashboard-text)]">{displayName}</span>
+                <span className="truncate text-[10px] text-[var(--dashboard-muted)]">{userEmail}</span>
               </div>
               <form action={signOutAction}>
                 <button
                   type="submit"
-                  className="w-full rounded-lg border-[0.5px] border-[var(--dashboard-border)] px-3 py-2 text-xs font-mono uppercase tracking-[0.12em] text-[var(--dashboard-text)] hover:border-[var(--dashboard-accent)] hover:text-[var(--dashboard-accent)]"
+                  className="rounded-lg border-[0.5px] border-[var(--dashboard-border)] px-3 py-1.5 text-xs font-mono uppercase tracking-[0.12em] text-[var(--dashboard-text)] hover:border-[var(--accent-red)] hover:text-[var(--accent-red)] transition-colors"
                 >
                   Sign out
                 </button>
               </form>
             </div>
-          </aside>
+          </div>
+        </div>
 
-          <section className="flex min-w-0 flex-1 flex-col p-4 md:p-6">
-            <header className="mb-6 flex flex-col gap-4 border-b-[0.5px] border-[var(--dashboard-border)] pb-5 lg:flex-row lg:items-start lg:justify-between">
-              <div>
-                <h1 className="font-display text-3xl leading-tight text-[var(--dashboard-text)]">Account</h1>
-                <p className="mt-1 text-sm text-[var(--dashboard-muted)]">Identity and profile details from your active session</p>
+        {/* Horizontal Navigation Sub-Tabs */}
+        <div className="mx-auto max-w-[1280px] px-6">
+          <nav className="flex gap-6">
+            <Link
+              href="/dashboard"
+              className="border-b-2 border-transparent pb-3 pt-2 text-xs font-mono uppercase tracking-[0.1em] text-[var(--dashboard-muted)] hover:text-[var(--dashboard-text)] transition-colors"
+            >
+              Overview
+            </Link>
+            <Link
+              href="/dashboard/account"
+              className="border-b-2 border-[var(--dashboard-accent)] pb-3 pt-2 text-xs font-mono uppercase tracking-[0.1em] text-[var(--dashboard-text)]"
+            >
+              Account Settings
+            </Link>
+          </nav>
+        </div>
+      </header>
+
+      {/* Main Spacious Content Grid */}
+      <div className="mx-auto max-w-[1280px] px-6 py-8">
+        {/* Welcome Banner */}
+        <div className="mb-8 border-b-[0.5px] border-[var(--dashboard-border)] pb-6">
+          <h2 className="font-display text-2xl font-semibold text-[var(--dashboard-text)]">
+            Account Settings
+          </h2>
+          <p className="mt-1 text-sm text-[var(--dashboard-muted)]">
+            Identity, profile details, and account status from your active session.
+          </p>
+        </div>
+
+        {/* Workspace Cards */}
+        <div className="grid gap-6 lg:grid-cols-2">
+          {/* Card 1: Profile */}
+          <section className="rounded-xl border-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-card)] p-6 flex flex-col justify-between">
+            <div>
+              <div className="mb-4 flex items-center justify-between">
+                <span className="font-mono text-xs uppercase tracking-[0.15em] text-[var(--dashboard-muted)]">
+                  Profile Details
+                </span>
+                <span className="flex items-center gap-1.5 font-mono text-[10px] text-[var(--dashboard-accent)] uppercase tracking-[0.1em]">
+                  <span className="h-2 w-2 rounded-full bg-[var(--dashboard-accent)] animate-pulse" />
+                  Verified Session
+                </span>
               </div>
-              <ThemeToggle className="rounded-lg border-[0.5px] border-[var(--dashboard-border)] px-4 py-2 text-sm font-mono uppercase tracking-[0.08em] text-[var(--dashboard-text)] hover:border-[var(--dashboard-accent)] hover:text-[var(--dashboard-accent)]" />
-            </header>
-
-            <div className="grid gap-4 lg:grid-cols-2">
-              <section className="rounded-xl border-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-card)] p-5">
-                <h2 className="mb-4 font-display text-xl text-[var(--dashboard-text)]">Profile</h2>
-                <dl className="space-y-3 text-sm">
-                  <div>
-                    <dt className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--dashboard-muted)]">Name</dt>
-                    <dd className="mt-1 text-[var(--dashboard-text)]">{displayName}</dd>
-                  </div>
-                  <div>
-                    <dt className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--dashboard-muted)]">Email</dt>
-                    <dd className="mt-1 text-[var(--dashboard-text)]">{userEmail}</dd>
-                  </div>
-                  <div>
-                    <dt className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--dashboard-muted)]">User ID</dt>
-                    <dd className="mt-1 break-all text-[var(--dashboard-text)]">{user.id}</dd>
-                  </div>
-                </dl>
-              </section>
-
-              <section className="rounded-xl border-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-card)] p-5">
-                <h2 className="mb-4 font-display text-xl text-[var(--dashboard-text)]">Account Status</h2>
-                <div className="space-y-4 text-sm">
-                  <div>
-                    <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--dashboard-muted)]">Credit Balance</p>
-                    <p className="mt-1 text-2xl font-display text-[var(--dashboard-text)]">${balanceUsd.toFixed(2)}</p>
-                  </div>
-                  <div>
-                    <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--dashboard-muted)]">Actions</p>
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      <Link
-                        href="/forgot-password"
-                        className="rounded-lg border-[0.5px] border-[var(--dashboard-border)] px-3 py-2 text-xs font-mono uppercase tracking-[0.12em] text-[var(--dashboard-text)] hover:border-[var(--dashboard-accent)] hover:text-[var(--dashboard-accent)]"
-                      >
-                        Reset password
-                      </Link>
-                    </div>
-                  </div>
+              <dl className="space-y-4 text-sm mt-6">
+                <div>
+                  <dt className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--dashboard-muted)]">Name</dt>
+                  <dd className="mt-1 text-sm font-semibold text-[var(--dashboard-text)]">{displayName}</dd>
                 </div>
-              </section>
+                <div>
+                  <dt className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--dashboard-muted)]">Email</dt>
+                  <dd className="mt-1 text-sm font-semibold text-[var(--dashboard-text)]">{userEmail}</dd>
+                </div>
+                <div>
+                  <dt className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--dashboard-muted)]">User ID</dt>
+                  <dd className="mt-1 break-all font-mono text-xs text-[var(--dashboard-muted)]">{user.id}</dd>
+                </div>
+              </dl>
+            </div>
+          </section>
+
+          {/* Card 2: Account Status */}
+          <section className="rounded-xl border-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-card)] p-6 flex flex-col justify-between">
+            <div>
+              <div className="mb-4 flex items-center justify-between">
+                <span className="font-mono text-xs uppercase tracking-[0.15em] text-[var(--dashboard-muted)]">
+                  Account Security
+                </span>
+                <span className="flex items-center gap-1.5 font-mono text-[10px] text-[var(--accent-green)] uppercase tracking-[0.1em]">
+                  <span className="h-2 w-2 rounded-full bg-[var(--accent-green)]" />
+                  Secured
+                </span>
+              </div>
+              <div className="space-y-4 mt-6">
+                <div>
+                  <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--dashboard-muted)]">Credit Balance</p>
+                  <p className="mt-1 font-display text-4xl font-semibold text-[var(--dashboard-text)]">
+                    ${balanceUsd.toFixed(2)}{' '}
+                    <span className="text-base font-normal text-[var(--dashboard-muted)]">USD</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-8 pt-6 border-t-[0.5px] border-[var(--dashboard-border)] flex items-center justify-between">
+              <span className="font-mono text-[10px] text-[var(--dashboard-muted)]">
+                Manage your credentials
+              </span>
+              <Link
+                href="/forgot-password"
+                className="rounded-lg border-[0.5px] border-[var(--dashboard-border)] px-4 py-2 text-xs font-mono uppercase tracking-[0.12em] font-semibold text-[var(--dashboard-text)] hover:border-[var(--dashboard-accent)] hover:text-[var(--dashboard-accent)] transition-colors"
+              >
+                Reset password
+              </Link>
             </div>
           </section>
         </div>

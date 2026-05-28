@@ -95,105 +95,123 @@ export default async function DashboardPage() {
       className="min-h-screen"
       style={{ backgroundColor: 'var(--dashboard-bg)', color: 'var(--dashboard-text)' }}
     >
-      <div className="mx-auto min-h-screen w-full max-w-[1360px] p-4 md:p-6">
-        <div className="flex min-h-[calc(100vh-2rem)] overflow-hidden rounded-2xl border-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-bg)]">
-          <aside className="hidden w-[220px] shrink-0 border-r-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-sidebar)] p-4 md:flex md:flex-col">
-            <div className="mb-8">
-              <Link href="/" className="flex items-baseline gap-[5px] no-underline">
-                <span className="font-mono text-lg text-[var(--dashboard-accent)]">{'{*}'}</span>
-                <span className="font-display text-lg font-medium text-[var(--dashboard-text)]">Sockt</span>
-              </Link>
-            </div>
+      {/* Sleek Vercel-style Top Navigation Header */}
+      <header
+        style={{
+          borderBottom: '1px solid var(--dashboard-border)',
+          backgroundColor: 'var(--dashboard-sidebar)',
+        }}
+      >
+        <div className="mx-auto flex max-w-[1280px] items-center justify-between px-6 py-4">
+          {/* Left Side: Logo & Workspace Breadcrumbs */}
+          <div className="flex items-center gap-4">
+            <Link href="/" className="flex items-baseline gap-[5px] no-underline">
+              <span className="font-mono text-lg text-[var(--dashboard-accent)]">{'{*}'}</span>
+              <span className="font-display text-lg font-medium text-[var(--dashboard-text)]">sockt.dev</span>
+            </Link>
+            <span className="font-mono text-sm text-[var(--dashboard-muted)]">/</span>
+            <span className="font-mono text-xs text-[var(--dashboard-muted)]">Personal Workspace</span>
+          </div>
 
-            <div className="mb-3 font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--dashboard-muted)]">Overview</div>
-            <nav className="grid gap-2">
-              {navItems.map((item) => (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className={`rounded-lg border-[0.5px] px-3 py-2.5 text-sm transition-colors ${item.active
-                    ? 'border-[var(--dashboard-accent)] text-[var(--dashboard-accent)]'
-                    : 'border-[var(--dashboard-border)] text-[var(--dashboard-text)] hover:border-[var(--dashboard-accent)] hover:text-[var(--dashboard-accent)]'
-                    }`}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
-
-            <div className="mt-auto border-t-[0.5px] border-[var(--dashboard-border)] pt-4">
-              <div className="mb-3 flex items-center gap-3">
-                <div className="grid h-9 w-9 place-items-center rounded-full bg-[var(--dashboard-accent)] text-[var(--dashboard-bg)] font-mono text-xs">
-                  {userInitials}
-                </div>
-                <div className="min-w-0">
-                  <p className="truncate text-sm font-display text-[var(--dashboard-text)]">{displayName}</p>
-                  <p className="truncate text-xs text-[var(--dashboard-muted)]">{userEmail}</p>
-                </div>
+          {/* Right Side: ThemeToggle, Profile and Sign Out */}
+          <div className="flex items-center gap-4">
+            <ThemeToggle className="rounded-lg border-[0.5px] border-[var(--dashboard-border)] px-3 py-1.5 text-xs font-mono uppercase tracking-[0.08em] text-[var(--dashboard-text)] hover:border-[var(--dashboard-accent)]" />
+            <div className="flex items-center gap-3 border-l-[1px] border-[var(--dashboard-border)] pl-4">
+              <div className="grid h-8 w-8 place-items-center rounded-full bg-[var(--dashboard-accent)] font-mono text-xs font-semibold text-[var(--dashboard-bg)]">
+                {userInitials}
+              </div>
+              <div className="hidden min-w-0 flex-col md:flex">
+                <span className="truncate text-xs font-semibold text-[var(--dashboard-text)]">{displayName}</span>
+                <span className="truncate text-[10px] text-[var(--dashboard-muted)]">{userEmail}</span>
               </div>
               <form action={signOutAction}>
                 <button
                   type="submit"
-                  className="w-full rounded-lg border-[0.5px] border-[var(--dashboard-border)] px-3 py-2 text-xs font-mono uppercase tracking-[0.12em] text-[var(--dashboard-text)] hover:border-[var(--dashboard-accent)] hover:text-[var(--dashboard-accent)]"
+                  className="rounded-lg border-[0.5px] border-[var(--dashboard-border)] px-3 py-1.5 text-xs font-mono uppercase tracking-[0.12em] text-[var(--dashboard-text)] hover:border-[var(--accent-red)] hover:text-[var(--accent-red)] transition-colors"
                 >
                   Sign out
                 </button>
               </form>
             </div>
-          </aside>
+          </div>
+        </div>
 
-          <section className="flex min-w-0 flex-1 flex-col p-4 md:p-6">
-            <header className="mb-6 flex flex-col gap-4 border-b-[0.5px] border-[var(--dashboard-border)] pb-5 lg:flex-row lg:items-start lg:justify-between">
-              <div>
-                <h1 className="font-display text-3xl leading-tight text-[var(--dashboard-text)]">Dashboard</h1>
-                <p className="mt-1 text-sm text-[var(--dashboard-muted)]">Manage compute, billing, and API access</p>
+        {/* Horizontal Navigation Sub-Tabs */}
+        <div className="mx-auto max-w-[1280px] px-6">
+          <nav className="flex gap-6">
+            <Link
+              href="/dashboard"
+              className="border-b-2 border-[var(--dashboard-accent)] pb-3 pt-2 text-xs font-mono uppercase tracking-[0.1em] text-[var(--dashboard-text)]"
+            >
+              Overview
+            </Link>
+            <Link
+              href="/dashboard/account"
+              className="border-b-2 border-transparent pb-3 pt-2 text-xs font-mono uppercase tracking-[0.1em] text-[var(--dashboard-muted)] hover:text-[var(--dashboard-text)] transition-colors"
+            >
+              Account Settings
+            </Link>
+          </nav>
+        </div>
+      </header>
+
+      {/* Main Spacious Content Grid */}
+      <div className="mx-auto max-w-[1280px] px-6 py-8">
+        {/* Welcome Banner */}
+        <div className="mb-8 border-b-[0.5px] border-[var(--dashboard-border)] pb-6">
+          <h2 className="font-display text-2xl font-semibold text-[var(--dashboard-text)]">
+            Welcome back, {displayName.split(' ')[0]}
+          </h2>
+          <p className="mt-1 text-sm text-[var(--dashboard-muted)]">
+            Manage your sandboxed compute credits and active API keys here.
+          </p>
+        </div>
+
+        {/* Workspace Cards */}
+        <div className="grid gap-6 lg:grid-cols-2">
+          {/* Card 1: Credit Balance */}
+          <section
+            id="billing"
+            className="rounded-xl border-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-card)] p-6 flex flex-col justify-between"
+          >
+            <div>
+              <div className="mb-4 flex items-center justify-between">
+                <span className="font-mono text-xs uppercase tracking-[0.15em] text-[var(--dashboard-muted)]">
+                  Credit Balance
+                </span>
+                <span className="flex items-center gap-1.5 font-mono text-[10px] text-[var(--accent-green)] uppercase tracking-[0.1em]">
+                  <span className="h-2 w-2 rounded-full bg-[var(--accent-green)] animate-pulse" />
+                  Active
+                </span>
               </div>
+              <p className="font-display text-5xl font-semibold text-[var(--dashboard-text)]">
+                ${balanceUsd.toFixed(2)}{' '}
+                <span className="text-base font-normal text-[var(--dashboard-muted)]">USD</span>
+              </p>
+              <p className="mt-4 text-xs leading-relaxed text-[var(--dashboard-muted)]">
+                Credits are debited automatically per request when your agents provision CPU/GPU sandboxes. Treat your balance as a compute budget allocation.
+              </p>
+            </div>
 
-              <div className="flex flex-wrap gap-2">
-                <ThemeToggle className="rounded-lg border-[0.5px] border-[var(--dashboard-border)] px-4 py-2 text-sm font-mono uppercase tracking-[0.08em] text-[var(--dashboard-text)] hover:border-[var(--dashboard-accent)] hover:text-[var(--dashboard-accent)]" />
-                <Link
-                  href="/"
-                  className="rounded-lg border-[0.5px] border-[var(--dashboard-border)] px-4 py-2 text-sm font-display text-[var(--dashboard-text)] hover:border-[var(--dashboard-accent)] hover:text-[var(--dashboard-accent)]"
+            <div className="mt-8 pt-6 border-t-[0.5px] border-[var(--dashboard-border)] flex items-center justify-between">
+              <span className="font-mono text-[10px] text-[var(--dashboard-muted)]">
+                Secure checkout via Stripe
+              </span>
+              <form action={createTopupCheckoutAction}>
+                <button
+                  type="submit"
+                  className="rounded-lg bg-[var(--dashboard-accent)] px-4 py-2 text-xs font-mono uppercase tracking-[0.12em] font-semibold text-[var(--dashboard-bg)] hover:opacity-90 transition-opacity"
                 >
-                  Home
-                </Link>
-                <form action={createTopupCheckoutAction}>
-                  <button
-                    type="submit"
-                    className="rounded-lg bg-[var(--dashboard-accent)] px-4 py-2 text-sm font-display text-[var(--dashboard-bg)] hover:opacity-90"
-                  >
-                    Top up
-                  </button>
-                </form>
-              </div>
-            </header>
-
-            <div className="mb-6 grid gap-4 xl:grid-cols-2">
-              <section id="billing" className="rounded-xl border-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-card)] p-5">
-                <div className="mb-4 flex items-center justify-between">
-                  <h2 className="font-display text-xl text-[var(--dashboard-text)]">Credit Balance</h2>
-                  <form action={createTopupCheckoutAction}>
-                    <button
-                      type="submit"
-                      className="rounded-lg border-[0.5px] border-[var(--dashboard-accent)] px-3 py-1.5 text-xs font-mono uppercase tracking-[0.12em] text-[var(--dashboard-accent)] hover:bg-[var(--dashboard-accent)] hover:text-[var(--dashboard-bg)]"
-                    >
-                      Top up
-                    </button>
-                  </form>
-                </div>
-
-                <p className="mt-1 font-display text-4xl text-[var(--dashboard-text)]">${balanceUsd.toFixed(2)} <span className="text-base text-[var(--dashboard-muted)]">USD</span></p>
-
-                <Suspense fallback={null}>
-                  <SyncCredits currentBalance={balance} />
-                </Suspense>
-              </section>
-
-              <div id="api-keys">
-                <ApiKeysPanel initialKeys={apiKeys} />
-              </div>
+                  Top up credits
+                </button>
+              </form>
             </div>
           </section>
+
+          {/* Card 2: API Keys Panel */}
+          <div id="api-keys">
+            <ApiKeysPanel initialKeys={apiKeys} />
+          </div>
         </div>
       </div>
     </main>

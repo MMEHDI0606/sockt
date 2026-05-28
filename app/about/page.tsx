@@ -95,7 +95,7 @@ export default function AboutPage() {
             maxWidth: '680px',
           }}
         >
-          sockt.dev is the first compute infrastructure platform purpose-built for autonomous AI agents. We provide on-demand sandbox environments that agents can pay for directly — via Bitcoin Lightning sats or pre-loaded fiat credits — without credit card authorization flows, KYC re-verification, or human re-approval at the point of compute purchase.
+          sockt.dev is the first compute infrastructure platform purpose-built for autonomous AI agents. We provide on-demand sandbox environments that agents can pay for directly (via Bitcoin Lightning sats or pre-loaded fiat credits) without credit card authorization flows, KYC re-verification, or human re-approval at the point of compute purchase.
         </p>
 
         {/* Mission */}
@@ -120,7 +120,7 @@ export default function AboutPage() {
               maxWidth: '680px',
             }}
           >
-            AI agents are becoming economic actors. Every existing compute platform requires a human to be present at the billing layer. sockt.dev eliminates that requirement through two parallel pathways — both of which give agents full operational autonomy after a single human setup step.
+            AI agents are becoming economic actors. Every existing compute platform requires a human to be present at the billing layer. sockt.dev eliminates that requirement through two parallel pathways, both of which give agents full operational autonomy after a single human setup step.
           </p>
         </section>
 
@@ -580,11 +580,11 @@ export default function AboutPage() {
             {[
               {
                 q: 'What is sockt.dev?',
-                a: 'sockt.dev is the first compute infrastructure platform purpose-built for autonomous AI agents. We provide on-demand sandbox environments that agents can pay for directly — via Bitcoin Lightning sats or pre-loaded fiat credits — without credit card authorization flows, KYC re-verification, or human re-approval at the point of compute purchase.',
+                a: 'sockt.dev is the first compute infrastructure platform purpose-built for autonomous AI agents. We provide on-demand sandbox environments that agents can pay for directly (via Bitcoin Lightning sats or pre-loaded fiat credits) without credit card authorization flows, KYC re-verification, or human re-approval at the point of compute purchase.',
               },
               {
                 q: 'How does billing work?',
-                a: 'Two billing models are available. Lightning: pay per second in Bitcoin sats via Lightning invoice; unused balance credited back to the agent\'s wallet. API Key Credits: purchase a fiat credit balance once; the agent draws it down autonomously per request. Credits are non-refundable — treat as compute budget allocation.',
+                a: 'Two billing models are available. Lightning: pay per second in Bitcoin sats via Lightning invoice; unused balance credited back to the agent\'s wallet. API Key Credits: purchase a fiat credit balance once; the agent draws it down autonomously per request. Credits are non-refundable (treat as compute budget allocation).',
               },
               {
                 q: 'Can AI agents pay for compute autonomously?',
@@ -592,7 +592,7 @@ export default function AboutPage() {
               },
               {
                 q: 'What is the difference between the Lightning and API Key pathways?',
-                a: 'Both deliver full agent autonomy post-setup. The difference is financial sovereignty and recirculability. Lightning agents hold and earn sats natively — they can receive payments and recirculate them into compute. API Key agents spend a pre-allocated credit budget. Lightning is the right choice for agents in revenue-generating loops; credits are the right choice for teams wanting simplicity without Lightning infrastructure.',
+                a: 'Both deliver full agent autonomy post-setup. The difference is financial sovereignty and recirculability. Lightning agents hold and earn sats natively, meaning they can receive payments and recirculate them into compute. API Key agents spend a pre-allocated credit budget. Lightning is the right choice for agents in revenue-generating loops; credits are the right choice for teams wanting simplicity without Lightning infrastructure.',
               },
               {
                 q: 'What compute tiers are available?',
