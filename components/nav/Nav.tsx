@@ -147,31 +147,7 @@ export default function Nav() {
         <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '6px' : '10px' }}>
           <ThemeToggle compact={isMobile} />
           {authLoaded ? (
-            isAuthenticated ? (
-              <Link
-                href="/dashboard"
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: isMobile ? '12px' : '14px',
-                  color: 'var(--accent-btc)',
-                  border: '1px solid var(--accent-btc)',
-                  padding: isMobile ? '6px 10px' : '7px 17px',
-                  borderRadius: '100px',
-                  letterSpacing: '0.04em',
-                  transition: 'background-color 0.15s, color 0.15s',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = 'var(--accent-btc)';
-                  e.currentTarget.style.color = 'var(--bg-void)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'transparent';
-                  e.currentTarget.style.color = 'var(--accent-btc)';
-                }}
-              >
-                Dashboard
-              </Link>
-            ) : (
+            isAuthenticated ? null : (
               <>
                 <Link
                   href="/login"

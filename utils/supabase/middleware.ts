@@ -52,7 +52,7 @@ export const updateSession = async (request: NextRequest) => {
       data: { user },
     } = await supabase.auth.getUser();
 
-    const isAuthRoute = pathname === '/login' || pathname === '/signup';
+    const isRootOrAuthRoute = pathname === '/' || pathname === '/login' || pathname === '/signup';
 
     if (isDashboardRoute && !user) {
       const redirectUrl = request.nextUrl.clone();
@@ -66,7 +66,7 @@ export const updateSession = async (request: NextRequest) => {
       return redirectResponse;
     }
 
-    if (isAuthRoute && user) {
+    if (isRootOrAuthRoute && user) {
       const redirectUrl = request.nextUrl.clone();
       redirectUrl.pathname = '/dashboard';
       redirectUrl.search = '';

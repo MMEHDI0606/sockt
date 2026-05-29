@@ -1,5 +1,8 @@
 'use client';
 
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { createClient } from '@/utils/supabase/client';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import Script from 'next/script';
@@ -104,6 +107,16 @@ const faqJsonLd = {
 
 export default function Home() {
   const isMobile = useIsMobile();
+  const router = useRouter();
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data }) => {
+      if (data.user) {
+        router.replace('/dashboard');
+      }
+    });
+  }, [router]);
 
   return (
     <>
