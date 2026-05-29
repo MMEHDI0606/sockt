@@ -540,20 +540,333 @@ export default function DocsPage() {
               <li>When the status moves to <span style={mono}>completed</span>, <span style={mono}>failed</span>, or <span style={mono}>cancelled</span>, polling concludes and the final terminal exit code is returned.</li>
             </ol>
 
-            <h3 style={h3Style}>Auth Token Contexts</h3>
-            <p style={bodyText}>
-              Every request to sandbox sub-resources matches the initial provisioner credentials. Execution polling (<span style={mono}>/v1/executions/{"{id}"}</span>) requires a **caller key** derived from either the API Key (<span style={mono}>apikey:&lt;id&gt;</span>) or Sandbox Token (<span style={mono}>token:&lt;sbx_token&gt;</span>). Attempting to fetch or cancel executions via other credentials returns <span style={mono}>403 forbidden</span>.
-            </p>
-
-            <h3 style={h3Style}>Detailed REST Workflows</h3>
-            <h4 style={{ ...h3Style, fontSize: '0.9rem' }}>Credits Billing Pathway</h4>
+            <h3 style={h3Style}>Detailed Workflow Scripts</h3>
+            <h4 style={{ ...h3Style, fontSize: '0.9rem' }}>Credits Billing Pathway Example</h4>
             <CodeBlock code={CODE.restWorkflowCredits} />
-
-            <h4 style={{ ...h3Style, fontSize: '0.9rem' }}>Lightning Sats Billing Pathway</h4>
+            <h4 style={{ ...h3Style, fontSize: '0.9rem' }}>Lightning Sats Billing Pathway Example</h4>
             <CodeBlock code={CODE.restWorkflowLightning} />
 
+            <h3 style={h3Style}>Detailed Endpoint Specifications</h3>
+            <p style={bodyText}>Complete schema payload mappings, query arguments, path parameters, and request/response payloads for all 12 Rest API routes.</p>
+
+            <div className="space-y-8 mt-6">
+              {/* Endpoint 1 */}
+              <div className="border border-[var(--bg-border)] rounded-lg p-5 bg-[var(--bg-surface)]">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="font-mono text-xs bg-[rgba(194,122,54,0.15)] text-[var(--accent-btc)] px-2.5 py-1 rounded font-semibold">GET</span>
+                  <span className="font-mono text-sm font-semibold">/v1/sandboxes/tiers</span>
+                </div>
+                <p className="text-xs text-[var(--text-secondary)] mb-4">List all sandbox hardware sizes, credit billing rates (cents/sec), Lightning billing rates (msats/sec), and cost estimates.</p>
+                <div className="font-mono text-[10px] text-[var(--text-secondary)] uppercase tracking-[0.08em] mb-2">Response Example (200 OK)</div>
+                <CodeBlock code={`{
+  "note": "usd_cents_per_second applies to credits billing; msats_per_second to lightning billing.",
+  "tiers": [
+    {
+      "tier": "nano",
+      "msats_per_second": 500,
+      "sats_per_second": 0.5,
+      "usd_cents_per_second": 0.000277,
+      "cost_per_minute_sats": 30,
+      "cost_per_hour_sats": 1800,
+      "cost_per_day_sats": 43200,
+      "cost_per_hour_usd": 0.01
+    },
+    {
+      "tier": "micro",
+      "msats_per_second": 1000,
+      "sats_per_second": 1.0,
+      "usd_cents_per_second": 0.000555,
+      "cost_per_minute_sats": 60,
+      "cost_per_hour_sats": 3600,
+      "cost_per_day_sats": 86400,
+      "cost_per_hour_usd": 0.02
+    }
+  ]
+}`} />
+              </div>
+
+              {/* Endpoint 2 */}
+              <div className="border border-[var(--bg-border)] rounded-lg p-5 bg-[var(--bg-surface)]">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="font-mono text-xs bg-[rgba(34,208,122,0.15)] text-[var(--accent-green)] px-2.5 py-1 rounded font-semibold">POST</span>
+                  <span className="font-mono text-sm font-semibold">/v1/sandboxes</span>
+                </div>
+                <p className="text-xs text-[var(--text-secondary)] mb-4">Provision a new secure compute sandbox environment. Requires API Key bearer for credits billing, or runs anonymously for Lightning billing.</p>
+                <div className="font-mono text-[10px] text-[var(--text-secondary)] uppercase tracking-[0.08em] mb-2">Request Body (JSON)</div>
+                <CodeBlock code={`{
+  "tier": "nano",
+  "billing_method": "lightning", // 'credits' or 'lightning'
+  "label": "my-agent-task",      // optional label
+  "prepaid_sats": 5000           // optional satoshis prepay (lightning only)
+}`} />
+                <div className="font-mono text-[10px] text-[var(--text-secondary)] uppercase tracking-[0.08em] mb-2">Response Example (201 Created — Lightning)</div>
+                <CodeBlock code={`{
+  "status": "awaiting_payment",
+  "sandbox_id": "sb_9f8a3d2e1c0b",
+  "sandbox_token": "sbx_a1b2c3d4e5f6g7h8",
+  "billing_method": "lightning",
+  "tier": "nano",
+  "runtime": "cpu",
+  "invoice": "lnbc50u1p1z...",
+  "payment_hash": "a1b2c3d4e5f6...",
+  "amount_msats": 5000000,
+  "amount_sats": 5000,
+  "msats_per_second": 500,
+  "prepaid_seconds": 10000,
+  "expires_at": "2026-05-29T16:00:00Z"
+}`} />
+                <div className="font-mono text-[10px] text-[var(--text-secondary)] uppercase tracking-[0.08em] mb-2">Response Example (201 Created — Credits)</div>
+                <CodeBlock code={`{
+  "ID": "sb_9f8a3d2e1c0b",
+  "Status": "pending",
+  "BillingMethod": "credits",
+  "Tier": "nano",
+  "Template": "sockt-nano",
+  "Runtime": "runpod_cpu",
+  "PrepaidBalanceSubcents": 1000000,
+  "UserID": "usr_abc123"
+}`} />
+              </div>
+
+              {/* Endpoint 3 */}
+              <div className="border border-[var(--bg-border)] rounded-lg p-5 bg-[var(--bg-surface)]">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="font-mono text-xs bg-[rgba(194,122,54,0.15)] text-[var(--accent-btc)] px-2.5 py-1 rounded font-semibold">GET</span>
+                  <span className="font-mono text-sm font-semibold">/v1/sandboxes/{"{id}"}</span>
+                </div>
+                <p className="text-xs text-[var(--text-secondary)] mb-4">Retrieve current sandbox metadata, status state, metric logs, warning levels, and Lightning top-up invoice states.</p>
+                <div className="font-mono text-[10px] text-[var(--text-secondary)] uppercase tracking-[0.08em] mb-2">Query Parameters</div>
+                <ul className="list-disc pl-5 text-xs text-[var(--text-secondary)] mb-3 space-y-1">
+                  <li><span style={mono}>sandbox_token</span> (string) — Required for Lightning billing if not passed as Bearer authorization header.</li>
+                </ul>
+                <div className="font-mono text-[10px] text-[var(--text-secondary)] uppercase tracking-[0.08em] mb-2">Response Example (200 OK)</div>
+                <CodeBlock code={`{
+  "sandbox_id": "sb_9f8a3d2e1c0b",
+  "status": "running",
+  "tier": "nano",
+  "billing_method": "lightning",
+  "prepaid_balance_msats": 4500000,
+  "seconds_remaining": 9000,
+  "warning_level": "ok",
+  "next_poll_secs": 15,
+  "metrics_stale": false,
+  "runtime_consumed_total": 500000
+}`} />
+              </div>
+
+              {/* Endpoint 4 */}
+              <div className="border border-[var(--bg-border)] rounded-lg p-5 bg-[var(--bg-surface)]">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="font-mono text-xs bg-[rgba(34,208,122,0.15)] text-[var(--accent-green)] px-2.5 py-1 rounded font-semibold">POST</span>
+                  <span className="font-mono text-sm font-semibold">/v1/sandboxes/{"{id}"}/exec</span>
+                </div>
+                <p className="text-xs text-[var(--text-secondary)] mb-4">Start asynchronous execution of a command. Returns an opaque ID immediately. Buffers outputs to the executions worker.</p>
+                <div className="font-mono text-[10px] text-[var(--text-secondary)] uppercase tracking-[0.08em] mb-2">Request Body (JSON)</div>
+                <CodeBlock code={`{
+  "command": "python3 eval.py",
+  "working_dir": ".",      // default: . (home)
+  "timeout_ms": 60000,     // default: 30000
+  "sandbox_token": ""      // alternative token auth
+}`} />
+                <div className="font-mono text-[10px] text-[var(--text-secondary)] uppercase tracking-[0.08em] mb-2">Response Example (200 OK)</div>
+                <CodeBlock code={`{
+  "execution_id": "exec_abc123f4g5",
+  "status": "running",
+  "sandbox_id": "sb_9f8a3d2e1c0b",
+  "command": "python3 eval.py",
+  "next_step": "Poll the execution result endpoint using the execution_id"
+}`} />
+              </div>
+
+              {/* Endpoint 5 */}
+              <div className="border border-[var(--bg-border)] rounded-lg p-5 bg-[var(--bg-surface)]">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="font-mono text-xs bg-[rgba(194,122,54,0.15)] text-[var(--accent-btc)] px-2.5 py-1 rounded font-semibold">GET</span>
+                  <span className="font-mono text-sm font-semibold">/v1/executions/{"{execution_id}"}</span>
+                </div>
+                <p className="text-xs text-[var(--text-secondary)] mb-4">Poll current stdout/stderr chunks and execution state. Each request consumes and deletes the read buffer, returning only **new** lines since your last poll.</p>
+                <div className="font-mono text-[10px] text-[var(--text-secondary)] uppercase tracking-[0.08em] mb-2">Query Parameters</div>
+                <ul className="list-disc pl-5 text-xs text-[var(--text-secondary)] mb-3 space-y-1">
+                  <li><span style={mono}>sandbox_token</span> (string) — Required for Lightning billing token auth.</li>
+                </ul>
+                <div className="font-mono text-[10px] text-[var(--text-secondary)] uppercase tracking-[0.08em] mb-2">Response Example (200 OK)</div>
+                <CodeBlock code={`{
+  "execution_id": "exec_abc123f4g5",
+  "status": "completed", // 'running', 'completed', 'failed', 'cancelled'
+  "output": [
+    {
+      "stream": "stdout",
+      "chunk": "Accuracy: 94.2%\\n"
+    },
+    {
+      "stream": "stdout",
+      "chunk": "Finished evaluation.\\n"
+    }
+  ],
+  "exit_code": 0
+}`} />
+              </div>
+
+              {/* Endpoint 6 */}
+              <div className="border border-[var(--bg-border)] rounded-lg p-5 bg-[var(--bg-surface)]">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="font-mono text-xs bg-[rgba(229,62,62,0.15)] text-[var(--accent-red)] px-2.5 py-1 rounded font-semibold">DELETE</span>
+                  <span className="font-mono text-sm font-semibold">/v1/executions/{"{execution_id}"}</span>
+                </div>
+                <p className="text-xs text-[var(--text-secondary)] mb-4">Request cancellation of an active, running shell execution. Terminates the underlying process group on the container.</p>
+                <div className="font-mono text-[10px] text-[var(--text-secondary)] uppercase tracking-[0.08em] mb-2">Response Example (200 OK)</div>
+                <CodeBlock code={`{
+  "execution_id": "exec_abc123f4g5",
+  "status": "cancelled"
+}`} />
+              </div>
+
+              {/* Endpoint 7 */}
+              <div className="border border-[var(--bg-border)] rounded-lg p-5 bg-[var(--bg-surface)]">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="font-mono text-xs bg-[rgba(34,208,122,0.15)] text-[var(--accent-green)] px-2.5 py-1 rounded font-semibold">POST</span>
+                  <span className="font-mono text-sm font-semibold">/v1/sandboxes/{"{id}"}/files/write</span>
+                </div>
+                <p className="text-xs text-[var(--text-secondary)] mb-4">Create a new file or completely overwrite an existing file inside the sandboxed container filesystem.</p>
+                <div className="font-mono text-[10px] text-[var(--text-secondary)] uppercase tracking-[0.08em] mb-2">Request Body (JSON)</div>
+                <CodeBlock code={`{
+  "path": "eval.py",
+  "content": "print('hello')",   // plain string or base64 encoded
+  "encoding": "utf8",         // 'utf8' or 'base64'
+  "create_dirs": true        // automatically create parent directories
+}`} />
+                <div className="font-mono text-[10px] text-[var(--text-secondary)] uppercase tracking-[0.08em] mb-2">Response Example (200 OK)</div>
+                <CodeBlock code={`{
+  "path": "/home/sandbox/eval.py",
+  "bytes_written": 14,
+  "created_dirs": false
+}`} />
+              </div>
+
+              {/* Endpoint 8 */}
+              <div className="border border-[var(--bg-border)] rounded-lg p-5 bg-[var(--bg-surface)]">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="font-mono text-xs bg-[rgba(34,208,122,0.15)] text-[var(--accent-green)] px-2.5 py-1 rounded font-semibold">POST</span>
+                  <span className="font-mono text-sm font-semibold">/v1/sandboxes/{"{id}"}/files/read</span>
+                </div>
+                <p className="text-xs text-[var(--text-secondary)] mb-4">Read file contents from the sandbox filesystem. Returns raw text or base64 representation.</p>
+                <div className="font-mono text-[10px] text-[var(--text-secondary)] uppercase tracking-[0.08em] mb-2">Request Body (JSON)</div>
+                <CodeBlock code={`{
+  "path": "eval.py",
+  "encoding": "utf8",         // 'utf8' or 'base64'
+  "max_bytes": 100000         // optional byte ceiling
+}`} />
+                <div className="font-mono text-[10px] text-[var(--text-secondary)] uppercase tracking-[0.08em] mb-2">Response Example (200 OK — UTF-8)</div>
+                <CodeBlock code={`{
+  "path": "/home/sandbox/eval.py",
+  "size_bytes": 14,
+  "encoding": "utf8",
+  "truncated": false,
+  "content": "print('hello')"
+}`} />
+              </div>
+
+              {/* Endpoint 9 */}
+              <div className="border border-[var(--bg-border)] rounded-lg p-5 bg-[var(--bg-surface)]">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="font-mono text-xs bg-[rgba(194,122,54,0.15)] text-[var(--accent-btc)] px-2.5 py-1 rounded font-semibold">GET</span>
+                  <span className="font-mono text-sm font-semibold">/v1/sandboxes/{"{id}"}/files</span>
+                </div>
+                <p className="text-xs text-[var(--text-secondary)] mb-4">List files and directories in a given sandbox directory path (single level).</p>
+                <div className="font-mono text-[10px] text-[var(--text-secondary)] uppercase tracking-[0.08em] mb-2">Query Parameters</div>
+                <ul className="list-disc pl-5 text-xs text-[var(--text-secondary)] mb-3 space-y-1">
+                  <li><span style={mono}>path</span> (string) — Logical directory path. Default `/`.</li>
+                  <li><span style={mono}>sandbox_token</span> (string) — Required for Lightning anonymous auth.</li>
+                </ul>
+                <div className="font-mono text-[10px] text-[var(--text-secondary)] uppercase tracking-[0.08em] mb-2">Response Example (200 OK)</div>
+                <CodeBlock code={`{
+  "entries": [
+    {
+      "name": "eval.py",
+      "size": 14,
+      "mod_ts": 1716982800,
+      "is_dir": false,
+      "is_file": true
+    },
+    {
+      "name": "src",
+      "size": 4096,
+      "mod_ts": 1716982950,
+      "is_dir": true,
+      "is_file": false
+    }
+  ],
+  "total_entries": 2
+}`} />
+              </div>
+
+              {/* Endpoint 10 */}
+              <div className="border border-[var(--bg-border)] rounded-lg p-5 bg-[var(--bg-surface)]">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="font-mono text-xs bg-[rgba(34,208,122,0.15)] text-[var(--accent-green)] px-2.5 py-1 rounded font-semibold">POST</span>
+                  <span className="font-mono text-sm font-semibold">/v1/sandboxes/{"{id}"}/pause</span>
+                </div>
+                <p className="text-xs text-[var(--text-secondary)] mb-4">Pause execution on the cloud orchestrator. Halts ongoing active billing charges.</p>
+                <div className="font-mono text-[10px] text-[var(--text-secondary)] uppercase tracking-[0.08em] mb-2">Response Example (200 OK)</div>
+                <CodeBlock code={`{
+  "sandbox_id": "sb_9f8a3d2e1c0b",
+  "status": "paused"
+}`} />
+              </div>
+
+              {/* Endpoint 11 */}
+              <div className="border border-[var(--bg-border)] rounded-lg p-5 bg-[var(--bg-surface)]">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="font-mono text-xs bg-[rgba(34,208,122,0.15)] text-[var(--accent-green)] px-2.5 py-1 rounded font-semibold">POST</span>
+                  <span className="font-mono text-sm font-semibold">/v1/sandboxes/{"{id}"}/resume</span>
+                </div>
+                <p className="text-xs text-[var(--text-secondary)] mb-4">Resume a paused sandbox environment. Restarts container processes and reactivates pricing billing meters.</p>
+                <div className="font-mono text-[10px] text-[var(--text-secondary)] uppercase tracking-[0.08em] mb-2">Response Example (200 OK)</div>
+                <CodeBlock code={`{
+  "sandbox_id": "sb_9f8a3d2e1c0b",
+  "status": "running"
+}`} />
+              </div>
+
+              {/* Endpoint 12 */}
+              <div className="border border-[var(--bg-border)] rounded-lg p-5 bg-[var(--bg-surface)]">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="font-mono text-xs bg-[rgba(229,62,62,0.15)] text-[var(--accent-red)] px-2.5 py-1 rounded font-semibold">DELETE</span>
+                  <span className="font-mono text-sm font-semibold">/v1/sandboxes/{"{id}"}</span>
+                </div>
+                <p className="text-xs text-[var(--text-secondary)] mb-4">Permanently terminate the sandbox environment. Deletes container assets. For Lightning billing, returns remaining balance refund details if a refund address is provided.</p>
+                <div className="font-mono text-[10px] text-[var(--text-secondary)] uppercase tracking-[0.08em] mb-2">Request Body (JSON — Optional)</div>
+                <CodeBlock code={`{
+  "lightning_address": "agent-sats@wallet.example", // Lightning refund address (Lightning billing only)
+  "sandbox_token": ""                               // Alternative token auth
+}`} />
+                <div className="font-mono text-[10px] text-[var(--text-secondary)] uppercase tracking-[0.08em] mb-2">Response Example (200 OK — Lightning with refund)</div>
+                <CodeBlock code={`{
+  "sandbox_id": "sb_9f8a3d2e1c0b",
+  "status": "terminated",
+  "consumed_msats_total": 1250000,
+  "terminated_at": "2026-05-29T10:15:30Z",
+  "refund": {
+    "status": "sent",
+    "amount_sats": 3750,
+    "address": "agent-sats@wallet.example"
+  }
+}`} />
+                <div className="font-mono text-[10px] text-[var(--text-secondary)] uppercase tracking-[0.08em] mb-2">Response Example (200 OK — Credits with refund)</div>
+                <CodeBlock code={`{
+  "sandbox_id": "sb_9f8a3d2e1c0b",
+  "status": "terminated",
+  "consumed_msats_total": 0,
+  "terminated_at": "2026-05-29T10:15:30Z",
+  "refund": {
+    "status": "credited",
+    "amount_cents": 85
+  }
+}`} />
+              </div>
+            </div>
+
             <h3 style={h3Style}>Error Envelope Schema</h3>
-            <p style={bodyText}>Errors are returned in a standard JSON wrapper:</p>
             <CodeBlock code={`{
   "code": "forbidden",
   "error": "forbidden",
