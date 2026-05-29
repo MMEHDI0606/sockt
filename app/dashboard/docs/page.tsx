@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
 import { signOutAction } from '@/app/dashboard/actions';
 import ThemeToggle from '@/components/theme/ThemeToggle';
-import AccountSettingsForm from '@/components/dashboard/AccountSettingsForm';
+import DashboardDocsContent from '@/components/dashboard/DashboardDocsContent';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -20,7 +20,7 @@ function initialsFromName(name: string): string {
   return `${parts[0][0] || ''}${parts[1][0] || ''}`.toUpperCase();
 }
 
-export default async function DashboardAccountPage() {
+export default async function DashboardDocsPage() {
   const cookieStore = await cookies();
   const supabase = createClient(cookieStore);
 
@@ -31,15 +31,6 @@ export default async function DashboardAccountPage() {
   if (!user) {
     redirect('/login');
   }
-
-  const { data: profile } = await supabase
-    .from('users')
-    .select('credit_balance_subcents')
-    .eq('id', user.id)
-    .maybeSingle();
-
-  const balance = Number(profile?.credit_balance_subcents ?? 0);
-  const balanceUsd = balance / 10000000;
 
   const userEmail = user.email || 'unknown@sockt.dev';
   const displayName =
@@ -66,7 +57,7 @@ export default async function DashboardAccountPage() {
           <div className="flex items-center gap-4">
             <Link href="/" className="flex items-baseline gap-[5px] no-underline">
               <span className="font-mono text-lg text-[var(--dashboard-accent)]">{'{*}'}</span>
-              <span className="font-display text-lg font-medium text-[var(--dashboard-text)]">Sockt</span>
+              <span className="font-display text-lg font-medium text-[var(--dashboard-text)]">sockt.dev</span>
             </Link>
             <span className="font-mono text-sm text-[var(--dashboard-muted)]">/</span>
             <span className="font-mono text-xs text-[var(--dashboard-muted)]">Personal Workspace</span>
@@ -106,13 +97,13 @@ export default async function DashboardAccountPage() {
             </Link>
             <Link
               href="/dashboard/docs"
-              className="border-b-2 border-transparent pb-3 pt-2 text-xs font-mono uppercase tracking-[0.1em] text-[var(--dashboard-muted)] hover:text-[var(--dashboard-text)] transition-colors"
+              className="border-b-2 border-[var(--dashboard-accent)] pb-3 pt-2 text-xs font-mono uppercase tracking-[0.1em] text-[var(--dashboard-text)]"
             >
               Docs
             </Link>
             <Link
               href="/dashboard/account"
-              className="border-b-2 border-[var(--dashboard-accent)] pb-3 pt-2 text-xs font-mono uppercase tracking-[0.1em] text-[var(--dashboard-text)]"
+              className="border-b-2 border-transparent pb-3 pt-2 text-xs font-mono uppercase tracking-[0.1em] text-[var(--dashboard-muted)] hover:text-[var(--dashboard-text)] transition-colors"
             >
               Account Settings
             </Link>
@@ -125,20 +116,15 @@ export default async function DashboardAccountPage() {
         {/* Welcome Banner */}
         <div className="mb-8 border-b-[0.5px] border-[var(--dashboard-border)] pb-6">
           <h2 className="font-display text-2xl font-semibold text-[var(--dashboard-text)]">
-            Account Settings
+            Developer Documentation
           </h2>
           <p className="mt-1 text-sm text-[var(--dashboard-muted)]">
-            Identity, profile details, and account status from your active session.
+            Integrate your autonomous AI agents with Sockt compute sandboxes, tools, and endpoints.
           </p>
         </div>
 
-        {/* Account Settings Forms & Purge controls */}
-        <AccountSettingsForm
-          initialDisplayName={displayName}
-          initialEmail={userEmail}
-          userId={user.id}
-          balanceUsd={balanceUsd}
-        />
+        {/* Workspace Documentation Content */}
+        <DashboardDocsContent />
       </div>
     </main>
   );

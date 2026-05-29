@@ -146,6 +146,12 @@ export default async function DashboardPage() {
               Overview
             </Link>
             <Link
+              href="/dashboard/docs"
+              className="border-b-2 border-transparent pb-3 pt-2 text-xs font-mono uppercase tracking-[0.1em] text-[var(--dashboard-muted)] hover:text-[var(--dashboard-text)] transition-colors"
+            >
+              Docs
+            </Link>
+            <Link
               href="/dashboard/account"
               className="border-b-2 border-transparent pb-3 pt-2 text-xs font-mono uppercase tracking-[0.1em] text-[var(--dashboard-muted)] hover:text-[var(--dashboard-text)] transition-colors"
             >
