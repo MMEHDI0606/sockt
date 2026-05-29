@@ -362,6 +362,30 @@ export default function DocsPage() {
           {/* CLI REFERENCE SECTION */}
           <div style={active === 'cli' ? activeSectionStyle : sectionStyle}>
             <SectionHeading label="CLI Reference" number="01" />
+            
+            {/* GitHub URL Link */}
+            <div style={{ marginBottom: '24px', marginTop: '-12px' }}>
+              <a
+                href="https://github.com/SocktDev/cli"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={githubLinkStyle}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = 'var(--accent-btc)';
+                  e.currentTarget.style.color = 'var(--text-primary)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'var(--bg-border)';
+                  e.currentTarget.style.color = 'var(--accent-btc)';
+                }}
+              >
+                <svg className="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.579.688.481C19.137 20.164 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
+                </svg>
+                github.com/SocktDev/cli ↗
+              </a>
+            </div>
+
             <p style={bodyText}>
               The <span style={mono}>sockt</span> Go binary is a fast, cross-platform CLI for orchestrating compute sandboxes directly from the console or scripts.
             </p>
@@ -906,6 +930,30 @@ export default function DocsPage() {
           {/* TS/JS SDK SECTION */}
           <div style={active === 'ts-sdk' ? activeSectionStyle : sectionStyle}>
             <SectionHeading label="TypeScript/JavaScript SDK" number="03" />
+
+            {/* GitHub URL Link */}
+            <div style={{ marginBottom: '24px', marginTop: '-12px' }}>
+              <a
+                href="https://github.com/SocktDev/sockt-js"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={githubLinkStyle}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = 'var(--accent-btc)';
+                  e.currentTarget.style.color = 'var(--text-primary)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'var(--bg-border)';
+                  e.currentTarget.style.color = 'var(--accent-btc)';
+                }}
+              >
+                <svg className="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.579.688.481C19.137 20.164 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
+                </svg>
+                github.com/SocktDev/sockt-js ↗
+              </a>
+            </div>
+
             <p style={bodyText}>
               The official <span style={mono}>@sockt/client</span> package provides a robust, fully-typed TypeScript interface for interacting with sockt.dev. It manages network state, handles execution polling under the hood, and parses error envelopes.
             </p>
@@ -967,15 +1015,33 @@ export default function DocsPage() {
           {/* PYTHON SDK SECTION */}
           <div style={active === 'py-sdk' ? activeSectionStyle : sectionStyle}>
             <SectionHeading label="Python SDK" number="04" />
+
+            {/* GitHub URL Link */}
+            <div style={{ marginBottom: '24px', marginTop: '-12px' }}>
+              <a
+                href="https://github.com/SocktDev/sockt-python"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={githubLinkStyle}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = 'var(--accent-btc)';
+                  e.currentTarget.style.color = 'var(--text-primary)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'var(--bg-border)';
+                  e.currentTarget.style.color = 'var(--accent-btc)';
+                }}
+              >
+                <svg className="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.579.688.481C19.137 20.164 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
+                </svg>
+                github.com/SocktDev/sockt-python ↗
+              </a>
+            </div>
+
             <p style={bodyText}>
               The official <span style={mono}>sockt</span> Python SDK delivers an idiomatic, thread-safe, and asynchronous/synchronous client for orchestrating sandboxes in AI agent loops. It features automatic resource management via standard context managers.
             </p>
-
-            <h3 style={h3Style}>Installation</h3>
-            <CodeBlock code={`pip install sockt`} />
-
-            <h3 style={h3Style}>Quick Start</h3>
-            <CodeBlock code={CODE.sdkPy} />
 
             <h3 style={h3Style}>API Reference</h3>
 
@@ -1215,4 +1281,19 @@ const relatedLinkStyle: React.CSSProperties = {
   borderRadius: '4px',
   letterSpacing: '0.05em',
   transition: 'color 0.15s, border-color 0.15s',
+};
+
+const githubLinkStyle: React.CSSProperties = {
+  fontFamily: 'var(--font-mono)',
+  fontSize: '12px',
+  color: 'var(--accent-btc)',
+  border: '1px solid var(--bg-border)',
+  backgroundColor: 'var(--bg-raised)',
+  padding: '8px 14px',
+  borderRadius: '6px',
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '8px',
+  textDecoration: 'none',
+  transition: 'border-color 0.15s, color 0.15s',
 };
