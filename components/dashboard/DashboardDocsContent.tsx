@@ -262,7 +262,7 @@ export default function DashboardDocsContent() {
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex-1 w-full max-w-full lg:max-w-[860px]">
+      <div className="flex-1 w-full max-w-full lg:max-w-[860px] overflow-x-hidden">
         
         {/* OVERVIEW SECTION */}
         <div style={active === 'overview' ? activeSectionStyle : sectionStyle}>
@@ -341,7 +341,7 @@ export default function DashboardDocsContent() {
         {/* CLI REFERENCE SECTION */}
         <div style={active === 'cli' ? activeSectionStyle : sectionStyle}>
           <SectionHeading label="CLI Reference" number="01" />
-
+          
           {/* GitHub URL Link */}
           <div style={{ marginBottom: '20px', marginTop: '-10px' }}>
             <a
@@ -366,60 +366,264 @@ export default function DashboardDocsContent() {
           </div>
 
           <p style={bodyText}>
-            The <span style={mono}>sockt</span> Go binary is a fast, cross-platform CLI for orchestrating compute sandboxes directly from the console or scripts.
+            The <span style={mono}>sockt</span> Go binary is a fast, cross-platform CLI for orchestrating compute sandboxes directly from the console or shell scripts.
           </p>
 
           <h3 style={h3Style}>Installation</h3>
-          <p style={bodyText}>Build directly from source or compile release binaries:</p>
-          <CodeBlock code={`# Build the binary locally\ngo build -o sockt .\n\n# Or build cross-platform release archives\nmake release VERSION=0.2.0\n\n# Move to path\nmv sockt /usr/local/bin/`} />
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '18px' }}>From Source</h4>
+          <CodeBlock code={`go build -o sockt .\n\n# Move binary to PATH\nmv sockt /usr/local/bin/`} />
 
-          <h3 style={h3Style}>Quick Start</h3>
-          <CodeBlock code={CODE.cliSetup} />
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '18px' }}>Release Builds</h4>
+          <p style={bodyText}>Build cross-platform release artifacts (binaries, <span style={mono}>.tar.gz</span>/<span style={mono}>.zip</span> archives, and <span style={mono}>checksums.txt</span>) directly into the <span style={mono}>dist/</span> directory:</p>
+          <CodeBlock code={`make release\n\n# Override the embedded version parameter\nmake release VERSION=0.2.0`} />
+
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '18px' }}>Other Useful Build Targets</h4>
+          <CodeBlock code={`make build    # build sockt for your current local platform\nmake test     # execute the CLI test suites\nmake clean    # remove local builds and the dist/ directory`} />
+
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '18px' }}>Requirements</h4>
+          <ul className="list-disc pl-5 text-xs text-[var(--dashboard-muted)] space-y-1 mb-4">
+            <li>Go 1.26.2+ compiler toolchain</li>
+            <li>GNU Make (for build shortcuts and targets)</li>
+            <li>ZIP compression utility (required for Windows build packaging)</li>
+          </ul>
 
           <h3 style={h3Style}>Global Configuration</h3>
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '18px' }}>Environment Variables</h4>
           <table style={tableStyle}>
             <thead>
               <tr>
-                <th style={thStyle}>Env Variable</th>
-                <th style={thStyle}>Global Flag</th>
-                <th style={thStyle}>Priority / Notes</th>
+                <th style={thStyle}>Variable</th>
+                <th style={thStyle}>Description</th>
+                <th style={thStyle}>Default</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td style={tdStyle}><span style={mono}>SOCKT_API_KEY</span></td>
+                <td style={tdStyle}>API Key token used for account-tied Credits billing (<span style={mono}>sockt_live_...</span>)</td>
                 <td style={tdStyle}>—</td>
-                <td style={tdStyle}>API key for Credits-based sandboxes (e.g. <span style={mono}>sockt_live_...</span>)</td>
               </tr>
               <tr>
                 <td style={tdStyle}><span style={mono}>SOCKT_SANDBOX_TOKEN</span></td>
+                <td style={tdStyle}>Per-sandbox authorization token scoped strictly to a single Lightning billing container (<span style={mono}>sbx_...</span>)</td>
                 <td style={tdStyle}>—</td>
-                <td style={tdStyle}>Active Lightning billing sandbox token (<span style={mono}>sbx_...</span>)</td>
               </tr>
               <tr>
-                <td style={tdStyle}>—</td>
-                <td style={tdStyle}><span style={mono}>--token &lt;token&gt;</span></td>
-                <td style={tdStyle}>Overrides any active environment variables. Takes absolute highest precedence.</td>
+                <td style={tdStyle}><span style={mono}>SOCKT_API_URL</span></td>
+                <td style={tdStyle}>Base URL routing override for all REST endpoints</td>
+                <td style={tdStyle}><span style={mono}>https://api.sockt.dev</span></td>
               </tr>
             </tbody>
           </table>
 
-          <h3 style={h3Style}>Commands</h3>
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '18px' }}>Global Flags</h4>
+          <table style={tableStyle}>
+            <thead>
+              <tr>
+                <th style={thStyle}>Flag</th>
+                <th style={thStyle}>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style={tdStyle}><span style={mono}>--token &lt;token&gt;</span></td>
+                <td style={tdStyle}>Overrides any active environment variables. Takes absolute highest priority for credentials.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '18px' }}>Token Authentication Priority</h4>
+          <ol style={{ listStyleType: 'decimal', paddingLeft: '20px' }} className="text-xs text-[var(--dashboard-muted)] space-y-1 mb-4">
+            <li>Passed <span style={mono}>--token</span> command-line flag (Highest priority)</li>
+            <li>Active <span style={mono}>SOCKT_SANDBOX_TOKEN</span> environment variable</li>
+            <li>Active <span style={mono}>SOCKT_API_KEY</span> environment variable (Lowest priority)</li>
+          </ol>
+
+          <h3 style={h3Style}>Quick Start Reference</h3>
+          <CodeBlock code={CODE.cliSetup} />
+
+          <h3 style={h3Style}>Sandbox Paths & Working Directories</h3>
+          <p style={bodyText}>
+            The default sandbox environment home directory is <span style={mono}>/home/sandbox</span>. Always provide absolute paths for file upload operations (e.g. <span style={mono}>/home/sandbox/app.py</span>). For file read tasks, passing paths relative to the home folder (e.g. <span style={mono}>app.py</span>) is accepted.
+          </p>
+          <div className="p-3 bg-[rgba(194,122,54,0.1)] border border-[rgba(194,122,54,0.3)] text-xs text-[var(--dashboard-accent)] font-mono rounded mb-3">
+            ⚠️ CRITICAL FLAG ORDER: Cobra command parsing rules mandate that execution flags (such as --timeout or --workdir) MUST be placed BEFORE the sandbox ID.
+          </div>
+          <CodeBlock code={`# CORRECT syntax (flags before sandbox-id)\nsockt exec --timeout 60000 <sandbox-id> npm install\nsockt exec --workdir /home/sandbox/project <sandbox-id> python3 main.py\n\n# INCORRECT syntax (will fail command execution)\nsockt exec <sandbox-id> npm install --timeout 60000`} />
+
+          <h3 style={h3Style}>Commands Reference</h3>
 
           <div className="space-y-6 mt-4">
+            {/* tiers */}
             <div className="border border-[var(--dashboard-border)] rounded-lg p-5 bg-[var(--dashboard-card)]">
               <div className="font-mono text-sm text-[var(--dashboard-accent)] font-semibold mb-2">sockt tiers</div>
-              <div className="text-xs text-[var(--dashboard-muted)] leading-relaxed mb-3">
-                List active hardware specifications, credit costs, and Lightning sats burn rates per second.
-              </div>
+              <p className="text-xs text-[var(--dashboard-muted)] mb-3">List available compute sizes, specifications, and costs in Lightning sats and Credits billing models.</p>
               <CodeBlock code={`sockt tiers`} />
             </div>
 
+            {/* create */}
             <div className="border border-[var(--dashboard-border)] rounded-lg p-5 bg-[var(--dashboard-card)]">
               <div className="font-mono text-sm text-[var(--dashboard-accent)] font-semibold mb-2">sockt sandbox create</div>
-              <div className="text-xs text-[var(--dashboard-muted)] leading-relaxed mb-3">
-                Provision a new secure sandbox. When using Lightning billing, it creates the sandbox anonymously and returns a BOLT11 payment request.
-              </div>
+              <p className="text-xs text-[var(--dashboard-muted)] mb-3">Provision and orchestrate a new sandbox environment.</p>
+              <div className="font-mono text-[9px] text-[var(--dashboard-muted)] uppercase tracking-[0.08em] mb-2">Subcommand Flags</div>
+              <table style={tableStyle} className="my-2">
+                <thead>
+                  <tr>
+                    <th style={thStyle}>Flag</th>
+                    <th style={thStyle}>Short</th>
+                    <th style={thStyle}>Default</th>
+                    <th style={thStyle}>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style={tdStyle}><span style={mono}>--tier</span></td>
+                    <td style={tdStyle}><span style={mono}>-t</span></td>
+                    <td style={tdStyle}><span style={mono}>nano</span></td>
+                    <td style={tdStyle}>Hardware tier capacity (nano, micro, small, medium, large, gpu-small)</td>
+                  </tr>
+                  <tr>
+                    <td style={tdStyle}><span style={mono}>--billing</span></td>
+                    <td style={tdStyle}><span style={mono}>-b</span></td>
+                    <td style={tdStyle}><span style={mono}>credits</span></td>
+                    <td style={tdStyle}>Billing pathway: <span style={mono}>credits</span> or <span style={mono}>lightning</span></td>
+                  </tr>
+                  <tr>
+                    <td style={tdStyle}><span style={mono}>--prepaid-sats</span></td>
+                    <td style={tdStyle}>—</td>
+                    <td style={tdStyle}><span style={mono}>0</span></td>
+                    <td style={tdStyle}>Prepaid satoshis to fund Lightning invoices (Lightning only)</td>
+                  </tr>
+                  <tr>
+                    <td style={tdStyle}><span style={mono}>--initial-credits</span></td>
+                    <td style={tdStyle}>—</td>
+                    <td style={tdStyle}><span style={mono}>0</span></td>
+                    <td style={tdStyle}>Initial USD cents to allocate from budget (Credits only)</td>
+                  </tr>
+                  <tr>
+                    <td style={tdStyle}><span style={mono}>--label</span></td>
+                    <td style={tdStyle}><span style={mono}>-l</span></td>
+                    <td style={tdStyle}>—</td>
+                    <td style={tdStyle}>Human-readable label for records</td>
+                  </tr>
+                  <tr>
+                    <td style={tdStyle}><span style={mono}>--wait</span></td>
+                    <td style={tdStyle}><span style={mono}>-w</span></td>
+                    <td style={tdStyle}><span style={mono}>false</span></td>
+                    <td style={tdStyle}>Block and poll until the sandbox reaches "running" state</td>
+                  </tr>
+                </tbody>
+              </table>
+              <CodeBlock code={`# Examples\nsockt sandbox create --tier micro --wait\nsockt sandbox create --tier nano --billing lightning --prepaid-sats 5000\nsockt sandbox create --tier small --label "dev-sandbox" --wait`} />
+            </div>
+
+            {/* status */}
+            <div className="border border-[var(--dashboard-border)] rounded-lg p-5 bg-[var(--dashboard-card)]">
+              <div className="font-mono text-sm text-[var(--dashboard-accent)] font-semibold mb-2">sockt sandbox status</div>
+              <p className="text-xs text-[var(--dashboard-muted)] mb-3">Fetch active status metadata, consumed allocations, remaining compute durations, and unpaid invoice warnings.</p>
+              <CodeBlock code={`sockt sandbox status <sandbox-id>`} />
+            </div>
+
+            {/* pause / resume */}
+            <div className="border border-[var(--dashboard-border)] rounded-lg p-5 bg-[var(--dashboard-card)]">
+              <div className="font-mono text-sm text-[var(--dashboard-accent)] font-semibold mb-2">sockt sandbox pause / resume</div>
+              <p className="text-xs text-[var(--dashboard-muted)] mb-3">Freeze and unfreeze sandbox run states to stop compute billing meters.</p>
+              <CodeBlock code={`sockt sandbox pause <sandbox-id>\nsockt sandbox resume <sandbox-id>`} />
+            </div>
+
+            {/* terminate */}
+            <div className="border border-[var(--dashboard-border)] rounded-lg p-5 bg-[var(--dashboard-card)]">
+              <div className="font-mono text-sm text-[var(--dashboard-accent)] font-semibold mb-2">sockt sandbox terminate</div>
+              <p className="text-xs text-[var(--dashboard-muted)] mb-3">Permanently delete a sandbox and tear down underlying pods. Stops all billing immediately. For Lightning, remaining balances will refund if a Lightning Address is linked.</p>
+              <CodeBlock code={`sockt sandbox terminate <sandbox-id>`} />
+            </div>
+
+            {/* exec */}
+            <div className="border border-[var(--dashboard-border)] rounded-lg p-5 bg-[var(--dashboard-card)]">
+              <div className="font-mono text-sm text-[var(--dashboard-accent)] font-semibold mb-2">sockt exec</div>
+              <p className="text-xs text-[var(--dashboard-muted)] mb-3">Run non-interactive shell commands synchronously inside the container workspace. Streams outputs in real time.</p>
+              <table style={tableStyle} className="my-2">
+                <thead>
+                  <tr>
+                    <th style={thStyle}>Flag</th>
+                    <th style={thStyle}>Short</th>
+                    <th style={thStyle}>Default</th>
+                    <th style={thStyle}>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style={tdStyle}><span style={mono}>--workdir</span></td>
+                    <td style={tdStyle}><span style={mono}>-d</span></td>
+                    <td style={tdStyle}><span style={mono}>.</span></td>
+                    <td style={tdStyle}>Working directory inside the sandbox environment</td>
+                  </tr>
+                  <tr>
+                    <td style={tdStyle}><span style={mono}>--timeout</span></td>
+                    <td style={tdStyle}>—</td>
+                    <td style={tdStyle}>—</td>
+                    <td style={tdStyle}>Max execution duration ceiling (milliseconds)</td>
+                  </tr>
+                  <tr>
+                    <td style={tdStyle}><span style={mono}>--poll</span></td>
+                    <td style={tdStyle}>—</td>
+                    <td style={tdStyle}><span style={mono}>500</span></td>
+                    <td style={tdStyle}>Buffer poll check frequency (milliseconds)</td>
+                  </tr>
+                </tbody>
+              </table>
+              <CodeBlock code={`sockt exec abc123-def456 echo "test"\nsockt exec --timeout 60000 abc123-def456 npm install`} />
+            </div>
+
+            {/* exec-cancel */}
+            <div className="border border-[var(--dashboard-border)] rounded-lg p-5 bg-[var(--dashboard-card)]">
+              <div className="font-mono text-sm text-[var(--dashboard-accent)] font-semibold mb-2">sockt exec-cancel</div>
+              <p className="text-xs text-[var(--dashboard-muted)] mb-3">Cancel a running execution process by ID.</p>
+              <CodeBlock code={`sockt exec-cancel <execution-id>`} />
+            </div>
+
+            {/* shell */}
+            <div className="border border-[var(--dashboard-border)] rounded-lg p-5 bg-[var(--dashboard-card)]">
+              <div className="font-mono text-sm text-[var(--dashboard-accent)] font-semibold mb-2">sockt shell</div>
+              <p className="text-xs text-[var(--dashboard-muted)] mb-3">Launch an interactive terminal shell session using secure WebSocket PTY connections. Supports resizing and Ctrl+C propagation.</p>
+              <CodeBlock code={`sockt shell <sandbox-id>`} />
+            </div>
+
+            {/* files write */}
+            <div className="border border-[var(--dashboard-border)] rounded-lg p-5 bg-[var(--dashboard-card)]">
+              <div className="font-mono text-sm text-[var(--dashboard-accent)] font-semibold mb-2">sockt files write</div>
+              <p className="text-xs text-[var(--dashboard-muted)] mb-3">Write or upload files into the sandbox filesystem. Reads stdin if no source file is passed.</p>
+              <table style={tableStyle} className="my-2">
+                <thead>
+                  <tr>
+                    <th style={thStyle}>Flag</th>
+                    <th style={thStyle}>Short</th>
+                    <th style={thStyle}>Default</th>
+                    <th style={thStyle}>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style={tdStyle}><span style={mono}>--file</span></td>
+                    <td style={tdStyle}><span style={mono}>-f</span></td>
+                    <td style={tdStyle}>—</td>
+                    <td style={tdStyle}>Path to local file to upload</td>
+                  </tr>
+                  <tr>
+                    <td style={tdStyle}><span style={mono}>--encoding</span></td>
+                    <td style={tdStyle}>—</td>
+                    <td style={tdStyle}><span style={mono}>utf8</span></td>
+                    <td style={tdStyle}>Encoding mode: <span style={mono}>utf8</span> or <span style={mono}>base64</span></td>
+                  </tr>
+                </tbody>
+              </table>
+              <CodeBlock code={`sockt files write abc123 /home/sandbox/app.py --file ./app.py\necho "test" | sockt files write abc123 /home/sandbox/greeting.txt\nbase64 img.png | sockt files write abc123 /home/sandbox/img.png --encoding base64`} />
+            </div>
+
+            {/* files read */}
+            <div className="border border-[var(--dashboard-border)] rounded-lg p-5 bg-[var(--dashboard-card)]">
+              <div className="font-mono text-sm text-[var(--dashboard-accent)] font-semibold mb-2">sockt files read</div>
+              <p className="text-xs text-[var(--dashboard-muted)] mb-3">Read file content from the container filesystem directly into stdout.</p>
               <table style={tableStyle} className="my-2">
                 <thead>
                   <tr>
@@ -430,49 +634,130 @@ export default function DashboardDocsContent() {
                 </thead>
                 <tbody>
                   <tr>
-                    <td style={tdStyle}><span style={mono}>-t, --tier</span></td>
-                    <td style={tdStyle}><span style={mono}>nano</span></td>
-                    <td style={tdStyle}>Hardware tier: <span style={mono}>nano</span>, <span style={mono}>micro</span>, <span style={mono}>standard</span>, <span style={mono}>gpu-small</span> etc.</td>
+                    <td style={tdStyle}><span style={mono}>--encoding</span></td>
+                    <td style={tdStyle}><span style={mono}>utf8</span></td>
+                    <td style={tdStyle}>Encoding mode: <span style={mono}>utf8</span> or <span style={mono}>base64</span></td>
                   </tr>
                   <tr>
-                    <td style={tdStyle}><span style={mono}>-b, --billing</span></td>
-                    <td style={tdStyle}><span style={mono}>credits</span></td>
-                    <td style={tdStyle}>Payment system: <span style={mono}>credits</span> or <span style={mono}>lightning</span></td>
-                  </tr>
-                  <tr>
-                    <td style={tdStyle}><span style={mono}>--prepaid-sats</span></td>
-                    <td style={tdStyle}>0</td>
-                    <td style={tdStyle}>Prepaid satoshis (Lightning only)</td>
-                  </tr>
-                  <tr>
-                    <td style={tdStyle}><span style={mono}>-w, --wait</span></td>
-                    <td style={tdStyle}>false</td>
-                    <td style={tdStyle}>Block and poll until the sandbox reaches "running" state</td>
+                    <td style={tdStyle}><span style={mono}>--max-bytes</span></td>
+                    <td style={tdStyle}>—</td>
+                    <td style={tdStyle}>Maximum bytes to read (truncates if exceeded)</td>
                   </tr>
                 </tbody>
               </table>
-              <CodeBlock code={`sockt sandbox create --tier micro --billing credits --wait`} />
+              <CodeBlock code={`sockt files read abc123 /home/sandbox/output.txt\nsockt files read abc123 /home/sandbox/output.txt --max-bytes 1024`} />
             </div>
 
+            {/* files ls */}
             <div className="border border-[var(--dashboard-border)] rounded-lg p-5 bg-[var(--dashboard-card)]">
-              <div className="font-mono text-sm text-[var(--dashboard-accent)] font-semibold mb-2">sockt exec</div>
-              <div className="text-xs text-[var(--dashboard-muted)] leading-relaxed mb-3">
-                Execute a command inside the sandbox and stream outputs as they are generated.
-              </div>
-              <div className="p-3 bg-[rgba(194,122,54,0.1)] border border-[rgba(194,122,54,0.3)] text-xs text-[var(--dashboard-accent)] font-mono rounded mb-3">
-                ⚠️ CRITICAL FLAG ORDER: Cobra command parsing rules mandate that execution flags (such as --timeout or --workdir) MUST be placed BEFORE the sandbox ID.
-              </div>
-              <CodeBlock code={`# CORRECT syntax (flags first)\nsockt exec --timeout 60000 --workdir /home/sandbox <sandbox-id> python3 eval.py\n\n# INCORRECT syntax (will fail command parsing)\nsockt exec <sandbox-id> python3 eval.py --timeout 60000`} />
-            </div>
-
-            <div className="border border-[var(--dashboard-border)] rounded-lg p-5 bg-[var(--dashboard-card)]">
-              <div className="font-mono text-sm text-[var(--dashboard-accent)] font-semibold mb-2">sockt sandbox pause / resume / terminate</div>
-              <div className="text-xs text-[var(--dashboard-muted)] leading-relaxed mb-3">
-                Manage sandbox state. Pausing stops active compute charges. Terminating destroys the container permanently.
-              </div>
-              <CodeBlock code={`sockt sandbox pause <sandbox-id>\nsockt sandbox resume <sandbox-id>\nsockt sandbox terminate <sandbox-id>`} />
+              <div className="font-mono text-sm text-[var(--dashboard-accent)] font-semibold mb-2">sockt files ls</div>
+              <p className="text-xs text-[var(--dashboard-muted)] mb-3">List files and directories in a given sandbox directory path.</p>
+              <table style={tableStyle} className="my-2">
+                <thead>
+                  <tr>
+                    <th style={thStyle}>Flag</th>
+                    <th style={thStyle}>Short</th>
+                    <th style={thStyle}>Default</th>
+                    <th style={thStyle}>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style={tdStyle}><span style={mono}>--recursive</span></td>
+                    <td style={tdStyle}><span style={mono}>-r</span></td>
+                    <td style={tdStyle}><span style={mono}>false</span></td>
+                    <td style={tdStyle}>List files recursively</td>
+                  </tr>
+                  <tr>
+                    <td style={tdStyle}><span style={mono}>--max-depth</span></td>
+                    <td style={tdStyle}>—</td>
+                    <td style={tdStyle}>—</td>
+                    <td style={tdStyle}>Directory tree depth limit for recursive lists</td>
+                  </tr>
+                </tbody>
+              </table>
+              <CodeBlock code={`sockt files ls abc123\nsockt files ls abc123 /home/sandbox/project --recursive --max-depth 3`} />
             </div>
           </div>
+
+          <h3 style={h3Style}>Comprehensive Workflow Examples</h3>
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '18px' }}>Account Credits Workflow</h4>
+          <CodeBlock code={`export SOCKT_API_KEY="sockt_live_abc123"\n\n# Create and wait\nSANDBOX_ID=$(sockt sandbox create --tier small --wait)\n\n# Install dependencies and run\nsockt exec $SANDBOX_ID pip install requests\nsockt exec $SANDBOX_ID python -c "import requests; print(requests.get('https://httpbin.org/ip').text)"\n\n# Check status\nsockt sandbox status $SANDBOX_ID\n\n# Clean up\nsockt sandbox terminate $SANDBOX_ID`} />
+
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '18px' }}>Lightning Pay-As-You-Go Workflow</h4>
+          <CodeBlock code={`# Create with lightning billing (no API key needed)\nsockt sandbox create --tier nano --billing lightning --prepaid-sats 5000\n\n# Output includes a BOLT11 invoice - pay it with your Lightning wallet\n# After payment confirms, the sandbox starts (~30-90s)\n\n# Set the sandbox token for subsequent commands\nexport SOCKT_SANDBOX_TOKEN="sbx_returned_token"\n\n# Use the sandbox\nsockt exec <sandbox-id> whoami\n\n# Terminate (remaining balance refundable)\nsockt sandbox terminate <sandbox-id>`} />
+
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '18px' }}>Automation Bash Script with Cleanup</h4>
+          <CodeBlock code={`#!/bin/bash\nset -e\n\nexport SOCKT_API_KEY="sockt_live_abc123"\nSANDBOX_ID=""\n\ncleanup() {\n    if [ -n "$SANDBOX_ID" ]; then\n        sockt sandbox terminate "$SANDBOX_ID" 2>/dev/null || true\n    fi\n}\ntrap cleanup EXIT\n\nSANDBOX_ID=\$(sockt sandbox create --tier small --wait)\n\n# Upload project files\nsockt files write "$SANDBOX_ID" /home/sandbox/main.py --file ./main.py\nsockt files write "$SANDBOX_ID" /home/sandbox/requirements.txt --file ./requirements.txt\n\n# Run tests\nsockt exec "$SANDBOX_ID" pip install -r /home/sandbox/requirements.txt\nsockt exec "$SANDBOX_ID" --workdir /home/sandbox python -m pytest\n\n# Download results\nsockt files read "$SANDBOX_ID" /home/sandbox/test-results.xml > test-results.xml`} />
+
+          <h3 style={h3Style}>Exit Status Codes</h3>
+          <table style={tableStyle}>
+            <thead>
+              <tr>
+                <th style={thStyle}>Exit Code</th>
+                <th style={thStyle}>Meaning</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style={tdStyle}><span style={mono}>0</span></td>
+                <td style={tdStyle}>Success</td>
+              </tr>
+              <tr>
+                <td style={tdStyle}><span style={mono}>1</span></td>
+                <td style={tdStyle}>CLI error (invalid arguments, connection failure, API error envelope response)</td>
+              </tr>
+              <tr>
+                <td style={tdStyle}><span style={mono}>N</span></td>
+                <td style={tdStyle}>For <span style={mono}>sockt exec</span>: mirrors the remote command exit code directly</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3 style={h3Style}>Troubleshooting & Mitigation</h3>
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '18px' }}>"API error (401): unauthorized"</h4>
+          <p style={bodyText}>Verify your API key or sandbox token credentials. Ensure you are passing the correct header type for your billing pathway (Credits vs Lightning).</p>
+
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '18px' }}>"API error (503): no capacity"</h4>
+          <p style={bodyText}>The requested compute tier is currently fully occupied. Try selecting another hardware size or wait and retry.</p>
+
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '18px' }}>"API error (400): pod unreachable" / host_error 404</h4>
+          <p style={bodyText}>The sandbox container is still booting. Use <span style={mono}>--wait</span> during create command sequences or poll status until running.</p>
+
+          <h3 style={h3Style}>Development & Compilation Reference</h3>
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '18px' }}>Project Directory Structure</h4>
+          <CodeBlock code={`cli/\n├── main.go              # Entry point\n├── go.mod               # Go module definition\n├── go.sum               # Dependency checksums\n├── cmd/\n│   ├── root.go          # Root command, global flags, client factory\n│   ├── sandbox.go       # sandbox create/status/pause/resume/terminate\n│   ├── exec.go          # exec and exec-cancel commands\n│   ├── shell.go         # Interactive WebSocket shell\n│   ├── files.go         # files write/read/ls commands\n│   └── tiers.go         # tiers listing command\n└── internal/\n    └── api/\n        ├── client.go    # HTTP client with auth and retry logic\n        └── models.go    # Request/response data structures`} />
+
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '18px' }}>Development Dependencies</h4>
+          <table style={tableStyle}>
+            <thead>
+              <tr>
+                <th style={thStyle}>Package</th>
+                <th style={thStyle}>Version</th>
+                <th style={thStyle}>Purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style={tdStyle}><span style={mono}>github.com/spf13/cobra</span></td>
+                <td style={tdStyle}>v1.9.1</td>
+                <td style={tdStyle}>CLI command framework</td>
+              </tr>
+              <tr>
+                <td style={tdStyle}><span style={mono}>github.com/gorilla/websocket</span></td>
+                <td style={tdStyle}>v1.5.0</td>
+                <td style={tdStyle}>WebSocket transport shell</td>
+              </tr>
+              <tr>
+                <td style={tdStyle}><span style={mono}>golang.org/x/term</span></td>
+                <td style={tdStyle}>v0.43.0</td>
+                <td style={tdStyle}>Terminal raw mode controls</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '18px' }}>Cross-Compilation Targets</h4>
+          <CodeBlock code={`# Darwin (macOS ARM64)\nGOOS=darwin GOARCH=arm64 go build -o sockt-darwin-arm64 .\n\n# Linux (AMD64)\nGOOS=linux GOARCH=amd64 go build -o sockt-linux-amd64 .\n\n# Windows (AMD64)\nGOOS=windows GOARCH=amd64 go build -o sockt.exe .`} />
         </div>
 
         {/* REST API REFERENCE */}
@@ -513,7 +798,7 @@ export default function DashboardDocsContent() {
                       fontFamily: 'var(--font-mono)',
                       fontSize: '10px',
                       backgroundColor: route.method === 'GET' ? 'rgba(194, 122, 54, 0.15)' : route.method === 'DELETE' ? 'rgba(229, 62, 62, 0.15)' : 'rgba(34, 208, 122, 0.15)',
-                      color: route.method === 'var(--dashboard-accent)' ? 'var(--dashboard-accent)' : route.method === 'DELETE' ? 'var(--accent-red)' : 'var(--accent-green)',
+                      color: route.method === 'GET' ? 'var(--dashboard-accent)' : route.method === 'DELETE' ? 'var(--accent-red)' : 'var(--accent-green)',
                       padding: '3px 8px',
                       borderRadius: '4px',
                       fontWeight: 600
@@ -544,9 +829,9 @@ export default function DashboardDocsContent() {
           </ol>
 
           <h3 style={h3Style}>Detailed Workflow Scripts</h3>
-          <h4 style={{ ...h3Style, fontSize: '0.9rem' }}>Credits Billing Pathway Example</h4>
+          <h4 style={{ ...h3Style, fontSize: '0.85rem' }}>Credits Billing Pathway Example</h4>
           <CodeBlock code={CODE.restWorkflowCredits} />
-          <h4 style={{ ...h3Style, fontSize: '0.9rem' }}>Lightning Sats Billing Pathway Example</h4>
+          <h4 style={{ ...h3Style, fontSize: '0.85rem' }}>Lightning Sats Billing Pathway Example</h4>
           <CodeBlock code={CODE.restWorkflowLightning} />
 
           <h3 style={h3Style}>Detailed Endpoint Specifications</h3>
@@ -934,61 +1219,348 @@ export default function DashboardDocsContent() {
           </div>
 
           <p style={bodyText}>
-            The official <span style={mono}>@sockt/client</span> package provides a robust, fully-typed TypeScript interface for interacting with sockt.dev. It manages network state, handles execution polling under the hood, and parses error envelopes.
+            Official TypeScript/JavaScript SDK client for orchestrating Sockt sandboxes programmatically. Supports Node.js 18+ environments.
           </p>
 
           <h3 style={h3Style}>Installation</h3>
           <CodeBlock code={`npm install @sockt/client`} />
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '14px' }}>Build from Source</h4>
+          <CodeBlock code={`npm install\nnpm run build`} />
+          <p style={bodyText}><strong>Dependencies:</strong> Requires <span style={mono}>ws</span> (^8.18.0) for Node.js WebSocket support.</p>
 
           <h3 style={h3Style}>Quick Start</h3>
           <CodeBlock code={CODE.sdkTs} />
+
+          <h3 style={h3Style}>Authentication Configuration</h3>
+          <p style={bodyText}>The JS SDK handles both Credits and Lightning sandboxes transparently:</p>
+          <CodeBlock code={`// 1. Credits Billing (API Key)\nconst client = new ComputeClient({ apiKey: "sockt_live_abc123" });\n\n// 2. Lightning Billing (Sandbox Token)\nconst client = new ComputeClient({ sandboxToken: "sbx_abc123" });\nconst sandbox = await client.getSandbox("sandbox-id-here");`} />
+
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '14px' }}>Environment Variables Mapping</h4>
+          <table style={tableStyle}>
+            <thead>
+              <tr>
+                <th style={thStyle}>Variable Name</th>
+                <th style={thStyle}>Description / Fallback Usage</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style={tdStyle}><span style={mono}>SOCKT_API_KEY</span></td>
+                <td style={tdStyle}>API key for credits billing. Used if constructor <span style={mono}>apiKey</span> is omitted.</td>
+              </tr>
+              <tr>
+                <td style={tdStyle}><span style={mono}>SOCKT_SANDBOX_TOKEN</span></td>
+                <td style={tdStyle}>Token scoped to one sandbox. Used if constructor <span style={mono}>sandboxToken</span> is omitted.</td>
+              </tr>
+              <tr>
+                <td style={tdStyle}><span style={mono}>SOCKT_API_URL</span></td>
+                <td style={tdStyle}>API base URL override. Used if constructor <span style={mono}>baseUrl</span> is omitted.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3 style={h3Style}>Core Architectural Design</h3>
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '14px' }}>1. Sandbox Lifecycle States</h4>
+          <table style={tableStyle}>
+            <thead>
+              <tr>
+                <th style={thStyle}>Lifecycle State</th>
+                <th style={thStyle}>State Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style={tdStyle}><span style={mono}>starting</span></td>
+                <td style={tdStyle}>The compute container pod is being allocated and provisioned by the orchestrator (takes 30-90s).</td>
+              </tr>
+              <tr>
+                <td style={tdStyle}><span style={mono}>running</span></td>
+                <td style={tdStyle}>Container is online, socket channels are open, and is fully ready to process commands and files.</td>
+              </tr>
+              <tr>
+                <td style={tdStyle}><span style={mono}>paused</span></td>
+                <td style={tdStyle}>Container processes are frozen, and active billing meters are halted. Can be resumed.</td>
+              </tr>
+              <tr>
+                <td style={tdStyle}><span style={mono}>terminated</span></td>
+                <td style={tdStyle}>Container resources are permanently destroyed. Unrecoverable.</td>
+              </tr>
+              <tr>
+                <td style={tdStyle}><span style={mono}>failed</span></td>
+                <td style={tdStyle}>Container orchestration or boot process encountered a terminal system execution error.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '14px' }}>2. Billing Methods Control Flow</h4>
+          <ul className="list-disc pl-5 text-xs text-[var(--dashboard-muted)] space-y-1 mb-4">
+            <li><strong>Credits Billing:</strong> Budget limits pause sandboxes when depleted. Terminating refunds unused allocations.</li>
+            <li><strong>Lightning Billing:</strong> Pay invoice BOLT11 to boot pod anonymously. Triggers status events <span style={mono}>pending_invoice</span>, <span style={mono}>low_balance</span>, and <span style={mono}>out_of_balance</span> to allow proactive Alby/LND wallet top-ups.</li>
+          </ul>
 
           <h3 style={h3Style}>API Reference</h3>
 
           <div className="space-y-6 mt-4">
             <div className="border border-[var(--dashboard-border)] rounded-lg p-5 bg-[var(--dashboard-card)]">
               <div className="font-mono text-sm text-[var(--dashboard-accent)] font-semibold mb-2">ComputeClient</div>
-              <div className="text-xs text-[var(--dashboard-muted)] leading-relaxed mb-3">
-                Initializes the core API link client. Options accept:
-              </div>
-              <CodeBlock code={`interface ComputeClientOptions {\n  apiKey?: string;        // fallback to SOCKT_API_KEY env\n  sandboxToken?: string;  // fallback to SOCKT_SANDBOX_TOKEN env\n  baseUrl?: string;       // default: https://api.sockt.dev\n  timeoutMs?: number;     // default: 120000\n}`} />
-              <div className="text-xs text-[var(--dashboard-muted)] leading-relaxed my-2">Client Methods:</div>
-              <ul className="list-disc pl-5 text-xs text-[var(--dashboard-muted)] space-y-1 mb-2">
-                <li><span style={mono}>listTiers(): Promise&lt;Tier[]&gt;</span> — Lists pricing catalog.</li>
-                <li><span style={mono}>createSandbox(opts): Promise&lt;Sandbox&gt;</span> — Provisions new sandbox.</li>
-                <li><span style={mono}>getSandbox(sandboxId): Promise&lt;Sandbox&gt;</span> — Retrieves status.</li>
+              <CodeBlock code={`// Constructor Signature\nnew ComputeClient(options?: {\n  apiKey?: string;\n  sandboxToken?: string;\n  baseUrl?: string;\n  timeoutMs?: number; // default: 120000\n})`} />
+              <div className="text-xs text-[var(--dashboard-muted)] leading-relaxed my-2">Methods:</div>
+              <ul className="list-disc pl-5 text-xs text-[var(--dashboard-muted)] space-y-2 mb-2">
+                <li><span style={mono}>listTiers(): Promise&lt;Tier[]&gt;</span> — Lists hardware catalogs.</li>
+                <li><span style={mono}>createSandbox(opts): Promise&lt;Sandbox&gt;</span> — Instantiates and provisions a container. Accepts <span style={mono}>tier</span>, <span style={mono}>billingMethod</span>, <span style={mono}>prepaidSats</span>, <span style={mono}>initialCreditsCents</span>, and <span style={mono}>label</span>.</li>
+                <li><span style={mono}>getSandbox(sandboxId: string): Promise&lt;Sandbox&gt;</span> — Loads and refreshes an existing sandbox.</li>
               </ul>
             </div>
 
             <div className="border border-[var(--dashboard-border)] rounded-lg p-5 bg-[var(--dashboard-card)]">
-              <div className="font-mono text-sm text-[var(--dashboard-accent)] font-semibold mb-2">Sandbox Instance</div>
-              <div className="text-xs text-[var(--dashboard-muted)] leading-relaxed mb-3">
-                Methods representing a provisioned container environment.
-              </div>
-              <ul className="list-disc pl-5 text-xs text-[var(--dashboard-muted)] space-y-2 mb-2">
+              <div className="font-mono text-sm text-[var(--dashboard-accent)] font-semibold mb-2">Sandbox Handles</div>
+              <ul className="list-disc pl-5 text-xs text-[var(--dashboard-muted)] space-y-3 mb-2">
                 <li>
-                  <span style={mono}>waitUntilRunning(opts?: WaitOptions): Promise&lt;void&gt;</span>
-                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Blocks execution locally until the container orchestration completes (default poll interval 2000ms).</p>
+                  <span style={mono}>waitUntilRunning(opts?: &#123; timeoutMs?: number; pollIntervalMs?: number &#125;): Promise&lt;void&gt;</span>
+                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Blocks execution thread until pod boot completes. Throws <span style={mono}>SandboxNotRunningError</span> on timeout.</p>
                 </li>
                 <li>
-                  <span style={mono}>execSync(command: string, opts?: ExecOptions): Promise&lt;ExecResult&gt;</span>
-                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Convenience method that starts the command, polls results asynchronously, streams outputs, and blocks until finished.</p>
+                  <span style={mono}>refreshStatus(): Promise&lt;SandboxStatus&gt;</span>
+                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Pulls latest status models and metrics from remote REST controllers.</p>
                 </li>
                 <li>
-                  <span style={mono}>writeFile(path: string, content: string, opts?: WriteOptions): Promise&lt;void&gt;</span>
-                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Write UTF-8 text or Base64 binary file content into the sandbox.</p>
+                  <span style={mono}>pause() / resume()</span>
+                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Freezes/unfreezes resource allocations and billing states.</p>
                 </li>
                 <li>
-                  <span style={mono}>readFile(path: string): Promise&lt;string&gt;</span>
-                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Read string contents of files inside the sandbox environment.</p>
+                  <span style={mono}>terminate(opts?: &#123; lightningAddress?: string &#125;): Promise&lt;object&gt;</span>
+                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Permanently destroys container pod. Accepts a Lightning refund address.</p>
                 </li>
                 <li>
-                  <span style={mono}>pause() / resume() / terminate()</span>
-                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Manage billing meters and orchestrator lifecycles.</p>
+                  <span style={mono}>execSync(command: string, opts?: &#123; workingDir?: string; timeoutMs?: number; pollIntervalMs?: number &#125;): Promise&lt;ExecResult&gt;</span>
+                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Synchronously processes process execution. Streams data blocks until final terminal exit code is received.</p>
+                </li>
+                <li>
+                  <span style={mono}>exec(command: string, opts?: &#123; workingDir?: string; timeoutMs?: number &#125;): Promise&lt;Execution&gt;</span>
+                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Asynchronous process trigger. Returns execution handles immediately.</p>
+                </li>
+                <li>
+                  <span style={mono}>execResult(executionId: string): Promise&lt;ExecResult&gt;</span>
+                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Retrieves pending stdout/stderr chunks buffered since last poll.</p>
+                </li>
+                <li>
+                  <span style={mono}>execCancel(executionId: string): Promise&lt;void&gt;</span>
+                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Cancels and kills running process group inside the sandbox.</p>
+                </li>
+                <li>
+                  <span style={mono}>writeFile(path: string, content: string, opts?: &#123; encoding?: 'utf8'|'base64'; createDirs?: boolean &#125;): Promise&lt;void&gt;</span>
+                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Creates or overwrites files on container. Base64 is supported for binary assets.</p>
+                </li>
+                <li>
+                  <span style={mono}>readFile(path: string, opts?: &#123; encoding?: 'utf8'|'base64'; maxBytes?: number &#125;): Promise&lt;string&gt;</span>
+                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Reads file content. Binary reads return Base64 strings.</p>
+                </li>
+                <li>
+                  <span style={mono}>listFiles(path?: string, opts?: &#123; recursive?: boolean; maxDepth?: number &#125;): Promise&lt;FileEntry[]&gt;</span>
+                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Lists contents of directories recursively.</p>
+                </li>
+                <li>
+                  <span style={mono}>shell(): ShellSession</span>
+                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Instantiates a WebSocket-based interactive shell session.</p>
+                </li>
+                <li>
+                  <span style={mono}>on(event: string, callback: Function) / off(event: string, callback: Function)</span>
+                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Subscribes/unsubscribes to billing warnings (<span style={mono}>pending_invoice</span>, <span style={mono}>low_balance</span>, <span style={mono}>out_of_balance</span>).</p>
                 </li>
               </ul>
             </div>
+
+            <div className="border border-[var(--dashboard-border)] rounded-lg p-5 bg-[var(--dashboard-card)]">
+              <div className="font-mono text-sm text-[var(--dashboard-accent)] font-semibold mb-2">ShellSession API</div>
+              <ul className="list-disc pl-5 text-xs text-[var(--dashboard-muted)] space-y-2 mb-2">
+                <li><span style={mono}>connect(): Promise&lt;void&gt;</span> — Opens PTY WebSocket link.</li>
+                <li><span style={mono}>close(): void</span> — Terminates connection.</li>
+                <li><span style={mono}>send(text: string) / sendLine(text: string): void</span> — Transmits keystrokes.</li>
+                <li><span style={mono}>resize(cols: number, rows: number): void</span> — Sets remote PTY screen limits.</li>
+                <li><span style={mono}>recv(timeoutMs?: number): Promise&lt;ShellFrame&gt;</span> — Receives output blocks (stdout, stderr, billing frame).</li>
+                <li><span style={mono}>on(event: ShellFrameType, callback: Function) / off(event, callback)</span> — Binds callback hooks to frame streams.</li>
+              </ul>
+            </div>
           </div>
+
+          <h3 style={h3Style}>SDK Type Models</h3>
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '14px' }}>Tier</h4>
+          <table style={tableStyle}>
+            <thead>
+              <tr>
+                <th style={thStyle}>Field</th>
+                <th style={thStyle}>Type</th>
+                <th style={thStyle}>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { f: 'name', t: 'string', d: 'Unique identifier for the tier (nano, micro, small, medium, gpu-small etc)' },
+                { f: 'msatsPerSecond', t: 'number', d: 'Burn rate in Lightning millisatoshis per second' },
+                { f: 'satsPerSecond', t: 'number', d: 'Burn rate in satoshis per second' },
+                { f: 'usdCentsPerSecond', t: 'number', d: 'Burn rate in USD cents per second (Credits model)' },
+                { f: 'costPerMinuteSats', t: 'number', d: 'Estimated cost to run 60 seconds (Lightning)' },
+                { f: 'costPerHourSats', t: 'number', d: 'Estimated cost to run 1 hour (Lightning)' },
+                { f: 'costPerDaySats', t: 'number', d: 'Estimated cost to run 24 hours (Lightning)' },
+                { f: 'costPerHourUsd', t: 'number', d: 'Estimated cost to run 1 hour in USD (Credits)' }
+              ].map((item, i) => (
+                <tr key={i}>
+                  <td style={tdStyle}><span style={mono}>{item.f}</span></td>
+                  <td style={tdStyle}><span style={mono}>{item.t}</span></td>
+                  <td style={tdStyle}>{item.d}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '14px' }}>SandboxStatus</h4>
+          <table style={tableStyle}>
+            <thead>
+              <tr>
+                <th style={thStyle}>Field</th>
+                <th style={thStyle}>Type</th>
+                <th style={thStyle}>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { f: 'sandboxId', t: 'string', d: 'Unique UUID mapping' },
+                { f: 'status', t: 'string', d: 'State (starting, running, paused, terminated, failed)' },
+                { f: 'tier', t: 'string', d: 'Compute hardware capacity' },
+                { f: 'runtime', t: 'string', d: 'System runtime profile' },
+                { f: 'billingMethod', t: 'string', d: 'credits or lightning' },
+                { f: 'template', t: 'string', d: 'Base workspace template' },
+                { f: 'consumedMsats', t: 'number', d: 'Total consumed millisatoshis since launch' },
+                { f: 'msatsPerSecond', t: 'number | null', d: 'Burn rate msats/second' },
+                { f: 'satsPerSecond', t: 'number | null', d: 'Burn rate sats/second' },
+                { f: 'prepaidBalanceMsats', t: 'number | null', d: 'Remaining prepaid Lightning balance' },
+                { f: 'secondsRemaining', t: 'number | null', d: 'Approximate seconds left' },
+                { f: 'warningLevel', t: 'string | null', d: 'low_balance or out_of_balance' },
+                { f: 'nextPollSecs', t: 'number | null', d: 'Recommended status check pacing interval' },
+                { f: 'pendingInvoice', t: 'PendingInvoice | null', d: 'Unpaid deposit invoice' },
+                { f: 'sandboxToken', t: 'string | null', d: 'Lightning credential token' }
+              ].map((item, i) => (
+                <tr key={i}>
+                  <td style={tdStyle}><span style={mono}>{item.f}</span></td>
+                  <td style={tdStyle}><span style={mono}>{item.t}</span></td>
+                  <td style={tdStyle}>{item.d}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '14px' }}>ExecResult</h4>
+          <table style={tableStyle}>
+            <thead>
+              <tr>
+                <th style={thStyle}>Field</th>
+                <th style={thStyle}>Type</th>
+                <th style={thStyle}>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { f: 'executionId', t: 'string', d: 'Unique execution identifier' },
+                { f: 'status', t: 'string', d: 'running, completed, failed, cancelled' },
+                { f: 'output', t: 'array', d: 'List of text chunks: [{stream: "stdout"|"stderr", chunk: "..."}]' },
+                { f: 'exitCode', t: 'number | null', d: 'Command exit status' },
+                { f: 'error', t: 'string | null', d: 'Detailed system error description' }
+              ].map((item, i) => (
+                <tr key={i}>
+                  <td style={tdStyle}><span style={mono}>{item.f}</span></td>
+                  <td style={tdStyle}><span style={mono}>{item.t}</span></td>
+                  <td style={tdStyle}>{item.d}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p style={bodyText}><strong>Convenience properties:</strong> <span style={mono}>result.stdout</span> and <span style={mono}>result.stderr</span> automatically join the array chunks into a single clean string block.</p>
+
+          <h3 style={h3Style}>SDK Exception Handlers</h3>
+          <CodeBlock code={`// SDK Error Hierarchy Tree\nSocktError (base class)\n├── AuthenticationError    (HTTP 401/403: Credentials revoked or bad)\n├── NoCapacityError        (HTTP 503 slug 'no_capacity': Tier empty)\n├── SandboxNotRunningError (Wait blocks timed out or boot failed)\n├── TopUpFailedError       (HTTP 402: Account credits depleted)\n├── HostUnreachableError   (HTTP 502/503: Runtime connectivity lost)\n├── RateLimitedError       (HTTP 429: Transacted above 300 req/min)\n└── APIError               (Other unmapped HTTP errors)`} />
+
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '14px' }}>Exception Properties</h4>
+          <table style={tableStyle}>
+            <thead>
+              <tr>
+                <th style={thStyle}>Property</th>
+                <th style={thStyle}>Type</th>
+                <th style={thStyle}>Meaning</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style={tdStyle}><span style={mono}>message</span></td>
+                <td style={tdStyle}>string</td>
+                <td style={tdStyle}>Human-readable error details</td>
+              </tr>
+              <tr>
+                <td style={tdStyle}><span style={mono}>slug</span></td>
+                <td style={tdStyle}>string</td>
+                <td style={tdStyle}>Machine-readable error label code</td>
+              </tr>
+              <tr>
+                <td style={tdStyle}><span style={mono}>statusCode</span></td>
+                <td style={tdStyle}>number</td>
+                <td style={tdStyle}>HTTP status code returned by the REST gateway</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '14px' }}>Error Handling Pattern Example</h4>
+          <CodeBlock code={`import {\n  ComputeClient,\n  AuthenticationError,\n  NoCapacityError,\n  RateLimitedError,\n  SocktError\n} from "@sockt/client";\n\ntry {\n  const client = new ComputeClient({ apiKey: "sockt_live_..." });\n  const sandbox = await client.createSandbox({ tier: "gpu-small" });\n} catch (e) {\n  if (e instanceof AuthenticationError) {\n    console.error("Invalid API credentials key");\n  } else if (e instanceof NoCapacityError) {\n    console.error("No active pods available for GPU workloads");\n  } else if (e instanceof RateLimitedError) {\n    console.error("SDK calls rate-limited. Throttling requests.");\n  } else if (e instanceof SocktError) {\n    console.error(\`API Error (\${e.statusCode}): \${e.message}\`);\n  }\n}`} />
+
+          <h3 style={h3Style}>Default Configuration Constants</h3>
+          <table style={tableStyle}>
+            <thead>
+              <tr>
+                <th style={thStyle}>Constant Name</th>
+                <th style={thStyle}>Value</th>
+                <th style={thStyle}>Functional Purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style={tdStyle}><span style={mono}>Base URL</span></td>
+                <td style={tdStyle}><span style={mono}>https://api.sockt.dev</span></td>
+                <td style={tdStyle}>Target control plane endpoint routing link</td>
+              </tr>
+              <tr>
+                <td style={tdStyle}><span style={mono}>Request Timeout</span></td>
+                <td style={tdStyle}><span style={mono}>120,000ms</span></td>
+                <td style={tdStyle}>Standard HTTP API client call ceiling</td>
+              </tr>
+              <tr>
+                <td style={tdStyle}><span style={mono}>Poll Interval</span></td>
+                <td style={tdStyle}><span style={mono}>500ms</span></td>
+                <td style={tdStyle}>Output check frequency mapping for sync calls</td>
+              </tr>
+              <tr>
+                <td style={tdStyle}><span style={mono}>Wait Timeout</span></td>
+                <td style={tdStyle}><span style={mono}>120,000ms</span></td>
+                <td style={tdStyle}>Standard timeout limits during orchestrator container creation</td>
+              </tr>
+              <tr>
+                <td style={tdStyle}><span style={mono}>Max Auto-Retries</span></td>
+                <td style={tdStyle}><span style={mono}>3 attempts</span></td>
+                <td style={tdStyle}>Automatic retry limit when receiving HTTP 503 pod starting exceptions (with a 2-second backoff delay)</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3 style={h3Style}>Programmatic Code Recipes</h3>
+          
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '14px' }}>Credits Mode Workflows</h4>
+          <CodeBlock code={`import { ComputeClient } from "@sockt/client";\n\nconst client = new ComputeClient({ apiKey: "sockt_live_..." });\nconst sandbox = await client.createSandbox({ tier: "small" });\nawait sandbox.waitUntilRunning();\n\nconst version = await sandbox.execSync("python --version");\nconsole.log(version.stdout);\n\nawait sandbox.writeFile("hello.py", 'print("Hello from Sockt!")');\nconst result = await sandbox.execSync("python hello.py");\nconsole.log(result.stdout);\n\nconst entries = await sandbox.listFiles();\nfor (const entry of entries) {\n  console.log(\`\${entry.isDir ? "d" : "-"} \${entry.size} \${entry.name}\`);\n}\nawait sandbox.terminate();`} />
+
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '14px' }}>Lightning Pay-As-You-Go with Event Binds</h4>
+          <CodeBlock code={CODE.restWorkflowLightning.replace('# 1.', '// 1.').replace(/curl/g, '// curl')} />
+
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '14px' }}>Binary Files (Base64 Mode)</h4>
+          <CodeBlock code={`import { readFileSync, writeFileSync } from "fs";\n\n// 1. Upload base64 encoded binary file\nconst encoded = readFileSync("model.bin").toString("base64");\nawait sandbox.writeFile("model.bin", encoded, { encoding: "base64" });\n\n// 2. Download binary file\nconst b64 = await sandbox.readFile("output.png", { encoding: "base64" });\nwriteFileSync("output.png", Buffer.from(b64, "base64"));`} />
+
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '14px' }}>Interactive WebSocket PTY Shell</h4>
+          <CodeBlock code={`const session = sandbox.shell();\nawait session.connect();\n\nsession.sendLine("cd /tmp && mkdir myproject");\nconst frame1 = await session.recv(5000);\nconsole.log(frame1.data);\n\nsession.resize(120, 40);\nsession.sendLine("for i in 1 2 3; do echo $i; sleep 1; done");\nfor (let i = 0; i < 3; i++) {\n  const frame = await session.recv(5000);\n  process.stdout.write(frame.data || "");\n}\nsession.close();`} />
         </div>
 
         {/* PYTHON SDK SECTION */}
@@ -1019,56 +1591,191 @@ export default function DashboardDocsContent() {
           </div>
 
           <p style={bodyText}>
-            The official <span style={mono}>sockt</span> Python SDK delivers an idiomatic, thread-safe, and asynchronous/synchronous client for orchestrating sandboxes in AI agent loops. It features automatic resource management via standard context managers.
+            Official Python SDK for programmatic orchestration of ephemeral sandboxes. Thread-safe, utilizing modern pythonic asynchronous PTY frameworks. Requires Python 3.10+.
           </p>
+
+          <h3 style={h3Style}>Installation</h3>
+          <CodeBlock code={`pip install sockt`} />
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '14px' }}>Build from Source</h4>
+          <CodeBlock code={`pip install -e .`} />
+          <p style={bodyText}><strong>Dependencies:</strong> Automatically provisions `httpx` (&gt;=0.27, &lt;1) and `websockets` (&gt;=14, &lt;16).</p>
+
+          <h3 style={h3Style}>Quick Start</h3>
+          <CodeBlock code={CODE.sdkPy} />
+
+          <h3 style={h3Style}>Authentication</h3>
+          <CodeBlock code={`# 1. Credits Billing (API Key)\nclient = ComputeClient(api_key="sockt_live_abc123")\n\n# 2. Lightning Billing (Sandbox Token)\nclient = ComputeClient(sandbox_token="sbx_abc123")\nsandbox = client.get_sandbox("sandbox-id-here")`} />
+
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '14px' }}>Environment variables priority</h4>
+          <ol style={{ listStyleType: 'decimal', paddingLeft: '20px' }} className="text-xs text-[var(--dashboard-muted)] space-y-1 mb-4">
+            <li>Constructor <span style={mono}>api_key</span> / <span style={mono}>sandbox_token</span> parameters (Highest priority)</li>
+            <li><span style={mono}>SOCKT_API_KEY</span> / <span style={mono}>SOCKT_SANDBOX_TOKEN</span> system variables</li>
+            <li>Defaults (Lowest priority)</li>
+          </ol>
 
           <h3 style={h3Style}>API Reference</h3>
 
           <div className="space-y-6 mt-4">
             <div className="border border-[var(--dashboard-border)] rounded-lg p-5 bg-[var(--dashboard-card)]">
               <div className="font-mono text-sm text-[var(--dashboard-accent)] font-semibold mb-2">ComputeClient</div>
-              <div className="text-xs text-[var(--dashboard-muted)] leading-relaxed mb-3">
-                Instantiates the Python REST HTTP client. Fully supports context managers to close open TCP connections automatically:
-              </div>
-              <CodeBlock code={`with ComputeClient(api_key="...", base_url="...") as client:\n    sandbox = client.create_sandbox(tier="nano")`} />
-              <div className="text-xs text-[var(--dashboard-muted)] leading-relaxed my-2">Client Methods:</div>
-              <ul className="list-disc pl-5 text-xs text-[var(--dashboard-muted)] space-y-1 mb-2">
-                <li><span style={mono}>list_tiers() -&gt; list[Tier]</span> — Returns available hardware sizes.</li>
-                <li><span style={mono}>create_sandbox(tier, billing_method, prepaid_sats, label) -&gt; Sandbox</span> — Provisions container.</li>
-                <li><span style={mono}>get_sandbox(sandbox_id) -&gt; Sandbox</span> — Restores sandbox handle.</li>
-                <li><span style={mono}>close()</span> — Closes active connection pools (not needed when using context manager).</li>
+              <CodeBlock code={`# Constructor Signature\nComputeClient(\n    api_key: str | None = None,\n    sandbox_token: str | None = None,\n    base_url: str | None = None,\n    timeout: float = 120.0 # seconds\n)`} />
+              <div className="text-xs text-[var(--dashboard-muted)] leading-relaxed my-2">Methods:</div>
+              <ul className="list-disc pl-5 text-xs text-[var(--dashboard-muted)] space-y-2 mb-2">
+                <li><span style={mono}>list_tiers() -&gt; list[Tier]</span> — Returns available tiers.</li>
+                <li><span style={mono}>create_sandbox(tier, billing_method, prepaid_sats, initial_credits_cents, label) -&gt; Sandbox</span> — Provisions container.</li>
+                <li><span style={mono}>get_sandbox(sandbox_id: str) -&gt; Sandbox</span> — Restores active sandbox.</li>
+                <li><span style={mono}>close()</span> — Closes active HTTPX connection pools (not needed when using context managers).</li>
               </ul>
             </div>
 
             <div className="border border-[var(--dashboard-border)] rounded-lg p-5 bg-[var(--dashboard-card)]">
               <div className="font-mono text-sm text-[var(--dashboard-accent)] font-semibold mb-2">Sandbox Instance (snake_case)</div>
-              <div className="text-xs text-[var(--dashboard-muted)] leading-relaxed mb-3">
-                Python methods map precisely to the TypeScript SDK, utilizing pythonic snake_case styling conventions:
-              </div>
-              <ul className="list-disc pl-5 text-xs text-[var(--dashboard-muted)] space-y-2 mb-2">
+              <ul className="list-disc pl-5 text-xs text-[var(--dashboard-muted)] space-y-3 mb-2">
                 <li>
-                  <span style={mono}>wait_until_running(timeout=120.0, poll_interval=2.0)</span>
-                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Blocks execution thread until the orchestrator launches the container.</p>
+                  <span style={mono}>wait_until_running(timeout: float = 120.0, poll_interval: float = 2.0)</span>
+                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Blocks execution locally until orchestration completes. Raises <span style={mono}>SandboxNotRunningError</span> on failure.</p>
                 </li>
                 <li>
-                  <span style={mono}>exec_sync(command, working_dir=None, timeout_ms=None) -&gt; ExecResult</span>
-                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Executes shell command synchronously, polling chunks automatically until exit.</p>
+                  <span style={mono}>refresh_status() -&gt; SandboxStatus</span>
+                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Pulls latest status models.</p>
                 </li>
                 <li>
-                  <span style={mono}>write_file(path, content, encoding="utf8", create_dirs=False)</span>
-                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Write UTF-8 or Base64 file contents into the sandbox filesystem.</p>
+                  <span style={mono}>pause() / resume()</span>
+                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Freezes/unfreezes resource allocations.</p>
+                </li>
+                <li>
+                  <span style={mono}>terminate(lightning_address: str | None = None) -&gt; dict</span>
+                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Destroys pod permanently.</p>
+                </li>
+                <li>
+                  <span style={mono}>exec_sync(command: str, working_dir=None, timeout_ms=30000, poll_interval=0.5) -&gt; ExecResult</span>
+                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Synchronously executes commands. Streams logs until exit.</p>
+                </li>
+                <li>
+                  <span style={mono}>exec(command: str, working_dir=None, timeout_ms=30000) -&gt; Execution</span>
+                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Asynchronous process trigger. Returns execution ID handles immediately.</p>
+                </li>
+                <li>
+                  <span style={mono}>exec_result(execution_id: str) -&gt; ExecResult</span>
+                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Pulls output chunks since last query.</p>
+                </li>
+                <li>
+                  <span style={mono}>exec_cancel(execution_id: str) -&gt; None</span>
+                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Cancels running process group.</p>
+                </li>
+                <li>
+                  <span style={mono}>write_file(path, content, encoding="utf8", create_dirs=True) -&gt; dict</span>
+                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Creates or overwrites files. Base64 encoding supported.</p>
                 </li>
                 <li>
                   <span style={mono}>read_file(path, encoding="utf8", max_bytes=None) -&gt; str</span>
-                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Read file contents inside the sandbox.</p>
+                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Reads file content.</p>
                 </li>
                 <li>
-                  <span style={mono}>pause() / resume() / terminate(lightning_address=None)</span>
-                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Free resource allocations and control billing state.</p>
+                  <span style={mono}>list_files(path=".", recursive=False, max_depth=None) -&gt; list[FileEntry]</span>
+                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">Lists directory files.</p>
+                </li>
+                <li>
+                  <span style={mono}>shell() -&gt; ShellSession</span>
+                  <p className="text-[11px] text-[var(--dashboard-muted)] mt-1">PTY WebSocket interactive terminal session creator.</p>
                 </li>
               </ul>
             </div>
+
+            <div className="border border-[var(--dashboard-border)] rounded-lg p-5 bg-[var(--dashboard-card)]">
+              <div className="font-mono text-sm text-[var(--dashboard-accent)] font-semibold mb-2">ShellSession API</div>
+              <ul className="list-disc pl-5 text-xs text-[var(--dashboard-muted)] space-y-2 mb-2">
+                <li><span style={mono}>connect()</span> — Establishes WebSocket link.</li>
+                <li><span style={mono}>close()</span> — Terminates connection.</li>
+                <li><span style={mono}>send(text) / send_line(text)</span> — Transmits keystrokes.</li>
+                <li><span style={mono}>resize(cols, rows)</span> — Configures screen size.</li>
+                <li><span style={mono}>recv(timeout=30.0) -&gt; dict</span> — Receives next output frame.</li>
+              </ul>
+            </div>
           </div>
+
+          <h3 style={h3Style}>SDK Exception Handlers</h3>
+          <CodeBlock code={`# Python Exception Hierarchy\nSocktError (base)\n├── AuthenticationError\n├── NoCapacityError\n├── SandboxNotRunningError\n├── TopUpFailedError\n├── HostUnreachableError\n├── RateLimitedError\n└── APIError`} />
+
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '14px' }}>Exception Properties</h4>
+          <table style={tableStyle}>
+            <thead>
+              <tr>
+                <th style={thStyle}>Property</th>
+                <th style={thStyle}>Type</th>
+                <th style={thStyle}>Meaning</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style={tdStyle}><span style={mono}>message</span></td>
+                <td style={tdStyle}>string</td>
+                <td style={tdStyle}>Error details description</td>
+              </tr>
+              <tr>
+                <td style={tdStyle}><span style={mono}>slug</span></td>
+                <td style={tdStyle}>string</td>
+                <td style={tdStyle}>Machine-readable code</td>
+              </tr>
+              <tr>
+                <td style={tdStyle}><span style={mono}>status_code</span></td>
+                <td style={tdStyle}>int</td>
+                <td style={tdStyle}>HTTP status code returned by the REST gateway</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '14px' }}>Error Handling Example</h4>
+          <CodeBlock code={`from sockt import (\n    ComputeClient,\n    AuthenticationError,\n    NoCapacityError,\n    RateLimitedError,\n    SocktError\n)\n\ntry:\n    client = ComputeClient(api_key="sockt_live_...")\n    sandbox = client.create_sandbox(tier="gpu-small")\nexcept AuthenticationError:\n    print("Invalid API Key")\nexcept NoCapacityError:\n    print("Requested GPU tier currently has no available capacity")\nexcept RateLimitedError:\n    print("Excess requests rate limited")\nexcept SocktError as e:\n    print(f"API Error ({e.status_code}): {e.message}")`} />
+
+          <h3 style={h3Style}>Default Configuration Constants</h3>
+          <table style={tableStyle}>
+            <thead>
+              <tr>
+                <th style={thStyle}>Constant</th>
+                <th style={thStyle}>Value</th>
+                <th style={thStyle}>Functional Purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style={tdStyle}><span style={mono}>Base URL</span></td>
+                <td style={tdStyle}><span style={mono}>https://api.sockt.dev</span></td>
+                <td style={tdStyle}>Target control plane routing URL</td>
+              </tr>
+              <tr>
+                <td style={tdStyle}><span style={mono}>Request Timeout</span></td>
+                <td style={tdStyle}><span style={mono}>120.0s</span></td>
+                <td style={tdStyle}>Standard HTTP timeout limit</td>
+              </tr>
+              <tr>
+                <td style={tdStyle}><span style={mono}>Poll Interval</span></td>
+                <td style={tdStyle}><span style={mono}>0.5s</span></td>
+                <td style={tdStyle}>Poll check frequency for sync executions</td>
+              </tr>
+              <tr>
+                <td style={tdStyle}><span style={mono}>Wait Timeout</span></td>
+                <td style={tdStyle}><span style={mono}>120.0s</span></td>
+                <td style={tdStyle}>Boot block limit during container provisioning</td>
+              </tr>
+              <tr>
+                <td style={tdStyle}><span style={mono}>Max Auto-Retries</span></td>
+                <td style={tdStyle}><span style={mono}>3 attempts</span></td>
+                <td style={tdStyle}>Automatic retry limit on HTTP 503 pod starting exceptions (with 2.0s delay)</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3 style={h3Style}>Programmatic Code Recipes</h3>
+          
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '14px' }}>Context Manager / Automatic Cleanup Workflow</h4>
+          <CodeBlock code={`from sockt import ComputeClient\n\nwith ComputeClient(api_key="sockt_live_...") as client:\n    sandbox = client.create_sandbox(tier="small")\n    try:\n        sandbox.wait_until_running()\n        result = sandbox.exec_sync("python --version")\n        print(result.stdout)\n\n        sandbox.write_file("hello.py", 'print("Hello from Sockt!")')\n        result = sandbox.exec_sync("python hello.py")\n        print(result.stdout)\n    finally:\n        sandbox.terminate()`} />
+
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '14px' }}>Binary Files (Base64 Mode)</h4>
+          <CodeBlock code={`import base64\n\n# 1. Upload base64 encoded binary file\nwith open("model.bin", "rb") as f:\n    encoded = base64.b64encode(f.read()).decode()\nsandbox.write_file("model.bin", encoded, encoding="base64")\n\n# 2. Download binary file\nb64_content = sandbox.read_file("output.png", encoding="base64")\nwith open("output.png", "wb") as f:\n    f.write(base64.b64decode(b64_content))`} />
+
+          <h4 style={{ ...h3Style, fontSize: '0.85rem', marginTop: '14px' }}>Interactive PTY Shell Context Block</h4>
+          <CodeBlock code={`with sandbox.shell() as sh:\n    sh.send_line("cd /tmp && mkdir myproject")\n    frame = sh.recv(timeout=5.0)\n    print(frame.get("data", ""))\n\n    sh.send_line("echo $PWD")\n    frame = sh.recv(timeout=5.0)\n    print(frame.get("data", ""))\n\n    sh.resize(cols=120, rows=40)\n    sh.send_line("for i in 1 2 3; do echo $i; sleep 1; done")\n    for _ in range(3):\n        frame = sh.recv(timeout=5.0)\n        print(frame.get("data", ""), end="")`} />
         </div>
 
         {/* MCP SERVER SECTION */}
@@ -1123,6 +1830,33 @@ export default function DashboardDocsContent() {
                 </span>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* Related Links footer inside Dashboard */}
+        <div
+          style={{
+            marginTop: '64px',
+            paddingTop: '32px',
+            borderTop: '0.5px solid var(--dashboard-border)',
+          }}
+        >
+          <div
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: '10px',
+              color: 'var(--dashboard-muted)',
+              letterSpacing: '0.08em',
+              marginBottom: '14px',
+            }}
+          >
+            RELATED LINKS
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+            <Link href="/#pricing" style={relatedLinkStyle}>Pricing Table ↗</Link>
+            <Link href="/#use-cases" style={relatedLinkStyle}>Core Use Cases ↗</Link>
+            <Link href="/terms" style={relatedLinkStyle}>Terms of Service ↗</Link>
+            <Link href="/privacy" style={relatedLinkStyle}>Privacy Policy ↗</Link>
           </div>
         </div>
 
@@ -1222,4 +1956,16 @@ const githubLinkStyle: React.CSSProperties = {
   gap: '6px',
   textDecoration: 'none',
   transition: 'border-color 0.15s, color 0.15s',
+};
+
+const relatedLinkStyle: React.CSSProperties = {
+  fontFamily: 'var(--font-mono)',
+  fontSize: '11px',
+  color: 'var(--dashboard-muted)',
+  border: '0.5px solid var(--dashboard-border)',
+  backgroundColor: 'var(--dashboard-card)',
+  padding: '6px 10px',
+  borderRadius: '4px',
+  letterSpacing: '0.05em',
+  transition: 'color 0.15s, border-color 0.15s',
 };
