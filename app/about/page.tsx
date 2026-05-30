@@ -435,25 +435,25 @@ export default function AboutPage() {
           >
             {[
               {
-                name: 'Muhammad Mehdi',
-                role: 'CEO & Founder',
-                pfp: '/mehdipfp.jfif',
-                bio: 'Driving the vision for decentralizing agent economies, enabling machines to transact and provision cloud services autonomously.',
-                socials: [
-                  { label: 'Twitter / X', url: 'https://x.com/SocktDev' },
-                  { label: 'LinkedIn', url: 'https://www.linkedin.com/in/muhammad-mehdi-alvi/' },
-                  { label: 'Website', url: 'https://mehdisdone.dev' },
-                ],
-              },
-              {
                 name: 'Ali Aan',
-                role: 'CTO & Co-Founder',
+                role: 'Founder & CTO',
                 pfp: '/alipfp.jfif',
                 bio: 'Leading the technical design and orchestration layer for on-demand GPU runtimes and lightning-native settlement mechanics.',
                 socials: [
                   { label: 'Twitter / X', url: 'https://x.com/AanBuilds' },
                   { label: 'LinkedIn', url: 'https://www.linkedin.com/in/aliaan/' },
                   { label: 'Website', url: 'https://aliaan.vercel.app' },
+                ],
+              },
+              {
+                name: 'Muhammad Mehdi',
+                role: 'Co-Founder & CEO',
+                pfp: '/mehdipfp.jfif',
+                bio: 'Driving the vision for decentralizing agent economies, enabling machines to transact and provision cloud services autonomously.',
+                socials: [
+                  { label: 'Twitter / X', url: 'https://x.com/SocktDev' },
+                  { label: 'LinkedIn', url: 'https://www.linkedin.com/in/muhammad-mehdi-alvi/' },
+                  { label: 'Website', url: 'https://mehdisdone.dev' },
                 ],
               },
             ].map((member) => (
