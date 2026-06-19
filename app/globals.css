@@ -50,9 +50,9 @@
   --logo-mark-color:   #c27a36;
   --nav-glass:         rgba(15, 15, 15, 0.6);
 
-  /* Exact pre-rebrand family stack */
-  --font-display:  'Neue Haas Grotesk Display', 'Aktiv Grotesk Ex', sans-serif;
-  --font-body:     'Söhne', 'DM Sans', sans-serif;
+  /* Core UI typography */
+  --font-display:  'Geist', sans-serif;
+  --font-body:     'Geist', sans-serif;
   --font-mono:     'Berkeley Mono', 'TX-02', 'Fira Code', monospace;
   --font-pixel:    'Geist Pixel', monospace;
 
