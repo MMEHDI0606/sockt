@@ -4,21 +4,21 @@ import type { ReactNode } from 'react';
 export const metadata: Metadata = {
   title: 'Docs',
   description:
-    'Sockt documentation for MCP setup, SDK usage, sandbox lifecycle, and Lightning-based agent billing.',
+    'Sockt documentation for Slack setup, swarm onboarding, memory seeding, and BYOK model connection.',
   alternates: {
     canonical: '/docs',
   },
   openGraph: {
     title: 'Sockt Docs',
     description:
-      'Learn how to integrate Sockt MCP and SDK to run autonomous agent compute workflows.',
+      'Learn how to connect Slack, seed memory, and activate preconfigured AI employee swarms.',
     url: '/docs',
     type: 'article',
   },
   twitter: {
     title: 'Sockt Docs',
     description:
-      'Integrate MCP + SDK for autonomous agent compute with Lightning settlement.',
+      'Slack swarm setup docs for AI workforce deployments.',
   },
 };
 

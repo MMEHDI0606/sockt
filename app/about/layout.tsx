@@ -4,21 +4,21 @@ import type { ReactNode } from 'react';
 export const metadata: Metadata = {
   title: 'About',
   description:
-    'Sockt is autonomous AI infrastructure for agents that provision compute, pay per second in Bitcoin Lightning sats, execute tasks, and terminate automatically.',
+    'Sockt is an AI workforce platform that deploys preconfigured employee swarms into Slack with persistent memory, loop prevention, and credential isolation.',
   alternates: {
     canonical: '/about',
   },
   openGraph: {
     title: 'About Sockt',
     description:
-      'Learn how Sockt enables autonomous AI agents to provision and pay for compute using Bitcoin Lightning, per second, on demand.',
+      'Learn how Sockt helps lean teams deploy reliable AI departments that remember context and compound in intelligence over time.',
     url: '/about',
     type: 'website',
   },
   twitter: {
     title: 'About Sockt',
     description:
-      'Sockt: autonomous AI compute infrastructure billed per second in sats. No subscriptions. No idle waste.',
+      'Sockt: AI workforce infrastructure for Slack-native departments with memory and loop prevention.',
   },
 };
 

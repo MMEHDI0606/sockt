@@ -1,14 +1,12 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
 import Link from 'next/link';
-import gsap from 'gsap';
 import { useIsMobile } from '@/hooks/useIsMobile';
 
 const COLS = [
   {
     title: 'PRODUCT',
-    items: ['Docs', 'Pricing'],
+    items: ['Docs', 'Pricing', 'Departments'],
   },
   {
     title: 'LEGAL & CONTACT',
@@ -17,19 +15,7 @@ const COLS = [
 ];
 
 export default function Footer() {
-  const dotRef = useRef<HTMLSpanElement>(null);
   const isMobile = useIsMobile();
-
-  useEffect(() => {
-    if (!dotRef.current) return;
-    gsap.to(dotRef.current, {
-      opacity: 0.4,
-      duration: 2,
-      ease: 'sine.inOut',
-      repeat: -1,
-      yoyo: true,
-    });
-  }, []);
 
   return (
     <footer
@@ -39,9 +25,15 @@ export default function Footer() {
       }}
     >
       <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-        <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', justifyContent: 'space-between', gap: isMobile ? '40px' : '48px', marginBottom: isMobile ? '24px' : '64px' }}>
-
-          {/* Brand Info (Left Side) */}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: isMobile ? 'column' : 'row',
+            justifyContent: 'space-between',
+            gap: isMobile ? '40px' : '48px',
+            marginBottom: isMobile ? '24px' : '64px',
+          }}
+        >
           <div style={{ maxWidth: isMobile ? '100%' : '300px' }}>
             <div
               style={{
@@ -64,34 +56,18 @@ export default function Footer() {
                   marginBottom: '16px',
                 }}
               >
-                Sandboxed compute for autonomous agents.
+                AI workforce infrastructure for Slack-native departments.
               </p>
             ) : null}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '11px',
-              }}
-            >
-              <span
-                ref={dotRef}
-                style={{
-                  width: '6px',
-                  height: '6px',
-                  borderRadius: '50%',
-                  backgroundColor: 'var(--accent-btc)',
-                  flexShrink: 0,
-                }}
-              />
-              <span style={{ color: 'var(--accent-btc)' }}>MAINNET LIVE</span>
-            </div>
           </div>
 
-          {/* Links (Right Side) */}
-          <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: isMobile ? '40px' : '80px' }}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: isMobile ? 'column' : 'row',
+              gap: isMobile ? '40px' : '80px',
+            }}
+          >
             {COLS.map((col) => (
               <div key={col.title}>
                 <div
@@ -109,33 +85,33 @@ export default function Footer() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                   {col.items.map((item) => {
                     const routeMap: Record<string, string> = {
-                      'Docs': '/docs',
-                      'Pricing': '/#pricing',
+                      Docs: '/docs',
+                      Pricing: '/pricing',
+                      Departments: '/departments',
                       'Terms & Conditions': '/terms',
                       'Privacy Policy': '/privacy',
                       'X / Twitter': 'https://x.com/socktdev',
-                      'GitHub': 'https://github.com/socktdev',
-                      'Contact': 'mailto:hello@sockt.dev',
+                      GitHub: 'https://github.com/socktdev',
+                      Contact: 'mailto:hello@sockt.dev',
                     };
 
                     const href = routeMap[item] ?? '/';
-
                     const isExternal = href.startsWith('http') || href.startsWith('mailto');
 
                     return isExternal ? (
                       <a
                         key={item}
                         href={href}
-                        target={href.startsWith('http') ? "_blank" : undefined}
-                        rel={href.startsWith('http') ? "noopener noreferrer" : undefined}
+                        target={href.startsWith('http') ? '_blank' : undefined}
+                        rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
                         style={{
                           fontFamily: 'var(--font-body)',
                           fontSize: '13px',
                           color: 'var(--text-secondary)',
                           transition: 'none',
                         }}
-                        onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
-                        onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
+                        onMouseEnter={(event) => (event.currentTarget.style.color = 'var(--text-primary)')}
+                        onMouseLeave={(event) => (event.currentTarget.style.color = 'var(--text-secondary)')}
                       >
                         {item}
                       </a>
@@ -149,8 +125,8 @@ export default function Footer() {
                           color: 'var(--text-secondary)',
                           transition: 'none',
                         }}
-                        onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
-                        onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
+                        onMouseEnter={(event) => (event.currentTarget.style.color = 'var(--text-primary)')}
+                        onMouseLeave={(event) => (event.currentTarget.style.color = 'var(--text-secondary)')}
                       >
                         {item}
                       </Link>
@@ -162,7 +138,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Logo watermark */}
         {!isMobile ? (
           <div
             style={{
@@ -201,7 +176,6 @@ export default function Footer() {
           </div>
         ) : null}
 
-        {/* Bottom bar */}
         <div
           style={{
             display: 'flex',
@@ -213,9 +187,6 @@ export default function Footer() {
         >
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--text-secondary)' }}>
             © {new Date().getFullYear()} Sockt
-          </span>
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--text-secondary)' }}>
-            Built on Bitcoin.
           </span>
         </div>
       </div>

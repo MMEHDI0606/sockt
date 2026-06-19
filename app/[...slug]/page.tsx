@@ -181,9 +181,6 @@ export default function PlaceholderPage({ params }: PageProps) {
         <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--text-secondary)' }}>
           © 2025 Sockt
         </span>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--text-secondary)' }}>
-          Built on Bitcoin.
-        </span>
       </footer>
     </div>
   );

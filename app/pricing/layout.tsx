@@ -4,21 +4,21 @@ import type { ReactNode } from 'react';
 export const metadata: Metadata = {
   title: 'Pricing',
   description:
-    'Sockt pricing for CPU and GPU agent sandboxes with pay-per-second billing in USD or msats.',
+    'Sockt pricing for AI workforce infrastructure. Customers pay Sockt for orchestration and intelligence, and pay their LLM provider directly for inference.',
   alternates: {
     canonical: '/pricing',
   },
   openGraph: {
     title: 'Sockt Pricing',
     description:
-      'Compare Nano, Micro, GPU Small, and GPU Large tiers for autonomous agent workloads.',
+      'Compare Community, Starter, Professional, Business, Agency, and Enterprise tiers for AI workforce deployments.',
     url: '/pricing',
     type: 'website',
   },
   twitter: {
     title: 'Sockt Pricing',
     description:
-      'Pay-per-second pricing for agent compute across CPU and GPU tiers.',
+      'AI workforce pricing with BYOK inference and no token markup.',
   },
 };
 

@@ -6,13 +6,13 @@ export const metadata: Metadata = {
   description:
     'Sockt departments for growth, product development, and engineering operations.',
   alternates: {
-    canonical: '/use-cases',
+    canonical: '/departments',
   },
   openGraph: {
     title: 'Sockt Departments',
     description:
       'See the preconfigured AI employee swarms Sockt deploys for each department.',
-    url: '/use-cases',
+    url: '/departments',
     type: 'website',
   },
   twitter: {
@@ -22,6 +22,6 @@ export const metadata: Metadata = {
   },
 };
 
-export default function UseCasesLayout({ children }: { children: ReactNode }) {
+export default function DepartmentsLayout({ children }: { children: ReactNode }) {
   return children;
 }

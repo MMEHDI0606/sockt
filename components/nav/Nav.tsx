@@ -127,9 +127,9 @@ export default function Nav() {
             }}
           >
             {[
-              // { label: 'Use Cases', href: '/#use-cases' },
+              { label: 'Departments', href: '/departments' },
               { label: 'Docs', href: '/docs' },
-              { label: 'Pricing', href: '/#pricing' },
+              { label: 'Pricing', href: '/pricing' },
               { label: 'About', href: '/about' },
             ].map((link) => (
               <Link

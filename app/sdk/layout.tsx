@@ -4,21 +4,21 @@ import type { ReactNode } from 'react';
 export const metadata: Metadata = {
   title: 'SDK',
   description:
-    'Sockt SDK references for TypeScript and Python to provision, execute, and terminate agent sandboxes.',
+    'Sockt docs for Slack setup, swarm onboarding, and AI workforce workflows.',
   alternates: {
     canonical: '/sdk',
   },
   openGraph: {
     title: 'Sockt SDK',
     description:
-      'Build agent compute workflows with the Sockt SDK and Lightning-aware billing paths.',
+      'Read the setup flow for deploying preconfigured AI employee swarms.',
     url: '/sdk',
     type: 'article',
   },
   twitter: {
     title: 'Sockt SDK',
     description:
-      'TypeScript and Python SDK support for autonomous compute orchestration.',
+      'Setup docs for Sockt AI workforce deployments.',
   },
 };
 
