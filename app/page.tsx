@@ -130,7 +130,7 @@ export default function Home() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '28px', alignItems: 'center' }}>
             <div>
               <p style={sectionHeadingStyle}>AI WORKFORCE PLATFORM</p>
-              <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2.4rem, 7vw, 5.2rem)', lineHeight: 0.94, letterSpacing: '-0.04em', margin: 0, maxWidth: '10ch' }}>Hire an AI team, not an AI tool.</h1>
+              <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2.5rem, 7vw, 5.8rem)', lineHeight: 0.95, letterSpacing: '-0.04em', margin: 0, maxWidth: '10ch' }}>Hire an AI team, not an AI tool.</h1>
               <p style={{ fontFamily: 'var(--font-body)', fontSize: '1.02rem', lineHeight: 1.65, color: 'var(--text-secondary)', maxWidth: '58ch', marginTop: '18px' }}>Deploy preconfigured AI departments in Slack that coordinate safely, remember context, and keep costs bounded.</p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginTop: '24px' }}>
                 <Link href="/pricing" style={{ background: 'var(--accent-btc)', color: 'var(--bg-void)', padding: '12px 22px', borderRadius: '999px', fontFamily: 'var(--font-mono)', fontSize: '13px', fontWeight: 600 }}>See pricing</Link>
