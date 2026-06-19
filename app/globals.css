@@ -50,10 +50,10 @@
   --logo-mark-color:   #c27a36;
   --nav-glass:         rgba(15, 15, 15, 0.6);
 
-  /* Reverted to pre-pivot family stack */
-  --font-display:  'Neue Haas Grotesk Display', 'Aktiv Grotesk Ex', 'Geist', sans-serif;
-  --font-body:     'Sohne', 'Söhne', 'DM Sans', 'Geist', sans-serif;
-  --font-mono:     'Berkeley Mono', 'TX-02', 'Fira Code', 'Geist Mono', monospace;
+  /* Exact pre-rebrand family stack */
+  --font-display:  'Neue Haas Grotesk Display', 'Aktiv Grotesk Ex', sans-serif;
+  --font-body:     'SÃ¶hne', 'DM Sans', sans-serif;
+  --font-mono:     'Berkeley Mono', 'TX-02', 'Fira Code', monospace;
   --font-pixel:    'Geist Pixel', monospace;
 
   --ease-expo:   cubic-bezier(0.16, 1, 0.3, 1);
