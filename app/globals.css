@@ -25,25 +25,21 @@
 
 :root {
   color-scheme: dark;
-  /* Background family */
   --bg-void:     #080808;
   --bg-surface:  #0f0f0f;
   --bg-raised:   #161616;
   --bg-border:   #1f1f1f;
 
-  /* Typography */
   --text-primary:   #f0ece4;
   --text-secondary: #6b6761;
   --text-mono:      #c4bfb6;
 
-  /* Accent */
   --accent-btc:    #c27a36;
   --accent-amber:  #a9682f;
   --accent-sats:   #d9a060;
   --accent-green:  #22d07a;
   --accent-red:    #e53e3e;
 
-  /* Dashboard shell tokens */
   --dashboard-bg:      #0a0a0a;
   --dashboard-sidebar: #111111;
   --dashboard-card:    #151515;
@@ -54,20 +50,18 @@
   --logo-mark-color:   #c27a36;
   --nav-glass:         rgba(15, 15, 15, 0.6);
 
-  /* Font families */
-  --font-display:  'Geist', sans-serif;
-  --font-body:     'Geist', sans-serif;
-  --font-mono:     'Geist Mono', monospace;
+  /* Reverted to pre-pivot family stack */
+  --font-display:  'Neue Haas Grotesk Display', 'Aktiv Grotesk Ex', 'Geist', sans-serif;
+  --font-body:     'Sohne', 'Söhne', 'DM Sans', 'Geist', sans-serif;
+  --font-mono:     'Berkeley Mono', 'TX-02', 'Fira Code', 'Geist Mono', monospace;
   --font-pixel:    'Geist Pixel', monospace;
 
-  /* Motion */
   --ease-expo:   cubic-bezier(0.16, 1, 0.3, 1);
   --ease-snap:   cubic-bezier(0.77, 0, 0.175, 1);
   --dur-fast:    240ms;
   --dur-medium:  480ms;
   --dur-slow:    900ms;
 
-  /* Typography scale */
   --text-hero:    clamp(4rem, 10vw, 9rem);
   --text-display: clamp(2.5rem, 5vw, 5rem);
   --text-xl:      clamp(1.25rem, 2vw, 1.75rem);
@@ -140,7 +134,6 @@ body {
   transition: background-color var(--dur-fast) ease, color var(--dur-fast) ease;
 }
 
-/* Topology grid background */
 body {
   background-image: radial-gradient(circle, var(--bg-border) 1px, transparent 1px);
   background-size: 24px 24px;
@@ -152,12 +145,10 @@ a {
   text-decoration: none;
 }
 
-/* Section base */
 section {
   position: relative;
 }
 
-/* Char reveal wrapper */
 .char-wrapper {
   overflow: hidden;
   display: inline-block;
@@ -167,7 +158,27 @@ section {
   display: inline-block;
 }
 
-/* Scrollbar */
+.lift-card {
+  transition: transform 200ms ease, border-color 200ms ease, background-color 200ms ease, box-shadow 200ms ease;
+}
+
+.lift-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-btc);
+  background-color: var(--bg-raised);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.22);
+}
+
+@keyframes drift {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0px); }
+}
+
+.drift {
+  animation: drift 2.4s ease-in-out infinite;
+}
+
 ::-webkit-scrollbar {
   width: 4px;
 }
@@ -183,24 +194,4 @@ section {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-secondary);
-}
-
-/* Cursor blink */
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-.cursor-blink {
-  animation: blink 1s step-end infinite;
-}
-
-/* Ticker */
-.ticker-track {
-  will-change: transform;
-}
-
-/* Pinned section containers */
-.pin-container {
-  will-change: transform;
 }
