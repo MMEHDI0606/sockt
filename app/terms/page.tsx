@@ -6,7 +6,7 @@ export default function TermsPage() {
   const ulStyle: React.CSSProperties = { fontFamily: 'var(--font-body)', color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '24px', paddingLeft: '24px', listStyleType: 'disc' };
 
   return (
-     <main style={{ minHeight: '100vh', background: 'radial-gradient(circle at top, rgba(194, 122, 54, 0.12), transparent 30%), linear-gradient(180deg, var(--bg-void), var(--bg-surface))', color: 'var(--text-primary)', padding: '120px 24px 64px' }}>
+     <main style={{ minHeight: '100vh', background: 'radial-gradient(circle at top, rgba(194, 122, 54, 0.14), transparent 40%)', color: 'var(--text-primary)', padding: '120px 24px 64px' }}>
       <div style={{ maxWidth: '860px', margin: '0 auto' }}>
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 5vw, 3rem)', marginBottom: '20px' }}>Terms & Conditions</h1>
         <p style={{ ...pStyle, fontSize: '0.9rem', color: 'var(--text-tertiary)' }}>Last Updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>

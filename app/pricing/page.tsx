@@ -62,7 +62,7 @@ export default function PricingPage() {
   return (
     <>
       <Nav />
-      <main style={{ minHeight: '100vh', padding: '96px 24px 120px', background: 'radial-gradient(circle at top, rgba(194, 122, 54, 0.12), transparent 30%), linear-gradient(180deg, var(--bg-void), var(--bg-surface))', color: 'var(--text-primary)' }}>
+      <main style={{ minHeight: '100vh', padding: '96px 24px 120px', background: 'radial-gradient(circle at top, rgba(194, 122, 54, 0.14), transparent 40%)', color: 'var(--text-primary)' }}>
         <div style={{ maxWidth: '1180px', margin: '0 auto' }}>
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent-btc)', marginBottom: '14px' }}>Pricing</p>
           <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2.2rem, 6vw, 4.2rem)', lineHeight: 1, letterSpacing: '-0.04em', margin: 0, maxWidth: '12ch' }}>You pay Sockt for orchestration. You pay your LLM provider directly for inference.</h1>

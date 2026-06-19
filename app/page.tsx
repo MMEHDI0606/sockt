@@ -154,7 +154,7 @@ export default function Home() {
       <Script id="website-jsonld" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
       <Script id="faq-jsonld" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <Nav />
-      <main style={{ background: 'radial-gradient(circle at top, rgba(194, 122, 54, 0.12), transparent 30%), linear-gradient(180deg, var(--bg-void) 0%, var(--bg-surface) 100%)', color: 'var(--text-primary)' }}>
+      <main style={{ background: 'radial-gradient(circle at top, rgba(194, 122, 54, 0.14), transparent 40%)', color: 'var(--text-primary)' }}>
         <section style={{ ...homeSectionStyle, paddingTop: '96px', paddingBottom: '56px' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '32px', alignItems: 'center' }}>
             <div>

@@ -41,7 +41,7 @@ export default function AboutPage() {
       <Nav />
       <main
         style={{
-          background: 'radial-gradient(circle at top, rgba(194, 122, 54, 0.12), transparent 30%), linear-gradient(180deg, var(--bg-void) 0%, var(--bg-surface) 100%)',
+          background: 'radial-gradient(circle at top, rgba(194, 122, 54, 0.14), transparent 40%)',
           color: 'var(--text-primary)',
           minHeight: '100vh',
           paddingBottom: '80px',
