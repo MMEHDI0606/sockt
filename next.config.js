@@ -24,9 +24,8 @@ const nextConfig = {
       allowedOrigins: ['*'],
     },
   },
-  turbopack: {
-    root: __dirname,
-  },
+  // Disable Turbopack, use Webpack instead
+  productionBrowserSourceMaps: false,
 };
 
 module.exports = nextConfig;
