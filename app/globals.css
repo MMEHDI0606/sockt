@@ -59,10 +59,11 @@
   --logo-mark-color: #EEECE8;
   --nav-glass:       rgba(9, 9, 11, 0.72);
 
-  /* Typography scale */
-  --font-display:  'Geist', sans-serif;
+  /* Typography scale — dual font system (Moranta direction) */
+  --font-headline: 'DM Sans', 'Geist', sans-serif; /* editorial / expressive */
+  --font-display:  'Geist', sans-serif;             /* UI / body */
   --font-body:     'Geist', sans-serif;
-  --font-mono:     'Berkeley Mono', 'Fira Code', 'Geist Mono', monospace;
+  --font-mono:     'Berkeley Mono', 'Fira Code', 'Geist Mono', monospace; /* precision / technical */
 
   /* Motion */
   --ease-expo:   cubic-bezier(0.16, 1, 0.3, 1);
@@ -117,12 +118,52 @@ section { position: relative; }
   box-shadow: 0 12px 36px rgba(0,0,0,0.35);
 }
 
-/* Fade in utility */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* Emerge-from-darkness: elements start hidden; GSAP reveal hook drives them */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(36px);
 }
-.fade-up { animation: fadeUp 0.6s var(--ease-expo) both; }
+
+/* Dept card hover reveal panel */
+.dept-hover-reveal {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.28s ease, transform 0.28s ease;
+  pointer-events: none;
+}
+.dept-card:hover .dept-hover-reveal {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.dept-card {
+  transition: transform 220ms var(--ease-expo),
+              border-color 220ms ease,
+              box-shadow 220ms ease;
+}
+.dept-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 48px rgba(0,0,0,0.45);
+}
+
+/* Pricing card hover */
+.price-card {
+  transition: border-color 200ms ease, background 200ms ease, box-shadow 200ms ease;
+}
+.price-card:hover {
+  border-color: #46464E !important;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.35);
+}
+.price-hover-detail {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.32s ease, opacity 0.32s ease;
+  opacity: 0;
+}
+.price-card:hover .price-hover-detail {
+  max-height: 80px;
+  opacity: 1;
+}
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 4px; }
