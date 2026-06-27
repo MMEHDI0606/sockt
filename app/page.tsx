@@ -9,7 +9,6 @@ import Footer from '@/components/sections/Footer';
 import SlackMock from '@/components/sections/SlackMock';
 import ArchFlow from '@/components/sections/ArchFlow';
 import PageLoader from '@/components/sections/PageLoader';
-import NeuralField from '@/components/canvas/NeuralField';
 import AmbientBlobs from '@/components/canvas/AmbientBlobs';
 import SwarmOrbit from '@/components/svg/SwarmOrbit';
 import MemoryPulse from '@/components/svg/MemoryPulse';
@@ -497,16 +496,9 @@ export default function Home() {
       <Nav />
       <main style={{ color:C.primary, background:C.void, overflowX:'hidden' }}>
 
-        {/* ── HERO — atmospheric, living darkness ── */}
-        <section style={{ position:'relative', minHeight:'92vh', display:'flex', alignItems:'center', paddingTop:96, paddingBottom:64, overflow:'hidden' }}>
-
-          {/* Neural particle field — the background breathes */}
-          <NeuralField />
-
-          {/* Ambient blob glow — mist in the dark */}
-          <AmbientBlobs variant="hero" />
-
-          <div style={{ ...wrap, width:'100%', position:'relative', zIndex:1 }}>
+        {/* ── HERO ── */}
+        <section style={{ minHeight:'92vh', display:'flex', alignItems:'center', paddingTop:96, paddingBottom:64 }}>
+          <div style={{ ...wrap, width:'100%' }}>
             <div className="hero-grid" style={{ display:'grid', gridTemplateColumns:'minmax(0,1fr) minmax(0,1fr)', gap:'5vw', alignItems:'center' }}>
 
               {/* Left — direct, immediate, un-precious */}
