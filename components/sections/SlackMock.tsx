@@ -56,7 +56,7 @@ const CHANNELS = [
   { name: 'general', active: false },
 ];
 
-export default function SlackMock({ className }: { className?: string }) {
+export default function SlackMock({ className, glow = true }: { className?: string; glow?: boolean }) {
   const [visible, setVisible] = useState(2);
   const containerRef = useRef<HTMLDivElement>(null);
   const startedRef = useRef(false);
@@ -88,18 +88,27 @@ export default function SlackMock({ className }: { className?: string }) {
       ref={containerRef}
       className={className}
       style={{
+        position: 'relative',
+        display: 'flex',
+        borderRadius: 14,
+        overflow: 'visible',
+        width: '100%',
+        maxWidth: 480,
+        /* Ambient corona — the mock glows softly like a live terminal in darkness */
+        filter: glow ? 'drop-shadow(0 0 40px rgba(238,236,232,0.06)) drop-shadow(0 24px 64px rgba(0,0,0,0.55))' : undefined,
+      }}
+    >
+      {/* Inner wrapper that clips content */}
+      <div style={{
         display: 'flex',
         borderRadius: 14,
         overflow: 'hidden',
         border: '1px solid #2A2A2F',
-        boxShadow:
-          '0 0 0 1px rgba(255,255,255,0.04), 0 24px 64px rgba(0,0,0,0.6), 0 8px 24px rgba(0,0,0,0.4)',
+        boxShadow: '0 0 0 1px rgba(255,255,255,0.05)',
         background: '#16181C',
         fontFamily: '"Geist", -apple-system, sans-serif',
         width: '100%',
-        maxWidth: 480,
-      }}
-    >
+      }}>
       {/* Sidebar */}
       <div
         style={{
@@ -318,6 +327,7 @@ export default function SlackMock({ className }: { className?: string }) {
           </div>
         </div>
       </div>
+      </div>{/* /inner wrapper */}
     </div>
   );
 }
