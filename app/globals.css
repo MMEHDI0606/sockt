@@ -59,11 +59,15 @@
   --logo-mark-color: #EEECE8;
   --nav-glass:       rgba(9, 9, 11, 0.72);
 
-  /* Typography scale — dual font system (Moranta direction) */
-  --font-headline: 'DM Sans', 'Geist', sans-serif; /* editorial / expressive */
-  --font-display:  'Geist', sans-serif;             /* UI / body */
+  /* Typography scale — triple system (skill-informed)
+     Fraunces: variable optical-size serif (9–144 opsz), premium display
+     DM Sans:  geometric sans for section headings and body
+     Fira Code / Geist Mono: precision labels */
+  --font-headline: 'Fraunces', Georgia, serif;      /* display / editorial — hero H1 */
+  --font-subhead:  'DM Sans', 'Geist', sans-serif;  /* section H2, clean sans */
+  --font-display:  'Geist', sans-serif;             /* UI */
   --font-body:     'Geist', sans-serif;
-  --font-mono:     'Berkeley Mono', 'Fira Code', 'Geist Mono', monospace; /* precision / technical */
+  --font-mono:     'Berkeley Mono', 'Fira Code', 'Geist Mono', monospace;
 
   /* Motion */
   --ease-expo:   cubic-bezier(0.16, 1, 0.3, 1);
@@ -79,7 +83,66 @@
   --text-body:    1rem;
 }
 
-/* No light mode on redesign branch — force dark */
+/* Light mode — warm gray paper, not pure white (Editorial Luxury palette) */
+[data-theme='light'] {
+  color-scheme: light;
+
+  --bg-void:     #F1F0EC;   /* warm off-white — aged paper, not sterile white */
+  --bg-surface:  #EBEAE5;   /* slightly cooler warm gray surface */
+  --bg-raised:   #F6F5F1;   /* elevated elements */
+  --bg-border:   #D6D4CE;   /* warm gray hairlines */
+  --bg-border-subtle: #E2E1DC;
+
+  --text-primary:   #1C1B18;   /* near-black with warmth */
+  --text-secondary: #6B6A64;   /* warm muted gray */
+  --text-mono:      #524F4A;   /* warm mono labels */
+
+  --accent:     #1C1B18;
+  --accent-btc: #1C1B18;
+  --accent-amber: #7A7872;
+  --accent-sats: #9A9890;
+  --accent-green: #1A6644;
+  --accent-red:   #C0392B;
+
+  --logo-mark-color: #1C1B18;
+  --nav-glass:       rgba(241,240,236,0.82);
+
+  --dashboard-bg:      #F1F0EC;
+  --dashboard-sidebar: #EBEAE5;
+  --dashboard-card:    #F6F5F1;
+  --dashboard-border:  #D6D4CE;
+  --dashboard-text:    #1C1B18;
+  --dashboard-muted:   #6B6A64;
+  --dashboard-accent:  #1C1B18;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    color-scheme: light;
+    --bg-void:     #F1F0EC;
+    --bg-surface:  #EBEAE5;
+    --bg-raised:   #F6F5F1;
+    --bg-border:   #D6D4CE;
+    --bg-border-subtle: #E2E1DC;
+    --text-primary:   #1C1B18;
+    --text-secondary: #6B6A64;
+    --text-mono:      #524F4A;
+    --accent:     #1C1B18;
+    --accent-btc: #1C1B18;
+    --accent-amber: #7A7872;
+    --accent-green: #1A6644;
+    --accent-red:   #C0392B;
+    --logo-mark-color: #1C1B18;
+    --nav-glass:       rgba(241,240,236,0.82);
+    --dashboard-bg:      #F1F0EC;
+    --dashboard-sidebar: #EBEAE5;
+    --dashboard-card:    #F6F5F1;
+    --dashboard-border:  #D6D4CE;
+    --dashboard-text:    #1C1B18;
+    --dashboard-muted:   #6B6A64;
+    --dashboard-accent:  #1C1B18;
+  }
+}
 * {
   box-sizing: border-box;
   padding: 0;

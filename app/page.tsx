@@ -37,8 +37,9 @@ const label = (color = C.secondary): React.CSSProperties => ({
   textTransform: 'uppercase', color, marginBottom: 22, display: 'block',
 });
 
+// Section headings — DM Sans (clean sans subhead voice)
 const H2 = (extra: React.CSSProperties = {}): React.CSSProperties => ({
-  fontFamily: C.headline, fontSize: 'clamp(2rem, 4vw, 3.8rem)',
+  fontFamily: 'var(--font-subhead)', fontSize: 'clamp(2rem, 4vw, 3.8rem)',
   fontWeight: 700, lineHeight: 1.04, letterSpacing: '-0.03em',
   color: C.primary, margin: 0, ...extra,
 });
@@ -72,7 +73,7 @@ function AnimatedStat({ value, label }: { value: string; label: string }) {
   return (
     <div ref={ref} style={{ padding: '28px 24px' }}>
       <div style={{
-        fontFamily: C.headline,
+        fontFamily: 'var(--font-subhead)',
         fontSize: 'clamp(1.4rem, 3vw, 2.2rem)',
         fontWeight: 700, letterSpacing: '-0.03em',
         color: C.primary, lineHeight: 1, marginBottom: 8,
@@ -174,7 +175,7 @@ function CrisesSection() {
               <div style={{ fontFamily:C.mono, fontSize:56, fontWeight:400, color:'#1D1D22', lineHeight:1, position:'absolute', top:24, right:28, letterSpacing:'-0.04em', userSelect:'none' }}>
                 {c.n}
               </div>
-              <div style={{ fontFamily:C.headline, fontSize:'1.3rem', fontWeight:700, color:C.primary, marginBottom:14, letterSpacing:'-0.025em', lineHeight:1.2 }}>{c.title}</div>
+              <div style={{ fontFamily:'var(--font-subhead)', fontSize:'1.3rem', fontWeight:700, color:C.primary, marginBottom:14, letterSpacing:'-0.025em', lineHeight:1.2 }}>{c.title}</div>
               <p style={{ fontFamily:C.body, fontSize:14, color:C.secondary, lineHeight:1.72, marginBottom:24 }}>{c.body}</p>
               <div style={{ borderTop:`1px solid ${C.border}`, paddingTop:20, fontFamily:C.mono, fontSize:11, color:'#6D6D78', lineHeight:1.6 }}>
                 <span style={{ color:C.primary, marginRight:8 }}>FIX ›</span>{c.fix}
@@ -210,7 +211,7 @@ function DepartmentsSection() {
               style={{ border:`1px solid ${C.border}`, background:C.surface, borderRadius:16, overflow:'hidden', display:'flex', flexDirection:'column', position:'relative' }}>
               <div style={{ padding:'24px 24px 16px' }}>
                 <div style={{ fontFamily:C.mono, fontSize:9, color:C.secondary, letterSpacing:'0.18em', textTransform:'uppercase', marginBottom:12, border:`1px solid ${C.border}`, display:'inline-block', padding:'3px 8px', borderRadius:4 }}>{dept.tag}</div>
-                <h3 style={{ fontFamily:C.headline, fontSize:'1.25rem', fontWeight:700, letterSpacing:'-0.025em', color:C.primary, margin:'0 0 10px' }}>{dept.name}</h3>
+                <h3 style={{ fontFamily:'var(--font-subhead)', fontSize:'1.25rem', fontWeight:700, letterSpacing:'-0.025em', color:C.primary, margin:'0 0 10px' }}>{dept.name}</h3>
                 <p style={{ fontFamily:C.body, fontSize:13.5, color:C.secondary, lineHeight:1.62, margin:'0 0 14px' }}>{dept.desc}</p>
                 <div style={{ display:'flex', gap:6, flexWrap:'wrap' }}>
                   {dept.roles.map((r) => (
@@ -240,7 +241,7 @@ function DepartmentsSection() {
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(240px, 1fr))', gap:12, marginTop:12 }}>
           {[['Marketing Content','Q3 2026'],['Customer Success','Q4 2026']].map(([name,when]) => (
             <div key={name} data-reveal style={{ border:`1px dashed ${C.border}`, borderRadius:14, padding:'18px 22px', display:'flex', alignItems:'center', justifyContent:'space-between', gap:12 }}>
-              <span style={{ fontFamily:C.headline, fontSize:'1rem', color:C.secondary }}>{name}</span>
+              <span style={{ fontFamily:'var(--font-subhead)', fontSize:'1rem', color:C.secondary }}>{name}</span>
               <span style={{ fontFamily:C.mono, fontSize:9, color:'#44444B', border:`1px solid ${C.border}`, borderRadius:4, padding:'3px 8px', letterSpacing:'0.1em' }}>{when}</span>
             </div>
           ))}
@@ -275,7 +276,7 @@ function HowItWorksSection() {
                       {i < arr.length-1 && <div style={{ width:1, flex:1, minHeight:20, background:C.border }} />}
                     </div>
                     <div style={{ paddingLeft:14, paddingBottom:22 }}>
-                      <div style={{ fontFamily:C.headline, fontSize:'1rem', fontWeight:600, color:C.primary, marginBottom:5, paddingTop:3 }}>{title}</div>
+                      <div style={{ fontFamily:'var(--font-subhead)', fontSize:'1rem', fontWeight:600, color:C.primary, marginBottom:5, paddingTop:3 }}>{title}</div>
                       <div style={{ fontFamily:C.body, fontSize:13.5, color:C.secondary, lineHeight:1.62 }}>{body}</div>
                     </div>
                   </div>
@@ -373,7 +374,7 @@ function FleetSection() {
                 { n:'N=1 → ∞', l:'Self-hosted vs. fleet data advantage' },
               ].map((item) => (
                 <div key={item.l} style={{ border:`1px solid ${C.border}`, padding:'20px 18px', background:C.raised }}>
-                  <div style={{ fontFamily:C.headline, fontSize:'clamp(1.1rem, 3vw, 1.6rem)', fontWeight:700, letterSpacing:'-0.03em', color:C.primary, lineHeight:1, marginBottom:8 }}>{item.n}</div>
+                  <div style={{ fontFamily:'var(--font-subhead)', fontSize:'clamp(1.1rem, 3vw, 1.6rem)', fontWeight:700, letterSpacing:'-0.03em', color:C.primary, lineHeight:1, marginBottom:8 }}>{item.n}</div>
                   <div style={{ fontFamily:C.mono, fontSize:10, color:C.secondary, letterSpacing:'0.06em', lineHeight:1.5 }}>{item.l}</div>
                 </div>
               ))}
@@ -411,7 +412,7 @@ function PricingSection() {
               )}
               <div>
                 <div style={{ fontFamily:C.mono, fontSize:9, color:C.secondary, letterSpacing:'0.18em', textTransform:'uppercase', marginBottom:12 }}>{tier.name}</div>
-                <div style={{ fontFamily:C.headline, fontSize:'clamp(1.5rem, 3vw, 2rem)', fontWeight:700, letterSpacing:'-0.03em', color:C.primary, lineHeight:1, marginBottom:4 }}>{tier.price}</div>
+                <div style={{ fontFamily:'var(--font-subhead)', fontSize:'clamp(1.5rem, 3vw, 2rem)', fontWeight:700, letterSpacing:'-0.03em', color:C.primary, lineHeight:1, marginBottom:4 }}>{tier.price}</div>
                 <div style={{ fontFamily:C.mono, fontSize:9, color:C.secondary, letterSpacing:'0.06em' }}>{tier.note}</div>
               </div>
               <div className="price-hover-detail" style={{ fontFamily:C.body, fontSize:12, color:C.secondary, lineHeight:1.55, marginTop:-4 }}>{tier.detail}</div>
@@ -511,14 +512,25 @@ export default function Home() {
               {/* Left — direct, immediate, un-precious */}
               <div>
                 <span style={{ ...label(), marginBottom:24 }}>AI Workforce Platform</span>
+                {/* Hero H1 — Fraunces variable serif at display optical size
+                    Line 1: weight 800 (commanding)
+                    Line 2: weight 200 (contrasting whisper — no italic)
+                    This is the ozero/lanegrita/digitalists treatment:
+                    same font, dramatic weight contrast, pure typographic confidence */}
                 <h1 style={{
-                  fontFamily: C.headline,
+                  fontFamily: 'var(--font-headline)',
                   fontSize: 'clamp(3.2rem, 7.5vw, 8rem)',
-                  fontWeight: 800, lineHeight: 0.9, letterSpacing: '-0.048em',
-                  color: C.primary, margin: '0 0 28px',
+                  lineHeight: 0.92,
+                  letterSpacing: '-0.04em',
+                  margin: '0 0 28px',
+                  fontVariationSettings: "'opsz' 144",
                 }}>
-                  Hire a team,<br />
-                  <em style={{ fontStyle:'italic', color:C.secondary }}>not a tool.</em>
+                  <span style={{ display: 'block', fontWeight: 800, color: C.primary }}>
+                    Hire a team,
+                  </span>
+                  <span style={{ display: 'block', fontWeight: 200, color: C.secondary }}>
+                    not a tool.
+                  </span>
                 </h1>
                 <p style={{ fontFamily:C.body, fontSize:'1.05rem', lineHeight:1.72, color:C.secondary, maxWidth:'50ch', marginBottom:36 }}>
                   Preconfigured AI departments that live in Slack, share persistent memory, and coordinate safely — with structural loop prevention, hardware-isolated execution, and fleet intelligence that learns from every deployment.
@@ -581,7 +593,7 @@ export default function Home() {
           <AmbientBlobs variant="cta" />
           <div style={{ ...wrap, position:'relative', zIndex:1 }}>
             <div style={{ maxWidth:600, margin:'0 auto', display:'flex', flexDirection:'column', alignItems:'center', gap:24 }}>
-              <h2 style={{ fontFamily:C.headline, fontSize:'clamp(2.4rem, 6vw, 5.5rem)', fontWeight:800, letterSpacing:'-0.045em', lineHeight:0.96, color:C.primary, margin:0 }}>
+              <h2 style={{ fontFamily:'var(--font-headline)', fontSize:'clamp(2.4rem, 6vw, 5.5rem)', fontWeight:800, letterSpacing:'-0.04em', lineHeight:0.96, color:C.primary, margin:0, fontVariationSettings:"'opsz' 100" }}>
                 Launch an AI department this week.
               </h2>
               <p style={{ fontFamily:C.body, fontSize:'1rem', color:C.secondary, lineHeight:1.7, maxWidth:'44ch', margin:0 }}>
