@@ -1,188 +1,322 @@
 'use client';
 
-type SlackMessage = {
-  type: 'agent' | 'user';
+import { useEffect, useRef, useState } from 'react';
+
+type Msg = {
+  agent: boolean;
   name: string;
-  avatar: string;
   time: string;
-  content: React.ReactNode;
+  lines: string[];
+  badge?: string;
 };
 
-const messages: SlackMessage[] = [
+const MESSAGES: Msg[] = [
   {
-    type: 'agent',
+    agent: true,
     name: 'Sockt Growth',
-    avatar: '{*}',
-    time: '9:04 AM',
-    content: (
-      <span>
-        Morning @Mehdi — I found <strong style={{ color: '#f0ece4' }}>5 high-intent leads</strong> from r/SaaS and HN since 3 AM. Want me to draft outreach for the top 2?
-      </span>
-    ),
+    time: '09:04',
+    badge: 'APP',
+    lines: [
+      'Morning @Mehdi — I found 5 high-intent leads from r/SaaS and HN since 3 AM.',
+      'Top 2 have strong ICP match (score 88 / 91). Want me to draft outreach?',
+    ],
   },
   {
-    type: 'user',
+    agent: false,
     name: 'Mehdi',
-    avatar: 'M',
-    time: '9:06 AM',
-    content: <span>Yes, do it. Auto-send if lead score &gt; 80.</span>,
+    time: '09:06',
+    lines: ['Go. Auto-send if score > 85.'],
   },
   {
-    type: 'agent',
+    agent: true,
     name: 'Sockt Growth',
-    avatar: '{*}',
-    time: '9:06 AM',
-    content: (
-      <span>
-        ✓ Drafts queued. Auto-send threshold set. <br />
-        <span style={{ color: '#6b6761', fontSize: '12px' }}>
-          2 drafts ready · 1 pending review (score 74) · 2 discarded
-        </span>
-      </span>
-    ),
+    time: '09:06',
+    badge: 'APP',
+    lines: [
+      '✓ 2 drafts queued and sent (score 88, 91).',
+      '1 held for review (score 74) · 2 discarded · GBrain updated.',
+    ],
   },
   {
-    type: 'agent',
+    agent: true,
     name: 'Sockt Ops',
-    avatar: '{*}',
-    time: '9:11 AM',
-    content: (
-      <span>
-        🔔 Sentry spike on <code style={{ background: '#161616', padding: '1px 5px', borderRadius: 3, fontSize: 11 }}>api/enrich</code> — correlates with the 2 AM deploy. Root cause: timeout on Apollo. Fix queued.
-      </span>
-    ),
+    time: '09:11',
+    badge: 'APP',
+    lines: [
+      '🔔 Sentry spike on api/enrich — correlates with 2:14 AM deploy (#c7a3f8).',
+      'Root cause: Apollo rate limit changed. Auto-fix queued, awaiting your approval.',
+    ],
   },
 ];
 
-export default function SlackMock({ compact = false }: { compact?: boolean }) {
+const CHANNELS = [
+  { name: 'sockt-swarms', active: true },
+  { name: 'sockt-growth', active: false },
+  { name: 'sockt-ops', active: false },
+  { name: 'general', active: false },
+];
+
+export default function SlackMock({ className }: { className?: string }) {
+  const [visible, setVisible] = useState(2);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const startedRef = useRef(false);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !startedRef.current) {
+          startedRef.current = true;
+          let i = 2;
+          const tick = () => {
+            i++;
+            setVisible(i);
+            if (i < MESSAGES.length) setTimeout(tick, 900);
+          };
+          setTimeout(tick, 800);
+        }
+      },
+      { threshold: 0.4 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
   return (
     <div
+      ref={containerRef}
+      className={className}
       style={{
-        background: '#1a1d21',
-        border: '1px solid #2d2d2d',
-        borderRadius: 12,
+        display: 'flex',
+        borderRadius: 14,
         overflow: 'hidden',
-        width: compact ? '100%' : 460,
+        border: '1px solid #2A2A2F',
+        boxShadow:
+          '0 0 0 1px rgba(255,255,255,0.04), 0 24px 64px rgba(0,0,0,0.6), 0 8px 24px rgba(0,0,0,0.4)',
+        background: '#16181C',
         fontFamily: '"Geist", -apple-system, sans-serif',
-        boxShadow: '0 32px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04)',
+        width: '100%',
+        maxWidth: 480,
       }}
     >
-      {/* Titlebar */}
+      {/* Sidebar */}
       <div
         style={{
-          background: '#19191d',
-          borderBottom: '1px solid #2d2d2d',
-          padding: '10px 16px',
+          width: 180,
+          background: '#111315',
+          borderRight: '1px solid #222428',
           display: 'flex',
-          alignItems: 'center',
-          gap: 8,
+          flexDirection: 'column',
+          flexShrink: 0,
+          padding: '16px 0 12px',
         }}
       >
-        <div style={{ display: 'flex', gap: 6 }}>
-          {['#e53e3e', '#fbbf24', '#22d07a'].map((c) => (
-            <span key={c} style={{ width: 10, height: 10, borderRadius: '50%', background: c, display: 'block' }} />
-          ))}
-        </div>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: '#6b6761', marginLeft: 8 }}>
-          # sockt-swarms · your-workspace
-        </span>
-      </div>
-
-      {/* Messages */}
-      <div style={{ padding: '16px 0', display: 'flex', flexDirection: 'column', gap: 0 }}>
-        {(compact ? messages.slice(0, 3) : messages).map((msg, i) => (
-          <div
-            key={i}
-            style={{
-              display: 'flex',
-              gap: 10,
-              padding: '6px 16px',
-              background: i === 1 ? 'transparent' : 'transparent',
-            }}
-          >
-            {/* Avatar */}
-            <div
-              style={{
-                width: 32,
-                height: 32,
-                borderRadius: 6,
-                background: msg.type === 'agent' ? '#c27a36' : '#3f3f3f',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontFamily: 'var(--font-mono)',
-                fontSize: 10,
-                color: msg.type === 'agent' ? '#080808' : '#f0ece4',
-                fontWeight: 700,
-                flexShrink: 0,
-                marginTop: 2,
-              }}
-            >
-              {msg.avatar}
-            </div>
-
-            {/* Content */}
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 3 }}>
-                <span
-                  style={{
-                    fontSize: 13,
-                    fontWeight: 700,
-                    color: msg.type === 'agent' ? '#c27a36' : '#e8e4dc',
-                  }}
-                >
-                  {msg.name}
-                </span>
-                {msg.type === 'agent' && (
-                  <span
-                    style={{
-                      fontSize: 9,
-                      fontFamily: 'var(--font-mono)',
-                      background: '#c27a3620',
-                      color: '#c27a36',
-                      border: '1px solid #c27a3630',
-                      borderRadius: 3,
-                      padding: '1px 5px',
-                      letterSpacing: '0.06em',
-                    }}
-                  >
-                    APP
-                  </span>
-                )}
-                <span style={{ fontSize: 11, color: '#6b6761' }}>{msg.time}</span>
-              </div>
-              <div style={{ fontSize: 13.5, color: '#b9b4ae', lineHeight: 1.55 }}>
-                {msg.content}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Input bar */}
-      <div
-        style={{
-          margin: '8px 16px 16px',
-          border: '1px solid #3d3d3d',
-          borderRadius: 8,
-          padding: '10px 14px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: 10,
-          background: '#222226',
-        }}
-      >
-        <span style={{ color: '#6b6761', fontSize: 13 }}>Message #sockt-swarms</span>
-        <span
+        {/* Workspace */}
+        <div
           style={{
-            marginLeft: 'auto',
-            fontFamily: 'var(--font-mono)',
-            fontSize: 10,
-            color: '#3d3d3d',
+            padding: '0 14px 16px',
+            borderBottom: '1px solid #222428',
+            marginBottom: 12,
           }}
         >
-          ↵
-        </span>
+          <div
+            style={{
+              fontWeight: 700,
+              fontSize: 13,
+              color: '#EEECE8',
+              letterSpacing: '-0.01em',
+            }}
+          >
+            Your Workspace
+          </div>
+          <div
+            style={{
+              fontSize: 11,
+              color: '#6D6D78',
+              marginTop: 2,
+              fontFamily: 'var(--font-mono)',
+            }}
+          >
+            ● Online
+          </div>
+        </div>
+
+        {/* Channels */}
+        <div style={{ padding: '0 8px', display: 'flex', flexDirection: 'column', gap: 1 }}>
+          <div
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: 10,
+              color: '#44444B',
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              padding: '4px 8px 8px',
+            }}
+          >
+            Channels
+          </div>
+          {CHANNELS.map((ch) => (
+            <div
+              key={ch.name}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                padding: '5px 8px',
+                borderRadius: 6,
+                background: ch.active ? 'rgba(255,255,255,0.06)' : 'transparent',
+                cursor: 'pointer',
+              }}
+            >
+              <span style={{ color: '#44444B', fontSize: 13 }}>#</span>
+              <span
+                style={{
+                  fontSize: 12,
+                  color: ch.active ? '#EEECE8' : '#6D6D78',
+                  fontWeight: ch.active ? 500 : 400,
+                  letterSpacing: '-0.01em',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {ch.name}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Main */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+        {/* Header */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            padding: '12px 16px',
+            borderBottom: '1px solid #222428',
+          }}
+        >
+          <span style={{ color: '#44444B', fontSize: 14 }}>#</span>
+          <span style={{ fontSize: 13, fontWeight: 600, color: '#EEECE8' }}>sockt-swarms</span>
+          <span
+            style={{
+              marginLeft: 'auto',
+              fontFamily: 'var(--font-mono)',
+              fontSize: 10,
+              color: '#44444B',
+            }}
+          >
+            ···
+          </span>
+        </div>
+
+        {/* Messages */}
+        <div style={{ flex: 1, padding: '12px 4px', display: 'flex', flexDirection: 'column', gap: 0, overflowY: 'auto' }}>
+          {MESSAGES.slice(0, visible).map((msg, i) => (
+            <div
+              key={i}
+              style={{
+                display: 'flex',
+                gap: 10,
+                padding: '6px 12px',
+                transition: 'opacity 0.4s ease',
+                opacity: i < visible ? 1 : 0,
+              }}
+            >
+              {/* Avatar */}
+              <div
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: 6,
+                  background: msg.agent ? '#242428' : '#2A2A2F',
+                  border: msg.agent ? '1px solid #38383E' : '1px solid #2A2A2F',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                  marginTop: 2,
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: msg.agent ? 9 : 11,
+                  color: msg.agent ? '#A09D98' : '#6D6D78',
+                  fontWeight: 600,
+                }}
+              >
+                {msg.agent ? '{*}' : msg.name[0]}
+              </div>
+
+              {/* Content */}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 3 }}>
+                  <span
+                    style={{
+                      fontSize: 13,
+                      fontWeight: 700,
+                      color: msg.agent ? '#EEECE8' : '#C8C6C2',
+                      letterSpacing: '-0.01em',
+                    }}
+                  >
+                    {msg.name}
+                  </span>
+                  {msg.badge && (
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: 8,
+                        color: '#6D6D78',
+                        background: '#1D1D22',
+                        border: '1px solid #2A2A2F',
+                        borderRadius: 3,
+                        padding: '1px 5px',
+                        letterSpacing: '0.08em',
+                      }}
+                    >
+                      {msg.badge}
+                    </span>
+                  )}
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: '#44444B' }}>
+                    {msg.time}
+                  </span>
+                </div>
+                {msg.lines.map((line, j) => (
+                  <div
+                    key={j}
+                    style={{
+                      fontSize: 13,
+                      color: '#A09D98',
+                      lineHeight: 1.5,
+                      marginBottom: j < msg.lines.length - 1 ? 2 : 0,
+                    }}
+                  >
+                    {line}
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Input */}
+        <div style={{ padding: '10px 12px 14px' }}>
+          <div
+            style={{
+              border: '1px solid #2A2A2F',
+              borderRadius: 8,
+              padding: '9px 14px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              background: '#1D1D22',
+            }}
+          >
+            <span style={{ color: '#44444B', fontSize: 12 }}>Message #sockt-swarms</span>
+            <span style={{ marginLeft: 'auto', fontFamily: 'var(--font-mono)', fontSize: 10, color: '#2A2A2F' }}>↵</span>
+          </div>
+        </div>
       </div>
     </div>
   );

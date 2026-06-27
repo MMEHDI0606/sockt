@@ -1,73 +1,69 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const NODES = [
-  { id: 'slack', label: 'Slack', sub: 'Message / mention', color: '#4A154B' },
-  { id: 'gateway', label: 'Gateway', sub: 'Channel + auth', color: '#c27a36' },
-  { id: 'orch', label: 'Orchestrator', sub: 'FSM task list', color: '#c27a36' },
-  { id: 'tee', label: 'TEE Sandbox', sub: 'Isolated compute', color: '#c27a36' },
-  { id: 'gbrain', label: 'GBrain', sub: 'Git-backed memory', color: '#22d07a' },
+  { label: 'Slack', sub: 'channel', icon: '#' },
+  { label: 'Gateway', sub: 'auth + routing', icon: '⬡' },
+  { label: 'Orchestrator', sub: 'FSM task list', icon: '◈' },
+  { label: 'TEE Sandbox', sub: 'isolated compute', icon: '⬢' },
+  { label: 'GBrain', sub: 'git-backed memory', icon: '◎' },
 ];
 
-export default function ArchFlow({ compact = false }: { compact?: boolean }) {
-  const dotRef = useRef<HTMLDivElement>(null);
-  const lineRef = useRef<HTMLDivElement>(null);
+export default function ArchFlow({ vertical = false }: { vertical?: boolean }) {
+  const [active, setActive] = useState(0);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
-    if (!dotRef.current || !lineRef.current) return;
-    const dot = dotRef.current;
-    const line = lineRef.current;
-    const lineWidth = line.offsetWidth;
-
-    let x = 0;
-    let dir = 1;
-    let raf: number;
-
-    const animate = () => {
-      x += dir * 0.5;
-      if (x >= lineWidth - 8 || x <= 0) dir *= -1;
-      dot.style.left = `${x}px`;
-      raf = requestAnimationFrame(animate);
-    };
-    raf = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(raf);
+    timerRef.current = setInterval(() => {
+      setActive((prev) => (prev + 1) % NODES.length);
+    }, 900);
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, []);
 
-  if (compact) {
+  if (vertical) {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, width: '100%' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
         {NODES.map((node, i) => (
-          <div key={node.id} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <div
-              style={{
-                width: 8,
-                height: 8,
-                borderRadius: '50%',
-                background: node.color,
-                flexShrink: 0,
-              }}
-            />
-            <div>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: '#f0ece4', letterSpacing: '0.06em' }}>
-                {node.label}
-              </span>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: '#6b6761', marginLeft: 8 }}>
-                {node.sub}
-              </span>
-            </div>
-            {i < NODES.length - 1 && (
+          <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 0 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 28, flexShrink: 0 }}>
               <div
                 style={{
-                  marginLeft: 'auto',
-                  fontFamily: 'var(--font-mono)',
+                  width: 28,
+                  height: 28,
+                  borderRadius: '50%',
+                  border: `1.5px solid ${i === active ? '#EEECE8' : '#2A2A2F'}`,
+                  background: i === active ? '#1D1D22' : 'transparent',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                   fontSize: 11,
-                  color: '#3d3d3d',
+                  color: i === active ? '#EEECE8' : '#44444B',
+                  transition: 'all 0.4s ease',
+                  flexShrink: 0,
                 }}
               >
-                ↓
+                {node.icon}
               </div>
-            )}
+              {i < NODES.length - 1 && (
+                <div
+                  style={{
+                    width: 1,
+                    height: 24,
+                    background: i < active ? '#EEECE8' : '#26262B',
+                    transition: 'background 0.4s ease',
+                  }}
+                />
+              )}
+            </div>
+            <div style={{ paddingLeft: 12, paddingBottom: i < NODES.length - 1 ? 4 : 0, paddingTop: 4 }}>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: i === active ? '#EEECE8' : '#6D6D78', letterSpacing: '0.06em', transition: 'color 0.4s ease' }}>
+                {node.label}
+              </div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: '#44444B', marginTop: 1 }}>
+                {node.sub}
+              </div>
+            </div>
           </div>
         ))}
       </div>
@@ -75,72 +71,51 @@ export default function ArchFlow({ compact = false }: { compact?: boolean }) {
   }
 
   return (
-    <div style={{ width: '100%', overflowX: 'auto' }}>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 0,
-          minWidth: 560,
-          position: 'relative',
-        }}
-      >
+    <div style={{ width: '100%', overflowX: 'auto', paddingBottom: 8 }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 0, minWidth: 520 }}>
         {NODES.map((node, i) => (
-          <div key={node.id} style={{ display: 'flex', alignItems: 'center', flex: i < NODES.length - 1 ? 1 : 'none' }}>
+          <div
+            key={i}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              flex: i < NODES.length - 1 ? 1 : 'none',
+            }}
+          >
             {/* Node */}
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: 6,
-                flexShrink: 0,
-              }}
-            >
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, flexShrink: 0 }}>
               <div
                 style={{
-                  width: 48,
-                  height: 48,
+                  width: 44,
+                  height: 44,
                   borderRadius: 10,
-                  border: `1.5px solid ${node.color}40`,
-                  background: `${node.color}10`,
+                  border: `1px solid ${i === active ? '#46464E' : '#26262B'}`,
+                  background: i === active ? '#1D1D22' : '#0E0E12',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  position: 'relative',
+                  fontSize: 14,
+                  color: i === active ? '#EEECE8' : '#44444B',
+                  transition: 'all 0.4s var(--ease-expo)',
+                  boxShadow: i === active ? '0 0 20px rgba(238,236,232,0.06)' : 'none',
                 }}
               >
-                <div
-                  style={{
-                    width: 10,
-                    height: 10,
-                    borderRadius: '50%',
-                    background: node.color,
-                    boxShadow: `0 0 10px ${node.color}`,
-                  }}
-                />
+                {node.icon}
               </div>
-              <div style={{ textAlign: 'center' }}>
-                <div
-                  style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: 11,
-                    color: '#f0ece4',
-                    letterSpacing: '0.06em',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {node.label}
-                </div>
+              <div style={{ textAlign: 'center', width: 90 }}>
                 <div
                   style={{
                     fontFamily: 'var(--font-mono)',
                     fontSize: 10,
-                    color: '#6b6761',
+                    color: i === active ? '#EEECE8' : '#6D6D78',
+                    letterSpacing: '0.06em',
                     whiteSpace: 'nowrap',
-                    marginTop: 2,
+                    transition: 'color 0.4s ease',
                   }}
                 >
+                  {node.label}
+                </div>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: '#44444B', marginTop: 2, whiteSpace: 'nowrap' }}>
                   {node.sub}
                 </div>
               </div>
@@ -149,41 +124,27 @@ export default function ArchFlow({ compact = false }: { compact?: boolean }) {
             {/* Connector */}
             {i < NODES.length - 1 && (
               <div
-                ref={i === 1 ? lineRef : undefined}
                 style={{
                   flex: 1,
                   height: 1,
-                  background: 'linear-gradient(90deg, #c27a3640, #c27a3620)',
+                  background: i < active ? 'linear-gradient(90deg, #46464E, #2A2A2F)' : '#1D1D22',
+                  marginBottom: 32,
                   position: 'relative',
-                  marginBottom: 28,
-                  minWidth: 20,
+                  minWidth: 16,
+                  transition: 'background 0.4s ease',
                 }}
               >
-                {i === 1 && (
-                  <div
-                    ref={dotRef}
-                    style={{
-                      position: 'absolute',
-                      top: -3,
-                      left: 0,
-                      width: 7,
-                      height: 7,
-                      borderRadius: '50%',
-                      background: '#c27a36',
-                      boxShadow: '0 0 8px #c27a36',
-                    }}
-                  />
-                )}
                 <div
                   style={{
                     position: 'absolute',
-                    right: -4,
+                    right: -3,
                     top: -3,
                     width: 0,
                     height: 0,
-                    borderTop: '4px solid transparent',
-                    borderBottom: '4px solid transparent',
-                    borderLeft: '6px solid #c27a3640',
+                    borderTop: '3px solid transparent',
+                    borderBottom: '3px solid transparent',
+                    borderLeft: `5px solid ${i < active ? '#46464E' : '#1D1D22'}`,
+                    transition: 'border-left-color 0.4s ease',
                   }}
                 />
               </div>
