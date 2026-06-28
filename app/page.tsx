@@ -97,20 +97,14 @@ const STATS = [
 ];
 
 const CRISES = [
-  { n:'01', title:'Runaway cost loops',
-    body:'Two agents in a shared workspace with no structural coordination fall into open-ended peer-to-peer messaging. Token spend reaches $200–$3,000 before a manual cap fires — which kills the agent, not the loop.',
-    fix:'Hierarchical FSM + SQLite task list. Every agent interaction is discrete, locked, auditable. Horizontal messaging is structurally impossible. Loops cannot form.' },
-  { n:'02', title:'Amnesiac background jobs',
-    body:"Hermes Agent's cron scheduler hardcodes skip_memory=True to prevent background prompts contaminating session history. What an agent learns at 2 AM disappears before the 8 AM run.",
-    fix:"CADVP daemon. Background agents write to an isolated JSONL stream on disk. A host-layer monitor commits verified outputs to GBrain — foreground history stays clean." },
-  { n:'03', title:'Credential leakage via injection',
-    body:'Agents holding raw API keys in their active context are trivially exploitable. A malicious string in any processed content — a Slack message, a GitHub issue, a webpage — can exfiltrate credentials to an attacker.',
-    fix:'OneCLI Secret Vault Proxy. Credentials live in a host-layer vault, never in agent scope. Agents hold placeholders; the proxy injects real keys at the network layer. A fully-compromised agent has nothing to exfiltrate.' },
+  { n:'01', title:'Runaway cost loops',      fix:'FSM task list. No horizontal agent messaging. Loops structurally cannot form.' },
+  { n:'02', title:'Amnesiac background jobs', fix:'CADVP daemon. Background memory committed to GBrain — session history stays clean.' },
+  { n:'03', title:'Credential leakage',       fix:'Secret Vault Proxy. Keys never enter agent scope. A compromised agent has nothing to exfiltrate.' },
 ];
 
 const DEPARTMENTS = [
   { tag:'growth', name:'Growth & Lead Gen',
-    desc:'Finds buying-intent signals on Reddit, HN, LinkedIn. Enriches leads, drafts hyper-personalized outreach for approval.',
+    desc:'Finds intent signals. Enriches leads. Drafts outreach for approval.',
     roles:['Social Listening Monitor','Lead Researcher','Outbound Specialist'],
     stat:'70–90% automation on first-contact drafting',
     detail:'First enriched lead list: within 2 hours of activation.',
@@ -120,7 +114,7 @@ const DEPARTMENTS = [
       { a:true,  t:'✓ Sent. 1 held (74). 2 discarded. GBrain updated.' },
     ]},
   { tag:'product', name:'Product Development',
-    desc:'Turns a ticket into a structured spec, executes approved steps in an isolated sandbox, runs tests, returns a consolidated PR.',
+    desc:'Ticket → spec → sandboxed execution → consolidated PR.',
     roles:['Product Architect','Coder Agent','QA Tester'],
     stat:'60–80% automation on junior-to-mid dev tickets',
     detail:'Spec-gated execution prevents "write code first, think later" retry loops.',
@@ -130,7 +124,7 @@ const DEPARTMENTS = [
       { a:true,  t:'✓ PR #48 opened. Tests passing. 1 edge case flagged.' },
     ]},
   { tag:'eng ops', name:'Engineering Ops',
-    desc:'Catches Sentry errors, correlates with recent commits, produces a root-cause hypothesis, and self-documents resolutions.',
+    desc:'Error → commit correlation → root-cause hypothesis → runbook update.',
     roles:['Sentry Monitor','Incident Triager','Docs Writer'],
     stat:'< 15 min from alert to root-cause hypothesis',
     detail:'Every resolved incident is committed to GBrain — the next triage is faster.',
@@ -174,9 +168,8 @@ function CrisesSection() {
               <div style={{ fontFamily:C.mono, fontSize:56, fontWeight:400, color:'#1D1D22', lineHeight:1, position:'absolute', top:24, right:28, letterSpacing:'-0.04em', userSelect:'none' }}>
                 {c.n}
               </div>
-              <div style={{ fontFamily:'var(--font-subhead)', fontSize:'1.3rem', fontWeight:700, color:C.primary, marginBottom:14, letterSpacing:'-0.025em', lineHeight:1.2 }}>{c.title}</div>
-              <p style={{ fontFamily:C.body, fontSize:14, color:C.secondary, lineHeight:1.72, marginBottom:24 }}>{c.body}</p>
-              <div style={{ borderTop:`1px solid ${C.border}`, paddingTop:20, fontFamily:C.mono, fontSize:11, color:'#6D6D78', lineHeight:1.6 }}>
+              <div style={{ fontFamily:'var(--font-subhead)', fontSize:'1.3rem', fontWeight:700, color:C.primary, marginBottom:20, letterSpacing:'-0.025em', lineHeight:1.2 }}>{c.title}</div>
+              <div style={{ fontFamily:C.mono, fontSize:11, color:'#6D6D78', lineHeight:1.6 }}>
                 <span style={{ color:C.primary, marginRight:8 }}>FIX ›</span>{c.fix}
               </div>
             </div>
@@ -262,21 +255,15 @@ function HowItWorksSection() {
             <span data-reveal style={label()}>Setup</span>
             <h2 data-reveal style={{ ...H2(), marginBottom:40 }}>Live in Slack in under 10 minutes.</h2>
             <div style={{ display:'flex', flexDirection:'column', gap:0 }}>
-              {[['Connect Slack','OAuth into your workspace. Permission scopes are minimal and listed in plain English.'],
-                ['Pick a department','Growth, Product Dev, or Eng Ops — each is a fully preconfigured multi-agent team.'],
-                ['Seed memory','5 questions. Seeds GBrain with your ICP, offer, channels to watch, and approval rules.'],
-                ['Bring your own key','Anthropic, OpenAI, Azure, Gemini, or self-hosted. Your bill, your rates, zero markup.'],
-                ['Swarm activates','Agents DM you in Slack. First real output — leads, PR, or incident triage — within 2 hours.'],
-              ].map(([title,body],i,arr) => (
+              {['Connect Slack','Pick a department','Seed memory','Bring your own key','Swarm activates'].map((title,i,arr) => (
                 <div key={title} data-reveal>
                   <div style={{ display:'flex', gap:0 }}>
                     <div style={{ display:'flex', flexDirection:'column', alignItems:'center', width:32, flexShrink:0 }}>
                       <div style={{ width:24, height:24, borderRadius:'50%', border:`1px solid ${C.border}`, background:C.raised, display:'flex', alignItems:'center', justifyContent:'center', fontFamily:C.mono, fontSize:9, color:C.secondary, flexShrink:0 }}>{String(i+1).padStart(2,'0')}</div>
-                      {i < arr.length-1 && <div style={{ width:1, flex:1, minHeight:20, background:C.border }} />}
+                      {i < arr.length-1 && <div style={{ width:1, flex:1, minHeight:16, background:C.border }} />}
                     </div>
-                    <div style={{ paddingLeft:14, paddingBottom:22 }}>
-                      <div style={{ fontFamily:'var(--font-subhead)', fontSize:'1rem', fontWeight:600, color:C.primary, marginBottom:5, paddingTop:3 }}>{title}</div>
-                      <div style={{ fontFamily:C.body, fontSize:13.5, color:C.secondary, lineHeight:1.62 }}>{body}</div>
+                    <div style={{ paddingLeft:14, paddingBottom:18 }}>
+                      <div style={{ fontFamily:'var(--font-subhead)', fontSize:'1rem', fontWeight:600, color:C.primary, paddingTop:3 }}>{title}</div>
                     </div>
                   </div>
                 </div>
@@ -285,16 +272,15 @@ function HowItWorksSection() {
           </div>
           <div>
             <span data-reveal style={label()}>Architecture</span>
-            <h2 data-reveal style={{ ...H2(), marginBottom:36 }}>Three layers. Everything needed, nothing redundant.</h2>
-            <div data-reveal><ArchFlow /></div>
+            <div data-reveal style={{ marginBottom:28 }}><ArchFlow /></div>
             <div style={{ marginTop:28, display:'flex', flexDirection:'column', gap:1 }}>
-              {[{ layer:'Execution', body:'Hermes agents run Plan→Act→Observe→Reflect inside AMD SEV-SNP / Intel SGX enclaves. Powered entirely by your own LLM key.' },
-                { layer:'Coordination', body:'OpenClaw gateway + FSM task list. No horizontal agent messaging. Every interaction is a discrete, locked, logged task record with a defined terminal.' },
-                { layer:'Memory', body:'GBrain: Git-backed Markdown knowledge graph. Every decision is immutable, human-readable, diff-able, and rollback-able in under 60 seconds.' },
+              {[{ layer:'Execution', body:'Plan→Act→Observe→Reflect · TEE-isolated · your LLM key' },
+                { layer:'Coordination', body:'FSM task list · no horizontal messaging · every action logged' },
+                { layer:'Memory', body:'GBrain · Git-backed · diff-able · rollback in < 60s' },
               ].map((item) => (
-                <div key={item.layer} data-reveal style={{ border:`1px solid ${C.border}`, padding:'16px 20px', background:C.raised }}>
-                  <div style={{ fontFamily:C.mono, fontSize:10, color:C.primary, letterSpacing:'0.1em', textTransform:'uppercase', marginBottom:7 }}>{item.layer}</div>
-                  <div style={{ fontSize:13, color:C.secondary, lineHeight:1.62 }}>{item.body}</div>
+                <div key={item.layer} data-reveal style={{ border:`1px solid ${C.border}`, padding:'14px 18px', background:C.raised, display:'flex', alignItems:'center', gap:16 }}>
+                  <div style={{ fontFamily:C.mono, fontSize:10, color:C.primary, letterSpacing:'0.1em', textTransform:'uppercase', flexShrink:0, minWidth:100 }}>{item.layer}</div>
+                  <div style={{ fontFamily:C.mono, fontSize:11, color:C.secondary }}>{item.body}</div>
                 </div>
               ))}
             </div>
@@ -314,10 +300,7 @@ function SecuritySection() {
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(300px, 1fr))', gap:'6vw', alignItems:'start' }}>
           <div>
             <span data-reveal style={label()}>Bring Your Own Key</span>
-            <h2 data-reveal style={{ ...H2(), marginBottom:20 }}>You pay your LLM provider. We never see that line.</h2>
-            <p data-reveal style={{ fontFamily:C.body, fontSize:'1rem', lineHeight:1.72, color:C.secondary, marginBottom:32 }}>
-              Sockt charges only for orchestration infrastructure — FSM coordination, GBrain memory, TEE isolation, fleet intelligence. Your inference bill stays between you and your provider at their rates.
-            </p>
+            <h2 data-reveal style={{ ...H2(), marginBottom:28 }}>You pay your LLM provider. We never see that line.</h2>
             <div data-reveal style={{ display:'flex', flexDirection:'column', gap:10 }}>
               {['Anthropic (Claude) — recommended','OpenAI (GPT-4o, GPT-4o-mini)','Azure OpenAI','Google Gemini','Self-hosted: Ollama · vLLM · LM Studio'].map((p) => (
                 <div key={p} style={{ display:'flex', alignItems:'center', gap:10, fontFamily:C.mono, fontSize:11, color:C.secondary }}>
@@ -330,14 +313,14 @@ function SecuritySection() {
             <span data-reveal style={label()}>Security Architecture</span>
             <h2 data-reveal style={{ ...H2(), marginBottom:28 }}>No credentials in agent context. Ever.</h2>
             <div style={{ display:'flex', flexDirection:'column', gap:1 }}>
-              {[{ layer:'TEE Hardware Isolation', body:'AMD SEV-SNP / Intel SGX enclaves. Memory pages are CPU-encrypted — host admins, including Sockt, cannot inspect a running container.' },
-                { layer:'Secret Vault Proxy', body:'Agents hold placeholder keys. A host-layer proxy intercepts every outbound call, injects real credentials, and forwards. A fully-compromised agent has mathematically nothing to exfiltrate.' },
-                { layer:'Egress Allowlist', body:'All outbound traffic routes through per-customer domain rules. DNS covert channels blocked. Injection attempts logged and distributed to fleet in < 60 min.' },
-                { layer:'HITL Gates', body:'Tier 1 auto-executes. Tier 2 needs human approval before any external action. Tier 3 is permanently blocked at the proxy layer — agent reasoning cannot override this.' },
+              {[{ layer:'TEE Isolation',     body:'AMD SEV-SNP / SGX enclaves. Host admins cannot inspect a running container.' },
+                { layer:'Secret Vault',      body:'Keys never enter agent scope. Compromised agent has nothing to exfiltrate.' },
+                { layer:'Egress Allowlist',  body:'Per-customer domain rules. Injection attempts distributed to fleet in < 60 min.' },
+                { layer:'HITL Gates',        body:'Auto / approval / permanently blocked. Classification enforced at proxy layer.' },
               ].map((item) => (
-                <div key={item.layer} data-reveal style={{ border:`1px solid ${C.border}`, borderLeft:'2px solid #46464E', padding:'16px 18px', background:C.raised }}>
-                  <div style={{ fontFamily:C.mono, fontSize:10, color:C.primary, letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:7 }}>{item.layer}</div>
-                  <div style={{ fontSize:13, color:C.secondary, lineHeight:1.62 }}>{item.body}</div>
+                <div key={item.layer} data-reveal style={{ border:`1px solid ${C.border}`, borderLeft:'2px solid #46464E', padding:'14px 18px', background:C.raised }}>
+                  <div style={{ fontFamily:C.mono, fontSize:10, color:C.primary, letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:5 }}>{item.layer}</div>
+                  <div style={{ fontSize:12, color:C.secondary, lineHeight:1.5 }}>{item.body}</div>
                 </div>
               ))}
             </div>
@@ -357,10 +340,7 @@ function FleetSection() {
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(300px, 1fr))', gap:'6vw', alignItems:'center' }}>
           <div>
             <span data-reveal style={label()}>Fleet Intelligence</span>
-            <h2 data-reveal style={{ ...H2(), marginBottom:20 }}>Your agents learn from 200+ deployments — not just yours.</h2>
-            <p data-reveal style={{ fontFamily:C.body, fontSize:'1rem', lineHeight:1.72, color:C.secondary }}>
-              A self-hosted deployment has N=1 data — no baseline, no collective threat intelligence, no proactive API monitoring. Paid tiers tap a network that becomes more valuable with every deployment added.
-            </p>
+            <h2 data-reveal style={{ ...H2(), marginBottom:0 }}>Your agents learn from 200+ deployments — not just yours.</h2>
           </div>
           <div>
             <div data-reveal style={{ display:'flex', justifyContent:'center', marginBottom:32, opacity:0.75 }}>
@@ -396,8 +376,8 @@ function PricingSection() {
             <span data-reveal style={label()}>Pricing</span>
             <h2 data-reveal style={{ ...H2(), maxWidth:'16ch' }}>Platform fee. Your LLM costs stay yours.</h2>
           </div>
-          <p data-reveal style={{ fontFamily:C.mono, fontSize:11, color:C.secondary, maxWidth:'36ch', lineHeight:1.7, letterSpacing:'0.02em', margin:0 }}>
-            No inference markup. No per-seat lock-in. Pay Sockt for orchestration intelligence.
+          <p data-reveal style={{ fontFamily:C.mono, fontSize:11, color:C.secondary, letterSpacing:'0.04em', margin:0 }}>
+            No inference markup. No per-seat lock-in.
           </p>
         </div>
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(170px, 1fr))', gap:1 }}>
@@ -448,8 +428,8 @@ function OpenSourceSection() {
           <div>
             <span data-reveal style={label()}>Open-Core</span>
             <h2 data-reveal style={{ ...H2(), marginBottom:20 }}>AI infrastructure shouldn't be a black box.</h2>
-            <p data-reveal style={{ fontFamily:C.body, fontSize:'1rem', lineHeight:1.72, color:C.secondary, marginBottom:32 }}>
-              The core orchestration, FSM engine, and memory layer are open source under FSL-1.1-MIT — any engineer can verify that loop-prevention and memory architecture work as described. Self-host on a $20/month VPS, or let us run it.
+            <p data-reveal style={{ fontFamily:C.body, fontSize:'1rem', lineHeight:1.6, color:C.secondary, marginBottom:28 }}>
+              Audit the loop-prevention and memory architecture yourself. Self-host free, or let us run it.
             </p>
             <div data-reveal style={{ display:'flex', gap:12, flexWrap:'wrap' }}>
               <a href="https://github.com/MMEHDI0606/sockt" target="_blank" rel="noopener noreferrer"
@@ -524,8 +504,8 @@ export default function Home() {
                     not a tool.
                   </span>
                 </h1>
-                <p style={{ fontFamily:C.body, fontSize:'1.05rem', lineHeight:1.72, color:C.secondary, maxWidth:'50ch', marginBottom:36 }}>
-                  Preconfigured AI departments that live in Slack, share persistent memory, and coordinate safely — with structural loop prevention, hardware-isolated execution, and fleet intelligence that learns from every deployment.
+                <p style={{ fontFamily:C.body, fontSize:'1.05rem', lineHeight:1.6, color:C.secondary, maxWidth:'40ch', marginBottom:36 }}>
+                  AI departments for Slack. BYOK. No runaway bills. No amnesiac agents. No credential leaks.
                 </p>
                 <div style={{ display:'flex', gap:12, flexWrap:'wrap', marginBottom:36 }}>
                   <Link href="/pricing"
@@ -588,8 +568,8 @@ export default function Home() {
               <h2 style={{ fontFamily:'var(--font-headline)', fontSize:'clamp(2.4rem, 6vw, 5.5rem)', fontWeight:800, letterSpacing:'-0.04em', lineHeight:0.96, color:C.primary, margin:0, fontVariationSettings:"'opsz' 100" }}>
                 Launch an AI department this week.
               </h2>
-              <p style={{ fontFamily:C.body, fontSize:'1rem', color:C.secondary, lineHeight:1.7, maxWidth:'44ch', margin:0 }}>
-                Under 10 minutes to activate. First real output within 2 hours. GBrain transfers seamlessly if you change tiers.
+              <p style={{ fontFamily:C.mono, fontSize:11, color:C.secondary, letterSpacing:'0.06em', margin:0 }}>
+                Under 10 minutes to activate. First output within 2 hours.
               </p>
               <Link href="/pricing"
                 style={{ background:C.primary, color:C.void, padding:'15px 40px', borderRadius:999, fontFamily:C.mono, fontSize:13, fontWeight:700, letterSpacing:'0.08em', display:'inline-block', marginTop:8, transition:'opacity 0.15s ease' }}
