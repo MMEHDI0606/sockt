@@ -1,1161 +1,596 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Script from 'next/script';
 import Link from 'next/link';
 import { createClient } from '@/utils/supabase/client';
 import Nav from '@/components/nav/Nav';
 import Footer from '@/components/sections/Footer';
 import SlackMock from '@/components/sections/SlackMock';
 import ArchFlow from '@/components/sections/ArchFlow';
+import PageLoader from '@/components/sections/PageLoader';
+import AmbientBlobs from '@/components/canvas/AmbientBlobs';
+import SwarmOrbit from '@/components/svg/SwarmOrbit';
+import MemoryPulse from '@/components/svg/MemoryPulse';
+import Marquee from '@/components/svg/Marquee';
+import { useReveal } from '@/hooks/useReveal';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sockt.dev';
-
-const organizationJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: 'Sockt',
-  url: siteUrl,
-  logo: `${siteUrl}/favicon.svg`,
-  description: 'AI workforce platform. Preconfigured departmental swarms in Slack with persistent memory, loop prevention, and credential isolation.',
-  sameAs: ['https://x.com/socktdev', 'https://github.com/socktdev'],
+// ─── Tokens ───────────────────────────────────────────────────────────────────
+const C = {
+  mono:      'var(--font-mono)'      as const,
+  body:      'var(--font-body)'      as const,
+  headline:  'var(--font-headline)'  as const,
+  primary:   'var(--text-primary)'   as const,
+  secondary: 'var(--text-secondary)' as const,
+  border:    'var(--bg-border)'      as const,
+  surface:   'var(--bg-surface)'     as const,
+  raised:    'var(--bg-raised)'      as const,
+  void:      'var(--bg-void)'        as const,
 };
 
-const websiteJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: 'Sockt',
-  url: siteUrl,
-  description: 'Sockt deploys preconfigured AI employee swarms into Slack. They coordinate, remember, and compound in intelligence — with built-in loop prevention and credential isolation.',
-};
+const wrap: React.CSSProperties = { maxWidth: 1160, margin: '0 auto', padding: '0 28px' };
+const sep:  React.CSSProperties = { borderTop: `1px solid ${C.border}` };
 
-// ─── Design tokens ─────────────────────────────────────────────────────────────
-const s: Record<string, React.CSSProperties> = {
-  page: { color: 'var(--text-primary)', background: 'var(--bg-void)' },
-  container: { maxWidth: 1200, margin: '0 auto', padding: '0 24px' },
-  label: {
-    fontFamily: 'var(--font-mono)',
-    fontSize: 11,
-    letterSpacing: '0.14em',
-    textTransform: 'uppercase' as const,
-    color: 'var(--accent-btc)',
-    marginBottom: 16,
-  },
-  divider: { borderTop: '1px solid var(--bg-border)' },
-};
+const label = (color = C.secondary): React.CSSProperties => ({
+  fontFamily: C.mono, fontSize: 10, letterSpacing: '0.18em',
+  textTransform: 'uppercase', color, marginBottom: 22, display: 'block',
+});
+
+// Section headings — DM Sans (clean sans subhead voice)
+const H2 = (extra: React.CSSProperties = {}): React.CSSProperties => ({
+  fontFamily: 'var(--font-subhead)', fontSize: 'clamp(2rem, 4vw, 3.8rem)',
+  fontWeight: 700, lineHeight: 1.04, letterSpacing: '-0.03em',
+  color: C.primary, margin: 0, ...extra,
+});
+
+// ─── Stats with count-up ──────────────────────────────────────────────────────
+function AnimatedStat({ value, label }: { value: string; label: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [displayed, setDisplayed] = useState('—');
+  const startedRef = useRef(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !startedRef.current) {
+        startedRef.current = true;
+        // After a brief delay, show the real value with a character-reveal effect
+        let idx = 0;
+        const reveal = () => {
+          idx++;
+          setDisplayed(value.slice(0, idx));
+          if (idx < value.length) setTimeout(reveal, 60);
+        };
+        setTimeout(reveal, 200);
+      }
+    }, { threshold: 0.6 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [value]);
+
+  return (
+    <div ref={ref} style={{ padding: '28px 24px' }}>
+      <div style={{
+        fontFamily: 'var(--font-subhead)',
+        fontSize: 'clamp(1.4rem, 3vw, 2.2rem)',
+        fontWeight: 700, letterSpacing: '-0.03em',
+        color: C.primary, lineHeight: 1, marginBottom: 8,
+        fontVariantNumeric: 'tabular-nums',
+        minHeight: '1.2em',
+      }}>
+        {displayed}
+      </div>
+      <div style={{ fontFamily: C.mono, fontSize: 10, color: C.secondary, letterSpacing: '0.08em' }}>
+        {label}
+      </div>
+    </div>
+  );
+}
+
+// ─── Data ─────────────────────────────────────────────────────────────────────
+const STATS = [
+  { v: '< 10 min', l: 'sign-up to active swarm' },
+  { v: '< 2 hrs',  l: 'first enriched output' },
+  { v: '60–75%',   l: 'token cost reduction (month 3)' },
+  { v: 'N=∞',      l: 'fleet intelligence vs. self-hosted N=1' },
+];
 
 const CRISES = [
-  {
-    n: '01',
-    title: 'Runaway cost loops',
-    problem: 'Two agents sharing a workspace fall into open-ended ping-pong — burning $200–$3,000 in tokens before anyone notices.',
-    fix: 'FSM-enforced task list. Every agent interaction is a discrete, auditable task — not free-form messaging.',
-    icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <path d="M12 2L2 7l10 5 10-5-10-5z" stroke="var(--accent-btc)" strokeWidth="1.5"/>
-        <path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="var(--accent-btc)" strokeWidth="1.5"/>
-      </svg>
-    ),
-  },
-  {
-    n: '02',
-    title: 'Amnesiac background jobs',
-    problem: 'Scheduled agents skip memory init to avoid contaminating session history. What they learn at 2 AM disappears by 8 AM.',
-    fix: 'CADVP protocol. Background agents write to an isolated event stream; a daemon commits verified outputs to GBrain.',
-    icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <circle cx="12" cy="12" r="9" stroke="var(--accent-btc)" strokeWidth="1.5"/>
-        <path d="M12 7v5l3 3" stroke="var(--accent-btc)" strokeWidth="1.5" strokeLinecap="round"/>
-      </svg>
-    ),
-  },
-  {
-    n: '03',
-    title: 'Credential leakage',
-    problem: 'Agents holding raw API keys in their context window are exploitable by a single malicious string in any content they process.',
-    fix: 'OneCLI Secret Vault Proxy. Real credentials are injected at the host layer — mathematically invisible to the agent\'s context.',
-    icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <rect x="5" y="11" width="14" height="10" rx="2" stroke="var(--accent-btc)" strokeWidth="1.5"/>
-        <path d="M8 11V7a4 4 0 018 0v4" stroke="var(--accent-btc)" strokeWidth="1.5" strokeLinecap="round"/>
-        <circle cx="12" cy="16" r="1.5" fill="var(--accent-btc)"/>
-      </svg>
-    ),
-  },
+  { n:'01', title:'Runaway cost loops',      fix:'FSM task list. No horizontal agent messaging. Loops structurally cannot form.' },
+  { n:'02', title:'Amnesiac background jobs', fix:'CADVP daemon. Background memory committed to GBrain — session history stays clean.' },
+  { n:'03', title:'Credential leakage',       fix:'Secret Vault Proxy. Keys never enter agent scope. A compromised agent has nothing to exfiltrate.' },
 ];
 
 const DEPARTMENTS = [
-  {
-    name: 'Growth & Lead Gen',
-    tag: 'outbound',
-    roles: ['Social Listening Monitor', 'Lead Researcher', 'Outbound Specialist'],
-    body: 'Finds intent signals. Enriches leads. Drafts outreach for approval.',
-    stat: '70–90% automation on first-contact drafting',
-    preview: [
-      { agent: true, text: 'Found 3 leads from r/SaaS with high CRM pain. Drafting outreach now.' },
-      { agent: false, text: 'Send the top 2.' },
-      { agent: true, text: '✓ Sent. 1 held (score 68).' },
-    ],
-  },
-  {
-    name: 'Product Development',
-    tag: 'engineering',
-    roles: ['Product Architect', 'Coder Agent', 'QA Tester'],
-    body: 'Ticket → spec → sandboxed execution → consolidated PR.',
-    stat: '60–80% automation on junior-to-mid dev tickets',
-    preview: [
-      { agent: true, text: 'Spec for #47 ready. Awaiting approval before writing code.' },
-      { agent: false, text: 'Approved. Go.' },
-      { agent: true, text: '✓ PR #48 opened with passing tests.' },
-    ],
-  },
-  {
-    name: 'Engineering Ops',
-    tag: 'incident response',
-    roles: ['Sentry Monitor', 'Incident Triager', 'Docs Writer'],
-    body: 'Error → commit correlation → root-cause hypothesis → runbook update.',
-    stat: '<15 min from alert to root-cause hypothesis',
-    preview: [
-      { agent: true, text: '🔔 api/enrich timeout spike. Correlates with 2 AM deploy (#c7a3f).' },
-      { agent: true, text: 'Root cause: Apollo rate limit change. Fix queued.' },
-      { agent: false, text: 'Ship it.' },
-    ],
-  },
+  { tag:'growth', name:'Growth & Lead Gen',
+    desc:'Finds intent signals. Enriches leads. Drafts outreach for approval.',
+    roles:['Social Listening Monitor','Lead Researcher','Outbound Specialist'],
+    stat:'70–90% automation on first-contact drafting',
+    detail:'First enriched lead list: within 2 hours of activation.',
+    preview:[
+      { a:true,  t:'Found 5 leads from r/SaaS + HN. Top 2 score 91/88. Drafting outreach.' },
+      { a:false, t:'Send the top 2. Hold the rest.' },
+      { a:true,  t:'✓ Sent. 1 held (74). 2 discarded. GBrain updated.' },
+    ]},
+  { tag:'product', name:'Product Development',
+    desc:'Ticket → spec → sandboxed execution → consolidated PR.',
+    roles:['Product Architect','Coder Agent','QA Tester'],
+    stat:'60–80% automation on junior-to-mid dev tickets',
+    detail:'Spec-gated execution prevents "write code first, think later" retry loops.',
+    preview:[
+      { a:true,  t:'Spec for #47 ready. Awaiting approval before writing code.' },
+      { a:false, t:'Approved. Skip the refactor in step 3.' },
+      { a:true,  t:'✓ PR #48 opened. Tests passing. 1 edge case flagged.' },
+    ]},
+  { tag:'eng ops', name:'Engineering Ops',
+    desc:'Error → commit correlation → root-cause hypothesis → runbook update.',
+    roles:['Sentry Monitor','Incident Triager','Docs Writer'],
+    stat:'< 15 min from alert to root-cause hypothesis',
+    detail:'Every resolved incident is committed to GBrain — the next triage is faster.',
+    preview:[
+      { a:true,  t:'🔔 Spike on api/enrich. Correlates with 2:14 AM deploy (#c7a3f8).' },
+      { a:true,  t:'Root cause: Apollo rate limit change. Fix queued — approve?' },
+      { a:false, t:'Approved.' },
+    ]},
 ];
 
-const PRICING_TIERS = [
-  {
-    name: 'Community',
-    price: 'Free',
-    sub: 'self-hosted',
-    note: '+ LLM costs',
-    highlight: false,
-    features: ['Full FSM loop prevention', 'Full CADVP memory', 'All 3 departments', 'GBrain (unlimited local)'],
-  },
-  {
-    name: 'Starter',
-    price: '$69',
-    sub: '/month',
-    note: '+ your LLM costs',
-    highlight: false,
-    features: ['Managed hosting', '1 department', '90-day memory', 'Basic dashboard'],
-  },
-  {
-    name: 'Professional',
-    price: '$149',
-    sub: '/month',
-    note: '+ your LLM costs',
-    highlight: true,
-    features: ['Fleet intelligence', 'Real-time threat feed', '2 departments', 'Dream-Cycle weekly'],
-  },
-  {
-    name: 'Business',
-    price: '$399',
-    sub: '/month',
-    note: '+ your LLM costs',
-    highlight: false,
-    features: ['SOC 2 Type II', 'SSO/SCIM', '3 departments', 'Nightly optimization'],
-  },
-  {
-    name: 'Agency',
-    price: '$249',
-    sub: '/month base',
-    note: '+ $39/client workspace',
-    highlight: false,
-    features: ['Multi-workspace', 'Cross-client skills', 'Agent federation', 'Unlimited staff'],
-  },
-  {
-    name: 'Enterprise',
-    price: '$799',
-    sub: '/month',
-    note: '+ your LLM costs',
-    highlight: false,
-    features: ['Dedicated TEE', 'HIPAA BAA', 'Custom SLAs', 'Private skill marketplace'],
-  },
+const TIERS = [
+  { name:'Community', price:'Free',  note:'+ LLM costs',      badge:null,           detail:'Self-host on a $20 VPS. Full FSM + CADVP + GBrain + CLI.',                           features:['Full FSM loop prevention','CADVP memory protocol','All 3 departments','Unlimited GBrain (local)'] },
+  { name:'Starter',   price:'$69',   note:'/mo + LLM',        badge:null,           detail:'Managed hosting, zero Docker. Ideal for non-technical founders.',                     features:['No Docker needed','1 department','90-day retention','Email support'] },
+  { name:'Professional',price:'$149',note:'/mo + LLM',        badge:'Most popular', detail:'Fleet intelligence makes your agents smarter from collective deployment data.',        features:['Fleet intelligence','Threat feed < 60 min','2 departments','Weekly Dream-Cycle'] },
+  { name:'Business',  price:'$399',  note:'/mo + LLM',        badge:null,           detail:'SOC 2 Type II inheritance — at a fraction of a $50K+ independent audit cost.',       features:['SOC 2 Type II','SSO / SCIM','3 departments','Nightly optimization'] },
+  { name:'Agency',    price:'$249',  note:'/mo + $39/client', badge:null,           detail:'Per-client pricing aligns your cost with value delivered, not seats filled.',         features:['Multi-workspace','Cross-client skills','Agent federation','Unlimited staff seats'] },
+  { name:'Enterprise',price:'$799',  note:'/mo + LLM',        badge:null,           detail:'Dedicated single-tenant TEE. HIPAA BAA. 99.5% SLA with financial credits.',          features:['Dedicated TEE','HIPAA BAA','99.5% SLA credits','Private skill marketplace'] },
 ];
 
 const OSS_MODULES = [
-  { name: 'OSS-Orch', desc: 'Hybrid orchestration bridge (Hermes + OpenClaw)' },
-  { name: 'OSS-FSM', desc: 'Hierarchical FSM & SQLite task coordination' },
-  { name: 'OSS-Memory', desc: 'Local GBrain deduplicator & Git sync' },
-  { name: 'OSS-CLI', desc: 'Terminal interface with Docker execution' },
+  { name:'OSS-Orch',   desc:'Hybrid orchestration bridge (Hermes inside OpenClaw)' },
+  { name:'OSS-FSM',    desc:'Hierarchical FSM & SQLite task coordination engine' },
+  { name:'OSS-Memory', desc:'Local GBrain deduplicator, Git sync, cosine-similarity dedupe at > 0.92' },
+  { name:'OSS-CLI',    desc:'Docker-native TUI with onboarding wizard and local model connectors' },
 ];
 
+// ─── Reveal-wired section components ──────────────────────────────────────────
+function CrisesSection() {
+  const ref = useRef<HTMLDivElement>(null);
+  useReveal(ref, { selector:'[data-reveal]', stagger:0.14, y:44, duration:0.95 });
+  return (
+    <section style={{ padding:'96px 0' }}>
+      <div style={wrap} ref={ref}>
+        <span data-reveal style={label()}>Why this exists</span>
+        <h2 data-reveal style={{ ...H2(), marginBottom:56, maxWidth:'22ch' }}>
+          The three production failures that end AI deployments.
+        </h2>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(300px, 1fr))', gap:1 }}>
+          {CRISES.map((c) => (
+            <div key={c.n} data-reveal style={{ border:`1px solid ${C.border}`, background:C.surface, padding:'36px 32px', position:'relative' }}>
+              <div style={{ fontFamily:C.mono, fontSize:56, fontWeight:400, color:'#1D1D22', lineHeight:1, position:'absolute', top:24, right:28, letterSpacing:'-0.04em', userSelect:'none' }}>
+                {c.n}
+              </div>
+              <div style={{ fontFamily:'var(--font-subhead)', fontSize:'1.3rem', fontWeight:700, color:C.primary, marginBottom:20, letterSpacing:'-0.025em', lineHeight:1.2 }}>{c.title}</div>
+              <div style={{ fontFamily:C.mono, fontSize:11, color:'#6D6D78', lineHeight:1.6 }}>
+                <span style={{ color:C.primary, marginRight:8 }}>FIX ›</span>{c.fix}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function DepartmentsSection() {
+  const ref = useRef<HTMLDivElement>(null);
+  useReveal(ref, { selector:'[data-reveal]', stagger:0.13, y:40, duration:0.9 });
+  return (
+    <section style={{ ...sep, padding:'96px 0' }}>
+      <div style={wrap} ref={ref}>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', gap:20, flexWrap:'wrap', marginBottom:48 }}>
+          <div>
+            <span data-reveal style={label()}>Departments</span>
+            <h2 data-reveal style={H2()}>Preconfigured for real workflows.</h2>
+          </div>
+          {/* SwarmOrbit — the animated GIF moment for this section */}
+          <div data-reveal style={{ opacity:0.7 }}>
+            <SwarmOrbit size={200} />
+          </div>
+        </div>
+
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(300px, 1fr))', gap:12 }}>
+          {DEPARTMENTS.map((dept) => (
+            <article key={dept.name} data-reveal className="dept-card"
+              style={{ border:`1px solid ${C.border}`, background:C.surface, borderRadius:16, overflow:'hidden', display:'flex', flexDirection:'column', position:'relative' }}>
+              <div style={{ padding:'24px 24px 16px' }}>
+                <div style={{ fontFamily:C.mono, fontSize:9, color:C.secondary, letterSpacing:'0.18em', textTransform:'uppercase', marginBottom:12, border:`1px solid ${C.border}`, display:'inline-block', padding:'3px 8px', borderRadius:4 }}>{dept.tag}</div>
+                <h3 style={{ fontFamily:'var(--font-subhead)', fontSize:'1.25rem', fontWeight:700, letterSpacing:'-0.025em', color:C.primary, margin:'0 0 10px' }}>{dept.name}</h3>
+                <p style={{ fontFamily:C.body, fontSize:13.5, color:C.secondary, lineHeight:1.62, margin:'0 0 14px' }}>{dept.desc}</p>
+                <div style={{ display:'flex', gap:6, flexWrap:'wrap' }}>
+                  {dept.roles.map((r) => (
+                    <span key={r} style={{ fontFamily:C.mono, fontSize:9, color:'#6D6D78', background:C.raised, border:`1px solid ${C.border}`, borderRadius:4, padding:'3px 8px', letterSpacing:'0.06em' }}>{r}</span>
+                  ))}
+                </div>
+              </div>
+              <div style={{ margin:'0 12px 12px', borderRadius:10, background:'#16181C', border:'1px solid #222428', padding:'12px 14px', flex:1 }}>
+                {dept.preview.map((m, i) => (
+                  <div key={i} style={{ display:'flex', gap:8, marginBottom:i < dept.preview.length-1 ? 8 : 0 }}>
+                    <div style={{ width:18, height:18, borderRadius:4, background:m.a?'#242428':'#2A2A2F', border:`1px solid ${m.a?'#38383E':'#2A2A2F'}`, display:'flex', alignItems:'center', justifyContent:'center', fontFamily:C.mono, fontSize:7, color:m.a?'#A09D98':'#6D6D78', flexShrink:0, marginTop:1 }}>{m.a?'✦':'U'}</div>
+                    <span style={{ fontFamily:C.body, fontSize:11.5, color:'#A09D98', lineHeight:1.45 }}>{m.t}</span>
+                  </div>
+                ))}
+              </div>
+              {/* Hover reveal */}
+              <div className="dept-hover-reveal" style={{ padding:'0 24px 20px', borderTop:`1px solid ${C.border}`, paddingTop:16 }}>
+                <div style={{ fontFamily:C.mono, fontSize:10, color:C.primary, letterSpacing:'0.08em', marginBottom:4 }}>↗ {dept.stat}</div>
+                <div style={{ fontFamily:C.body, fontSize:12, color:C.secondary, lineHeight:1.5 }}>{dept.detail}</div>
+              </div>
+              <div className="dept-stat-static" style={{ padding:'10px 24px 18px', fontFamily:C.mono, fontSize:10, color:'#46464E', letterSpacing:'0.08em' }}>↗ {dept.stat}</div>
+            </article>
+          ))}
+        </div>
+
+        {/* Coming soon */}
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(240px, 1fr))', gap:12, marginTop:12 }}>
+          {[['Marketing Content','Q3 2026'],['Customer Success','Q4 2026']].map(([name,when]) => (
+            <div key={name} data-reveal style={{ border:`1px dashed ${C.border}`, borderRadius:14, padding:'18px 22px', display:'flex', alignItems:'center', justifyContent:'space-between', gap:12 }}>
+              <span style={{ fontFamily:'var(--font-subhead)', fontSize:'1rem', color:C.secondary }}>{name}</span>
+              <span style={{ fontFamily:C.mono, fontSize:9, color:'#44444B', border:`1px solid ${C.border}`, borderRadius:4, padding:'3px 8px', letterSpacing:'0.1em' }}>{when}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      <style>{`.dept-card:hover .dept-stat-static { opacity:0; } .dept-card:hover .dept-hover-reveal { display:block; }`}</style>
+    </section>
+  );
+}
+
+function HowItWorksSection() {
+  const ref = useRef<HTMLDivElement>(null);
+  useReveal(ref, { selector:'[data-reveal]', stagger:0.1, y:32, duration:0.88 });
+  return (
+    <section style={{ ...sep, padding:'96px 0', background:C.surface }}>
+      <div style={wrap} ref={ref}>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(320px, 1fr))', gap:'6vw', alignItems:'start' }}>
+          <div>
+            <span data-reveal style={label()}>Setup</span>
+            <h2 data-reveal style={{ ...H2(), marginBottom:40 }}>Live in Slack in under 10 minutes.</h2>
+            <div style={{ display:'flex', flexDirection:'column', gap:0 }}>
+              {['Connect Slack','Pick a department','Seed memory','Bring your own key','Swarm activates'].map((title,i,arr) => (
+                <div key={title} data-reveal>
+                  <div style={{ display:'flex', gap:0 }}>
+                    <div style={{ display:'flex', flexDirection:'column', alignItems:'center', width:32, flexShrink:0 }}>
+                      <div style={{ width:24, height:24, borderRadius:'50%', border:`1px solid ${C.border}`, background:C.raised, display:'flex', alignItems:'center', justifyContent:'center', fontFamily:C.mono, fontSize:9, color:C.secondary, flexShrink:0 }}>{String(i+1).padStart(2,'0')}</div>
+                      {i < arr.length-1 && <div style={{ width:1, flex:1, minHeight:16, background:C.border }} />}
+                    </div>
+                    <div style={{ paddingLeft:14, paddingBottom:18 }}>
+                      <div style={{ fontFamily:'var(--font-subhead)', fontSize:'1rem', fontWeight:600, color:C.primary, paddingTop:3 }}>{title}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div>
+            <span data-reveal style={label()}>Architecture</span>
+            <div data-reveal style={{ marginBottom:28 }}><ArchFlow /></div>
+            <div style={{ marginTop:28, display:'flex', flexDirection:'column', gap:1 }}>
+              {[{ layer:'Execution', body:'Plan→Act→Observe→Reflect · TEE-isolated · your LLM key' },
+                { layer:'Coordination', body:'FSM task list · no horizontal messaging · every action logged' },
+                { layer:'Memory', body:'GBrain · Git-backed · diff-able · rollback in < 60s' },
+              ].map((item) => (
+                <div key={item.layer} data-reveal style={{ border:`1px solid ${C.border}`, padding:'14px 18px', background:C.raised, display:'flex', alignItems:'center', gap:16 }}>
+                  <div style={{ fontFamily:C.mono, fontSize:10, color:C.primary, letterSpacing:'0.1em', textTransform:'uppercase', flexShrink:0, minWidth:100 }}>{item.layer}</div>
+                  <div style={{ fontFamily:C.mono, fontSize:11, color:C.secondary }}>{item.body}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SecuritySection() {
+  const ref = useRef<HTMLDivElement>(null);
+  useReveal(ref, { selector:'[data-reveal]', stagger:0.1, y:32, duration:0.85 });
+  return (
+    <section style={{ ...sep, padding:'96px 0' }}>
+      <div style={wrap} ref={ref}>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(300px, 1fr))', gap:'6vw', alignItems:'start' }}>
+          <div>
+            <span data-reveal style={label()}>Bring Your Own Key</span>
+            <h2 data-reveal style={{ ...H2(), marginBottom:28 }}>You pay your LLM provider. We never see that line.</h2>
+            <div data-reveal style={{ display:'flex', flexDirection:'column', gap:10 }}>
+              {['Anthropic (Claude) — recommended','OpenAI (GPT-4o, GPT-4o-mini)','Azure OpenAI','Google Gemini','Self-hosted: Ollama · vLLM · LM Studio'].map((p) => (
+                <div key={p} style={{ display:'flex', alignItems:'center', gap:10, fontFamily:C.mono, fontSize:11, color:C.secondary }}>
+                  <span style={{ color:'#22D07A', flexShrink:0 }}>✓</span>{p}
+                </div>
+              ))}
+            </div>
+          </div>
+          <div>
+            <span data-reveal style={label()}>Security Architecture</span>
+            <h2 data-reveal style={{ ...H2(), marginBottom:28 }}>No credentials in agent context. Ever.</h2>
+            <div style={{ display:'flex', flexDirection:'column', gap:1 }}>
+              {[{ layer:'TEE Isolation',     body:'AMD SEV-SNP / SGX enclaves. Host admins cannot inspect a running container.' },
+                { layer:'Secret Vault',      body:'Keys never enter agent scope. Compromised agent has nothing to exfiltrate.' },
+                { layer:'Egress Allowlist',  body:'Per-customer domain rules. Injection attempts distributed to fleet in < 60 min.' },
+                { layer:'HITL Gates',        body:'Auto / approval / permanently blocked. Classification enforced at proxy layer.' },
+              ].map((item) => (
+                <div key={item.layer} data-reveal style={{ border:`1px solid ${C.border}`, borderLeft:'2px solid #46464E', padding:'14px 18px', background:C.raised }}>
+                  <div style={{ fontFamily:C.mono, fontSize:10, color:C.primary, letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:5 }}>{item.layer}</div>
+                  <div style={{ fontSize:12, color:C.secondary, lineHeight:1.5 }}>{item.body}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FleetSection() {
+  const ref = useRef<HTMLDivElement>(null);
+  useReveal(ref, { selector:'[data-reveal]', stagger:0.1, y:36, duration:0.9 });
+  return (
+    <section style={{ ...sep, padding:'96px 0', background:C.surface }}>
+      <div style={wrap} ref={ref}>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(300px, 1fr))', gap:'6vw', alignItems:'center' }}>
+          <div>
+            <span data-reveal style={label()}>Fleet Intelligence</span>
+            <h2 data-reveal style={{ ...H2(), marginBottom:0 }}>Your agents learn from 200+ deployments — not just yours.</h2>
+          </div>
+          <div>
+            <div data-reveal style={{ display:'flex', justifyContent:'center', marginBottom:32, opacity:0.75 }}>
+              <MemoryPulse size={180} />
+            </div>
+            <div data-reveal style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:1 }}>
+              {[{ n:'< 60 min', l:'Detection to fleet-wide protection' },
+                { n:'< 2 hrs',  l:'API change detected before your cron fails' },
+                { n:'60–75%',   l:'Token cost reduction (compiled skills)' },
+                { n:'N=1 → ∞', l:'Self-hosted vs. fleet data advantage' },
+              ].map((item) => (
+                <div key={item.l} style={{ border:`1px solid ${C.border}`, padding:'20px 18px', background:C.raised }}>
+                  <div style={{ fontFamily:'var(--font-subhead)', fontSize:'clamp(1.1rem, 3vw, 1.6rem)', fontWeight:700, letterSpacing:'-0.03em', color:C.primary, lineHeight:1, marginBottom:8 }}>{item.n}</div>
+                  <div style={{ fontFamily:C.mono, fontSize:10, color:C.secondary, letterSpacing:'0.06em', lineHeight:1.5 }}>{item.l}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PricingSection() {
+  const ref = useRef<HTMLDivElement>(null);
+  useReveal(ref, { selector:'[data-reveal]', stagger:0.08, y:30, duration:0.85 });
+  return (
+    <section style={{ ...sep, padding:'96px 0' }}>
+      <div style={wrap} ref={ref}>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', gap:24, flexWrap:'wrap', marginBottom:48 }}>
+          <div>
+            <span data-reveal style={label()}>Pricing</span>
+            <h2 data-reveal style={{ ...H2(), maxWidth:'16ch' }}>Platform fee. Your LLM costs stay yours.</h2>
+          </div>
+          <p data-reveal style={{ fontFamily:C.mono, fontSize:11, color:C.secondary, letterSpacing:'0.04em', margin:0 }}>
+            No inference markup. No per-seat lock-in.
+          </p>
+        </div>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(170px, 1fr))', gap:1 }}>
+          {TIERS.map((tier) => (
+            <article key={tier.name} data-reveal className="price-card"
+              style={{ border:`1px solid ${tier.badge?'#46464E':C.border}`, background:tier.badge?C.raised:C.surface, padding:'24px 18px', position:'relative', display:'flex', flexDirection:'column', gap:14 }}>
+              {tier.badge && (
+                <div style={{ position:'absolute', top:-1, left:'50%', transform:'translateX(-50%)', background:C.primary, color:C.void, fontFamily:C.mono, fontSize:8, fontWeight:700, letterSpacing:'0.15em', padding:'3px 10px', whiteSpace:'nowrap' }}>
+                  {tier.badge.toUpperCase()}
+                </div>
+              )}
+              <div>
+                <div style={{ fontFamily:C.mono, fontSize:9, color:C.secondary, letterSpacing:'0.18em', textTransform:'uppercase', marginBottom:12 }}>{tier.name}</div>
+                <div style={{ fontFamily:'var(--font-subhead)', fontSize:'clamp(1.5rem, 3vw, 2rem)', fontWeight:700, letterSpacing:'-0.03em', color:C.primary, lineHeight:1, marginBottom:4 }}>{tier.price}</div>
+                <div style={{ fontFamily:C.mono, fontSize:9, color:C.secondary, letterSpacing:'0.06em' }}>{tier.note}</div>
+              </div>
+              <div className="price-hover-detail" style={{ fontFamily:C.body, fontSize:12, color:C.secondary, lineHeight:1.55, marginTop:-4 }}>{tier.detail}</div>
+              <div style={{ borderTop:`1px solid ${C.border}`, paddingTop:14, display:'flex', flexDirection:'column', gap:8 }}>
+                {tier.features.map((f) => (
+                  <div key={f} style={{ display:'flex', gap:8 }}>
+                    <span style={{ color:'#46464E', fontSize:11, flexShrink:0 }}>›</span>
+                    <span style={{ fontFamily:C.body, fontSize:12, color:C.secondary, lineHeight:1.4 }}>{f}</span>
+                  </div>
+                ))}
+              </div>
+            </article>
+          ))}
+        </div>
+        <div data-reveal style={{ marginTop:16 }}>
+          <Link href="/pricing" style={{ fontFamily:C.mono, fontSize:10, color:C.secondary, letterSpacing:'0.1em' }}
+            onMouseEnter={(e) => { e.currentTarget.style.color=C.primary; }}
+            onMouseLeave={(e) => { e.currentTarget.style.color=C.secondary; }}>
+            FULL PRICING + ADD-ONS + ANNUAL DISCOUNTS →
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function OpenSourceSection() {
+  const ref = useRef<HTMLDivElement>(null);
+  useReveal(ref, { selector:'[data-reveal]', stagger:0.1, y:32, duration:0.88 });
+  return (
+    <section style={{ ...sep, padding:'96px 0', background:C.surface }}>
+      <div style={wrap} ref={ref}>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(300px, 1fr))', gap:'6vw', alignItems:'start' }}>
+          <div>
+            <span data-reveal style={label()}>Open-Core</span>
+            <h2 data-reveal style={{ ...H2(), marginBottom:20 }}>AI infrastructure shouldn't be a black box.</h2>
+            <p data-reveal style={{ fontFamily:C.body, fontSize:'1rem', lineHeight:1.6, color:C.secondary, marginBottom:28 }}>
+              Audit the loop-prevention and memory architecture yourself. Self-host free, or let us run it.
+            </p>
+            <div data-reveal style={{ display:'flex', gap:12, flexWrap:'wrap' }}>
+              <a href="https://github.com/MMEHDI0606/sockt" target="_blank" rel="noopener noreferrer"
+                style={{ fontFamily:C.mono, fontSize:11, color:C.primary, border:`1px solid ${C.border}`, borderRadius:999, padding:'9px 20px', letterSpacing:'0.08em', display:'inline-block', transition:'border-color 0.15s ease' }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor='#46464E'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor=C.border; }}>GITHUB →</a>
+              <Link href="/docs"
+                style={{ fontFamily:C.mono, fontSize:11, color:C.secondary, border:`1px solid ${C.border}`, borderRadius:999, padding:'9px 20px', letterSpacing:'0.08em', display:'inline-block', transition:'color 0.15s ease, border-color 0.15s ease' }}
+                onMouseEnter={(e) => { e.currentTarget.style.color=C.primary; e.currentTarget.style.borderColor='#46464E'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.color=C.secondary; e.currentTarget.style.borderColor=C.border; }}>DOCS</Link>
+            </div>
+          </div>
+          <div>
+            <div data-reveal style={{ display:'flex', flexDirection:'column', gap:1 }}>
+              {OSS_MODULES.map((m) => (
+                <div key={m.name} style={{ display:'flex', border:`1px solid ${C.border}`, background:C.raised }}>
+                  <div style={{ fontFamily:C.mono, fontSize:10, color:C.primary, letterSpacing:'0.06em', padding:'14px 16px', borderRight:`1px solid ${C.border}`, minWidth:104, flexShrink:0, display:'flex', alignItems:'center' }}>{m.name}</div>
+                  <div style={{ padding:'14px 16px', fontSize:13, color:C.secondary, lineHeight:1.5 }}>{m.desc}</div>
+                </div>
+              ))}
+              <div style={{ padding:'10px 16px', fontFamily:C.mono, fontSize:9, color:'#44444B', letterSpacing:'0.1em', border:`1px solid ${C.border}`, borderTop:'none' }}>
+                FSL-1.1-MIT → MIT AFTER 2 YEARS
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Main ─────────────────────────────────────────────────────────────────────
 export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    const supabase = createClient();
-    supabase.auth.getUser().then(({ data }) => {
-      if (data.user) router.replace('/dashboard');
-    });
+    const s = createClient();
+    s.auth.getUser().then(({ data }) => { if (data.user) router.replace('/dashboard'); });
   }, [router]);
 
   return (
     <>
-      <Script id="org-jsonld" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
-      <Script id="web-jsonld" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
+      <PageLoader />
       <Nav />
+      <main style={{ color:C.primary, background:C.void, overflowX:'hidden' }}>
 
-      <main style={s.page}>
+        {/* ── HERO ── */}
+        <section style={{ minHeight:'92vh', display:'flex', alignItems:'center', paddingTop:96, paddingBottom:64 }}>
+          <div style={{ ...wrap, width:'100%' }}>
+            <div className="hero-grid" style={{ display:'grid', gridTemplateColumns:'minmax(0,1fr) minmax(0,1fr)', gap:'5vw', alignItems:'center' }}>
 
-        {/* ── HERO ─────────────────────────────────────────────────────────── */}
-        <section
-          style={{
-            ...s.container,
-            paddingTop: 112,
-            paddingBottom: 80,
-          }}
-        >
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-              gap: 56,
-              alignItems: 'center',
-            }}
-          >
-            {/* Left */}
-            <div>
-              <p style={s.label}>AI Workforce Platform</p>
-              <h1
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(2.6rem, 7vw, 5.5rem)',
-                  fontWeight: 800,
-                  lineHeight: 0.94,
+              {/* Left — direct, immediate, un-precious */}
+              <div>
+                <span style={{ ...label(), marginBottom:24 }}>AI Workforce Platform</span>
+                {/* Hero H1 — Fraunces variable serif at display optical size
+                    Line 1: weight 800 (commanding)
+                    Line 2: weight 200 (contrasting whisper — no italic)
+                    This is the ozero/lanegrita/digitalists treatment:
+                    same font, dramatic weight contrast, pure typographic confidence */}
+                <h1 style={{
+                  fontFamily: 'var(--font-headline)',
+                  fontSize: 'clamp(3.2rem, 7.5vw, 8rem)',
+                  lineHeight: 0.92,
                   letterSpacing: '-0.04em',
-                  margin: '0 0 20px',
-                  maxWidth: '9ch',
-                }}
-              >
-                Hire an AI team, not an AI tool.
-              </h1>
-              <p
-                style={{
-                  fontFamily: 'var(--font-body)',
-                  fontSize: '1rem',
-                  lineHeight: 1.6,
-                  color: 'var(--text-secondary)',
-                  maxWidth: '40ch',
-                  marginBottom: 32,
-                }}
-              >
-                AI departments for Slack. BYOK. No runaway bills. No amnesiac agents. No credential leaks.
-              </p>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
-                <Link
-                  href="/pricing"
-                  style={{
-                    background: 'var(--accent-btc)',
-                    color: 'var(--bg-void)',
-                    padding: '13px 26px',
-                    borderRadius: 999,
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: 13,
-                    fontWeight: 700,
-                    letterSpacing: '0.04em',
-                    textDecoration: 'none',
-                    display: 'inline-block',
-                  }}
-                >
-                  Add to Slack
-                </Link>
-                <Link
-                  href="/departments"
-                  style={{
-                    border: '1px solid var(--bg-border)',
-                    color: 'var(--text-secondary)',
-                    padding: '12px 24px',
-                    borderRadius: 999,
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: 13,
-                    textDecoration: 'none',
-                    display: 'inline-block',
-                  }}
-                >
-                  See departments
-                </Link>
-              </div>
-              <div
-                style={{
-                  marginTop: 24,
-                  display: 'flex',
-                  gap: 20,
-                  flexWrap: 'wrap',
-                }}
-              >
-                {['BYOK — zero token markup', 'Loop prevention (FSM-enforced)', 'Open-core (FSL-1.1-MIT)'].map((tag) => (
-                  <span
-                    key={tag}
-                    style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: 10,
-                      color: 'var(--text-secondary)',
-                      letterSpacing: '0.08em',
-                    }}
-                  >
-                    · {tag}
+                  margin: '0 0 28px',
+                  fontVariationSettings: "'opsz' 144",
+                }}>
+                  <span style={{ display: 'block', fontWeight: 800, color: C.primary }}>
+                    Hire a team,
                   </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Right: Slack mock */}
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <SlackMock />
-            </div>
-          </div>
-        </section>
-
-        {/* ── PROBLEM: THREE CRISES ────────────────────────────────────────── */}
-        <section style={{ ...s.container, paddingTop: 64, paddingBottom: 64 }}>
-          <div style={{ ...s.divider, paddingTop: 56 }}>
-            <p style={s.label}>Why this exists</p>
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                gap: 20,
-              }}
-            >
-              {CRISES.map((c) => (
-                <article
-                  key={c.n}
-                  style={{
-                    border: '1px solid var(--bg-border)',
-                    borderRadius: 16,
-                    padding: '24px',
-                    background: 'var(--bg-surface)',
-                    position: 'relative',
-                    overflow: 'hidden',
-                  }}
-                >
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: 20,
-                      right: 20,
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: 11,
-                      color: 'var(--bg-raised)',
-                      letterSpacing: '0.1em',
-                    }}
-                  >
-                    {c.n}
-                  </div>
-                  <div style={{ marginBottom: 14 }}>{c.icon}</div>
-                  <h3
-                    style={{
-                      fontFamily: 'var(--font-display)',
-                      fontSize: '1.1rem',
-                      fontWeight: 700,
-                      margin: '0 0 16px',
-                      color: 'var(--text-primary)',
-                    }}
-                  >
-                    {c.title}
-                  </h3>
-                  <div
-                    style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: 12,
-                      color: 'var(--accent-btc)',
-                      lineHeight: 1.5,
-                    }}
-                  >
-                    ✓ {c.fix}
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-        <section style={{ ...s.container, paddingTop: 64, paddingBottom: 64 }}>
-          <div style={{ ...s.divider, paddingTop: 56 }}>
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                gap: 56,
-                alignItems: 'start',
-              }}
-            >
-              {/* Left: onboarding steps */}
-              <div>
-                <p style={s.label}>How it works</p>
-                <h2
-                  style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: 'clamp(1.8rem, 4vw, 3rem)',
-                    fontWeight: 800,
-                    lineHeight: 1.02,
-                    letterSpacing: '-0.03em',
-                    margin: '0 0 32px',
-                  }}
-                >
-                  Live in Slack in under 10 minutes.
-                </h2>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-                  {[
-                    ['01', 'Connect Slack'],
-                    ['02', 'Choose a department'],
-                    ['03', 'Seed memory'],
-                    ['04', 'Bring your own key'],
-                    ['05', 'Swarm activates'],
-                  ].map(([n, title]) => (
-                    <div key={n} style={{ display: 'flex', gap: 16 }}>
-                      <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--accent-btc)', letterSpacing: '0.1em', minWidth: 26, paddingTop: 2 }}>
-                        {n}
-                      </div>
-                      <div style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', fontWeight: 600, paddingTop: 1 }}>
-                        {title}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Right: architecture diagram */}
-              <div>
-                <p style={s.label}>Architecture</p>
-                <ArchFlow />
-                <div style={{ marginTop: 20, display: 'flex', flexDirection: 'column', gap: 1 }}>
-                  {[
-                    ['Execution',    'Plan→Act→Observe · TEE-isolated · your LLM key'],
-                    ['Coordination', 'FSM task list · no horizontal messaging · every action logged'],
-                    ['Memory',       'GBrain · Git-backed · diff-able · rollback in < 60s'],
-                  ].map(([layer, desc]) => (
-                    <div key={layer} style={{ border: '1px solid var(--bg-border)', padding: '12px 16px', background: 'var(--bg-surface)', display: 'flex', alignItems: 'center', gap: 16 }}>
-                      <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--accent-btc)', letterSpacing: '0.08em', minWidth: 90, flexShrink: 0 }}>{layer}</div>
-                      <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-secondary)' }}>{desc}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── DEPARTMENTS ──────────────────────────────────────────────────── */}
-        <section style={{ ...s.container, paddingTop: 64, paddingBottom: 64 }}>
-          <div style={{ ...s.divider, paddingTop: 56 }}>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'flex-end',
-                gap: 20,
-                flexWrap: 'wrap',
-                marginBottom: 32,
-              }}
-            >
-              <div>
-                <p style={{ ...s.label, marginBottom: 8 }}>Departments</p>
-                <h2
-                  style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: 'clamp(1.8rem, 4vw, 3rem)',
-                    fontWeight: 800,
-                    lineHeight: 1.02,
-                    letterSpacing: '-0.03em',
-                    margin: 0,
-                  }}
-                >
-                  Preconfigured for real business workflows.
-                </h2>
-              </div>
-              <Link
-                href="/departments"
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: 12,
-                  color: 'var(--text-secondary)',
-                  letterSpacing: '0.06em',
-                  textDecoration: 'none',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                All departments →
-              </Link>
-            </div>
-
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                gap: 16,
-              }}
-            >
-              {DEPARTMENTS.map((dept) => (
-                <article
-                  key={dept.name}
-                  style={{
-                    border: '1px solid var(--bg-border)',
-                    borderRadius: 18,
-                    background: 'var(--bg-surface)',
-                    overflow: 'hidden',
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
-                >
-                  {/* Card header */}
-                  <div style={{ padding: '20px 20px 16px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-                      <span
-                        style={{
-                          fontFamily: 'var(--font-mono)',
-                          fontSize: 9,
-                          color: 'var(--accent-btc)',
-                          border: '1px solid var(--accent-btc)',
-                          borderRadius: 4,
-                          padding: '2px 6px',
-                          letterSpacing: '0.12em',
-                          textTransform: 'uppercase',
-                        }}
-                      >
-                        {dept.tag}
-                      </span>
-                    </div>
-                    <h3
-                      style={{
-                        fontFamily: 'var(--font-display)',
-                        fontSize: '1.15rem',
-                        fontWeight: 700,
-                        margin: '0 0 8px',
-                      }}
-                    >
-                      {dept.name}
-                    </h3>
-                    <p
-                      style={{
-                        fontFamily: 'var(--font-body)',
-                        fontSize: 13.5,
-                        color: 'var(--text-secondary)',
-                        lineHeight: 1.55,
-                        margin: '0 0 12px',
-                      }}
-                    >
-                      {dept.body}
-                    </p>
-                    <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                      {dept.roles.map((r) => (
-                        <span
-                          key={r}
-                          style={{
-                            fontFamily: 'var(--font-mono)',
-                            fontSize: 10,
-                            color: 'var(--text-secondary)',
-                            background: 'var(--bg-raised)',
-                            border: '1px solid var(--bg-border)',
-                            borderRadius: 4,
-                            padding: '2px 7px',
-                          }}
-                        >
-                          {r}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Mini Slack preview */}
-                  <div
-                    style={{
-                      margin: '0 12px 12px',
-                      borderRadius: 10,
-                      background: '#1a1d21',
-                      border: '1px solid #2d2d2d',
-                      padding: '12px 14px',
-                      flex: 1,
-                    }}
-                  >
-                    {dept.preview.map((msg, i) => (
-                      <div
-                        key={i}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'flex-start',
-                          gap: 8,
-                          marginBottom: i < dept.preview.length - 1 ? 8 : 0,
-                        }}
-                      >
-                        <div
-                          style={{
-                            width: 20,
-                            height: 20,
-                            borderRadius: 4,
-                            background: msg.agent ? '#c27a36' : '#3f3f3f',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontFamily: 'var(--font-mono)',
-                            fontSize: 8,
-                            color: msg.agent ? '#080808' : '#ccc',
-                            fontWeight: 700,
-                            flexShrink: 0,
-                            marginTop: 1,
-                          }}
-                        >
-                          {msg.agent ? '{*}' : 'U'}
-                        </div>
-                        <span
-                          style={{
-                            fontFamily: 'var(--font-body)',
-                            fontSize: 12,
-                            color: '#b9b4ae',
-                            lineHeight: 1.45,
-                          }}
-                        >
-                          {msg.text}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Stat */}
-                  <div
-                    style={{
-                      padding: '10px 20px 16px',
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: 11,
-                      color: 'var(--accent-btc)',
-                      letterSpacing: '0.06em',
-                    }}
-                  >
-                    ↗ {dept.stat}
-                  </div>
-                </article>
-              ))}
-            </div>
-
-            {/* Coming soon row */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-                gap: 12,
-                marginTop: 12,
-              }}
-            >
-              {[
-                { name: 'Marketing Content', when: 'Q3 2026' },
-                { name: 'Customer Success', when: 'Q4 2026' },
-              ].map((d) => (
-                <div
-                  key={d.name}
-                  style={{
-                    border: '1px dashed var(--bg-border)',
-                    borderRadius: 16,
-                    padding: '16px 20px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    gap: 12,
-                  }}
-                >
-                  <span style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', color: 'var(--text-secondary)' }}>
-                    {d.name}
+                  <span style={{ display: 'block', fontWeight: 200, color: C.secondary }}>
+                    not a tool.
                   </span>
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: 10,
-                      color: 'var(--text-secondary)',
-                      border: '1px solid var(--bg-border)',
-                      borderRadius: 4,
-                      padding: '3px 8px',
-                    }}
-                  >
-                    {d.when}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── BYOK / SECURITY ──────────────────────────────────────────────── */}
-        <section style={{ ...s.container, paddingTop: 64, paddingBottom: 64 }}>
-          <div style={{ ...s.divider, paddingTop: 56 }}>
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                gap: 56,
-                alignItems: 'start',
-              }}
-            >
-              <div>
-                <p style={s.label}>Bring Your Own Key</p>
-                <h2
-                  style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: 'clamp(1.8rem, 4vw, 3rem)',
-                    fontWeight: 800,
-                    lineHeight: 1.02,
-                    letterSpacing: '-0.03em',
-                    margin: '0 0 28px',
-                  }}
-                >
-                  You pay your LLM provider. We never see that line.
-                </h2>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                  {[
-                    'Anthropic (Claude) — recommended',
-                    'OpenAI (GPT-4o / GPT-4o-mini)',
-                    'Azure OpenAI',
-                    'Google Gemini',
-                    'Self-hosted (Ollama, vLLM, LM Studio)',
-                  ].map((p) => (
-                    <div
-                      key={p}
-                      style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: 12,
-                        color: 'var(--text-secondary)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 10,
-                      }}
-                    >
-                      <span style={{ color: 'var(--accent-green)', flexShrink: 0 }}>✓</span>
-                      {p}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <p style={s.label}>Security Architecture</p>
-                <h2
-                  style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: 'clamp(1.8rem, 4vw, 3rem)',
-                    fontWeight: 800,
-                    lineHeight: 1.02,
-                    letterSpacing: '-0.03em',
-                    margin: '0 0 24px',
-                  }}
-                >
-                  No raw credentials in agent context. Ever.
-                </h2>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                  {[
-                    { layer: 'TEE Isolation',   desc: 'AMD SEV-SNP / SGX enclaves. Host admins cannot inspect a running container.' },
-                    { layer: 'Secret Vault',    desc: 'Keys never enter agent scope. Compromised agent has nothing to exfiltrate.' },
-                    { layer: 'Egress Allowlist',desc: 'Per-customer domain rules. Injection attempts distributed to fleet in < 60 min.' },
-                    { layer: 'HITL Gates',      desc: 'Auto / approval / permanently blocked. Enforced at proxy — not in agent reasoning.' },
-                  ].map((item) => (
-                    <div key={item.layer} style={{ border: '1px solid var(--bg-border)', borderLeft: '3px solid var(--accent-btc)', borderRadius: '0 10px 10px 0', padding: '12px 16px', background: 'var(--bg-surface)' }}>
-                      <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--accent-btc)', letterSpacing: '0.08em', marginBottom: 4 }}>{item.layer}</div>
-                      <div style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.5 }}>{item.desc}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── FLEET INTELLIGENCE ───────────────────────────────────────────── */}
-        <section
-          style={{
-            ...s.container,
-            paddingTop: 64,
-            paddingBottom: 64,
-          }}
-        >
-          <div style={{ ...s.divider, paddingTop: 56 }}>
-            <p style={s.label}>Fleet Intelligence</p>
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                gap: 40,
-                alignItems: 'center',
-              }}
-            >
-              <div>
-                <h2
-                  style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: 'clamp(1.8rem, 4vw, 3rem)',
-                    fontWeight: 800,
-                    lineHeight: 1.02,
-                    letterSpacing: '-0.03em',
-                    margin: 0,
-                  }}
-                >
-                  Your agents learn from 200+ deployments, not just yours.
-                </h2>
-              </div>
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: '1fr 1fr',
-                  gap: 12,
-                }}
-              >
-                {[
-                  { metric: '< 60 min', label: 'Threat detection to protection' },
-                  { metric: '< 2 hrs', label: 'API change detected across fleet' },
-                  { metric: '60–75%', label: 'Token cost reduction by month 3' },
-                  { metric: 'Git log', label: 'Full audit trail for every memory write' },
-                ].map((item) => (
-                  <div
-                    key={item.label}
-                    style={{
-                      border: '1px solid var(--bg-border)',
-                      borderRadius: 14,
-                      padding: '18px 16px',
-                      background: 'var(--bg-surface)',
-                    }}
-                  >
-                    <div
-                      style={{
-                        fontFamily: 'var(--font-display)',
-                        fontSize: '1.5rem',
-                        fontWeight: 700,
-                        color: 'var(--accent-btc)',
-                        lineHeight: 1,
-                        marginBottom: 8,
-                      }}
-                    >
-                      {item.metric}
-                    </div>
-                    <div style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.45 }}>
-                      {item.label}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── PRICING ──────────────────────────────────────────────────────── */}
-        <section style={{ ...s.container, paddingTop: 64, paddingBottom: 64 }}>
-          <div style={{ ...s.divider, paddingTop: 56 }}>
-            <p style={s.label}>Pricing</p>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'flex-end',
-                gap: 20,
-                flexWrap: 'wrap',
-                marginBottom: 32,
-              }}
-            >
-              <h2
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(1.8rem, 4vw, 3rem)',
-                  fontWeight: 800,
-                  lineHeight: 1.02,
-                  letterSpacing: '-0.03em',
-                  margin: 0,
-                  maxWidth: '14ch',
-                }}
-              >
-                Platform pricing. BYOK always.
-              </h2>
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-secondary)', letterSpacing: '0.04em', margin: 0 }}>
-                No inference markup. No per-seat lock-in.
-              </p>
-            </div>
-
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-                gap: 10,
-              }}
-            >
-              {PRICING_TIERS.map((tier) => (
-                <article
-                  key={tier.name}
-                  style={{
-                    border: tier.highlight
-                      ? '1px solid var(--accent-btc)'
-                      : '1px solid var(--bg-border)',
-                    borderRadius: 18,
-                    padding: '20px 18px',
-                    background: tier.highlight ? 'var(--bg-raised)' : 'var(--bg-surface)',
-                    position: 'relative',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 14,
-                  }}
-                >
-                  {tier.highlight && (
-                    <div
-                      style={{
-                        position: 'absolute',
-                        top: -10,
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        background: 'var(--accent-btc)',
-                        color: 'var(--bg-void)',
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: 9,
-                        fontWeight: 700,
-                        letterSpacing: '0.12em',
-                        padding: '3px 10px',
-                        borderRadius: 20,
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      MOST POPULAR
-                    </div>
-                  )}
-                  <div>
-                    <div
-                      style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: 10,
-                        color: tier.highlight ? 'var(--accent-btc)' : 'var(--text-secondary)',
-                        letterSpacing: '0.12em',
-                        textTransform: 'uppercase',
-                        marginBottom: 10,
-                      }}
-                    >
-                      {tier.name}
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, flexWrap: 'wrap' }}>
-                      <span
-                        style={{
-                          fontFamily: 'var(--font-display)',
-                          fontSize: '1.9rem',
-                          fontWeight: 700,
-                          lineHeight: 1,
-                        }}
-                      >
-                        {tier.price}
-                      </span>
-                      <span style={{ fontSize: 12, color: 'var(--text-secondary)' }}>{tier.sub}</span>
-                    </div>
-                    <div
-                      style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: 10,
-                        color: 'var(--text-secondary)',
-                        marginTop: 4,
-                      }}
-                    >
-                      {tier.note}
-                    </div>
-                  </div>
-                  <div style={{ borderTop: '1px solid var(--bg-border)', paddingTop: 14, display: 'flex', flexDirection: 'column', gap: 8 }}>
-                    {tier.features.map((f) => (
-                      <div key={f} style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
-                        <span style={{ color: 'var(--accent-green)', fontSize: 11, flexShrink: 0, marginTop: 1 }}>✓</span>
-                        <span style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.4 }}>
-                          {f}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </article>
-              ))}
-            </div>
-
-            <div style={{ marginTop: 16 }}>
-              <Link
-                href="/pricing"
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: 12,
-                  color: 'var(--text-secondary)',
-                  letterSpacing: '0.06em',
-                  textDecoration: 'none',
-                }}
-              >
-                Full pricing, add-ons, and annual discounts →
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* ── OPEN-CORE ────────────────────────────────────────────────────── */}
-        <section style={{ ...s.container, paddingTop: 64, paddingBottom: 64 }}>
-          <div style={{ ...s.divider, paddingTop: 56 }}>
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                gap: 48,
-                alignItems: 'start',
-              }}
-            >
-              <div>
-                <p style={s.label}>Open-Core</p>
-                <h2
-                  style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: 'clamp(1.8rem, 4vw, 3rem)',
-                    fontWeight: 800,
-                    lineHeight: 1.02,
-                    letterSpacing: '-0.03em',
-                    margin: '0 0 18px',
-                  }}
-                >
-                  AI infrastructure shouldn't be a black box.
-                </h2>
-                <p style={{ fontFamily: 'var(--font-body)', fontSize: '1rem', lineHeight: 1.6, color: 'var(--text-secondary)', marginBottom: 24 }}>
-                  Audit the loop-prevention and memory architecture yourself. Self-host free, or let us run it.
+                </h1>
+                <p style={{ fontFamily:C.body, fontSize:'1.05rem', lineHeight:1.6, color:C.secondary, maxWidth:'40ch', marginBottom:36 }}>
+                  AI departments for Slack. BYOK. No runaway bills. No amnesiac agents. No credential leaks.
                 </p>
-                <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
-                  <a
-                    href="https://github.com/socktdev"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: 12,
-                      color: 'var(--accent-btc)',
-                      border: '1px solid var(--accent-btc)',
-                      borderRadius: 999,
-                      padding: '8px 18px',
-                      textDecoration: 'none',
-                      letterSpacing: '0.06em',
-                    }}
-                  >
-                    GitHub →
-                  </a>
-                  <Link
-                    href="/docs"
-                    style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: 12,
-                      color: 'var(--text-secondary)',
-                      border: '1px solid var(--bg-border)',
-                      borderRadius: 999,
-                      padding: '8px 18px',
-                      textDecoration: 'none',
-                      letterSpacing: '0.06em',
-                    }}
-                  >
-                    Docs
-                  </Link>
+                <div style={{ display:'flex', gap:12, flexWrap:'wrap', marginBottom:36 }}>
+                  <Link href="/pricing"
+                    style={{ background:C.primary, color:C.void, padding:'13px 28px', borderRadius:999, fontFamily:C.mono, fontSize:12, fontWeight:700, letterSpacing:'0.06em', display:'inline-block', transition:'opacity 0.15s ease' }}
+                    onMouseEnter={(e)=>{ e.currentTarget.style.opacity='0.85'; }}
+                    onMouseLeave={(e)=>{ e.currentTarget.style.opacity='1'; }}>ADD TO SLACK</Link>
+                  <Link href="/departments"
+                    style={{ border:`1px solid ${C.border}`, color:C.secondary, padding:'12px 26px', borderRadius:999, fontFamily:C.mono, fontSize:12, letterSpacing:'0.06em', display:'inline-block', transition:'color 0.15s ease, border-color 0.15s ease' }}
+                    onMouseEnter={(e)=>{ e.currentTarget.style.color=C.primary; e.currentTarget.style.borderColor='#46464E'; }}
+                    onMouseLeave={(e)=>{ e.currentTarget.style.color=C.secondary; e.currentTarget.style.borderColor=C.border; }}>SEE DEPARTMENTS</Link>
+                </div>
+                <div style={{ display:'flex', flexDirection:'column', gap:7 }}>
+                  {['BYOK — zero token markup','Loop prevention (FSM-enforced)','Open-core (FSL-1.1-MIT)'].map((t) => (
+                    <div key={t} style={{ fontFamily:C.mono, fontSize:10, color:'#44444B', letterSpacing:'0.1em', display:'flex', alignItems:'center', gap:8 }}>
+                      <span style={{ width:3, height:3, borderRadius:'50%', background:'#44444B', flexShrink:0, display:'inline-block' }} />
+                      {t}
+                    </div>
+                  ))}
                 </div>
               </div>
 
-              <div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                  {OSS_MODULES.map((mod) => (
-                    <div
-                      key={mod.name}
-                      style={{
-                        border: '1px solid var(--bg-border)',
-                        borderRadius: 12,
-                        padding: '14px 18px',
-                        background: 'var(--bg-surface)',
-                        display: 'flex',
-                        gap: 16,
-                        alignItems: 'flex-start',
-                      }}
-                    >
-                      <div
-                        style={{
-                          fontFamily: 'var(--font-mono)',
-                          fontSize: 11,
-                          color: 'var(--accent-btc)',
-                          letterSpacing: '0.08em',
-                          minWidth: 86,
-                          flexShrink: 0,
-                          paddingTop: 1,
-                        }}
-                      >
-                        {mod.name}
-                      </div>
-                      <div style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.45 }}>
-                        {mod.desc}
-                      </div>
-                    </div>
-                  ))}
-                  <div
-                    style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: 10,
-                      color: 'var(--text-secondary)',
-                      padding: '10px 18px',
-                      letterSpacing: '0.06em',
-                    }}
-                  >
-                    License: FSL-1.1-MIT → converts to MIT after 2 years
-                  </div>
-                </div>
+              {/* Right — Slack mock with ambient glow corona */}
+              <div style={{ display:'flex', justifyContent:'flex-end' }}>
+                <SlackMock glow />
               </div>
             </div>
           </div>
         </section>
 
-        {/* ── FINAL CTA ────────────────────────────────────────────────────── */}
-        <section style={{ ...s.container, paddingTop: 64, paddingBottom: 112 }}>
-          <div
-            style={{
-              ...s.divider,
-              paddingTop: 80,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              textAlign: 'center',
-              gap: 28,
-            }}
-          >
-            <h2
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(2rem, 6vw, 4.5rem)',
-                fontWeight: 800,
-                lineHeight: 0.96,
-                letterSpacing: '-0.04em',
-                margin: 0,
-                maxWidth: '14ch',
-              }}
-            >
-              Launch an AI department this week.
-            </h2>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-secondary)', letterSpacing: '0.06em', margin: 0 }}>
-              Under 10 minutes to activate. First output within 2 hours.
-            </p>
-            <Link
-              href="/pricing"
-              style={{
-                background: 'var(--accent-btc)',
-                color: 'var(--bg-void)',
-                padding: '15px 36px',
-                borderRadius: 999,
-                fontFamily: 'var(--font-mono)',
-                fontSize: 14,
-                fontWeight: 700,
-                letterSpacing: '0.05em',
-                textDecoration: 'none',
-                display: 'inline-block',
-              }}
-            >
-              Add Sockt to Slack
-            </Link>
-            <p
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: 11,
-                color: 'var(--text-secondary)',
-                margin: 0,
-                letterSpacing: '0.06em',
-              }}
-            >
-              Community Edition is free and self-hostable. Paid tiers from $69/month.
-            </p>
+        {/* ── STATS STRIP — character-reveal on scroll ── */}
+        <div style={{ borderTop:`1px solid ${C.border}`, borderBottom:`1px solid ${C.border}`, background:C.surface }}>
+          <div style={wrap}>
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(180px, 1fr))', gap:0 }}>
+              {STATS.map((s, i) => (
+                <div key={s.l} style={{ borderRight:i < STATS.length-1 ? `1px solid ${C.border}` : 'none' }}>
+                  <AnimatedStat value={s.v} label={s.l} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* ── MARQUEE — horizontal scrolling technical vocabulary (textural separator) ── */}
+        <Marquee />
+
+        {/* ── PROOF SECTIONS — Moranta "emerge from darkness" ── */}
+        <CrisesSection />
+        <HowItWorksSection />
+        <DepartmentsSection />
+        <SecuritySection />
+        <FleetSection />
+        <PricingSection />
+        <OpenSourceSection />
+
+        {/* ── FINAL CTA — fast / clear / ambient glow ── */}
+        <section style={{ ...sep, padding:'128px 0', background:C.surface, textAlign:'center', position:'relative', overflow:'hidden' }}>
+          <AmbientBlobs variant="cta" />
+          <div style={{ ...wrap, position:'relative', zIndex:1 }}>
+            <div style={{ maxWidth:600, margin:'0 auto', display:'flex', flexDirection:'column', alignItems:'center', gap:24 }}>
+              <h2 style={{ fontFamily:'var(--font-headline)', fontSize:'clamp(2.4rem, 6vw, 5.5rem)', fontWeight:800, letterSpacing:'-0.04em', lineHeight:0.96, color:C.primary, margin:0, fontVariationSettings:"'opsz' 100" }}>
+                Launch an AI department this week.
+              </h2>
+              <p style={{ fontFamily:C.mono, fontSize:11, color:C.secondary, letterSpacing:'0.06em', margin:0 }}>
+                Under 10 minutes to activate. First output within 2 hours.
+              </p>
+              <Link href="/pricing"
+                style={{ background:C.primary, color:C.void, padding:'15px 40px', borderRadius:999, fontFamily:C.mono, fontSize:13, fontWeight:700, letterSpacing:'0.08em', display:'inline-block', marginTop:8, transition:'opacity 0.15s ease' }}
+                onMouseEnter={(e)=>{ e.currentTarget.style.opacity='0.85'; }}
+                onMouseLeave={(e)=>{ e.currentTarget.style.opacity='1'; }}>
+                ADD SOCKT TO SLACK
+              </Link>
+              <p style={{ fontFamily:C.mono, fontSize:10, color:'#44444B', margin:0, letterSpacing:'0.1em' }}>
+                COMMUNITY EDITION IS FREE · PAID PLANS FROM $69/MO
+              </p>
+            </div>
           </div>
         </section>
 
       </main>
+
       <Footer />
+
+      <style>{`
+        @media (max-width: 720px) { .hero-grid { grid-template-columns: 1fr !important; } }
+      `}</style>
     </>
   );
 }

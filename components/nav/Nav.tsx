@@ -170,25 +170,20 @@ export default function Nav() {
                 <Link
                   href="/signup"
                   style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: isMobile ? '12px' : '14px',
-                    color: 'var(--accent-btc)',
-                    border: '1px solid var(--accent-btc)',
-                    padding: isMobile ? '6px 10px' : '7px 17px',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: isMobile ? '11px' : '12px',
+                    color: 'var(--bg-void)',
+                    background: 'var(--text-primary)',
+                    padding: isMobile ? '6px 12px' : '7px 18px',
                     borderRadius: '100px',
-                    letterSpacing: '0.04em',
-                    transition: 'background-color 0.15s, color 0.15s',
+                    letterSpacing: '0.06em',
+                    fontWeight: 700,
+                    transition: 'opacity 0.15s ease',
                   }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = 'var(--accent-btc)';
-                    e.currentTarget.style.color = 'var(--bg-void)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'transparent';
-                    e.currentTarget.style.color = 'var(--accent-btc)';
-                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.85'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; }}
                 >
-                  Sign Up
+                  GET STARTED
                 </Link>
               </>
             )
