@@ -90,7 +90,7 @@ const DEPARTMENTS = [
     name: 'Growth & Lead Gen',
     tag: 'outbound',
     roles: ['Social Listening Monitor', 'Lead Researcher', 'Outbound Specialist'],
-    body: 'Finds buying-intent signals on Reddit, HN, and LinkedIn. Enriches leads and drafts hyper-personalized outreach for approval.',
+    body: 'Finds intent signals. Enriches leads. Drafts outreach for approval.',
     stat: '70–90% automation on first-contact drafting',
     preview: [
       { agent: true, text: 'Found 3 leads from r/SaaS with high CRM pain. Drafting outreach now.' },
@@ -102,7 +102,7 @@ const DEPARTMENTS = [
     name: 'Product Development',
     tag: 'engineering',
     roles: ['Product Architect', 'Coder Agent', 'QA Tester'],
-    body: 'Turns a feature request into a structured spec, executes approved steps in an isolated sandbox, runs tests, and delivers a consolidated PR.',
+    body: 'Ticket → spec → sandboxed execution → consolidated PR.',
     stat: '60–80% automation on junior-to-mid dev tickets',
     preview: [
       { agent: true, text: 'Spec for #47 ready. Awaiting approval before writing code.' },
@@ -114,7 +114,7 @@ const DEPARTMENTS = [
     name: 'Engineering Ops',
     tag: 'incident response',
     roles: ['Sentry Monitor', 'Incident Triager', 'Docs Writer'],
-    body: 'Catches Sentry errors, correlates with recent commits, produces a root-cause hypothesis, and self-documents resolutions.',
+    body: 'Error → commit correlation → root-cause hypothesis → runbook update.',
     stat: '<15 min from alert to root-cause hypothesis',
     preview: [
       { agent: true, text: '🔔 api/enrich timeout spike. Correlates with 2 AM deploy (#c7a3f).' },
@@ -235,14 +235,14 @@ export default function Home() {
               <p
                 style={{
                   fontFamily: 'var(--font-body)',
-                  fontSize: '1.05rem',
-                  lineHeight: 1.7,
+                  fontSize: '1rem',
+                  lineHeight: 1.6,
                   color: 'var(--text-secondary)',
-                  maxWidth: '52ch',
+                  maxWidth: '40ch',
                   marginBottom: 32,
                 }}
               >
-                Preconfigured AI departments that live in Slack, share persistent memory, and coordinate safely — with built-in loop prevention, credential isolation, and fleet intelligence.
+                AI departments for Slack. BYOK. No runaway bills. No amnesiac agents. No credential leaks.
               </p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
                 <Link
@@ -351,27 +351,14 @@ export default function Home() {
                       fontFamily: 'var(--font-display)',
                       fontSize: '1.1rem',
                       fontWeight: 700,
-                      margin: '0 0 10px',
+                      margin: '0 0 16px',
                       color: 'var(--text-primary)',
                     }}
                   >
                     {c.title}
                   </h3>
-                  <p
-                    style={{
-                      fontFamily: 'var(--font-body)',
-                      fontSize: 14,
-                      lineHeight: 1.6,
-                      color: 'var(--text-secondary)',
-                      margin: '0 0 16px',
-                    }}
-                  >
-                    {c.problem}
-                  </p>
                   <div
                     style={{
-                      borderTop: '1px solid var(--bg-border)',
-                      paddingTop: 14,
                       fontFamily: 'var(--font-mono)',
                       fontSize: 12,
                       color: 'var(--accent-btc)',
@@ -414,46 +401,18 @@ export default function Home() {
                 </h2>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
                   {[
-                    ['01', 'Connect Slack', 'OAuth into your workspace. Scopes are minimal and listed.'],
-                    ['02', 'Choose a department', 'Growth, Product Dev, or Engineering Ops — each is a preconfigured team.'],
-                    ['03', 'Seed memory', 'Answer 5 questions. Seeds GBrain with your ICP, offer, and approval rules.'],
-                    ['04', 'Bring your own key', 'Connect Anthropic, OpenAI, Azure, Gemini, or a self-hosted model.'],
-                    ['05', 'Swarm activates', 'Agents DM you in Slack. First output within 2 hours.'],
-                  ].map(([n, title, body]) => (
+                    ['01', 'Connect Slack'],
+                    ['02', 'Choose a department'],
+                    ['03', 'Seed memory'],
+                    ['04', 'Bring your own key'],
+                    ['05', 'Swarm activates'],
+                  ].map(([n, title]) => (
                     <div key={n} style={{ display: 'flex', gap: 16 }}>
-                      <div
-                        style={{
-                          fontFamily: 'var(--font-mono)',
-                          fontSize: 11,
-                          color: 'var(--accent-btc)',
-                          letterSpacing: '0.1em',
-                          minWidth: 26,
-                          paddingTop: 2,
-                        }}
-                      >
+                      <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--accent-btc)', letterSpacing: '0.1em', minWidth: 26, paddingTop: 2 }}>
                         {n}
                       </div>
-                      <div>
-                        <div
-                          style={{
-                            fontFamily: 'var(--font-display)',
-                            fontSize: '1rem',
-                            fontWeight: 600,
-                            marginBottom: 4,
-                          }}
-                        >
-                          {title}
-                        </div>
-                        <div
-                          style={{
-                            fontFamily: 'var(--font-body)',
-                            fontSize: 14,
-                            color: 'var(--text-secondary)',
-                            lineHeight: 1.55,
-                          }}
-                        >
-                          {body}
-                        </div>
+                      <div style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', fontWeight: 600, paddingTop: 1 }}>
+                        {title}
                       </div>
                     </div>
                   ))}
@@ -463,48 +422,16 @@ export default function Home() {
               {/* Right: architecture diagram */}
               <div>
                 <p style={s.label}>Architecture</p>
-                <h2
-                  style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: 'clamp(1.8rem, 4vw, 3rem)',
-                    fontWeight: 800,
-                    lineHeight: 1.02,
-                    letterSpacing: '-0.03em',
-                    margin: '0 0 32px',
-                  }}
-                >
-                  Three layers. Everything you need, nothing you don't.
-                </h2>
                 <ArchFlow />
-                <div style={{ marginTop: 28, display: 'flex', flexDirection: 'column', gap: 14 }}>
+                <div style={{ marginTop: 20, display: 'flex', flexDirection: 'column', gap: 1 }}>
                   {[
-                    ['Execution', 'Agent runs Plan → Act → Observe loops inside a hardware-isolated sandbox, powered by your own LLM key.'],
-                    ['Coordination', 'OpenClaw gateway + FSM task list. No horizontal agent messaging — every interaction is a discrete, logged task.'],
-                    ['Memory', 'GBrain: Git-backed Markdown knowledge graph. Every decision is auditable and rollback-able.'],
+                    ['Execution',    'Plan→Act→Observe · TEE-isolated · your LLM key'],
+                    ['Coordination', 'FSM task list · no horizontal messaging · every action logged'],
+                    ['Memory',       'GBrain · Git-backed · diff-able · rollback in < 60s'],
                   ].map(([layer, desc]) => (
-                    <div
-                      key={layer}
-                      style={{
-                        border: '1px solid var(--bg-border)',
-                        borderRadius: 10,
-                        padding: '14px 18px',
-                        background: 'var(--bg-surface)',
-                      }}
-                    >
-                      <div
-                        style={{
-                          fontFamily: 'var(--font-mono)',
-                          fontSize: 11,
-                          color: 'var(--accent-btc)',
-                          letterSpacing: '0.08em',
-                          marginBottom: 6,
-                        }}
-                      >
-                        {layer}
-                      </div>
-                      <div style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
-                        {desc}
-                      </div>
+                    <div key={layer} style={{ border: '1px solid var(--bg-border)', padding: '12px 16px', background: 'var(--bg-surface)', display: 'flex', alignItems: 'center', gap: 16 }}>
+                      <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--accent-btc)', letterSpacing: '0.08em', minWidth: 90, flexShrink: 0 }}>{layer}</div>
+                      <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-secondary)' }}>{desc}</div>
                     </div>
                   ))}
                 </div>
@@ -770,22 +697,11 @@ export default function Home() {
                     fontWeight: 800,
                     lineHeight: 1.02,
                     letterSpacing: '-0.03em',
-                    margin: '0 0 18px',
+                    margin: '0 0 28px',
                   }}
                 >
                   You pay your LLM provider. We never see that line.
                 </h2>
-                <p
-                  style={{
-                    fontFamily: 'var(--font-body)',
-                    fontSize: '1rem',
-                    lineHeight: 1.7,
-                    color: 'var(--text-secondary)',
-                    marginBottom: 28,
-                  }}
-                >
-                  Sockt charges only for orchestration infrastructure — the FSM coordination, GBrain memory, TEE isolation, and fleet intelligence. Your Anthropic or OpenAI bill stays between you and your provider, with zero markup.
-                </p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                   {[
                     'Anthropic (Claude) — recommended',
@@ -828,47 +744,14 @@ export default function Home() {
                 </h2>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                   {[
-                    {
-                      layer: 'TEE Isolation',
-                      desc: 'Every agent runs inside AMD SEV-SNP or Intel SGX hardware-encrypted enclaves. Host-level admins — including Sockt — cannot inspect a running container.',
-                    },
-                    {
-                      layer: 'Secret Vault Proxy',
-                      desc: 'Agents hold placeholder keys. The SaaS-Proxy intercepts outbound calls, injects real credentials from the vault, and forwards. Credential exfiltration is architecturally impossible.',
-                    },
-                    {
-                      layer: 'Egress Allowlist',
-                      desc: 'All outbound traffic routes through a per-customer domain allowlist. DNS covert channels are blocked. Injection attempts are logged and distributed to the fleet within an hour.',
-                    },
-                    {
-                      layer: 'HITL Gates',
-                      desc: 'Tier 1 (auto-execute), Tier 2 (approve before send), Tier 3 (never execute). Classification is enforced at the proxy layer — not in the agent\'s reasoning.',
-                    },
+                    { layer: 'TEE Isolation',   desc: 'AMD SEV-SNP / SGX enclaves. Host admins cannot inspect a running container.' },
+                    { layer: 'Secret Vault',    desc: 'Keys never enter agent scope. Compromised agent has nothing to exfiltrate.' },
+                    { layer: 'Egress Allowlist',desc: 'Per-customer domain rules. Injection attempts distributed to fleet in < 60 min.' },
+                    { layer: 'HITL Gates',      desc: 'Auto / approval / permanently blocked. Enforced at proxy — not in agent reasoning.' },
                   ].map((item) => (
-                    <div
-                      key={item.layer}
-                      style={{
-                        border: '1px solid var(--bg-border)',
-                        borderLeft: '3px solid var(--accent-btc)',
-                        borderRadius: '0 10px 10px 0',
-                        padding: '14px 18px',
-                        background: 'var(--bg-surface)',
-                      }}
-                    >
-                      <div
-                        style={{
-                          fontFamily: 'var(--font-mono)',
-                          fontSize: 11,
-                          color: 'var(--accent-btc)',
-                          letterSpacing: '0.08em',
-                          marginBottom: 6,
-                        }}
-                      >
-                        {item.layer}
-                      </div>
-                      <div style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.55 }}>
-                        {item.desc}
-                      </div>
+                    <div key={item.layer} style={{ border: '1px solid var(--bg-border)', borderLeft: '3px solid var(--accent-btc)', borderRadius: '0 10px 10px 0', padding: '12px 16px', background: 'var(--bg-surface)' }}>
+                      <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--accent-btc)', letterSpacing: '0.08em', marginBottom: 4 }}>{item.layer}</div>
+                      <div style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.5 }}>{item.desc}</div>
                     </div>
                   ))}
                 </div>
@@ -903,22 +786,11 @@ export default function Home() {
                     fontWeight: 800,
                     lineHeight: 1.02,
                     letterSpacing: '-0.03em',
-                    margin: '0 0 18px',
+                    margin: 0,
                   }}
                 >
                   Your agents learn from 200+ deployments, not just yours.
                 </h2>
-                <p
-                  style={{
-                    fontFamily: 'var(--font-body)',
-                    fontSize: '1rem',
-                    lineHeight: 1.7,
-                    color: 'var(--text-secondary)',
-                    maxWidth: '54ch',
-                  }}
-                >
-                  A self-hosted deployment has N=1 data — no baseline, no collective threat intelligence, no proactive API monitoring. Paid tiers connect to a network that gets more valuable as the fleet grows.
-                </p>
               </div>
               <div
                 style={{
@@ -991,17 +863,8 @@ export default function Home() {
               >
                 Platform pricing. BYOK always.
               </h2>
-              <p
-                style={{
-                  fontFamily: 'var(--font-body)',
-                  fontSize: 14,
-                  color: 'var(--text-secondary)',
-                  maxWidth: '42ch',
-                  lineHeight: 1.6,
-                  margin: 0,
-                }}
-              >
-                You pay Sockt for the infrastructure that makes AI agents reliable and smarter over time. You pay your LLM provider directly for inference — no markup, ever.
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-secondary)', letterSpacing: '0.04em', margin: 0 }}>
+                No inference markup. No per-seat lock-in.
               </p>
             </div>
 
@@ -1142,17 +1005,8 @@ export default function Home() {
                 >
                   AI infrastructure shouldn't be a black box.
                 </h2>
-                <p
-                  style={{
-                    fontFamily: 'var(--font-body)',
-                    fontSize: '1rem',
-                    lineHeight: 1.7,
-                    color: 'var(--text-secondary)',
-                    marginBottom: 24,
-                    maxWidth: '54ch',
-                  }}
-                >
-                  The core orchestration, FSM engine, and memory system are open source under FSL-1.1-MIT — any engineer can verify that the loop-prevention and memory architecture work as described. Self-host on a $20/month VPS, or let us run it.
+                <p style={{ fontFamily: 'var(--font-body)', fontSize: '1rem', lineHeight: 1.6, color: 'var(--text-secondary)', marginBottom: 24 }}>
+                  Audit the loop-prevention and memory architecture yourself. Self-host free, or let us run it.
                 </p>
                 <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
                   <a
@@ -1266,17 +1120,8 @@ export default function Home() {
             >
               Launch an AI department this week.
             </h2>
-            <p
-              style={{
-                fontFamily: 'var(--font-body)',
-                fontSize: '1rem',
-                color: 'var(--text-secondary)',
-                lineHeight: 1.65,
-                maxWidth: '46ch',
-                margin: 0,
-              }}
-            >
-              Under 10 minutes to activate. First real output within 2 hours. Your GBrain transfers if you ever need to switch tiers.
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-secondary)', letterSpacing: '0.06em', margin: 0 }}>
+              Under 10 minutes to activate. First output within 2 hours.
             </p>
             <Link
               href="/pricing"
