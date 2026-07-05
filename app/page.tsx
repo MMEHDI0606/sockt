@@ -135,15 +135,6 @@ const DEPARTMENTS = [
     ]},
 ];
 
-const TIERS = [
-  { name:'Community', price:'Free',  note:'+ LLM costs',      badge:null,           detail:'Self-host on a $20 VPS. Full FSM + CADVP + GBrain + CLI.',                           features:['Full FSM loop prevention','CADVP memory protocol','All 3 departments','Unlimited GBrain (local)'] },
-  { name:'Starter',   price:'$69',   note:'/mo + LLM',        badge:null,           detail:'Managed hosting, zero Docker. Ideal for non-technical founders.',                     features:['No Docker needed','1 department','90-day retention','Email support'] },
-  { name:'Professional',price:'$149',note:'/mo + LLM',        badge:'Most popular', detail:'Fleet intelligence makes your agents smarter from collective deployment data.',        features:['Fleet intelligence','Threat feed < 60 min','2 departments','Weekly Dream-Cycle'] },
-  { name:'Business',  price:'$399',  note:'/mo + LLM',        badge:null,           detail:'SOC 2 Type II inheritance — at a fraction of a $50K+ independent audit cost.',       features:['SOC 2 Type II','SSO / SCIM','3 departments','Nightly optimization'] },
-  { name:'Agency',    price:'$249',  note:'/mo + $39/client', badge:null,           detail:'Per-client pricing aligns your cost with value delivered, not seats filled.',         features:['Multi-workspace','Cross-client skills','Agent federation','Unlimited staff seats'] },
-  { name:'Enterprise',price:'$799',  note:'/mo + LLM',        badge:null,           detail:'Dedicated single-tenant TEE. HIPAA BAA. 99.5% SLA with financial credits.',          features:['Dedicated TEE','HIPAA BAA','99.5% SLA credits','Private skill marketplace'] },
-];
-
 const OSS_MODULES = [
   { name:'OSS-Orch',   desc:'Hybrid orchestration bridge (Hermes inside OpenClaw)' },
   { name:'OSS-FSM',    desc:'Hierarchical FSM & SQLite task coordination engine' },
@@ -365,53 +356,32 @@ function FleetSection() {
   );
 }
 
-function PricingSection() {
+function ComingSoonSection() {
   const ref = useRef<HTMLDivElement>(null);
-  useReveal(ref, { selector:'[data-reveal]', stagger:0.08, y:30, duration:0.85 });
+  useReveal(ref, { selector:'[data-reveal]', stagger:0.1, y:32, duration:0.9 });
   return (
-    <section style={{ ...sep, padding:'96px 0' }}>
+    <section style={{ ...sep, padding:'128px 0', textAlign:'center' }}>
       <div style={wrap} ref={ref}>
-        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', gap:24, flexWrap:'wrap', marginBottom:48 }}>
-          <div>
-            <span data-reveal style={label()}>Pricing</span>
-            <h2 data-reveal style={{ ...H2(), maxWidth:'16ch' }}>Platform fee. Your LLM costs stay yours.</h2>
-          </div>
-          <p data-reveal style={{ fontFamily:C.mono, fontSize:11, color:C.secondary, letterSpacing:'0.04em', margin:0 }}>
-            No inference markup. No per-seat lock-in.
+        <div style={{ maxWidth:640, margin:'0 auto', display:'flex', flexDirection:'column', alignItems:'center', gap:20 }}>
+          <span data-reveal style={label()}>Pricing</span>
+          {/* Hero-style treatment — same Fraunces weight-contrast pattern as the page H1 */}
+          <h2 data-reveal style={{
+            fontFamily:'var(--font-headline)', fontSize:'clamp(3rem, 7vw, 7rem)',
+            lineHeight:0.92, letterSpacing:'-0.04em', margin:0,
+            fontVariationSettings:"'opsz' 144",
+          }}>
+            <span style={{ display:'block', fontWeight:800, color:C.primary }}>Coming</span>
+            <span style={{ display:'block', fontWeight:200, color:C.secondary }}>soon.</span>
+          </h2>
+          <p data-reveal style={{ fontFamily:C.body, fontSize:'1.05rem', lineHeight:1.6, color:C.secondary, maxWidth:'42ch', margin:0 }}>
+            We&apos;re finalising pricing. Community Edition stays free and open-core in the meantime.
           </p>
-        </div>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(170px, 1fr))', gap:1 }}>
-          {TIERS.map((tier) => (
-            <article key={tier.name} data-reveal className="price-card"
-              style={{ border:`1px solid ${tier.badge?'#46464E':C.border}`, background:tier.badge?C.raised:C.surface, padding:'24px 18px', position:'relative', display:'flex', flexDirection:'column', gap:14 }}>
-              {tier.badge && (
-                <div style={{ position:'absolute', top:-1, left:'50%', transform:'translateX(-50%)', background:C.primary, color:C.void, fontFamily:C.mono, fontSize:8, fontWeight:700, letterSpacing:'0.15em', padding:'3px 10px', whiteSpace:'nowrap' }}>
-                  {tier.badge.toUpperCase()}
-                </div>
-              )}
-              <div>
-                <div style={{ fontFamily:C.mono, fontSize:9, color:C.secondary, letterSpacing:'0.18em', textTransform:'uppercase', marginBottom:12 }}>{tier.name}</div>
-                <div style={{ fontFamily:'var(--font-subhead)', fontSize:'clamp(1.5rem, 3vw, 2rem)', fontWeight:700, letterSpacing:'-0.03em', color:C.primary, lineHeight:1, marginBottom:4 }}>{tier.price}</div>
-                <div style={{ fontFamily:C.mono, fontSize:9, color:C.secondary, letterSpacing:'0.06em' }}>{tier.note}</div>
-              </div>
-              <div className="price-hover-detail" style={{ fontFamily:C.body, fontSize:12, color:C.secondary, lineHeight:1.55, marginTop:-4 }}>{tier.detail}</div>
-              <div style={{ borderTop:`1px solid ${C.border}`, paddingTop:14, display:'flex', flexDirection:'column', gap:8 }}>
-                {tier.features.map((f) => (
-                  <div key={f} style={{ display:'flex', gap:8 }}>
-                    <span style={{ color:'#46464E', fontSize:11, flexShrink:0 }}>›</span>
-                    <span style={{ fontFamily:C.body, fontSize:12, color:C.secondary, lineHeight:1.4 }}>{f}</span>
-                  </div>
-                ))}
-              </div>
-            </article>
-          ))}
-        </div>
-        <div data-reveal style={{ marginTop:16 }}>
-          <Link href="/pricing" style={{ fontFamily:C.mono, fontSize:10, color:C.secondary, letterSpacing:'0.1em' }}
-            onMouseEnter={(e) => { e.currentTarget.style.color=C.primary; }}
-            onMouseLeave={(e) => { e.currentTarget.style.color=C.secondary; }}>
-            FULL PRICING + ADD-ONS + ANNUAL DISCOUNTS →
-          </Link>
+          <a data-reveal href="https://github.com/sockt-dev/sockt" target="_blank" rel="noopener noreferrer"
+            style={{ fontFamily:C.mono, fontSize:11, color:C.primary, border:`1px solid ${C.border}`, borderRadius:999, padding:'11px 26px', letterSpacing:'0.08em', display:'inline-block', marginTop:8, transition:'border-color 0.15s ease' }}
+            onMouseEnter={(e) => { e.currentTarget.style.borderColor='#46464E'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor=C.border; }}>
+            SELF-HOST FREE →
+          </a>
         </div>
       </div>
     </section>
@@ -508,7 +478,7 @@ export default function Home() {
                   AI departments for Slack. BYOK. No runaway bills. No amnesiac agents. No credential leaks.
                 </p>
                 <div style={{ display:'flex', gap:12, flexWrap:'wrap', marginBottom:36 }}>
-                  <Link href="/pricing"
+                  <Link href="/signup"
                     style={{ background:C.primary, color:C.void, padding:'13px 28px', borderRadius:999, fontFamily:C.mono, fontSize:12, fontWeight:700, letterSpacing:'0.06em', display:'inline-block', transition:'opacity 0.15s ease' }}
                     onMouseEnter={(e)=>{ e.currentTarget.style.opacity='0.85'; }}
                     onMouseLeave={(e)=>{ e.currentTarget.style.opacity='1'; }}>ADD TO SLACK</Link>
@@ -557,7 +527,7 @@ export default function Home() {
         <DepartmentsSection />
         <SecuritySection />
         <FleetSection />
-        <PricingSection />
+        <ComingSoonSection />
         <OpenSourceSection />
 
         {/* ── FINAL CTA — fast / clear / ambient glow ── */}
@@ -571,14 +541,14 @@ export default function Home() {
               <p style={{ fontFamily:C.mono, fontSize:11, color:C.secondary, letterSpacing:'0.06em', margin:0 }}>
                 Under 10 minutes to activate. First output within 2 hours.
               </p>
-              <Link href="/pricing"
+              <Link href="/signup"
                 style={{ background:C.primary, color:C.void, padding:'15px 40px', borderRadius:999, fontFamily:C.mono, fontSize:13, fontWeight:700, letterSpacing:'0.08em', display:'inline-block', marginTop:8, transition:'opacity 0.15s ease' }}
                 onMouseEnter={(e)=>{ e.currentTarget.style.opacity='0.85'; }}
                 onMouseLeave={(e)=>{ e.currentTarget.style.opacity='1'; }}>
                 ADD SOCKT TO SLACK
               </Link>
               <p style={{ fontFamily:C.mono, fontSize:10, color:'#44444B', margin:0, letterSpacing:'0.1em' }}>
-                COMMUNITY EDITION IS FREE · PAID PLANS FROM $69/MO
+                COMMUNITY EDITION IS FREE · PAID PLANS COMING SOON
               </p>
             </div>
           </div>

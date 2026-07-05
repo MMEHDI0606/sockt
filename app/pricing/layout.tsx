@@ -2,23 +2,23 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
 export const metadata: Metadata = {
-  title: 'Pricing',
+  title: 'Pricing — Coming Soon',
   description:
-    'Sockt pricing for AI workforce infrastructure. Customers pay Sockt for orchestration and intelligence, and pay their LLM provider directly for inference.',
+    'Sockt pricing is coming soon. Community Edition is free and open-core — self-host it today.',
   alternates: {
     canonical: '/pricing',
   },
   openGraph: {
-    title: 'Sockt Pricing',
+    title: 'Sockt Pricing — Coming Soon',
     description:
-      'Compare Community, Starter, Professional, Business, Agency, and Enterprise tiers for AI workforce deployments.',
+      'Pricing is coming soon. Community Edition is free and open-core — self-host it today.',
     url: '/pricing',
     type: 'website',
   },
   twitter: {
-    title: 'Sockt Pricing',
+    title: 'Sockt Pricing — Coming Soon',
     description:
-      'AI workforce pricing with BYOK inference and no token markup.',
+      'Pricing is coming soon. Community Edition is free and open-core.',
   },
 };
 
