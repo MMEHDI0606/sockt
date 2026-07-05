@@ -459,7 +459,7 @@ export default function Home() {
                     Line 2: weight 200 (contrasting whisper — no italic)
                     This is the ozero/lanegrita/digitalists treatment:
                     same font, dramatic weight contrast, pure typographic confidence */}
-                <h1 style={{
+                <h1 className="hero-h1" style={{
                   fontFamily: 'var(--font-headline)',
                   fontSize: 'clamp(3.2rem, 7.5vw, 8rem)',
                   lineHeight: 0.92,
@@ -560,6 +560,10 @@ export default function Home() {
 
       <style>{`
         @media (max-width: 720px) { .hero-grid { grid-template-columns: 1fr !important; } }
+        /* Tighter stack for the two-line weight-contrast hero — the sitewide
+           110% line-height rule (globals.css) reads as too loose at this
+           display size, so it's overridden here specifically. */
+        .hero-h1 { line-height: 0.85 !important; }
       `}</style>
     </>
   );
