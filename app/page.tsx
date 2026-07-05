@@ -563,7 +563,7 @@ export default function Home() {
         /* Tighter stack for the two-line weight-contrast hero — the sitewide
            110% line-height rule (globals.css) reads as too loose at this
            display size, so it's overridden here specifically. */
-        .hero-h1 { line-height: 0.85 !important; }
+        .hero-h1 { line-height: 0.78 !important; }
       `}</style>
     </>
   );
