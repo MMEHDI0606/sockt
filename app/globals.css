@@ -160,6 +160,14 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Global typography: 110% line-height, -3% letter-spacing everywhere.
+   !important is required here — most type in this codebase sets its own
+   inline lineHeight/letterSpacing per element, which would otherwise win. */
+*, *::before, *::after {
+  line-height: 1.1 !important;
+  letter-spacing: -0.03em !important;
+}
+
 /* Subtle dot grid on dark bg */
 body {
   background-image: radial-gradient(circle, #26262B 1px, transparent 1px);
