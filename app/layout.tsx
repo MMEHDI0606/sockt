@@ -19,14 +19,15 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sockt.dev';
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'Sockt | AI workforce platform',
+    default: 'Sockt | AI-native workforce platform',
     template: '%s | Sockt',
   },
   description:
-    'Sockt deploys preconfigured AI employee swarms directly into Slack. They coordinate, remember, and compound in intelligence with built-in loop prevention and credential isolation. Bring your own LLM key.',
+    'Sockt is an AI-native platform that deploys preconfigured AI employee swarms directly into Slack. They coordinate, remember, and compound in intelligence with built-in loop prevention and credential isolation. Bring your own LLM key.',
   applicationName: 'Sockt',
   keywords: [
     'AI agents',
+    'AI-native platform',
     'AI employees',
     'multi-agent swarm',
     'Slack AI agent',
@@ -44,17 +45,17 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: '/',
-    title: 'Sockt | AI workforce platform',
+    title: 'Sockt | AI-native workforce platform',
     description:
-      'Preconfigured AI employee swarms for Slack with persistent memory, loop prevention, and credential isolation. Built for lean teams that need reliable automation.',
+      'AI-native preconfigured employee swarms for Slack with persistent memory, loop prevention, and credential isolation. Built for lean teams that need reliable automation.',
     siteName: 'Sockt',
     images: ['/opengraph-image.png'],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Sockt | AI workforce platform',
+    title: 'Sockt | AI-native workforce platform',
     description:
-      'Preconfigured AI employee swarms for Slack with persistent memory, loop prevention, and credential isolation.',
+      'AI-native preconfigured employee swarms for Slack with persistent memory, loop prevention, and credential isolation.',
     images: ['/opengraph-image.png'],
   },
   robots: {

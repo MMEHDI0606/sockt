@@ -56,7 +56,7 @@ export default function Footer() {
                   marginBottom: '16px',
                 }}
               >
-                AI workforce infrastructure for Slack-native departments.
+                AI-native workforce infrastructure for Slack-native departments.
               </p>
             ) : null}
           </div>

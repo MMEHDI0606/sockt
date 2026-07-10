@@ -11,14 +11,14 @@ const aboutJsonLd = {
   name: 'About Sockt',
   url: `${siteUrl}/about`,
   description:
-    'Sockt is an AI workforce platform that deploys preconfigured AI employee swarms into Slack with persistent memory, loop prevention, and credential isolation.',
+    'Sockt is an AI-native workforce platform that deploys preconfigured AI employee swarms into Slack with persistent memory, loop prevention, and credential isolation.',
   mainEntity: {
     '@type': 'Organization',
     name: 'Sockt',
     url: siteUrl,
     logo: `${siteUrl}/favicon.svg`,
     description:
-      'Sockt deploys preconfigured AI employee swarms directly into Slack. They coordinate, remember, and compound in intelligence with built-in loop prevention and credential isolation.',
+      'Sockt is an AI-native platform that deploys preconfigured AI employee swarms directly into Slack. They coordinate, remember, and compound in intelligence with built-in loop prevention and credential isolation.',
     foundingDate: '2024',
     sameAs: ['https://x.com/socktdev', 'https://github.com/socktdev'],
   },
@@ -50,7 +50,7 @@ export default function AboutPage() {
         <section style={{ maxWidth: '1040px', margin: '0 auto', padding: '96px 24px 56px' }}>
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent-btc)', marginBottom: '14px' }}>About Sockt</p>
           <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2.2rem, 6vw, 4.4rem)', lineHeight: 0.98, letterSpacing: '-0.04em', margin: 0, maxWidth: '12ch' }}>A team of two should be able to operate like twenty.</h1>
-          <p style={{ fontFamily: 'var(--font-body)', fontSize: '1.05rem', lineHeight: 1.8, color: 'var(--text-secondary)', marginTop: '20px', maxWidth: '68ch' }}>Sockt exists to reclaim the time founders lose to repetitive coordination, status updates, lead qualification, and error triage. The platform turns those chores into coordinated AI departments that remember what happened yesterday and act on it today.</p>
+          <p style={{ fontFamily: 'var(--font-body)', fontSize: '1.05rem', lineHeight: 1.8, color: 'var(--text-secondary)', marginTop: '20px', maxWidth: '68ch' }}>Sockt exists to reclaim the time founders lose to repetitive coordination, status updates, lead qualification, and error triage. The platform turns those chores into coordinated AI-native departments that remember what happened yesterday and act on it today.</p>
 
           <section style={{ marginTop: '80px', borderTop: '1px solid var(--bg-border)', paddingTop: '56px' }}>
             <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent-btc)', marginBottom: '24px' }}>The team</p>
@@ -94,11 +94,11 @@ export default function AboutPage() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '40px' }}>
               <div>
                 <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', marginBottom: '12px', color: 'var(--text-primary)' }}>Vision</h2>
-                <p style={{ fontFamily: 'var(--font-body)', lineHeight: 1.8, color: 'var(--text-secondary)', maxWidth: '520px' }}>A world where any team of two people can operate with the operational capacity of twenty - not by working harder, but by deploying an AI workforce that learns, remembers, and compounds in value over time.</p>
+                <p style={{ fontFamily: 'var(--font-body)', lineHeight: 1.8, color: 'var(--text-secondary)', maxWidth: '520px' }}>A world where any team of two people can operate with the operational capacity of twenty - not by working harder, but by deploying an AI-native workforce that learns, remembers, and compounds in value over time.</p>
               </div>
               <div>
                 <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', marginBottom: '12px', color: 'var(--text-primary)' }}>Mission</h2>
-                <p style={{ fontFamily: 'var(--font-body)', lineHeight: 1.8, color: 'var(--text-secondary)', maxWidth: '520px' }}>Make reliable, always-on AI departments accessible to every lean team on earth - starting with companies too small for enterprise software and too fast-moving to wait for it.</p>
+                <p style={{ fontFamily: 'var(--font-body)', lineHeight: 1.8, color: 'var(--text-secondary)', maxWidth: '520px' }}>Make reliable, always-on AI-native departments accessible to every lean team on earth - starting with companies too small for enterprise software and too fast-moving to wait for it.</p>
               </div>
             </div>
           </section>
@@ -112,7 +112,7 @@ export default function AboutPage() {
             <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent-btc)', marginBottom: '24px' }}>FAQ</p>
             <div style={{ display: 'grid', gap: '24px', maxWidth: '720px' }}>
               {[
-                ['What is Sockt?', 'An open-core platform that deploys preconfigured AI employee swarms into Slack. They share persistent memory, follow structured coordination, and improve over time.'],
+                ['What is Sockt?', 'An open-core, AI-native platform that deploys preconfigured AI employee swarms into Slack. They share persistent memory, follow structured coordination, and improve over time.'],
                 ['How is this different from a chatbot?', 'Sockt is a multi-agent operating environment, not a single chat window. It has roles, memory, task coordination, and approval gates for risky actions.'],
                 ['What LLM provider do I use?', 'Bring your own key for Anthropic, OpenAI, Azure OpenAI, Google Gemini, or self-hosted models. Sockt adds orchestration and intelligence, not inference markup.'],
                 ['Can I self-host?', 'Yes. Community Edition is free and open source, with the core memory and loop-prevention model. Paid tiers add fleet intelligence and compliance features.'],

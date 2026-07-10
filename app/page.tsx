@@ -151,7 +151,7 @@ function CrisesSection() {
       <div style={wrap} ref={ref}>
         <span data-reveal style={label()}>Why this exists</span>
         <h2 data-reveal style={{ ...H2(), marginBottom:56, maxWidth:'22ch' }}>
-          The three production failures that end AI deployments.
+          The three production failures that end AI-native deployments.
         </h2>
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(300px, 1fr))', gap:1 }}>
           {CRISES.map((c) => (
@@ -397,7 +397,7 @@ function OpenSourceSection() {
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(300px, 1fr))', gap:'6vw', alignItems:'start' }}>
           <div>
             <span data-reveal style={label()}>Open-Core</span>
-            <h2 data-reveal style={{ ...H2(), marginBottom:20 }}>AI infrastructure shouldn't be a black box.</h2>
+            <h2 data-reveal style={{ ...H2(), marginBottom:20 }}>AI-native infrastructure shouldn't be a black box.</h2>
             <p data-reveal style={{ fontFamily:C.body, fontSize:'1rem', lineHeight:1.6, color:C.secondary, marginBottom:28 }}>
               Audit the loop-prevention and memory architecture yourself. Self-host free, or let us run it.
             </p>
@@ -453,7 +453,7 @@ export default function Home() {
 
               {/* Left — direct, immediate, un-precious */}
               <div>
-                <span style={{ ...label(), marginBottom:24 }}>AI Workforce Platform</span>
+                <span style={{ ...label(), marginBottom:24 }}>AI-Native Workforce Platform</span>
                 {/* Hero H1 — Fraunces variable serif at display optical size
                     Line 1: weight 800 (commanding)
                     Line 2: weight 200 (contrasting whisper — no italic)
@@ -475,7 +475,7 @@ export default function Home() {
                   </span>
                 </h1>
                 <p style={{ fontFamily:C.body, fontSize:'1.05rem', lineHeight:1.6, color:C.secondary, maxWidth:'40ch', marginBottom:36 }}>
-                  AI departments for Slack. BYOK. No runaway bills. No amnesiac agents. No credential leaks.
+                  AI-native departments for Slack. BYOK. No runaway bills. No amnesiac agents. No credential leaks.
                 </p>
                 <div style={{ display:'flex', gap:12, flexWrap:'wrap', marginBottom:36 }}>
                   <Link href="/signup"
@@ -536,7 +536,7 @@ export default function Home() {
           <div style={{ ...wrap, position:'relative', zIndex:1 }}>
             <div style={{ maxWidth:600, margin:'0 auto', display:'flex', flexDirection:'column', alignItems:'center', gap:24 }}>
               <h2 style={{ fontFamily:'var(--font-headline)', fontSize:'clamp(2.4rem, 6vw, 5.5rem)', fontWeight:800, letterSpacing:'-0.04em', lineHeight:0.96, color:C.primary, margin:0, fontVariationSettings:"'opsz' 100" }}>
-                Launch an AI department this week.
+                Launch an AI-native department this week.
               </h2>
               <p style={{ fontFamily:C.mono, fontSize:11, color:C.secondary, letterSpacing:'0.06em', margin:0 }}>
                 Under 10 minutes to activate. First output within 2 hours.

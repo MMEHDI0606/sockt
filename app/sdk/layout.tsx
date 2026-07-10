@@ -4,21 +4,21 @@ import type { ReactNode } from 'react';
 export const metadata: Metadata = {
   title: 'SDK',
   description:
-    'Sockt docs for Slack setup, swarm onboarding, and AI workforce workflows.',
+    'Sockt docs for Slack setup, swarm onboarding, and AI-native workforce workflows.',
   alternates: {
     canonical: '/sdk',
   },
   openGraph: {
     title: 'Sockt SDK',
     description:
-      'Read the setup flow for deploying preconfigured AI employee swarms.',
+      'Read the setup flow for deploying preconfigured AI-native employee swarms.',
     url: '/sdk',
     type: 'article',
   },
   twitter: {
     title: 'Sockt SDK',
     description:
-      'Setup docs for Sockt AI workforce deployments.',
+      'Setup docs for Sockt AI-native workforce deployments.',
   },
 };
 

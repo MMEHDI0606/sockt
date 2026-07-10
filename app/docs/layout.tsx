@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   twitter: {
     title: 'Sockt Docs',
     description:
-      'Slack swarm setup docs for AI workforce deployments.',
+      'Slack swarm setup docs for AI-native workforce deployments.',
   },
 };
 
