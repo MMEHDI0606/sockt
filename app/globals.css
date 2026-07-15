@@ -59,11 +59,11 @@
   --logo-mark-color: #EEECE8;
   --nav-glass:       rgba(9, 9, 11, 0.72);
 
-  /* Typography scale — triple system (skill-informed)
-     Fraunces: variable optical-size serif (9–144 opsz), premium display
+  /* Typography scale — triple system
+     Geist:    variable grotesque sans — hero, display, headlines
      DM Sans:  geometric sans for section headings and body
      Fira Code / Geist Mono: precision labels */
-  --font-headline: 'Fraunces', Georgia, serif;      /* display / editorial — hero H1 */
+  --font-headline: 'Geist', sans-serif;             /* display / hero H1 */
   --font-subhead:  'DM Sans', 'Geist', sans-serif;  /* section H2, clean sans */
   --font-display:  'Geist', sans-serif;             /* UI */
   --font-body:     'Geist', sans-serif;

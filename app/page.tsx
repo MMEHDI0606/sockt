@@ -364,11 +364,9 @@ function ComingSoonSection() {
       <div style={wrap} ref={ref}>
         <div style={{ maxWidth:640, margin:'0 auto', display:'flex', flexDirection:'column', alignItems:'center', gap:20 }}>
           <span data-reveal style={label()}>Pricing</span>
-          {/* Hero-style treatment — same Fraunces weight-contrast pattern as the page H1 */}
           <h2 data-reveal style={{
             fontFamily:'var(--font-headline)', fontSize:'clamp(3rem, 7vw, 7rem)',
             lineHeight:0.92, letterSpacing:'-0.04em', margin:0,
-            fontVariationSettings:"'opsz' 144",
           }}>
             <span style={{ display:'block', fontWeight:800, color:C.primary }}>Coming</span>
             <span style={{ display:'block', fontWeight:200, color:C.secondary }}>soon.</span>
@@ -454,18 +452,12 @@ export default function Home() {
               {/* Left — direct, immediate, un-precious */}
               <div>
                 <span style={{ ...label(), marginBottom:24 }}>AI-Native Workforce Platform</span>
-                {/* Hero H1 — Fraunces variable serif at display optical size
-                    Line 1: weight 800 (commanding)
-                    Line 2: weight 200 (contrasting whisper — no italic)
-                    This is the ozero/lanegrita/digitalists treatment:
-                    same font, dramatic weight contrast, pure typographic confidence */}
                 <h1 className="hero-h1" style={{
                   fontFamily: 'var(--font-headline)',
                   fontSize: 'clamp(3.2rem, 7.5vw, 8rem)',
                   lineHeight: 0.92,
                   letterSpacing: '-0.04em',
                   margin: '0 0 28px',
-                  fontVariationSettings: "'opsz' 144",
                 }}>
                   <span style={{ display: 'block', fontWeight: 800, color: C.primary }}>
                     Hire a team,
@@ -535,7 +527,7 @@ export default function Home() {
           <AmbientBlobs variant="cta" />
           <div style={{ ...wrap, position:'relative', zIndex:1 }}>
             <div style={{ maxWidth:600, margin:'0 auto', display:'flex', flexDirection:'column', alignItems:'center', gap:24 }}>
-              <h2 style={{ fontFamily:'var(--font-headline)', fontSize:'clamp(2.4rem, 6vw, 5.5rem)', fontWeight:800, letterSpacing:'-0.04em', lineHeight:0.96, color:C.primary, margin:0, fontVariationSettings:"'opsz' 100" }}>
+              <h2 style={{ fontFamily:'var(--font-headline)', fontSize:'clamp(2.4rem, 6vw, 5.5rem)', fontWeight:800, letterSpacing:'-0.04em', lineHeight:0.96, color:C.primary, margin:0 }}>
                 Launch an AI-native department this week.
               </h2>
               <p style={{ fontFamily:C.mono, fontSize:11, color:C.secondary, letterSpacing:'0.06em', margin:0 }}>

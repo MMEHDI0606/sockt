@@ -39,7 +39,6 @@ export default function PricingPage() {
               lineHeight: 0.92,
               letterSpacing: '-0.04em',
               margin: '0 0 24px',
-              fontVariationSettings: "'opsz' 144",
             }}
           >
             <span style={{ display: 'block', fontWeight: 800 }}>Coming</span>
