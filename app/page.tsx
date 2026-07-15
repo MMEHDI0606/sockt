@@ -28,7 +28,7 @@ const C = {
   void:      'var(--bg-void)'        as const,
 };
 
-const wrap: React.CSSProperties = { maxWidth: 1160, margin: '0 auto', padding: '0 28px' };
+const wrap: React.CSSProperties = { maxWidth: 1400, margin: '0 auto', padding: '0 48px' };
 const sep:  React.CSSProperties = { borderTop: `1px solid ${C.border}` };
 
 const label = (color = C.secondary): React.CSSProperties => ({

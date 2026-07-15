@@ -85,9 +85,9 @@ export default function Nav() {
       }} />
       <div
         style={{
-          maxWidth: '1280px',
+          maxWidth: '1400px',
           margin: '0 auto',
-          padding: isMobile ? '0 14px' : '0 64px',
+          padding: isMobile ? '0 16px' : '0 48px',
           height: '67px',
           display: 'flex',
           alignItems: 'center',

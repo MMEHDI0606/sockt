@@ -24,7 +24,7 @@ export default function Footer() {
         padding: isMobile ? '44px 16px 20px' : '80px 32px 40px',
       }}
     >
-      <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+      <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 48px' }}>
         <div
           style={{
             display: 'flex',
