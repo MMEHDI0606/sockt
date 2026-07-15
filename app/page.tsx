@@ -451,13 +451,13 @@ export default function Home() {
 
               {/* Left — direct, immediate, un-precious */}
               <div>
-                <span style={{ ...label(), marginBottom:20 }}>AI-Native Workforce Platform</span>
+                <span style={{ ...label(), marginBottom:20, fontSize:11 }}>AI-Native Workforce Platform</span>
                 <h1 className="hero-h1" style={{
                   fontFamily: 'var(--font-headline)',
-                  fontSize: 'clamp(2.4rem, 4.8vw, 5.5rem)',
-                  lineHeight: 0.9,
+                  fontSize: 'clamp(2.8rem, 5.2vw, 6rem)',
+                  lineHeight: 1.08,
                   letterSpacing: '-0.04em',
-                  margin: '0 0 24px',
+                  margin: '0 0 28px',
                 }}>
                   <span style={{ display: 'block', fontWeight: 800, color: C.primary }}>
                     Hire a team,
@@ -466,22 +466,22 @@ export default function Home() {
                     not a tool.
                   </span>
                 </h1>
-                <p style={{ fontFamily:C.body, fontSize:'1.05rem', lineHeight:1.6, color:C.secondary, maxWidth:'40ch', marginBottom:36 }}>
+                <p style={{ fontFamily:C.body, fontSize:'1.15rem', lineHeight:1.65, color:C.secondary, maxWidth:'40ch', marginBottom:36 }}>
                   AI-native departments for Slack. BYOK. No runaway bills. No amnesiac agents. No credential leaks.
                 </p>
                 <div style={{ display:'flex', gap:12, flexWrap:'wrap', marginBottom:36 }}>
                   <Link href="/signup"
-                    style={{ background:C.primary, color:C.void, padding:'13px 28px', borderRadius:999, fontFamily:C.mono, fontSize:12, fontWeight:700, letterSpacing:'0.06em', display:'inline-block', transition:'opacity 0.15s ease' }}
+                    style={{ background:C.primary, color:C.void, padding:'13px 28px', borderRadius:999, fontFamily:C.mono, fontSize:13, fontWeight:700, letterSpacing:'0.06em', display:'inline-block', transition:'opacity 0.15s ease' }}
                     onMouseEnter={(e)=>{ e.currentTarget.style.opacity='0.85'; }}
                     onMouseLeave={(e)=>{ e.currentTarget.style.opacity='1'; }}>ADD TO SLACK</Link>
                   <Link href="/departments"
-                    style={{ border:`1px solid ${C.border}`, color:C.secondary, padding:'12px 26px', borderRadius:999, fontFamily:C.mono, fontSize:12, letterSpacing:'0.06em', display:'inline-block', transition:'color 0.15s ease, border-color 0.15s ease' }}
+                    style={{ border:`1px solid ${C.border}`, color:C.secondary, padding:'12px 26px', borderRadius:999, fontFamily:C.mono, fontSize:13, letterSpacing:'0.06em', display:'inline-block', transition:'color 0.15s ease, border-color 0.15s ease' }}
                     onMouseEnter={(e)=>{ e.currentTarget.style.color=C.primary; e.currentTarget.style.borderColor='#46464E'; }}
                     onMouseLeave={(e)=>{ e.currentTarget.style.color=C.secondary; e.currentTarget.style.borderColor=C.border; }}>SEE DEPARTMENTS</Link>
                 </div>
-                <div style={{ display:'flex', flexDirection:'column', gap:7 }}>
+                <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
                   {['BYOK — zero token markup','Loop prevention (FSM-enforced)','Open-core (FSL-1.1-MIT)'].map((t) => (
-                    <div key={t} style={{ fontFamily:C.mono, fontSize:10, color:'#44444B', letterSpacing:'0.1em', display:'flex', alignItems:'center', gap:8 }}>
+                    <div key={t} style={{ fontFamily:C.mono, fontSize:11, color:'#44444B', letterSpacing:'0.1em', display:'flex', alignItems:'center', gap:8 }}>
                       <span style={{ width:3, height:3, borderRadius:'50%', background:'#44444B', flexShrink:0, display:'inline-block' }} />
                       {t}
                     </div>
