@@ -44,14 +44,12 @@ export default function Nav() {
       onEnter: () =>
         gsap.to(nav, {
           backgroundColor: 'var(--nav-glass)',
-          borderBottomColor: 'var(--bg-border)',
           duration: 0.4,
           ease: 'power2.out',
         }),
       onLeaveBack: () =>
         gsap.to(nav, {
           backgroundColor: 'rgba(15, 15, 15, 0)',
-          borderBottomColor: 'transparent',
           duration: 0.3,
           ease: 'power2.inOut',
         }),
@@ -70,11 +68,21 @@ export default function Nav() {
         right: 0,
         zIndex: 50,
         backgroundColor: 'transparent',
-        borderBottom: '1px solid transparent',
         backdropFilter: 'blur(12px)',
         WebkitBackdropFilter: 'blur(12px)',
       }}
     >
+      {/* dot-grid separator — always visible, same texture as body */}
+      <div style={{
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: 1,
+        backgroundImage: 'radial-gradient(circle, var(--bg-border) 1px, transparent 1px)',
+        backgroundSize: '28px 28px',
+        opacity: 0.9,
+      }} />
       <div
         style={{
           maxWidth: '1280px',
