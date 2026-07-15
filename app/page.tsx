@@ -445,19 +445,19 @@ export default function Home() {
       <main style={{ color:C.primary, background:C.void, overflowX:'hidden' }}>
 
         {/* ── HERO ── */}
-        <section style={{ minHeight:'92vh', display:'flex', alignItems:'center', paddingTop:96, paddingBottom:64 }}>
+        <section style={{ minHeight:'76vh', display:'flex', alignItems:'center', paddingTop:72, paddingBottom:48 }}>
           <div style={{ ...wrap, width:'100%' }}>
-            <div className="hero-grid" style={{ display:'grid', gridTemplateColumns:'minmax(0,1fr) minmax(0,1fr)', gap:'5vw', alignItems:'center' }}>
+            <div className="hero-grid" style={{ display:'grid', gridTemplateColumns:'minmax(0,1.1fr) minmax(0,0.9fr)', gap:'4vw', alignItems:'center' }}>
 
               {/* Left — direct, immediate, un-precious */}
               <div>
-                <span style={{ ...label(), marginBottom:24 }}>AI-Native Workforce Platform</span>
+                <span style={{ ...label(), marginBottom:20 }}>AI-Native Workforce Platform</span>
                 <h1 className="hero-h1" style={{
                   fontFamily: 'var(--font-headline)',
-                  fontSize: 'clamp(3.2rem, 7.5vw, 8rem)',
-                  lineHeight: 0.92,
+                  fontSize: 'clamp(2.4rem, 4.8vw, 5.5rem)',
+                  lineHeight: 0.9,
                   letterSpacing: '-0.04em',
-                  margin: '0 0 28px',
+                  margin: '0 0 24px',
                 }}>
                   <span style={{ display: 'block', fontWeight: 800, color: C.primary }}>
                     Hire a team,
