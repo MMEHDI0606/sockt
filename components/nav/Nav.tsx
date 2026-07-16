@@ -156,24 +156,6 @@ export default function Nav() {
             isAuthenticated ? null : (
               <>
                 <Link
-                  href="/login"
-                  style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: isMobile ? '11px' : '12px',
-                    color: 'var(--text-secondary)',
-                    letterSpacing: '0.06em',
-                    padding: isMobile ? '6px 8px' : '7px 10px',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.color = 'var(--text-primary)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.color = 'var(--text-secondary)';
-                  }}
-                >
-                  Log In
-                </Link>
-                <Link
                   href="/signup"
                   style={{
                     fontFamily: 'var(--font-mono)',
