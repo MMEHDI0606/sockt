@@ -26,11 +26,10 @@
 :root {
   color-scheme: dark;
 
-  /* Neutral dark backgrounds */
   --bg-void:     #09090B;
   --bg-surface:  #0E0E12;
   --bg-raised:   #151519;
-  --bg-border:   #26262B;
+  --bg-border:   #29272B;   /* slightly warm */
   --bg-border-subtle: #1D1D22;
 
   /* Typography */
@@ -38,10 +37,9 @@
   --text-secondary: #6D6D78;
   --text-mono:      #A09D98;
 
-  /* Neutral accent — warm off-white, no orange */
   --accent:        #EEECE8;
-  --accent-btc:    #EEECE8;   /* remapped: was amber, now near-white */
-  --accent-amber:  #A0A0AB;   /* remapped to neutral gray */
+  --accent-btc:    #EEECE8;
+  --accent-amber:  #A0A0AB;
   --accent-sats:   #8A8A96;
   --accent-green:  #22D07A;
   --accent-red:    #E53E3E;
@@ -59,15 +57,32 @@
   --logo-mark-color: #EEECE8;
   --nav-glass:       rgba(9, 9, 11, 0.72);
 
-  /* Typography scale — triple system
-     Geist:    variable grotesque sans — hero, display, headlines
-     DM Sans:  geometric sans for section headings and body
-     Fira Code / Geist Mono: precision labels */
-  --font-headline: 'Geist', sans-serif;             /* display / hero H1 */
-  --font-subhead:  'DM Sans', 'Geist', sans-serif;  /* section H2, clean sans */
-  --font-display:  'Geist', sans-serif;             /* UI */
-  --font-body:     'Geist', sans-serif;
-  --font-mono:     'Berkeley Mono', 'Fira Code', 'Geist Mono', monospace;
+  /* Typography — four-voice system
+     Geist:          variable grotesque — all display ≥ 2rem, hero, H1, H2
+     Space Grotesk:  ink-trap geometric — body, subhead ≤ 1.25rem
+     Newsreader:     editorial serif italic — accent word only (3 placements)
+     Fira Code:      precision mono labels */
+  --font-headline:      'Geist', sans-serif;
+  --font-subhead:       'Space Grotesk', 'Geist', sans-serif;
+  --font-display:       'Geist', sans-serif;
+  --font-body:          'Space Grotesk', 'Geist', sans-serif;
+  --font-mono:          'Berkeley Mono', 'Fira Code', 'Geist Mono', monospace;
+  --font-serif-accent:  'Newsreader', Georgia, serif;
+
+  /* Mono size tokens — exactly three sizes */
+  --mono-micro: 10px;    /* labels, badges, uppercase tags */
+  --mono-body:  11.5px;  /* descriptions, table cells */
+  --mono-cta:   12.5px;  /* buttons */
+
+  /* Brass accent — one colour, total discipline */
+  --accent-brass:  #C2A878;
+
+  /* Border-top highlight — simulates overhead light on raised cards */
+  --border-top-highlight: #33333A;
+
+  /* Radius system */
+  --radius-btn:  6px;
+  --radius-card: 10px;
 
   /* Motion */
   --ease-expo:   cubic-bezier(0.16, 1, 0.3, 1);
@@ -103,6 +118,8 @@
   --accent-sats: #9A9890;
   --accent-green: #1A6644;
   --accent-red:   #C0392B;
+  --accent-brass: #8A6D3B;
+  --border-top-highlight: #D0CEC8;
 
   --logo-mark-color: #1C1B18;
   --nav-glass:       rgba(241,240,236,0.82);
@@ -177,16 +194,16 @@ body {
 a { color: inherit; text-decoration: none; }
 section { position: relative; }
 
-/* Card hover lift — uses neutral border */
+/* Card hover lift */
 .lift-card {
   transition: transform 200ms var(--ease-expo),
               border-color 200ms ease,
               box-shadow 200ms ease;
 }
 .lift-card:hover {
-  transform: translateY(-3px);
-  border-color: #46464E;
-  box-shadow: 0 12px 36px rgba(0,0,0,0.35);
+  transform: translateY(-1px);
+  border-color: var(--border-top-highlight);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.35);
 }
 
 /* Emerge-from-darkness: elements start hidden; GSAP reveal hook drives them */

@@ -32,14 +32,14 @@ const wrap: React.CSSProperties = { maxWidth: 1400, margin: '0 auto', padding: '
 const sep:  React.CSSProperties = { borderTop: `1px solid ${C.border}` };
 
 const label = (color = C.secondary): React.CSSProperties => ({
-  fontFamily: C.mono, fontSize: 10, letterSpacing: '0.18em',
+  fontFamily: C.mono, fontSize: 'var(--mono-micro)', letterSpacing: '0.16em',
   textTransform: 'uppercase', color, marginBottom: 22, display: 'block',
 });
 
-// Section headings — DM Sans (clean sans subhead voice)
+// Section headings — Geist at display sizes (≥ 2rem), weight 700
 const H2 = (extra: React.CSSProperties = {}): React.CSSProperties => ({
-  fontFamily: 'var(--font-subhead)', fontSize: 'clamp(2rem, 4vw, 3.8rem)',
-  fontWeight: 700, lineHeight: 1.04, letterSpacing: '-0.03em',
+  fontFamily: 'var(--font-headline)', fontSize: 'clamp(2rem, 4vw, 3.8rem)',
+  fontWeight: 700, lineHeight: 1.04, letterSpacing: '-0.045em',
   color: C.primary, margin: 0, ...extra,
 });
 
@@ -155,7 +155,7 @@ function CrisesSection() {
         </h2>
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(300px, 1fr))', gap:1 }}>
           {CRISES.map((c) => (
-            <div key={c.n} data-reveal style={{ border:`1px solid ${C.border}`, background:C.surface, padding:'36px 32px', position:'relative' }}>
+            <div key={c.n} data-reveal style={{ border:`1px solid ${C.border}`, borderTop:`1px solid var(--border-top-highlight)`, background:C.surface, padding:'36px 32px', position:'relative', borderRadius:'var(--radius-card)' }}>
               <div style={{ fontFamily:C.mono, fontSize:56, fontWeight:400, color:'#1D1D22', lineHeight:1, position:'absolute', top:24, right:28, letterSpacing:'-0.04em', userSelect:'none' }}>
                 {c.n}
               </div>
@@ -191,7 +191,7 @@ function DepartmentsSection() {
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(300px, 1fr))', gap:12 }}>
           {DEPARTMENTS.map((dept) => (
             <article key={dept.name} data-reveal className="dept-card"
-              style={{ border:`1px solid ${C.border}`, background:C.surface, borderRadius:16, overflow:'hidden', display:'flex', flexDirection:'column', position:'relative' }}>
+              style={{ border:`1px solid ${C.border}`, borderTop:`1px solid var(--border-top-highlight)`, background:C.surface, borderRadius:'var(--radius-card)', overflow:'hidden', display:'flex', flexDirection:'column', position:'relative' }}>
               <div style={{ padding:'24px 24px 16px' }}>
                 <div style={{ fontFamily:C.mono, fontSize:9, color:C.secondary, letterSpacing:'0.18em', textTransform:'uppercase', marginBottom:12, border:`1px solid ${C.border}`, display:'inline-block', padding:'3px 8px', borderRadius:4 }}>{dept.tag}</div>
                 <h3 style={{ fontFamily:'var(--font-subhead)', fontSize:'1.25rem', fontWeight:700, letterSpacing:'-0.025em', color:C.primary, margin:'0 0 10px' }}>{dept.name}</h3>
@@ -212,10 +212,10 @@ function DepartmentsSection() {
               </div>
               {/* Hover reveal */}
               <div className="dept-hover-reveal" style={{ padding:'0 24px 20px', borderTop:`1px solid ${C.border}`, paddingTop:16 }}>
-                <div style={{ fontFamily:C.mono, fontSize:10, color:C.primary, letterSpacing:'0.08em', marginBottom:4 }}>↗ {dept.stat}</div>
+                <div style={{ fontFamily:C.mono, fontSize:10, color:'var(--accent-brass)', letterSpacing:'0.08em', marginBottom:4 }}>↗ {dept.stat}</div>
                 <div style={{ fontFamily:C.body, fontSize:12, color:C.secondary, lineHeight:1.5 }}>{dept.detail}</div>
               </div>
-              <div className="dept-stat-static" style={{ padding:'10px 24px 18px', fontFamily:C.mono, fontSize:10, color:'#46464E', letterSpacing:'0.08em' }}>↗ {dept.stat}</div>
+              <div className="dept-stat-static" style={{ padding:'10px 24px 18px', fontFamily:C.mono, fontSize:10, color:'var(--accent-brass)', letterSpacing:'0.08em', opacity:0.6 }}>↗ {dept.stat}</div>
             </article>
           ))}
         </div>
@@ -309,7 +309,7 @@ function SecuritySection() {
                 { layer:'Egress Allowlist',  body:'Per-customer domain rules. Injection attempts distributed to fleet in < 60 min.' },
                 { layer:'HITL Gates',        body:'Auto / approval / permanently blocked. Classification enforced at proxy layer.' },
               ].map((item) => (
-                <div key={item.layer} data-reveal style={{ border:`1px solid ${C.border}`, borderLeft:'2px solid #46464E', padding:'14px 18px', background:C.raised }}>
+                <div key={item.layer} data-reveal style={{ border:`1px solid ${C.border}`, borderLeft:`2px solid var(--accent-brass)`, borderTop:`1px solid var(--border-top-highlight)`, padding:'14px 18px', background:C.raised }}>
                   <div style={{ fontFamily:C.mono, fontSize:10, color:C.primary, letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:5 }}>{item.layer}</div>
                   <div style={{ fontSize:12, color:C.secondary, lineHeight:1.5 }}>{item.body}</div>
                 </div>
@@ -360,7 +360,7 @@ function ComingSoonSection() {
   const ref = useRef<HTMLDivElement>(null);
   useReveal(ref, { selector:'[data-reveal]', stagger:0.1, y:32, duration:0.9 });
   return (
-    <section style={{ ...sep, padding:'128px 0', textAlign:'center' }}>
+    <section style={{ ...sep, padding:'160px 0', textAlign:'center' }}>
       <div style={wrap} ref={ref}>
         <div style={{ maxWidth:640, margin:'0 auto', display:'flex', flexDirection:'column', alignItems:'center', gap:20 }}>
           <span data-reveal style={label()}>Pricing</span>
@@ -375,10 +375,10 @@ function ComingSoonSection() {
             We&apos;re finalising pricing. Community Edition stays free and open-core in the meantime.
           </p>
           <a data-reveal href="https://github.com/sockt-dev/sockt" target="_blank" rel="noopener noreferrer"
-            style={{ fontFamily:C.mono, fontSize:11, color:C.primary, border:`1px solid ${C.border}`, borderRadius:999, padding:'11px 26px', letterSpacing:'0.08em', display:'inline-block', marginTop:8, transition:'border-color 0.15s ease' }}
-            onMouseEnter={(e) => { e.currentTarget.style.borderColor='#46464E'; }}
+            style={{ fontFamily:C.mono, fontSize:'var(--mono-body)', color:C.primary, border:`1px solid ${C.border}`, borderRadius:'var(--radius-btn)', padding:'11px 26px', letterSpacing:'0.08em', display:'inline-block', marginTop:8, transition:'border-color 0.12s ease' }}
+            onMouseEnter={(e) => { e.currentTarget.style.borderColor='#3A3A42'; }}
             onMouseLeave={(e) => { e.currentTarget.style.borderColor=C.border; }}>
-            SELF-HOST FREE →
+            GITHUB →
           </a>
         </div>
       </div>
@@ -401,12 +401,12 @@ function OpenSourceSection() {
             </p>
             <div data-reveal style={{ display:'flex', gap:12, flexWrap:'wrap' }}>
               <a href="https://github.com/MMEHDI0606/sockt" target="_blank" rel="noopener noreferrer"
-                style={{ fontFamily:C.mono, fontSize:11, color:C.primary, border:`1px solid ${C.border}`, borderRadius:999, padding:'9px 20px', letterSpacing:'0.08em', display:'inline-block', transition:'border-color 0.15s ease' }}
-                onMouseEnter={(e) => { e.currentTarget.style.borderColor='#46464E'; }}
+                style={{ fontFamily:C.mono, fontSize:'var(--mono-body)', color:C.primary, border:`1px solid ${C.border}`, borderRadius:'var(--radius-btn)', padding:'9px 20px', letterSpacing:'0.08em', display:'inline-block', transition:'border-color 0.12s ease' }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor='#3A3A42'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.borderColor=C.border; }}>GITHUB →</a>
               <Link href="/docs"
-                style={{ fontFamily:C.mono, fontSize:11, color:C.secondary, border:`1px solid ${C.border}`, borderRadius:999, padding:'9px 20px', letterSpacing:'0.08em', display:'inline-block', transition:'color 0.15s ease, border-color 0.15s ease' }}
-                onMouseEnter={(e) => { e.currentTarget.style.color=C.primary; e.currentTarget.style.borderColor='#46464E'; }}
+                style={{ fontFamily:C.mono, fontSize:'var(--mono-body)', color:C.secondary, border:`1px solid ${C.border}`, borderRadius:'var(--radius-btn)', padding:'9px 20px', letterSpacing:'0.08em', display:'inline-block', transition:'color 0.12s ease, border-color 0.12s ease' }}
+                onMouseEnter={(e) => { e.currentTarget.style.color=C.primary; e.currentTarget.style.borderColor='#3A3A42'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.color=C.secondary; e.currentTarget.style.borderColor=C.border; }}>DOCS</Link>
             </div>
           </div>
@@ -445,7 +445,7 @@ export default function Home() {
       <main style={{ color:C.primary, background:C.void, overflowX:'hidden' }}>
 
         {/* ── HERO ── */}
-        <section style={{ minHeight:'76vh', display:'flex', alignItems:'center', paddingTop:72, paddingBottom:48 }}>
+        <section style={{ minHeight:'76vh', display:'flex', alignItems:'center', paddingTop:96, paddingBottom:80 }}>
           <div style={{ ...wrap, width:'100%' }}>
             <div className="hero-grid" style={{ display:'grid', gridTemplateColumns:'minmax(0,1.1fr) minmax(0,0.9fr)', gap:'4vw', alignItems:'center' }}>
 
@@ -455,12 +455,14 @@ export default function Home() {
                 <h1 className="hero-h1" style={{
                   fontFamily: 'var(--font-headline)',
                   fontSize: 'clamp(2.8rem, 5.2vw, 6rem)',
-                  lineHeight: 1.08,
+                  lineHeight: 1.2,
                   letterSpacing: '-0.04em',
                   margin: '0 0 28px',
                 }}>
                   <span style={{ display: 'block', fontWeight: 800, color: C.primary }}>
-                    Hire a team,
+                    Hire a{' '}
+                    <em style={{ fontFamily: 'var(--font-serif-accent)', fontWeight: 300, fontStyle: 'italic', color: 'var(--accent-brass)' }}>team</em>
+                    ,
                   </span>
                   <span style={{ display: 'block', fontWeight: 200, color: C.secondary }}>
                     not a tool.
@@ -471,12 +473,12 @@ export default function Home() {
                 </p>
                 <div style={{ display:'flex', gap:12, flexWrap:'wrap', marginBottom:36 }}>
                   <Link href="/signup"
-                    style={{ background:C.primary, color:C.void, padding:'13px 28px', borderRadius:999, fontFamily:C.mono, fontSize:13, fontWeight:700, letterSpacing:'0.06em', display:'inline-block', transition:'opacity 0.15s ease' }}
-                    onMouseEnter={(e)=>{ e.currentTarget.style.opacity='0.85'; }}
-                    onMouseLeave={(e)=>{ e.currentTarget.style.opacity='1'; }}>ADD TO SLACK</Link>
+                    style={{ background:C.primary, color:C.void, padding:'13px 28px', borderRadius:'var(--radius-btn)', fontFamily:C.mono, fontSize:'var(--mono-cta)', fontWeight:700, letterSpacing:'0.06em', display:'inline-block', transition:'background 0.12s ease', boxShadow:'inset 0 1px 0 rgba(255,255,255,0.18)' }}
+                    onMouseEnter={(e)=>{ e.currentTarget.style.background='#FFFFFF'; }}
+                    onMouseLeave={(e)=>{ e.currentTarget.style.background=C.primary; }}>ADD TO SLACK</Link>
                   <Link href="/departments"
-                    style={{ border:`1px solid ${C.border}`, color:C.secondary, padding:'12px 26px', borderRadius:999, fontFamily:C.mono, fontSize:13, letterSpacing:'0.06em', display:'inline-block', transition:'color 0.15s ease, border-color 0.15s ease' }}
-                    onMouseEnter={(e)=>{ e.currentTarget.style.color=C.primary; e.currentTarget.style.borderColor='#46464E'; }}
+                    style={{ border:`1px solid ${C.border}`, color:C.secondary, padding:'12px 26px', borderRadius:'var(--radius-btn)', fontFamily:C.mono, fontSize:'var(--mono-cta)', letterSpacing:'0.06em', display:'inline-block', transition:'color 0.12s ease, border-color 0.12s ease' }}
+                    onMouseEnter={(e)=>{ e.currentTarget.style.color=C.primary; e.currentTarget.style.borderColor='#3A3A42'; }}
                     onMouseLeave={(e)=>{ e.currentTarget.style.color=C.secondary; e.currentTarget.style.borderColor=C.border; }}>SEE DEPARTMENTS</Link>
                 </div>
                 <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
@@ -523,20 +525,22 @@ export default function Home() {
         <OpenSourceSection />
 
         {/* ── FINAL CTA — fast / clear / ambient glow ── */}
-        <section style={{ ...sep, padding:'128px 0', background:C.surface, textAlign:'center', position:'relative', overflow:'hidden' }}>
+        <section style={{ ...sep, padding:'160px 0', background:C.surface, textAlign:'center', position:'relative', overflow:'hidden' }}>
           <AmbientBlobs variant="cta" />
           <div style={{ ...wrap, position:'relative', zIndex:1 }}>
             <div style={{ maxWidth:600, margin:'0 auto', display:'flex', flexDirection:'column', alignItems:'center', gap:24 }}>
-              <h2 style={{ fontFamily:'var(--font-headline)', fontSize:'clamp(2.4rem, 6vw, 5.5rem)', fontWeight:800, letterSpacing:'-0.04em', lineHeight:0.96, color:C.primary, margin:0 }}>
-                Launch an AI-native department this week.
+              <h2 style={{ fontFamily:'var(--font-headline)', fontSize:'clamp(2.4rem, 6vw, 5.5rem)', fontWeight:800, letterSpacing:'-0.045em', lineHeight:1.0, color:C.primary, margin:0 }}>
+                Launch an AI-native{' '}
+                <em style={{ fontFamily:'var(--font-serif-accent)', fontWeight:300, fontStyle:'italic', color:'var(--accent-brass)' }}>department</em>
+                {' '}this week.
               </h2>
-              <p style={{ fontFamily:C.mono, fontSize:11, color:C.secondary, letterSpacing:'0.06em', margin:0 }}>
+              <p style={{ fontFamily:C.mono, fontSize:'var(--mono-body)', color:C.secondary, letterSpacing:'0.06em', margin:0 }}>
                 Under 10 minutes to activate. First output within 2 hours.
               </p>
               <Link href="/signup"
-                style={{ background:C.primary, color:C.void, padding:'15px 40px', borderRadius:999, fontFamily:C.mono, fontSize:13, fontWeight:700, letterSpacing:'0.08em', display:'inline-block', marginTop:8, transition:'opacity 0.15s ease' }}
-                onMouseEnter={(e)=>{ e.currentTarget.style.opacity='0.85'; }}
-                onMouseLeave={(e)=>{ e.currentTarget.style.opacity='1'; }}>
+                style={{ background:C.primary, color:C.void, padding:'15px 40px', borderRadius:'var(--radius-btn)', fontFamily:C.mono, fontSize:'var(--mono-cta)', fontWeight:700, letterSpacing:'0.08em', display:'inline-block', marginTop:8, transition:'background 0.12s ease', boxShadow:'inset 0 1px 0 rgba(255,255,255,0.18)' }}
+                onMouseEnter={(e)=>{ e.currentTarget.style.background='#FFFFFF'; }}
+                onMouseLeave={(e)=>{ e.currentTarget.style.background=C.primary; }}>
                 ADD SOCKT TO SLACK
               </Link>
               <p style={{ fontFamily:C.mono, fontSize:10, color:'#44444B', margin:0, letterSpacing:'0.1em' }}>

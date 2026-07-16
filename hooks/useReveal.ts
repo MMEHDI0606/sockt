@@ -28,13 +28,13 @@ export function useReveal(ref: RefObject<HTMLElement | null>, opts: RevealOption
     if (targets.length === 0) return;
 
     // Set initial invisible state immediately so there's no flash
-    gsap.set(targets, { opacity: 0, y: opts.y ?? 36 });
+    gsap.set(targets, { opacity: 0, y: opts.y ?? 16 });
 
     const ctx = gsap.context(() => {
       gsap.to(targets, {
         opacity: 1,
         y: 0,
-        duration: opts.duration ?? 0.9,
+        duration: opts.duration ?? 1.0,
         ease: 'power3.out',
         stagger: opts.stagger ?? 0,
         delay: opts.delay ?? 0,

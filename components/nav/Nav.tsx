@@ -12,6 +12,7 @@ export default function Nav() {
   const isMobile = useIsMobile();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authLoaded, setAuthLoaded] = useState(false);
+  const [taskCount] = useState('4,218');
 
   useEffect(() => {
     const supabase = createClient();
@@ -68,27 +69,17 @@ export default function Nav() {
         right: 0,
         zIndex: 50,
         backgroundColor: 'transparent',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        borderBottom: '1px solid var(--bg-border)',
       }}
     >
-      {/* dot-grid separator — always visible, same texture as body */}
-      <div style={{
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        height: 1,
-        backgroundImage: 'radial-gradient(circle, var(--bg-border) 1px, transparent 1px)',
-        backgroundSize: '28px 28px',
-        opacity: 0.9,
-      }} />
       <div
         style={{
           maxWidth: '1400px',
           margin: '0 auto',
           padding: isMobile ? '0 16px' : '0 48px',
-          height: '67px',
+          height: '56px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -127,11 +118,12 @@ export default function Nav() {
           <div
             style={{
               display: 'flex',
-              gap: '32px',
-              fontFamily: 'var(--font-body)',
-              fontSize: '16px',
+              gap: '28px',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '10px',
               color: 'var(--text-secondary)',
-              letterSpacing: '0.08em',
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
             }}
           >
             {[
@@ -152,7 +144,13 @@ export default function Nav() {
             ))}
           </div>
         )}
-        <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '6px' : '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '6px' : '16px' }}>
+          {!isMobile && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--text-secondary)', letterSpacing: '0.08em' }}>
+              <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--accent-brass)', display: 'inline-block', flexShrink: 0 }} />
+              ▲ {taskCount} tasks today
+            </div>
+          )}
           <ThemeToggle compact={isMobile} />
           {authLoaded ? (
             isAuthenticated ? null : (
@@ -183,12 +181,14 @@ export default function Nav() {
                     color: 'var(--bg-void)',
                     background: 'var(--text-primary)',
                     padding: isMobile ? '6px 12px' : '7px 18px',
-                    borderRadius: '100px',
+                    borderRadius: '6px',
                     letterSpacing: '0.06em',
                     fontWeight: 700,
-                    transition: 'opacity 0.15s ease',
+                    transition: 'background 0.12s ease',
+                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18)',
                   }}
-                  onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.85'; }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = '#FFFFFF'; e.currentTarget.style.color = '#09090B'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--text-primary)'; e.currentTarget.style.color = 'var(--bg-void)'; }}
                   onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; }}
                 >
                   GET STARTED

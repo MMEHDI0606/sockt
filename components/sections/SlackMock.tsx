@@ -278,24 +278,41 @@ export default function SlackMock({
         style={{
           position: 'relative',
           display: 'flex',
-          borderRadius: 14,
+          flexDirection: 'column',
           width: '100%',
           maxWidth: 500,
-          filter: glow
-            ? isLight
-              ? 'drop-shadow(0 0 32px rgba(0,0,0,0.08)) drop-shadow(0 20px 50px rgba(0,0,0,0.12))'
-              : 'drop-shadow(0 0 40px rgba(238,236,232,0.06)) drop-shadow(0 24px 64px rgba(0,0,0,0.55))'
-            : undefined,
         }}
       >
+        {/* ── Machined bezel outer frame ──────────────────────────────────── */}
+        <div style={{
+          border: `1px solid ${isLight ? '#D8D5CD' : '#33333A'}`,
+          borderTop: `1px solid ${isLight ? '#E2DFD8' : '#3F3F48'}`,
+          borderRadius: 12,
+          overflow: 'hidden',
+          boxShadow: glow
+            ? isLight
+              ? '0 4px 24px rgba(0,0,0,0.10), 0 24px 60px rgba(0,0,0,0.14)'
+              : '0 4px 32px rgba(0,0,0,0.5), 0 24px 64px rgba(0,0,0,0.65)'
+            : undefined,
+          background: p.outer,
+        }}>
+
+        {/* Monochrome header dots */}
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 5,
+          padding: '8px 12px',
+          background: isLight ? '#F0EEE9' : '#0E0E12',
+          borderBottom: `1px solid ${isLight ? '#D8D5CD' : '#1E1E23'}`,
+        }}>
+          {[0,1,2].map(i => (
+            <span key={i} style={{ width: 6, height: 6, borderRadius: '50%', background: isLight ? '#C8C5BE' : '#2A2A2F', display: 'inline-block' }} />
+          ))}
+        </div>
+
         {/* ── Chrome frame ───────────────────────────────────────────────── */}
         <div style={{
           display: 'flex',
           width: '100%',
-          borderRadius: 14,
-          overflow: 'hidden',
-          border: `1px solid ${p.outerBdr}`,
-          boxShadow: `0 0 0 1px ${isLight ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.04)'}`,
           background: p.outer,
           fontFamily: '"Geist", -apple-system, sans-serif',
         }}>
@@ -473,6 +490,21 @@ export default function SlackMock({
 
           </div>{/* /main */}
         </div>{/* /chrome */}
+        </div>{/* /bezel */}
+
+        {/* Museum-placard caption */}
+        <div style={{
+          marginTop: 10,
+          fontFamily: 'var(--font-mono)',
+          fontSize: 10,
+          color: isLight ? '#9A9890' : '#44444B',
+          letterSpacing: '0.1em',
+          textTransform: 'uppercase',
+          display: 'flex', alignItems: 'center', gap: 8,
+        }}>
+          <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--accent-brass)', display: 'inline-block', flexShrink: 0 }} />
+          Live — #ops-standby · sockt fleet responding
+        </div>
       </div>
     </>
   );
