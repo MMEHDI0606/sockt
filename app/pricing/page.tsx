@@ -57,10 +57,8 @@ export default function PricingPage() {
             We&apos;re finalising pricing. Community Edition stays free and open-core — self-host it today.
           </p>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a
-              href="https://github.com/sockt-dev/sockt"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/install"
               style={{
                 fontFamily: 'var(--font-mono)',
                 fontSize: '12px',
@@ -74,7 +72,7 @@ export default function PricingPage() {
               }}
             >
               SELF-HOST FREE →
-            </a>
+            </Link>
             <Link
               href="/"
               style={{

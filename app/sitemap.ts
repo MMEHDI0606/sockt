@@ -7,6 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/',
     '/about',
     '/docs',
+    '/install',
     '/pricing',
     // '/sdk',
     '/use-cases',

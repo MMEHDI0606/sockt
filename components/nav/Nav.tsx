@@ -170,8 +170,11 @@ export default function Nav() {
                     boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18)',
                   }}
                   onMouseEnter={(e) => { e.currentTarget.style.background = '#FFFFFF'; e.currentTarget.style.color = '#09090B'; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--text-primary)'; e.currentTarget.style.color = 'var(--bg-void)'; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'var(--text-primary)';
+                    e.currentTarget.style.color = 'var(--bg-void)';
+                    e.currentTarget.style.opacity = '1';
+                  }}
                 >
                   GET STARTED
                 </Link>

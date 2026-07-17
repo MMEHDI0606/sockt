@@ -6,7 +6,7 @@ import { useIsMobile } from '@/hooks/useIsMobile';
 const COLS = [
   {
     title: 'PRODUCT',
-    items: ['Docs', 'Pricing', 'Departments'],
+    items: ['Docs', 'Install', 'Pricing', 'Departments'],
   },
   {
     title: 'LEGAL & CONTACT',
@@ -86,6 +86,7 @@ export default function Footer() {
                   {col.items.map((item) => {
                     const routeMap: Record<string, string> = {
                       Docs: '/docs',
+                      Install: '/install',
                       Pricing: '/pricing',
                       Departments: '/departments',
                       'Terms & Conditions': '/terms',
