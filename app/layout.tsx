@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     template: '%s | Sockt',
   },
   description:
-    'Sockt is an AI-native platform that deploys preconfigured AI employee swarms directly into Slack. They coordinate, remember, and compound in intelligence with built-in loop prevention and credential isolation. Bring your own LLM key.',
+    'AI-native Slack agent swarms with persistent memory, loop prevention, and credential isolation. BYOK — you pay your LLM provider directly. Live in under 10 minutes.',
   applicationName: 'Sockt',
   keywords: [
     'AI agents',
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     url: '/',
     title: 'Sockt | AI-native workforce platform',
     description:
-      'AI-native preconfigured employee swarms for Slack with persistent memory, loop prevention, and credential isolation. Built for lean teams that need reliable automation.',
+      'AI-native Slack agent swarms with persistent memory, loop prevention, and credential isolation. BYOK — you pay your LLM provider directly. Live in under 10 minutes.',
     siteName: 'Sockt',
     images: ['/opengraph-image.png'],
   },
