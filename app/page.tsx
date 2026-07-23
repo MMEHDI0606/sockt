@@ -90,16 +90,16 @@ function AnimatedStat({ value, label }: { value: string; label: string }) {
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 const STATS = [
-  { v: '< 10 min', l: 'sign-up to active swarm' },
-  { v: '< 2 hrs',  l: 'first enriched output' },
-  { v: '60–75%',   l: 'token cost reduction (month 3)' },
-  { v: 'N=∞',      l: 'fleet intelligence compounds across every deployment' },
+  { v: '< 10 min',    l: 'from signup to agents running' },
+  { v: '< 2 hrs',     l: 'until your first result lands in Slack' },
+  { v: 'Open source', l: 'inspect exactly how the safety works' },
+  { v: '$0 markup',   l: 'bring your own API key — pay them directly' },
 ];
 
 const CRISES = [
-  { n:'01', title:'Runaway cost loops',      fix:'FSM task list. No horizontal agent messaging. Loops structurally cannot form.' },
-  { n:'02', title:'Amnesiac background jobs', fix:'CADVP daemon. Background memory committed to GBrain — session history stays clean.' },
-  { n:'03', title:'Credential leakage',       fix:'Secret Vault Proxy. Keys never enter agent scope. A compromised agent has nothing to exfiltrate.' },
+  { n:'01', title:"Can't spiral into runaway cost",  label:'FSM task engine',        fix:"Agents follow a fixed checklist and can't message each other behind your back — so there's no path for a cost loop to form." },
+  { n:'02', title:'Never forgets, never leaks context', label:'Persistent memory / GBrain', fix:'Background work is saved automatically across sessions — no re-briefing agents every day, and no clutter in the channel while they think.' },
+  { n:'03', title:"Can't leak what it never sees",   label:'Secret Vault Proxy',     fix:"API keys live in a locked vault the agents never touch directly. If an agent is compromised, there's nothing on it to steal." },
 ];
 
 const DEPARTMENTS = [
@@ -149,9 +149,9 @@ function CrisesSection() {
   return (
     <section style={{ padding:'96px 0' }}>
       <div style={wrap} ref={ref}>
-        <span data-reveal style={label()}>Why this exists</span>
+        <span data-reveal style={label()}>Built-in safety</span>
         <h2 data-reveal style={{ ...H2(), marginBottom:56, maxWidth:'22ch' }}>
-          The three production failures that end AI-native deployments.
+          Powerful agents. Nothing they can wreck.
         </h2>
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(300px, 1fr))', gap:1 }}>
           {CRISES.map((c) => (
@@ -159,9 +159,10 @@ function CrisesSection() {
               <div style={{ fontFamily:C.mono, fontSize:56, fontWeight:400, color:'#1D1D22', lineHeight:1, position:'absolute', top:24, right:28, letterSpacing:'-0.04em', userSelect:'none' }}>
                 {c.n}
               </div>
-              <div style={{ fontFamily:'var(--font-subhead)', fontSize:'1.3rem', fontWeight:700, color:C.primary, marginBottom:20, letterSpacing:'-0.025em', lineHeight:1.2 }}>{c.title}</div>
+              <div style={{ fontFamily:'var(--font-subhead)', fontSize:'1.3rem', fontWeight:700, color:C.primary, marginBottom:10, letterSpacing:'-0.025em', lineHeight:1.2 }}>{c.title}</div>
+              <div style={{ fontFamily:C.mono, fontSize:9, color:'#44444B', letterSpacing:'0.12em', textTransform:'uppercase', border:`1px solid ${C.border}`, display:'inline-block', padding:'2px 7px', borderRadius:3, marginBottom:14 }}>{c.label}</div>
               <div style={{ fontFamily:C.mono, fontSize:11, color:'#6D6D78', lineHeight:1.6 }}>
-                <span style={{ color:C.primary, marginRight:8 }}>FIX ›</span>{c.fix}
+                {c.fix}
               </div>
             </div>
           ))}
@@ -180,7 +181,7 @@ function DepartmentsSection() {
         <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', gap:20, flexWrap:'wrap', marginBottom:48 }}>
           <div>
             <span data-reveal style={label()}>Departments</span>
-            <h2 data-reveal style={H2()}>Preconfigured for real workflows.</h2>
+            <h2 data-reveal style={H2()}>Pick a team. See what it does.</h2>
           </div>
           {/* SwarmOrbit — the animated GIF moment for this section */}
           <div data-reveal style={{ opacity:0.7 }}>
@@ -304,10 +305,10 @@ function SecuritySection() {
             <span data-reveal style={label()}>Security Architecture</span>
             <h2 data-reveal style={{ ...H2(), marginBottom:28 }}>No credentials in agent context. Ever.</h2>
             <div style={{ display:'flex', flexDirection:'column', gap:1 }}>
-              {[{ layer:'TEE Isolation',     body:'AMD SEV-SNP / SGX enclaves. Host admins cannot inspect a running container.' },
-                { layer:'Secret Vault',      body:'Keys never enter agent scope. Compromised agent has nothing to exfiltrate.' },
-                { layer:'Egress Allowlist',  body:'Per-customer domain rules. Injection attempts distributed to fleet in < 60 min.' },
-                { layer:'HITL Gates',        body:'Auto / approval / permanently blocked. Classification enforced at proxy layer.' },
+              {[{ layer:'TEE Isolation',     body:'Your agents run in hardware-isolated containers — even Sockt staff cannot inspect a running deployment.' },
+                { layer:'Secret Vault',      body:'API keys stay locked away. Agents can use them but never see them — so a compromised agent has nothing to steal.' },
+                { layer:'Egress Allowlist',  body:'You control exactly which external services your agents can reach. If a new attack pattern appears, every deployment is patched within 60 minutes.' },
+                { layer:'HITL Gates',        body:'Every action your agents can take is classified: auto-approved, needs your sign-off, or permanently blocked. Nothing happens outside that envelope.' },
               ].map((item) => (
                 <div key={item.layer} data-reveal style={{ border:`1px solid ${C.border}`, borderLeft:`2px solid var(--accent-brass)`, borderTop:`1px solid var(--border-top-highlight)`, padding:'14px 18px', background:C.raised }}>
                   <div style={{ fontFamily:C.mono, fontSize:10, color:C.primary, letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:5 }}>{item.layer}</div>
@@ -331,17 +332,18 @@ function FleetSection() {
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(300px, 1fr))', gap:'6vw', alignItems:'center' }}>
           <div>
             <span data-reveal style={label()}>Fleet Intelligence</span>
-            <h2 data-reveal style={{ ...H2(), marginBottom:0 }}>Your agents learn from 200+ deployments — not just yours.</h2>
+            <h2 data-reveal style={{ ...H2(), marginBottom:16 }}>Your agents get smarter from 200+ deployments — your data always stays private.</h2>
+            <p data-reveal style={{ fontFamily:C.body, fontSize:'1rem', lineHeight:1.6, color:C.secondary, margin:0, maxWidth:'38ch' }}>Patterns learned across the fleet improve every deployment. No customer data is shared or pooled — ever.</p>
           </div>
           <div>
             <div data-reveal style={{ display:'flex', justifyContent:'center', marginBottom:32, opacity:0.75 }}>
               <MemoryPulse size={180} />
             </div>
             <div data-reveal style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:1 }}>
-              {[{ n:'< 60 min', l:'Detection to fleet-wide protection' },
-                { n:'< 2 hrs',  l:'API change detected before your cron fails' },
-                { n:'60–75%',   l:'Token cost reduction (compiled skills)' },
-                { n:'N=1 → ∞', l:'Single deployment vs. fleet data advantage' },
+              {[{ n:'< 60 min',    l:'Detection to fleet-wide protection — same fix, every customer' },
+                { n:'< 2 hrs',    l:'API change detected before your cron fails' },
+                { n:'60–75%',     l:'Token cost reduction by month 3 (compiled skills)' },
+                { n:'200+ teams', l:'Fleet data advantage over any single-deployment tool' },
               ].map((item) => (
                 <div key={item.l} style={{ border:`1px solid ${C.border}`, padding:'20px 18px', background:C.raised }}>
                   <div style={{ fontFamily:'var(--font-subhead)', fontSize:'clamp(1.1rem, 3vw, 1.6rem)', fontWeight:700, letterSpacing:'-0.03em', color:C.primary, lineHeight:1, marginBottom:8 }}>{item.n}</div>
@@ -395,9 +397,9 @@ function OpenSourceSection() {
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(300px, 1fr))', gap:'6vw', alignItems:'start' }}>
           <div>
             <span data-reveal style={label()}>Open-Core</span>
-            <h2 data-reveal style={{ ...H2(), marginBottom:20 }}>AI-native infrastructure shouldn't be a black box.</h2>
+            <h2 data-reveal style={{ ...H2(), marginBottom:20 }}>Nothing hidden. Check the code yourself.</h2>
             <p data-reveal style={{ fontFamily:C.body, fontSize:'1rem', lineHeight:1.6, color:C.secondary, marginBottom:28 }}>
-              Audit the loop-prevention and memory architecture yourself. Community Edition is open-core and free.
+              The parts that keep your agents safe — cost-loop prevention, persistent memory, the credential vault — are all open source. You don&apos;t have to take our word for it. Community Edition is free forever; you&apos;re never locked in.
             </p>
             <div data-reveal style={{ display:'flex', gap:12, flexWrap:'wrap' }}>
               <a href="https://github.com/MMEHDI0606/sockt" target="_blank" rel="noopener noreferrer"
@@ -469,7 +471,7 @@ export default function Home() {
                   </span>
                 </h1>
                 <p style={{ fontFamily:C.body, fontSize:'1.15rem', lineHeight:1.65, color:C.secondary, maxWidth:'40ch', marginBottom:36 }}>
-                  AI-native departments for Slack. BYOK. No runaway bills. No amnesiac agents. No credential leaks.
+                  Sockt agents research leads, triage incidents, and draft work in the background — then post results to Slack for your approval. Built-in guardrails mean they can&apos;t run away with your budget or your credentials.
                 </p>
                 <div style={{ display:'flex', gap:12, flexWrap:'wrap', marginBottom:36 }}>
                   <Link href="/signup"
@@ -482,7 +484,7 @@ export default function Home() {
                     onMouseLeave={(e)=>{ e.currentTarget.style.color=C.secondary; e.currentTarget.style.borderColor=C.border; }}>SEE DEPARTMENTS</Link>
                 </div>
                 <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
-                  {['BYOK — zero token markup','Loop prevention (FSM-enforced)','Open-core (FSL-1.1-MIT)'].map((t) => (
+                  {['Use your own OpenAI or Anthropic key — we never touch your tokens','Cost loops are structurally impossible — not just unlikely','Open-core and free — inspect the safety code yourself'].map((t) => (
                     <div key={t} style={{ fontFamily:C.mono, fontSize:11, color:'#44444B', letterSpacing:'0.1em', display:'flex', alignItems:'center', gap:8 }}>
                       <span style={{ width:3, height:3, borderRadius:'50%', background:'#44444B', flexShrink:0, display:'inline-block' }} />
                       {t}
@@ -516,13 +518,13 @@ export default function Home() {
         <Marquee />
 
         {/* ── PROOF SECTIONS — Moranta "emerge from darkness" ── */}
+        <DepartmentsSection />
         <CrisesSection />
         <HowItWorksSection />
-        <DepartmentsSection />
         <SecuritySection />
         <FleetSection />
-        <ComingSoonSection />
         <OpenSourceSection />
+        <ComingSoonSection />
 
         {/* ── FINAL CTA — fast / clear / ambient glow ── */}
         <section style={{ ...sep, padding:'160px 0', background:C.surface, textAlign:'center', position:'relative', overflow:'hidden' }}>
@@ -545,6 +547,9 @@ export default function Home() {
               </Link>
               <p style={{ fontFamily:C.mono, fontSize:10, color:'#44444B', margin:0, letterSpacing:'0.1em' }}>
                 COMMUNITY EDITION IS FREE · PAID PLANS COMING SOON
+              </p>
+              <p style={{ fontFamily:C.body, fontSize:'0.85rem', color:'#44444B', margin:0, lineHeight:1.5 }}>
+                Takes about 10 minutes. If you can run a Docker command, you&apos;re set — or forward this to whoever manages your infra.
               </p>
             </div>
           </div>
