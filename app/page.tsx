@@ -159,7 +159,7 @@ function CrisesSection() {
               <div style={{ fontFamily:C.mono, fontSize:56, fontWeight:400, color:'#1D1D22', lineHeight:1, position:'absolute', top:24, right:28, letterSpacing:'-0.04em', userSelect:'none' }}>
                 {c.n}
               </div>
-              <div style={{ fontFamily:'var(--font-subhead)', fontSize:'1.3rem', fontWeight:700, color:C.primary, marginBottom:10, letterSpacing:'-0.025em', lineHeight:1.2 }}>{c.title}</div>
+              <div style={{ fontFamily:'var(--font-subhead)', fontSize:'1.3rem', fontWeight:700, color:C.primary, marginBottom:10, letterSpacing:'-0.025em', lineHeight:1.2, paddingRight:'56px' }}>{c.title}</div>
               <div style={{ fontFamily:C.mono, fontSize:9, color:'#44444B', letterSpacing:'0.12em', textTransform:'uppercase', border:`1px solid ${C.border}`, display:'inline-block', padding:'2px 7px', borderRadius:3, marginBottom:14 }}>{c.label}</div>
               <div style={{ fontFamily:C.mono, fontSize:11, color:'#6D6D78', lineHeight:1.6 }}>
                 {c.fix}
