@@ -46,7 +46,7 @@ const H2 = (extra: React.CSSProperties = {}): React.CSSProperties => ({
 // ─── Stats with count-up ──────────────────────────────────────────────────────
 function AnimatedStat({ value, label }: { value: string; label: string }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [displayed, setDisplayed] = useState('—');
+  const [displayed, setDisplayed] = useState(value);
   const startedRef = useRef(false);
 
   useEffect(() => {

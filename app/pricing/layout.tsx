@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: 'Pricing — Coming Soon',
   description:
     'Sockt pricing is coming soon. Community Edition is free and open-core.',
+  robots: { index: false, follow: false },
   alternates: {
     canonical: '/pricing',
   },
