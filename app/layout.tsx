@@ -88,6 +88,59 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@1,6..72,300;1,6..72,400&family=Fira+Code:wght@300;400;500&display=swap"
           rel="stylesheet"
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@graph': [
+                {
+                  '@type': 'Organization',
+                  '@id': `${siteUrl}/#organization`,
+                  name: 'Sockt',
+                  url: siteUrl,
+                  logo: {
+                    '@type': 'ImageObject',
+                    url: `${siteUrl}/favicon.svg`,
+                  },
+                  sameAs: [
+                    'https://github.com/sockt-dev/sockt',
+                  ],
+                  description:
+                    'Sockt is an AI-native workforce platform that deploys preconfigured AI agent departments directly into Slack with persistent memory, loop prevention, and credential isolation.',
+                },
+                {
+                  '@type': 'WebSite',
+                  '@id': `${siteUrl}/#website`,
+                  url: siteUrl,
+                  name: 'Sockt',
+                  publisher: { '@id': `${siteUrl}/#organization` },
+                },
+                {
+                  '@type': 'SoftwareApplication',
+                  '@id': `${siteUrl}/#app`,
+                  name: 'Sockt',
+                  applicationCategory: 'BusinessApplication',
+                  operatingSystem: 'Slack, Web',
+                  url: siteUrl,
+                  description:
+                    'AI-native departments for Slack. Persistent memory, FSM loop prevention, BYOK, and credential isolation. Autonomous AI employee swarms that coordinate, remember, and compound in intelligence.',
+                  offers: [
+                    {
+                      '@type': 'Offer',
+                      name: 'Community Edition',
+                      price: '0',
+                      priceCurrency: 'USD',
+                      description: 'Open-core, free forever. Core memory and loop-prevention.',
+                    },
+                  ],
+                  publisher: { '@id': `${siteUrl}/#organization` },
+                  isPartOf: { '@id': `${siteUrl}/#website` },
+                },
+              ],
+            }),
+          }}
+        />
       </head>
       <body>
         <SmoothScrollProvider>{children}</SmoothScrollProvider>

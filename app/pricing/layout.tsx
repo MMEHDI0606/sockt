@@ -4,14 +4,14 @@ import type { ReactNode } from 'react';
 export const metadata: Metadata = {
   title: 'Pricing — Coming Soon',
   description:
-    'Sockt pricing is coming soon. Community Edition is free and open-core — self-host it today.',
+    'Sockt pricing is coming soon. Community Edition is free and open-core.',
   alternates: {
     canonical: '/pricing',
   },
   openGraph: {
     title: 'Sockt Pricing — Coming Soon',
     description:
-      'Pricing is coming soon. Community Edition is free and open-core — self-host it today.',
+      'Pricing is coming soon. Community Edition is free and open-core.',
     url: '/pricing',
     type: 'website',
   },
@@ -22,6 +22,20 @@ export const metadata: Metadata = {
   },
 };
 
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://sockt.dev' },
+    { '@type': 'ListItem', position: 2, name: 'Pricing', item: 'https://sockt.dev/pricing' },
+  ],
+};
+
 export default function PricingLayout({ children }: { children: ReactNode }) {
-  return children;
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      {children}
+    </>
+  );
 }

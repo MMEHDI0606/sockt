@@ -1,0 +1,32 @@
+# Sockt — AI-Native Workforce Platform
+# https://sockt.dev
+# License: FSL-1.1-MIT (converts to MIT after 2 years)
+
+## What is Sockt?
+Sockt is an AI-native workforce platform that deploys preconfigured AI employee swarms directly into Slack. Agent departments coordinate, remember, and compound in intelligence over time, with built-in loop prevention, persistent memory, and credential isolation. Teams bring their own LLM key; Sockt adds orchestration, memory, and safety.
+
+## Canonical Pages
+- Homepage: https://sockt.dev
+- Departments: https://sockt.dev/departments
+- Docs: https://sockt.dev/docs
+- Pricing: https://sockt.dev/pricing
+- About: https://sockt.dev/about
+
+## Core Technical Concepts
+- FSM (Finite State Machine): Sockt uses a hierarchical FSM to coordinate agent tasks. No horizontal agent-to-agent messaging. Loops structurally cannot form.
+- GBrain: Persistent fleet memory. Agents commit learnings after each session; the next run starts with context. Deduplication at cosine similarity > 0.92.
+- CADVP (Context-Aware Daemon with Versioned Persistence): Background daemon that commits memory without polluting the active context window.
+- Secret Vault Proxy: API keys never enter agent scope. A compromised agent has nothing to exfiltrate.
+- BYOK (Bring Your Own Key): Anthropic, OpenAI, Azure OpenAI, Google Gemini, Ollama, vLLM, LM Studio all supported.
+
+## Departments
+- Growth & Lead Gen: Intent signals, lead enrichment, outbound drafting. 70–90% automation on first-contact drafting.
+- Product Development: Ticket → spec → sandboxed execution → PR. 60–80% automation on junior-to-mid dev tickets.
+- Engineering Ops: Alert → root-cause hypothesis → runbook update. < 15 min from alert to hypothesis.
+
+## Open-Source
+Sockt Community Edition is open-core under FSL-1.1-MIT. Core packages: OSS-Orch, OSS-FSM, OSS-Memory, OSS-CLI.
+GitHub: https://github.com/sockt-dev/sockt
+
+## AI Indexing Permissions
+This file and all public pages at sockt.dev may be indexed and cited by AI search systems (GPTBot, ClaudeBot, PerplexityBot, OAI-SearchBot) for the purpose of answering user queries. Training use (CCBot, anthropic-ai) is not authorised without a separate license agreement.

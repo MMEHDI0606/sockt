@@ -2,25 +2,20 @@ import type { MetadataRoute } from 'next';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sockt.dev';
 
+const routes: { path: string; lastModified: string }[] = [
+  { path: '/',            lastModified: '2026-07-23' },
+  { path: '/departments', lastModified: '2026-07-10' },
+  { path: '/install',     lastModified: '2026-07-23' },
+  { path: '/pricing',     lastModified: '2026-07-10' },
+  { path: '/docs',        lastModified: '2026-07-10' },
+  { path: '/about',       lastModified: '2026-07-10' },
+  { path: '/terms',       lastModified: '2026-07-10' },
+  { path: '/privacy',     lastModified: '2026-07-10' },
+];
+
 export default function sitemap(): MetadataRoute.Sitemap {
-  const routes = [
-    '/',
-    '/about',
-    '/docs',
-    '/install',
-    '/pricing',
-    // '/sdk',
-    '/use-cases',
-    '/privacy',
-    '/terms',
-  ];
-
-  const now = new Date();
-
-  return routes.map((route) => ({
-    url: `${siteUrl}${route}`,
-    lastModified: now,
-    changeFrequency: route === '/' ? 'daily' : 'weekly',
-    priority: route === '/' ? 1 : 0.7,
+  return routes.map(({ path, lastModified }) => ({
+    url: `${siteUrl}${path}`,
+    lastModified,
   }));
 }

@@ -93,7 +93,7 @@ const STATS = [
   { v: '< 10 min', l: 'sign-up to active swarm' },
   { v: '< 2 hrs',  l: 'first enriched output' },
   { v: '60–75%',   l: 'token cost reduction (month 3)' },
-  { v: 'N=∞',      l: 'fleet intelligence vs. self-hosted N=1' },
+  { v: 'N=∞',      l: 'fleet intelligence compounds across every deployment' },
 ];
 
 const CRISES = [
@@ -293,7 +293,7 @@ function SecuritySection() {
             <span data-reveal style={label()}>Bring Your Own Key</span>
             <h2 data-reveal style={{ ...H2(), marginBottom:28 }}>You pay your LLM provider. We never see that line.</h2>
             <div data-reveal style={{ display:'flex', flexDirection:'column', gap:10 }}>
-              {['Anthropic (Claude) — recommended','OpenAI (GPT-4o, GPT-4o-mini)','Azure OpenAI','Google Gemini','Self-hosted: Ollama · vLLM · LM Studio'].map((p) => (
+              {['Anthropic (Claude) — recommended','OpenAI (GPT-4o, GPT-4o-mini)','Azure OpenAI','Google Gemini','Ollama · vLLM · LM Studio (local)'].map((p) => (
                 <div key={p} style={{ display:'flex', alignItems:'center', gap:10, fontFamily:C.mono, fontSize:11, color:C.secondary }}>
                   <span style={{ color:'#22D07A', flexShrink:0 }}>✓</span>{p}
                 </div>
@@ -341,7 +341,7 @@ function FleetSection() {
               {[{ n:'< 60 min', l:'Detection to fleet-wide protection' },
                 { n:'< 2 hrs',  l:'API change detected before your cron fails' },
                 { n:'60–75%',   l:'Token cost reduction (compiled skills)' },
-                { n:'N=1 → ∞', l:'Self-hosted vs. fleet data advantage' },
+                { n:'N=1 → ∞', l:'Single deployment vs. fleet data advantage' },
               ].map((item) => (
                 <div key={item.l} style={{ border:`1px solid ${C.border}`, padding:'20px 18px', background:C.raised }}>
                   <div style={{ fontFamily:'var(--font-subhead)', fontSize:'clamp(1.1rem, 3vw, 1.6rem)', fontWeight:700, letterSpacing:'-0.03em', color:C.primary, lineHeight:1, marginBottom:8 }}>{item.n}</div>
@@ -397,7 +397,7 @@ function OpenSourceSection() {
             <span data-reveal style={label()}>Open-Core</span>
             <h2 data-reveal style={{ ...H2(), marginBottom:20 }}>AI-native infrastructure shouldn't be a black box.</h2>
             <p data-reveal style={{ fontFamily:C.body, fontSize:'1rem', lineHeight:1.6, color:C.secondary, marginBottom:28 }}>
-              Audit the loop-prevention and memory architecture yourself. Self-host free, or let us run it.
+              Audit the loop-prevention and memory architecture yourself. Community Edition is open-core and free.
             </p>
             <div data-reveal style={{ display:'flex', gap:12, flexWrap:'wrap' }}>
               <a href="https://github.com/MMEHDI0606/sockt" target="_blank" rel="noopener noreferrer"
