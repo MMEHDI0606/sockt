@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/utils/supabase/client';
+import { exchangeForSession } from '@/utils/identity/client';
 
 type AuthMode = 'login' | 'signup';
 
@@ -45,6 +46,18 @@ export default function AuthForm({ mode }: AuthFormProps) {
         return;
       }
 
+      try {
+        const { data: sessionData } = await supabase.auth.getSession();
+        const supabaseAccessToken = sessionData.session?.access_token;
+        if (supabaseAccessToken) {
+          await exchangeForSession(supabaseAccessToken);
+        }
+      } catch (exchangeErr) {
+        setError(exchangeErr instanceof Error ? exchangeErr.message : 'Failed to establish session.');
+        setBusy(false);
+        return;
+      }
+
       router.push(nextPath);
       router.refresh();
       return;
@@ -72,6 +85,16 @@ export default function AuthForm({ mode }: AuthFormProps) {
     }
 
     if (data.session) {
+      try {
+        const supabaseAccessToken = data.session.access_token;
+        if (supabaseAccessToken) {
+          await exchangeForSession(supabaseAccessToken);
+        }
+      } catch (exchangeErr) {
+        setError(exchangeErr instanceof Error ? exchangeErr.message : 'Failed to establish session.');
+        setBusy(false);
+        return;
+      }
       router.push('/dashboard');
       router.refresh();
       return;

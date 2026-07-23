@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { createClient } from '@/utils/supabase/client';
+import { exchangeForSession, logoutSession } from '@/utils/identity/client';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import ThemeToggle from '@/components/theme/ThemeToggle';
@@ -24,10 +25,20 @@ export default function Nav() {
       setAuthLoaded(true);
     });
 
-    const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: subscription } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (!mounted) return;
       setIsAuthenticated(Boolean(session?.user));
       setAuthLoaded(true);
+      const supabaseAccessToken = session?.access_token;
+      if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && supabaseAccessToken) {
+        try {
+          await exchangeForSession(supabaseAccessToken);
+        } catch {
+          // session exchange failures surface on the next gated API call
+        }
+      } else if (event === 'SIGNED_OUT') {
+        await logoutSession();
+      }
     });
 
     return () => {
