@@ -474,7 +474,7 @@ export default function Home() {
                   <a href="https://github.com/sockt-dev/sockt" target="_blank" rel="noopener noreferrer"
                     style={{ background:C.primary, color:C.void, padding:'13px 28px', borderRadius:'var(--radius-btn)', fontFamily:C.mono, fontSize:'var(--mono-cta)', fontWeight:700, letterSpacing:'0.06em', display:'inline-block', transition:'background 0.12s ease', boxShadow:'inset 0 1px 0 rgba(255,255,255,0.18)' }}
                     onMouseEnter={(e)=>{ e.currentTarget.style.background='#FFFFFF'; }}
-                    onMouseLeave={(e)=>{ e.currentTarget.style.background=C.primary; }}>SELF-HOST ON GITHUB</a>
+                    onMouseLeave={(e)=>{ e.currentTarget.style.background=C.primary; }}>SELF-HOST</a>
                   <button onClick={() => setShowWaitlist(true)}
                     style={{ border:`1px solid ${C.border}`, color:C.secondary, padding:'12px 26px', borderRadius:'var(--radius-btn)', fontFamily:C.mono, fontSize:'var(--mono-cta)', letterSpacing:'0.06em', display:'inline-block', transition:'color 0.12s ease, border-color 0.12s ease', background:'transparent', cursor:'pointer' }}
                     onMouseEnter={(e)=>{ e.currentTarget.style.color=C.primary; e.currentTarget.style.borderColor='#3A3A42'; }}
@@ -563,7 +563,7 @@ export default function Home() {
                   style={{ background:C.primary, color:C.void, padding:'15px 40px', borderRadius:'var(--radius-btn)', fontFamily:C.mono, fontSize:'var(--mono-cta)', fontWeight:700, letterSpacing:'0.08em', display:'inline-block', marginTop:8, transition:'background 0.12s ease', boxShadow:'inset 0 1px 0 rgba(255,255,255,0.18)' }}
                   onMouseEnter={(e)=>{ e.currentTarget.style.background='#FFFFFF'; }}
                   onMouseLeave={(e)=>{ e.currentTarget.style.background=C.primary; }}>
-                  SELF-HOST ON GITHUB
+                  SELF-HOST
                 </a>
                 <button onClick={() => setShowWaitlist(true)}
                   style={{ border:`1px solid ${C.border}`, color:C.secondary, padding:'13px 38px', borderRadius:'var(--radius-btn)', fontFamily:C.mono, fontSize:'var(--mono-cta)', letterSpacing:'0.08em', display:'inline-block', marginTop:8, transition:'color 0.12s ease, border-color 0.12s ease', background:'transparent', cursor:'pointer' }}
