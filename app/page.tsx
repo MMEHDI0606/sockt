@@ -9,8 +9,8 @@ import Footer from '@/components/sections/Footer';
 import SlackMock from '@/components/sections/SlackMock';
 import ArchFlow from '@/components/sections/ArchFlow';
 import PageLoader from '@/components/sections/PageLoader';
+import WaitlistModal from '@/components/WaitlistModal';
 import AmbientBlobs from '@/components/canvas/AmbientBlobs';
-import SwarmOrbit from '@/components/svg/SwarmOrbit';
 import MemoryPulse from '@/components/svg/MemoryPulse';
 import Marquee from '@/components/svg/Marquee';
 import { useReveal } from '@/hooks/useReveal';
@@ -90,16 +90,15 @@ function AnimatedStat({ value, label }: { value: string; label: string }) {
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 const STATS = [
-  { v: '< 10 min',    l: 'from signup to agents running' },
-  { v: '< 2 hrs',     l: 'until your first result lands in Slack' },
-  { v: 'Open source', l: 'inspect exactly how the safety works' },
-  { v: '$0 markup',   l: 'bring your own API key — pay them directly' },
+  { v: '< 10 min',    l: 'from signup to swarm live in your channel' },
+  { v: '< 2 hrs',     l: 'until your first result lands in the channel' },
+  { v: 'Open source', l: 'shared channel — your entire team sees every move' },
 ];
 
 const CRISES = [
-  { n:'01', title:"Can't spiral into runaway cost",  label:'FSM task engine',        fix:"Agents follow a fixed checklist and can't message each other behind your back — so there's no path for a cost loop to form." },
-  { n:'02', title:'Never forgets, never leaks context', label:'Persistent memory / GBrain', fix:'Background work is saved automatically across sessions — no re-briefing agents every day, and no clutter in the channel while they think.' },
-  { n:'03', title:"Can't leak what it never sees",   label:'Secret Vault Proxy',     fix:"API keys live in a locked vault the agents never touch directly. If an agent is compromised, there's nothing on it to steal." },
+  { n:'01', title:'Steered, not unleashed',  label:'FSM task engine + multi-user oversight',        fix:'Agents follow a fixed checklist and can\'t talk to each other behind your back. Multiple humans can intervene at any step. There\'s no path for a cost loop to form, and no one person is the bottleneck.' },
+  { n:'02', title:'Shared memory, shared progress', label:'Persistent memory / GBrain', fix:'Every lesson the swarm learns is saved automatically and visible to everyone. When Alice redirects, Bob benefits. Knowledge compounds across the whole team, not just one person\u2019s DM thread.' },
+  { n:'03', title:'Safe to share the channel',   label:'Secret Vault Proxy',     fix:'Credentials are locked in a vault agents never see. You can safely invite your whole team into a channel with AI agents \u2014 compromised agents have nothing to steal, and every action is logged.' },
 ];
 
 const DEPARTMENTS = [
@@ -107,29 +106,29 @@ const DEPARTMENTS = [
     desc:'Finds intent signals. Enriches leads. Drafts outreach for approval.',
     roles:['Social Listening Monitor','Lead Researcher','Outbound Specialist'],
     stat:'70–90% automation on first-contact drafting',
-    detail:'First enriched lead list: within 2 hours of activation.',
+    detail:'Everyone in the channel sees leads land in real time — redirect, approve, or escalate from the thread.',
     preview:[
       { a:true,  t:'Found 5 leads from r/SaaS + HN. Top 2 score 91/88. Drafting outreach.' },
       { a:false, t:'Send the top 2. Hold the rest.' },
-      { a:true,  t:'✓ Sent. 1 held (74). 2 discarded. GBrain updated.' },
+      { a:true,  t:'\u2713 Sent. 1 held (74). 2 discarded. GBrain updated.' },
     ]},
   { tag:'product', name:'Product Development',
-    desc:'Ticket → spec → sandboxed execution → consolidated PR.',
+    desc:'Ticket \u2192 spec \u2192 sandboxed execution \u2192 consolidated PR.',
     roles:['Product Architect','Coder Agent','QA Tester'],
     stat:'60–80% automation on junior-to-mid dev tickets',
-    detail:'Spec-gated execution prevents "write code first, think later" retry loops.',
+    detail:'The whole eng team watches PRs materialize — anyone can request a re-review or change priority.',
     preview:[
       { a:true,  t:'Spec for #47 ready. Awaiting approval before writing code.' },
       { a:false, t:'Approved. Skip the refactor in step 3.' },
-      { a:true,  t:'✓ PR #48 opened. Tests passing. 1 edge case flagged.' },
+      { a:true,  t:'\u2713 PR #48 opened. Tests passing. 1 edge case flagged.' },
     ]},
   { tag:'eng ops', name:'Engineering Ops',
-    desc:'Error → commit correlation → root-cause hypothesis → runbook update.',
+    desc:'Error \u2192 commit correlation \u2192 root-cause hypothesis \u2192 runbook update.',
     roles:['Sentry Monitor','Incident Triager','Docs Writer'],
     stat:'< 15 min from alert to root-cause hypothesis',
-    detail:'Every resolved incident is committed to GBrain — the next triage is faster.',
+    detail:'Incident triage visible to the full team — ops, dev, and management all see root-cause analysis as it happens.',
     preview:[
-      { a:true,  t:'🔔 Spike on api/enrich. Correlates with 2:14 AM deploy (#c7a3f8).' },
+      { a:true,  t:'\uD83D\uDD14 Spike on api/enrich. Correlates with 2:14 AM deploy (#c7a3f8).' },
       { a:true,  t:'Root cause: Apollo rate limit change. Fix queued — approve?' },
       { a:false, t:'Approved.' },
     ]},
@@ -149,9 +148,9 @@ function CrisesSection() {
   return (
     <section style={{ padding:'96px 0' }}>
       <div style={wrap} ref={ref}>
-        <span data-reveal style={label()}>Built-in safety</span>
+        <span data-reveal style={label()}>The Trust Layer</span>
         <h2 data-reveal style={{ ...H2(), marginBottom:56, maxWidth:'22ch' }}>
-          Powerful agents. Nothing they can wreck.
+          Multiplayer only works with trust. We built the framework.
         </h2>
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(300px, 1fr))', gap:1 }}>
           {CRISES.map((c) => (
@@ -176,16 +175,12 @@ function DepartmentsSection() {
   const ref = useRef<HTMLDivElement>(null);
   useReveal(ref, { selector:'[data-reveal]', stagger:0.13, y:40, duration:0.9 });
   return (
-    <section style={{ ...sep, padding:'96px 0' }}>
+    <section style={{ ...sep, padding:'64px 0' }}>
       <div style={wrap} ref={ref}>
-        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', gap:20, flexWrap:'wrap', marginBottom:48 }}>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', gap:20, flexWrap:'wrap', marginBottom:24 }}>
           <div>
-            <span data-reveal style={label()}>Departments</span>
-            <h2 data-reveal style={H2()}>Pick a team. See what it does.</h2>
-          </div>
-          {/* SwarmOrbit — the animated GIF moment for this section */}
-          <div data-reveal style={{ opacity:0.7 }}>
-            <SwarmOrbit size={200} />
+            <span data-reveal style={{ ...label(), marginBottom: 4 }}>Departments</span>
+            <h2 data-reveal style={H2()}>Pick a swarm. Invite your team. Start steering.</h2>
           </div>
         </div>
 
@@ -247,7 +242,7 @@ function HowItWorksSection() {
             <span data-reveal style={label()}>Setup</span>
             <h2 data-reveal style={{ ...H2(), marginBottom:40 }}>Live in Slack in under 10 minutes.</h2>
             <div style={{ display:'flex', flexDirection:'column', gap:0 }}>
-              {['Connect Slack','Pick a department','Seed memory','Bring your own key','Swarm activates'].map((title,i,arr) => (
+              {['Connect Slack','Pick a swarm','Invite your team','Seed memory','Swarm activates — shared channel goes live'].map((title,i,arr) => (
                 <div key={title} data-reveal>
                   <div style={{ display:'flex', gap:0 }}>
                     <div style={{ display:'flex', flexDirection:'column', alignItems:'center', width:32, flexShrink:0 }}>
@@ -268,10 +263,11 @@ function HowItWorksSection() {
             <div style={{ marginTop:28, display:'flex', flexDirection:'column', gap:1 }}>
               {[{ layer:'Execution', body:'Plan→Act→Observe→Reflect · TEE-isolated · your LLM key' },
                 { layer:'Coordination', body:'FSM task list · no horizontal messaging · every action logged' },
+                { layer:'Shared Context', body:'Channel-aware · multi-user steering · everyone sees the board' },
                 { layer:'Memory', body:'GBrain · Git-backed · diff-able · rollback in < 60s' },
               ].map((item) => (
                 <div key={item.layer} data-reveal style={{ border:`1px solid ${C.border}`, padding:'14px 18px', background:C.raised, display:'flex', alignItems:'center', gap:16 }}>
-                  <div style={{ fontFamily:C.mono, fontSize:10, color:C.primary, letterSpacing:'0.1em', textTransform:'uppercase', flexShrink:0, minWidth:100 }}>{item.layer}</div>
+                  <div style={{ fontFamily:C.mono, fontSize:10, color:C.primary, letterSpacing:'0.1em', textTransform:'uppercase', flexShrink:0, minWidth:114 }}>{item.layer}</div>
                   <div style={{ fontFamily:C.mono, fontSize:11, color:C.secondary }}>{item.body}</div>
                 </div>
               ))}
@@ -292,7 +288,7 @@ function SecuritySection() {
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(300px, 1fr))', gap:'6vw', alignItems:'start' }}>
           <div>
             <span data-reveal style={label()}>Bring Your Own Key</span>
-            <h2 data-reveal style={{ ...H2(), marginBottom:28 }}>You pay your LLM provider. We never see that line.</h2>
+            <h2 data-reveal style={{ ...H2(), marginBottom:28 }}>The platform. You bring the key. Your team brings the direction.</h2>
             <div data-reveal style={{ display:'flex', flexDirection:'column', gap:10 }}>
               {['Anthropic (Claude) — recommended','OpenAI (GPT-4o, GPT-4o-mini)','Azure OpenAI','Google Gemini','Ollama · vLLM · LM Studio (local)'].map((p) => (
                 <div key={p} style={{ display:'flex', alignItems:'center', gap:10, fontFamily:C.mono, fontSize:11, color:C.secondary }}>
@@ -303,12 +299,12 @@ function SecuritySection() {
           </div>
           <div>
             <span data-reveal style={label()}>Security Architecture</span>
-            <h2 data-reveal style={{ ...H2(), marginBottom:28 }}>No credentials in agent context. Ever.</h2>
+            <h2 data-reveal style={{ ...H2(), marginBottom:28 }}>Safe enough to invite the whole team.</h2>
             <div style={{ display:'flex', flexDirection:'column', gap:1 }}>
               {[{ layer:'TEE Isolation',     body:'Your agents run in hardware-isolated containers — even Sockt staff cannot inspect a running deployment.' },
                 { layer:'Secret Vault',      body:'API keys stay locked away. Agents can use them but never see them — so a compromised agent has nothing to steal.' },
                 { layer:'Egress Allowlist',  body:'You control exactly which external services your agents can reach. If a new attack pattern appears, every deployment is patched within 60 minutes.' },
-                { layer:'HITL Gates',        body:'Every action your agents can take is classified: auto-approved, needs your sign-off, or permanently blocked. Nothing happens outside that envelope.' },
+                { layer:'HITL Gates',        body:'Every action your agents can take is classified: auto-approved, needs your sign-off, or permanently blocked. Multiple humans can approve or reject — no single point of failure, no bottleneck.' },
               ].map((item) => (
                 <div key={item.layer} data-reveal style={{ border:`1px solid ${C.border}`, borderLeft:`2px solid var(--accent-brass)`, borderTop:`1px solid var(--border-top-highlight)`, padding:'14px 18px', background:C.raised }}>
                   <div style={{ fontFamily:C.mono, fontSize:10, color:C.primary, letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:5 }}>{item.layer}</div>
@@ -332,8 +328,8 @@ function FleetSection() {
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(300px, 1fr))', gap:'6vw', alignItems:'center' }}>
           <div>
             <span data-reveal style={label()}>Fleet Intelligence</span>
-            <h2 data-reveal style={{ ...H2(), marginBottom:16 }}>Your agents get smarter from 200+ deployments — your data always stays private.</h2>
-            <p data-reveal style={{ fontFamily:C.body, fontSize:'1rem', lineHeight:1.6, color:C.secondary, margin:0, maxWidth:'38ch' }}>Patterns learned across the fleet improve every deployment. No customer data is shared or pooled — ever.</p>
+            <h2 data-reveal style={{ ...H2(), marginBottom:16 }}>The fleet learns. Your swarm benefits.</h2>
+            <p data-reveal style={{ fontFamily:C.body, fontSize:'1rem', lineHeight:1.6, color:C.secondary, margin:0, maxWidth:'38ch' }}>Every swarm in every channel contributes anonymized patterns. When a new attack vector or API change is detected anywhere, every deployment is patched. Your team&apos;s swarm gets smarter because hundreds of others are running — no customer data is shared or pooled.</p>
           </div>
           <div>
             <div data-reveal style={{ display:'flex', justifyContent:'center', marginBottom:32, opacity:0.75 }}>
@@ -373,9 +369,9 @@ function ComingSoonSection() {
             <span style={{ display:'block', fontWeight:800, color:C.primary }}>Coming</span>
             <span style={{ display:'block', fontWeight:200, color:C.secondary }}>soon.</span>
           </h2>
-          <p data-reveal style={{ fontFamily:C.body, fontSize:'1.05rem', lineHeight:1.6, color:C.secondary, maxWidth:'42ch', margin:0 }}>
-            We&apos;re finalising pricing. Community Edition stays free and open-core in the meantime.
-          </p>
+            <p data-reveal style={{ fontFamily:C.body, fontSize:'1.05rem', lineHeight:1.6, color:C.secondary, maxWidth:'42ch', margin:0 }}>
+              We&apos;re finalising pricing. Community Edition stays free and open-core — invite a swarm into a private channel today.
+            </p>
           <a data-reveal href="https://github.com/sockt-dev/sockt" target="_blank" rel="noopener noreferrer"
             style={{ fontFamily:C.mono, fontSize:'var(--mono-body)', color:C.primary, border:`1px solid ${C.border}`, borderRadius:'var(--radius-btn)', padding:'11px 26px', letterSpacing:'0.08em', display:'inline-block', marginTop:8, transition:'border-color 0.12s ease' }}
             onMouseEnter={(e) => { e.currentTarget.style.borderColor='#3A3A42'; }}
@@ -399,7 +395,7 @@ function OpenSourceSection() {
             <span data-reveal style={label()}>Open-Core</span>
             <h2 data-reveal style={{ ...H2(), marginBottom:20 }}>Nothing hidden. Check the code yourself.</h2>
             <p data-reveal style={{ fontFamily:C.body, fontSize:'1rem', lineHeight:1.6, color:C.secondary, marginBottom:28 }}>
-              The parts that keep your agents safe — cost-loop prevention, persistent memory, the credential vault — are all open source. You don&apos;t have to take our word for it. Community Edition is free forever; you&apos;re never locked in.
+              The FSM engine, memory layer, and orchestration core are all open-source. Your team&apos;s shared command center runs on infrastructure they can inspect down to the last commit. Community Edition is free forever; you&apos;re never locked in.
             </p>
             <div data-reveal style={{ display:'flex', gap:12, flexWrap:'wrap' }}>
               <a href="https://github.com/MMEHDI0606/sockt" target="_blank" rel="noopener noreferrer"
@@ -434,6 +430,7 @@ function OpenSourceSection() {
 // ─── Main ─────────────────────────────────────────────────────────────────────
 export default function Home() {
   const router = useRouter();
+  const [showWaitlist, setShowWaitlist] = useState(false);
 
   useEffect(() => {
     const s = createClient();
@@ -444,6 +441,7 @@ export default function Home() {
     <>
       <PageLoader />
       <Nav />
+      <WaitlistModal open={showWaitlist} onClose={() => setShowWaitlist(false)} />
       <main style={{ color:C.primary, background:C.void, overflowX:'hidden' }}>
 
         {/* ── HERO ── */}
@@ -453,7 +451,7 @@ export default function Home() {
 
               {/* Left — direct, immediate, un-precious */}
               <div>
-                <span style={{ ...label(), marginBottom:20, fontSize:11 }}>AI-Native Workforce Platform</span>
+                <span style={{ ...label(), marginBottom:20, fontSize:11 }}>Collaborative AI Operations</span>
                 <h1 className="hero-h1" style={{
                   fontFamily: 'var(--font-headline)',
                   fontSize: 'clamp(2.8rem, 5.2vw, 6rem)',
@@ -462,29 +460,28 @@ export default function Home() {
                   margin: '0 0 28px',
                 }}>
                   <span style={{ display: 'block', fontWeight: 800, color: C.primary }}>
-                    Hire a{' '}
-                    <em style={{ fontFamily: 'var(--font-serif-accent)', fontWeight: 300, fontStyle: 'italic', color: 'var(--accent-brass)' }}>team</em>
-                    ,
+                    <em style={{ fontFamily: 'var(--font-serif-accent)', fontWeight: 300, fontStyle: 'italic', color: 'var(--accent-brass)' }}>AI</em>
+                    {' '}that works
                   </span>
                   <span style={{ display: 'block', fontWeight: 200, color: C.secondary }}>
-                    not a tool.
+                    with your team.
                   </span>
                 </h1>
                 <p style={{ fontFamily:C.body, fontSize:'1.15rem', lineHeight:1.65, color:C.secondary, maxWidth:'40ch', marginBottom:36 }}>
-                  Sockt agents research leads, triage incidents, and draft work in the background — then post results to Slack for your approval. Built-in guardrails mean they can&apos;t run away with your budget or your credentials.
+                  Invite a Sockt swarm into a shared Slack channel. Everyone on your team — engineering, growth, product — can see what&apos;s happening, steer the agents, and watch the work compound. No babysitting, no black boxes.
                 </p>
                 <div style={{ display:'flex', gap:12, flexWrap:'wrap', marginBottom:36 }}>
-                  <Link href="/signup"
+                  <a href="https://github.com/sockt-dev/sockt" target="_blank" rel="noopener noreferrer"
                     style={{ background:C.primary, color:C.void, padding:'13px 28px', borderRadius:'var(--radius-btn)', fontFamily:C.mono, fontSize:'var(--mono-cta)', fontWeight:700, letterSpacing:'0.06em', display:'inline-block', transition:'background 0.12s ease', boxShadow:'inset 0 1px 0 rgba(255,255,255,0.18)' }}
                     onMouseEnter={(e)=>{ e.currentTarget.style.background='#FFFFFF'; }}
-                    onMouseLeave={(e)=>{ e.currentTarget.style.background=C.primary; }}>ADD TO SLACK</Link>
-                  <Link href="/departments"
-                    style={{ border:`1px solid ${C.border}`, color:C.secondary, padding:'12px 26px', borderRadius:'var(--radius-btn)', fontFamily:C.mono, fontSize:'var(--mono-cta)', letterSpacing:'0.06em', display:'inline-block', transition:'color 0.12s ease, border-color 0.12s ease' }}
+                    onMouseLeave={(e)=>{ e.currentTarget.style.background=C.primary; }}>SELF-HOST ON GITHUB</a>
+                  <button onClick={() => setShowWaitlist(true)}
+                    style={{ border:`1px solid ${C.border}`, color:C.secondary, padding:'12px 26px', borderRadius:'var(--radius-btn)', fontFamily:C.mono, fontSize:'var(--mono-cta)', letterSpacing:'0.06em', display:'inline-block', transition:'color 0.12s ease, border-color 0.12s ease', background:'transparent', cursor:'pointer' }}
                     onMouseEnter={(e)=>{ e.currentTarget.style.color=C.primary; e.currentTarget.style.borderColor='#3A3A42'; }}
-                    onMouseLeave={(e)=>{ e.currentTarget.style.color=C.secondary; e.currentTarget.style.borderColor=C.border; }}>SEE DEPARTMENTS</Link>
+                    onMouseLeave={(e)=>{ e.currentTarget.style.color=C.secondary; e.currentTarget.style.borderColor=C.border; }}>GET EARLY ACCESS</button>
                 </div>
                 <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
-                  {['Use your own OpenAI or Anthropic key — we never touch your tokens','Cost loops are structurally impossible — not just unlikely','Open-core and free — inspect the safety code yourself'].map((t) => (
+                  {['Works in a shared Slack channel — your whole team witnesses and steers','Use your own LLM key — pay your provider directly, we take zero margin','Open-core and free — the entire safety layer is inspectable on GitHub'].map((t) => (
                     <div key={t} style={{ fontFamily:C.mono, fontSize:11, color:'#44444B', letterSpacing:'0.1em', display:'flex', alignItems:'center', gap:8 }}>
                       <span style={{ width:3, height:3, borderRadius:'50%', background:'#44444B', flexShrink:0, display:'inline-block' }} />
                       {t}
@@ -517,6 +514,28 @@ export default function Home() {
         {/* ── MARQUEE — horizontal scrolling technical vocabulary (textural separator) ── */}
         <Marquee />
 
+        {/* ── CHANNEL AS COMMAND CENTER ── */}
+        <section style={{ ...sep, padding:'96px 0', background:C.surface }}>
+          <div style={wrap}>
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(320px, 1fr))', gap:'6vw', alignItems:'center' }}>
+              <div>
+                <span style={label()}>The Channel IS the Command Center</span>
+                <h2 style={{ ...H2(), marginBottom:24 }}>No separate dashboard to check. No hidden DMs.</h2>
+                <p style={{ fontFamily:C.body, fontSize:'1rem', lineHeight:1.68, color:C.secondary, marginBottom:20 }}>
+                  Every task, every result, every approval request lives in a shared Slack channel. Your team watches the swarm work — and steers it — right from where they already are.
+                </p>
+                <p style={{ fontFamily:C.mono, fontSize:11, color:'#44444B', letterSpacing:'0.08em', lineHeight:1.6 }}>
+                  No &ldquo;what&apos;s the agent doing right now?&rdquo; anxiety. No single-person bottleneck.
+                  Transparency is built into the channel, not bolted on as a dashboard.
+                </p>
+              </div>
+              <div style={{ display:'flex', justifyContent:'flex-end' }}>
+                <SlackMock glow />
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* ── PROOF SECTIONS — Moranta "emerge from darkness" ── */}
         <DepartmentsSection />
         <CrisesSection />
@@ -532,24 +551,32 @@ export default function Home() {
           <div style={{ ...wrap, position:'relative', zIndex:1 }}>
             <div style={{ maxWidth:600, margin:'0 auto', display:'flex', flexDirection:'column', alignItems:'center', gap:24 }}>
               <h2 style={{ fontFamily:'var(--font-headline)', fontSize:'clamp(2.4rem, 6vw, 5.5rem)', fontWeight:800, letterSpacing:'-0.045em', lineHeight:1.0, color:C.primary, margin:0 }}>
-                Launch an AI-native{' '}
-                <em style={{ fontFamily:'var(--font-serif-accent)', fontWeight:300, fontStyle:'italic', color:'var(--accent-brass)' }}>department</em>
-                {' '}this week.
+                Your team. Your{' '}
+                <em style={{ fontFamily:'var(--font-serif-accent)', fontWeight:300, fontStyle:'italic', color:'var(--accent-brass)' }}>swarm</em>
+                . One shared channel.
               </h2>
               <p style={{ fontFamily:C.mono, fontSize:'var(--mono-body)', color:C.secondary, letterSpacing:'0.06em', margin:0 }}>
-                Under 10 minutes to activate. First output within 2 hours.
+                Invite a swarm today. Your whole team watches it start working in under 10 minutes.
               </p>
-              <Link href="/signup"
-                style={{ background:C.primary, color:C.void, padding:'15px 40px', borderRadius:'var(--radius-btn)', fontFamily:C.mono, fontSize:'var(--mono-cta)', fontWeight:700, letterSpacing:'0.08em', display:'inline-block', marginTop:8, transition:'background 0.12s ease', boxShadow:'inset 0 1px 0 rgba(255,255,255,0.18)' }}
-                onMouseEnter={(e)=>{ e.currentTarget.style.background='#FFFFFF'; }}
-                onMouseLeave={(e)=>{ e.currentTarget.style.background=C.primary; }}>
-                ADD SOCKT TO SLACK
-              </Link>
+              <div style={{ display:'flex', gap:12, justifyContent:'center', flexWrap:'wrap' }}>
+                <a href="https://github.com/sockt-dev/sockt" target="_blank" rel="noopener noreferrer"
+                  style={{ background:C.primary, color:C.void, padding:'15px 40px', borderRadius:'var(--radius-btn)', fontFamily:C.mono, fontSize:'var(--mono-cta)', fontWeight:700, letterSpacing:'0.08em', display:'inline-block', marginTop:8, transition:'background 0.12s ease', boxShadow:'inset 0 1px 0 rgba(255,255,255,0.18)' }}
+                  onMouseEnter={(e)=>{ e.currentTarget.style.background='#FFFFFF'; }}
+                  onMouseLeave={(e)=>{ e.currentTarget.style.background=C.primary; }}>
+                  SELF-HOST ON GITHUB
+                </a>
+                <button onClick={() => setShowWaitlist(true)}
+                  style={{ border:`1px solid ${C.border}`, color:C.secondary, padding:'13px 38px', borderRadius:'var(--radius-btn)', fontFamily:C.mono, fontSize:'var(--mono-cta)', letterSpacing:'0.08em', display:'inline-block', marginTop:8, transition:'color 0.12s ease, border-color 0.12s ease', background:'transparent', cursor:'pointer' }}
+                  onMouseEnter={(e)=>{ e.currentTarget.style.color=C.primary; e.currentTarget.style.borderColor='#3A3A42'; }}
+                  onMouseLeave={(e)=>{ e.currentTarget.style.color=C.secondary; e.currentTarget.style.borderColor=C.border; }}>
+                  GET EARLY ACCESS
+                </button>
+              </div>
               <p style={{ fontFamily:C.mono, fontSize:10, color:'#44444B', margin:0, letterSpacing:'0.1em' }}>
-                COMMUNITY EDITION IS FREE · PAID PLANS COMING SOON
+                COMMUNITY EDITION IS FREE · PAID PLANS AVAILABLE
               </p>
               <p style={{ fontFamily:C.body, fontSize:'0.85rem', color:'#44444B', margin:0, lineHeight:1.5 }}>
-                Takes about 10 minutes. If you can run a Docker command, you&apos;re set — or forward this to whoever manages your infra.
+                Takes about 10 minutes. Deploy a swarm into a channel, invite your team, and watch them compound together.
               </p>
             </div>
           </div>

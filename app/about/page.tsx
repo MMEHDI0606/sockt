@@ -11,14 +11,14 @@ const aboutJsonLd = {
   name: 'About Sockt',
   url: `${siteUrl}/about`,
   description:
-    'Sockt is an AI-native workforce platform that deploys preconfigured AI employee swarms into Slack with persistent memory, loop prevention, and credential isolation.',
+    'Sockt is a collaborative AI operations platform that deploys shared AI swarms into Slack with persistent memory, loop prevention, and credential isolation. Your team multiplies together.',
   mainEntity: {
     '@type': 'Organization',
     name: 'Sockt',
     url: siteUrl,
     logo: `${siteUrl}/favicon.svg`,
     description:
-      'Sockt is an AI-native platform that deploys preconfigured AI employee swarms directly into Slack. They coordinate, remember, and compound in intelligence with built-in loop prevention and credential isolation.',
+      'Sockt is a collaborative AI operations platform. Deploy shared AI swarms into Slack — your team steers them together, watches progress in real time, and compounds every week.',
     foundingDate: '2024',
     sameAs: ['https://x.com/socktdev', 'https://github.com/socktdev'],
   },
@@ -94,18 +94,18 @@ export default function AboutPage() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '40px' }}>
               <div>
                 <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', marginBottom: '12px', color: 'var(--text-primary)' }}>Vision</h2>
-                <p style={{ fontFamily: 'var(--font-body)', lineHeight: 1.8, color: 'var(--text-secondary)', maxWidth: '520px' }}>A world where any team of two people can operate with the operational capacity of twenty - not by working harder, but by deploying an AI-native workforce that learns, remembers, and compounds in value over time.</p>
+                  <p style={{ fontFamily: 'var(--font-body)', lineHeight: 1.8, color: 'var(--text-secondary)', maxWidth: '520px' }}>A world where any team, no matter how small, can deploy a shared AI workforce that any team member can steer, witness, and compound with — not by working harder, but by operating as one.</p>
               </div>
               <div>
                 <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', marginBottom: '12px', color: 'var(--text-primary)' }}>Mission</h2>
-                <p style={{ fontFamily: 'var(--font-body)', lineHeight: 1.8, color: 'var(--text-secondary)', maxWidth: '520px' }}>Make reliable, always-on AI-native departments accessible to every lean team on earth - starting with companies too small for enterprise software and too fast-moving to wait for it.</p>
+                <p style={{ fontFamily: 'var(--font-body)', lineHeight: 1.8, color: 'var(--text-secondary)', maxWidth: '520px' }}>Make collaborative AI operations accessible to every team on earth — starting with the companies too small for enterprise software and too fast-moving to wait for it.</p>
               </div>
             </div>
           </section>
 
           <section style={{ borderTop: '1px solid var(--bg-border)', paddingTop: '56px', marginBottom: '56px' }}>
             <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent-btc)', marginBottom: '24px' }}>Core belief</p>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: '1.05rem', lineHeight: 1.8, color: 'var(--text-secondary)', maxWidth: '68ch' }}>The bottleneck to growth for most bootstrapped businesses is human bandwidth. Sockt reclaims that bandwidth with persistent memory, structured coordination, and a system that is trustworthy enough to run without babysitting.</p>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '1.05rem', lineHeight: 1.8, color: 'var(--text-secondary)', maxWidth: '68ch' }}>The bottleneck to growth for most bootstrapped businesses is human bandwidth. Sockt reclaims that bandwidth with shared AI swarms that your entire team can steer — persistent memory, structured coordination, and a system that each person trusts enough to rely on without babysitting.</p>
           </section>
 
           <section style={{ borderTop: '1px solid var(--bg-border)', paddingTop: '56px' }}>

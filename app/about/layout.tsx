@@ -4,21 +4,21 @@ import type { ReactNode } from 'react';
 export const metadata: Metadata = {
   title: 'About',
   description:
-    'Sockt is an AI-native workforce platform that deploys preconfigured employee swarms into Slack with persistent memory, loop prevention, and credential isolation.',
+    'Sockt is a collaborative AI operations platform that deploys shared AI swarms into Slack where your entire team can steer them, see their progress, and compound together.',
   alternates: {
     canonical: '/about',
   },
   openGraph: {
     title: 'About Sockt',
     description:
-      'Learn how Sockt helps lean teams deploy reliable AI-native departments that remember context and compound in intelligence over time.',
+      'The shared command center where your team and AI operate as one workforce — persistent memory, loop prevention, and credential isolation.',
     url: '/about',
     type: 'website',
   },
   twitter: {
     title: 'About Sockt',
     description:
-      'Sockt: AI-native workforce infrastructure for Slack-native departments with memory and loop prevention.',
+      'Sockt: Collaborative AI operations platform — deploy AI swarms into Slack and steer them as a team.',
   },
 };
 

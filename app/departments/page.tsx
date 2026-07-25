@@ -52,8 +52,8 @@ export default function DepartmentsPage() {
       <main style={{ minHeight: '100vh', padding: '96px 24px 120px', color: 'var(--text-primary)' }}>
         <div style={{ maxWidth: '1080px', margin: '0 auto' }}>
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent-btc)', marginBottom: '14px' }}>Departments</p>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2.1rem, 6vw, 3.8rem)', lineHeight: 1, letterSpacing: '-0.04em', margin: 0, maxWidth: '13ch' }}>Three departments. One coordinated AI-native operating layer.</h1>
-          <p style={{ marginTop: '14px', maxWidth: '64ch', fontFamily: 'var(--font-body)', lineHeight: 1.65, color: 'var(--text-secondary)' }}>Safe actions run automatically. Risky actions default to review.</p>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2.1rem, 6vw, 3.8rem)', lineHeight: 1, letterSpacing: '-0.04em', margin: 0, maxWidth: '13ch' }}>Pick a swarm. Invite your team. Start steering.</h1>
+          <p style={{ marginTop: '14px', maxWidth: '64ch', fontFamily: 'var(--font-body)', lineHeight: 1.65, color: 'var(--text-secondary)' }}>Each swarm deploys into a shared Slack channel. Your entire team — not just one power user — can watch it work, redirect it, and benefit from its output. Safe actions run automatically. Risky actions default to review.</p>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '14px', marginTop: '30px' }}>
             {departments.map((department) => (

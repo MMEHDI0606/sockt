@@ -4,19 +4,19 @@ import type { ReactNode } from 'react';
 export const metadata: Metadata = {
   title: 'Pricing — Sockt',
   description:
-    'Community Edition is free forever. Managed hosting from $79/mo. FSM loop prevention, GBrain persistent memory, and Secret Vault Proxy are on every plan.',
+    'Community Edition is free forever. Pay only for operators who actively steer — spectators are free on every plan.',
   alternates: {
     canonical: '/pricing',
   },
   openGraph: {
-    title: 'Sockt Pricing — Free to start. Pay for hosting, not safety.',
+    title: 'Sockt Pricing — Pay for operators, not spectators.',
     description:
       'Community Edition is free and open-core. Managed hosting from $79/mo. No token markup, no per-seat Slack tax, no safety features behind a paywall.',
     url: '/pricing',
     type: 'website',
   },
   twitter: {
-    title: 'Sockt Pricing — Free to start. Pay for hosting, not safety.',
+    title: 'Sockt Pricing — Pay for operators, not spectators.',
     description:
       'Community Edition is free and open-core. Managed hosting from $79/mo. No token markup, no per-seat Slack tax.',
   },

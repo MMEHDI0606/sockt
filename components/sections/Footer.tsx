@@ -3,16 +3,16 @@
 import Link from 'next/link';
 import { useIsMobile } from '@/hooks/useIsMobile';
 
-const COLS = [
-  {
-    title: 'PRODUCT',
-    items: ['Docs', 'Install', 'Pricing', 'Departments'],
-  },
-  {
-    title: 'LEGAL & CONTACT',
-    items: ['Terms & Conditions', 'Privacy Policy', 'Contact'],
-  },
-];
+// const COLS = [
+//   {
+//     title: 'PRODUCT',
+//     items: ['Docs', 'Install', 'Pricing', 'Departments'],
+//   },
+//   {
+//     title: 'LEGAL & CONTACT',
+//     items: ['Terms & Conditions', 'Privacy Policy', 'Contact'],
+//   },
+// ];
 
 export default function Footer() {
   const isMobile = useIsMobile();
@@ -56,7 +56,7 @@ export default function Footer() {
                   marginBottom: '16px',
                 }}
               >
-                AI-native workforce infrastructure for Slack-native departments.
+                The shared command center where your team and AI operate as one.
               </p>
             ) : null}
           </div>
@@ -68,7 +68,7 @@ export default function Footer() {
               gap: isMobile ? '40px' : '80px',
             }}
           >
-            {COLS.map((col) => (
+            {/* {COLS.map((col) => (
               <div key={col.title}>
                 <div
                   style={{
@@ -135,7 +135,7 @@ export default function Footer() {
                   })}
                 </div>
               </div>
-            ))}
+            ))} */}
           </div>
         </div>
 
@@ -189,6 +189,19 @@ export default function Footer() {
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--text-secondary)' }}>
             © {new Date().getFullYear()} Sockt
           </span>
+          <a
+            href="mailto:hello@sockt.dev"
+            style={{
+              fontFamily: 'var(--font-body)',
+              fontSize: '13px',
+              color: 'var(--text-secondary)',
+              textDecoration: 'none',
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--text-primary)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-secondary)'; }}
+          >
+            hello@sockt.dev
+          </a>
         </div>
       </div>
     </footer>

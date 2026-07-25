@@ -30,7 +30,7 @@ const TIERS = [
     name: 'Community',
     price: '$0',
     period: 'forever',
-    tagline: 'Self-host it today. No expiry, no caps.',
+    tagline: 'One swarm. Private channel. Free forever.',
     cta: 'Self-host free',
     ctaHref: 'https://github.com/sockt-dev/sockt',
     ctaExternal: true,
@@ -41,7 +41,7 @@ const TIERS = [
       'Secret Vault Proxy',
       'All 3 departments (Growth, Eng Ops, Support)',
       'Human-in-the-loop approval gates',
-      'Bring your own API key — $0 markup',
+      'Bring your own API key',
       'Unlimited agent actions',
       'Community support',
     ],
@@ -52,7 +52,7 @@ const TIERS = [
     name: 'Launch',
     price: '$79',
     period: '/mo',
-    tagline: 'Less than one hour of a contractor\'s time per month.',
+    tagline: 'Small team. Shared channel. One managed swarm.',
     cta: 'Start Launch',
     ctaHref: 'mailto:hello@sockt.dev?subject=Launch plan',
     ctaExternal: false,
@@ -62,7 +62,7 @@ const TIERS = [
       'Hosted — no Docker, no servers',
       '90-day GBrain memory window',
       'Human-in-the-loop approval gates',
-      'Bring your own API key — $0 markup',
+      'Bring your own API key',
       'Unlimited agent actions',
       'Email support',
     ],
@@ -73,7 +73,7 @@ const TIERS = [
     name: 'Team',
     price: '$249',
     period: '/mo',
-    tagline: '6% of a junior hire\'s monthly cost. Three departments in parallel.',
+    tagline: 'Full department. Three parallel swarms. Your whole team in control.',
     cta: 'Start Team',
     ctaHref: 'mailto:hello@sockt.dev?subject=Team plan',
     ctaExternal: false,
@@ -84,7 +84,7 @@ const TIERS = [
       '12-month GBrain memory window',
       'Fleet intelligence (cross-team patterns)',
       'Human-in-the-loop approval gates',
-      'Bring your own API key — $0 markup',
+      'Bring your own API key',
       'Unlimited agent actions',
       'Priority support + onboarding call',
     ],
@@ -123,7 +123,7 @@ const ADDONS = [
 
 const NEVER_PAY = [
   'Token markup — bring your own key, pay Anthropic/OpenAI directly',
-  'Per-seat for Slack viewers, reactors, or approvers in shared channels',
+  'Per-seat pricing for people who just watch the channel — spectators are free on every plan',
   'FSM task engine — the loop prevention is on every tier, always',
   'GBrain core — persistent memory is not a premium feature',
   'Secret Vault Proxy — credential isolation ships on all plans',
@@ -158,8 +158,8 @@ export default function PricingPage() {
               margin: '0 0 24px',
               color: C.primary,
             }}>
-              Pay for what you use.<br />
-              <span style={{ color: C.secondary, fontWeight: 200 }}>Never for what you don&apos;t.</span>
+                One swarm, shared by your team.<br />
+                <span style={{ color: C.secondary, fontWeight: 200 }}>Pay for operators, not spectators.</span>
             </h1>
             <p style={{
               fontFamily: C.body,
@@ -169,8 +169,8 @@ export default function PricingPage() {
               maxWidth: '52ch',
               margin: '0 auto',
             }}>
-              Community Edition is free forever. Managed hosting starts at $79/mo.
-              FSM, GBrain, and Secret Vault Proxy are on every plan — they&apos;re not upsells.
+              Invite a swarm into a shared Slack channel. Everyone on your team can watch, react, and benefit — free.
+              Pay only for team members who actively steer and configure the swarm.
             </p>
           </div>
         </section>
@@ -388,7 +388,7 @@ export default function PricingPage() {
               color: C.secondary, maxWidth: '44ch', margin: '0 auto 36px',
             }}>
               Community Edition runs everything. When you want managed hosting,
-              compliance, or fleet intelligence — that&apos;s when paid plans make sense.
+              compliance, or fleet intelligence for your shared channels — that&apos;s when paid plans make sense.
             </p>
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
               <Link

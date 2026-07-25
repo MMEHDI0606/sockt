@@ -137,7 +137,7 @@ export default function Nav() {
               textTransform: 'uppercase',
             }}
           >
-            {[
+            {/* {[
               { label: 'Departments', href: '/departments' },
               { label: 'Docs', href: '/docs' },
               { label: 'Pricing', href: '/pricing' },
@@ -152,22 +152,22 @@ export default function Nav() {
               >
                 {link.label}
               </Link>
-            ))}
+            ))} */}
           </div>
         )}
         <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '6px' : '16px' }}>
-          {!isMobile && (
+          {/* {!isMobile && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--text-secondary)', letterSpacing: '0.08em' }}>
               <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--accent-brass)', display: 'inline-block', flexShrink: 0 }} />
               ▲ {taskCount} tasks today
             </div>
-          )}
+          )} */}
           <ThemeToggle compact={isMobile} />
           {authLoaded ? (
             isAuthenticated ? null : (
               <>
                 <Link
-                  href="/signup"
+                  href="https://github.com/sockt-dev/sockt"
                   style={{
                     fontFamily: 'var(--font-mono)',
                     fontSize: isMobile ? '11px' : '12px',

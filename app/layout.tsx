@@ -19,7 +19,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sockt.dev';
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'Sockt | AI-native workforce platform',
+    default: 'Sockt | Collaborative AI Operations Platform',
     template: '%s | Sockt',
   },
   description:
@@ -38,6 +38,11 @@ export const metadata: Metadata = {
     'prompt injection protection',
     'BYOK AI agents',
     'open-core AI agents',
+    'collaborative AI',
+    'shared AI channel',
+    'team AI platform',
+    'multiplayer AI',
+    'AI swarm communication',
   ],
   alternates: {
     canonical: '/',
@@ -45,17 +50,17 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: '/',
-    title: 'Sockt | AI-native workforce platform',
+    title: 'Sockt | Collaborative AI Operations Platform',
     description:
-      'AI-native Slack agent swarms with persistent memory, loop prevention, and credential isolation. BYOK — you pay your LLM provider directly. Live in under 10 minutes.',
+    'The shared command center where your team and AI operate as one workforce. Deploy AI swarms into Slack — your whole team can steer them, see their progress, and compound together.',
     siteName: 'Sockt',
     images: ['/opengraph-image.png'],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Sockt | AI-native workforce platform',
+    title: 'Sockt | Collaborative AI Operations Platform',
     description:
-      'AI-native preconfigured employee swarms for Slack with persistent memory, loop prevention, and credential isolation.',
+      'Deploy AI swarms into Slack — your whole team can steer them, see their progress, and compound together.',
     images: ['/opengraph-image.png'],
   },
   robots: {
@@ -107,7 +112,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                     'https://github.com/sockt-dev/sockt',
                   ],
                   description:
-                    'Sockt is an AI-native workforce platform that deploys preconfigured AI agent departments directly into Slack with persistent memory, loop prevention, and credential isolation.',
+                    'Sockt is a collaborative AI operations platform that deploys shared AI swarms into Slack. Your entire team can steer agents, see their progress, and compound together with persistent memory, loop prevention, and credential isolation.',
                 },
                 {
                   '@type': 'WebSite',
@@ -124,7 +129,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                   operatingSystem: 'Slack, Web',
                   url: siteUrl,
                   description:
-                    'AI-native departments for Slack. Persistent memory, FSM loop prevention, BYOK, and credential isolation. Autonomous AI employee swarms that coordinate, remember, and compound in intelligence.',
+                    'Shared AI swarms for Slack. Persistent memory, FSM loop prevention, BYOK, and credential isolation. Collaborative AI operations where your whole team can steer agents that coordinate, remember, and compound in intelligence.',
                   offers: [
                     {
                       '@type': 'Offer',

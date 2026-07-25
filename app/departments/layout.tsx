@@ -4,21 +4,21 @@ import type { ReactNode } from 'react';
 export const metadata: Metadata = {
   title: 'Departments',
   description:
-    'AI-native Sockt departments for growth, product development, and engineering operations.',
+    'Shared AI swarms for growth, product development, and engineering operations. Deploy into a Slack channel — your whole team steers.',
   alternates: {
     canonical: '/departments',
   },
   openGraph: {
     title: 'Sockt Departments',
     description:
-      'See the preconfigured AI-native employee swarms Sockt deploys for each department.',
+      'Preconfigured AI swarms for each department. Deploy into shared Slack channels where your entire team can watch, steer, and compound together.',
     url: '/departments',
     type: 'website',
   },
   twitter: {
     title: 'Sockt Departments',
     description:
-      'Department swarms for Slack-native, AI-native workforces.',
+      'AI swarms for Slack — pick a department, invite your team, start steering.',
   },
 };
 
