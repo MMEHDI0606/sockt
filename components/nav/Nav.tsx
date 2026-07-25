@@ -167,7 +167,7 @@ export default function Nav() {
             isAuthenticated ? null : (
               <>
                 <Link
-                  href="https://github.com/sockt-dev/sockt"
+                  href="/install"
                   style={{
                     fontFamily: 'var(--font-mono)',
                     fontSize: isMobile ? '11px' : '12px',

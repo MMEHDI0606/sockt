@@ -471,14 +471,14 @@ export default function Home() {
                   Invite a Sockt swarm into a shared Slack channel. Everyone on your team — engineering, growth, product — can see what&apos;s happening, steer the agents, and watch the work compound. No babysitting, no black boxes.
                 </p>
                 <div style={{ display:'flex', gap:12, flexWrap:'wrap', marginBottom:36 }}>
-                  <a href="https://github.com/sockt-dev/sockt" target="_blank" rel="noopener noreferrer"
+                  <Link href="/install"
                     style={{ background:C.primary, color:C.void, padding:'13px 28px', borderRadius:'var(--radius-btn)', fontFamily:C.mono, fontSize:'var(--mono-cta)', fontWeight:700, letterSpacing:'0.06em', display:'inline-block', transition:'background 0.12s ease', boxShadow:'inset 0 1px 0 rgba(255,255,255,0.18)' }}
                     onMouseEnter={(e)=>{ e.currentTarget.style.background='#FFFFFF'; }}
-                    onMouseLeave={(e)=>{ e.currentTarget.style.background=C.primary; }}>SELF-HOST</a>
-                  <button onClick={() => setShowWaitlist(true)}
-                    style={{ border:`1px solid ${C.border}`, color:C.secondary, padding:'12px 26px', borderRadius:'var(--radius-btn)', fontFamily:C.mono, fontSize:'var(--mono-cta)', letterSpacing:'0.06em', display:'inline-block', transition:'color 0.12s ease, border-color 0.12s ease', background:'transparent', cursor:'pointer' }}
+                    onMouseLeave={(e)=>{ e.currentTarget.style.background=C.primary; }}>INSTALL</Link>
+                  <a href="https://github.com/sockt-dev/sockt" target="_blank" rel="noopener noreferrer"
+                    style={{ border:`1px solid ${C.border}`, color:C.secondary, padding:'12px 26px', borderRadius:'var(--radius-btn)', fontFamily:C.mono, fontSize:'var(--mono-cta)', letterSpacing:'0.06em', display:'inline-block', transition:'color 0.12s ease, border-color 0.12s ease' }}
                     onMouseEnter={(e)=>{ e.currentTarget.style.color=C.primary; e.currentTarget.style.borderColor='#3A3A42'; }}
-                    onMouseLeave={(e)=>{ e.currentTarget.style.color=C.secondary; e.currentTarget.style.borderColor=C.border; }}>GET EARLY ACCESS</button>
+                    onMouseLeave={(e)=>{ e.currentTarget.style.color=C.secondary; e.currentTarget.style.borderColor=C.border; }}>VIEW ON GITHUB</a>
                 </div>
                 <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
                   {['Works in a shared Slack channel — your whole team witnesses and steers','Use your own LLM key — pay your provider directly, we take zero margin','Open-core and free — the entire safety layer is inspectable on GitHub'].map((t) => (
@@ -559,18 +559,18 @@ export default function Home() {
                 Invite a swarm today. Your whole team watches it start working in under 10 minutes.
               </p>
               <div style={{ display:'flex', gap:12, justifyContent:'center', flexWrap:'wrap' }}>
-                <a href="https://github.com/sockt-dev/sockt" target="_blank" rel="noopener noreferrer"
+                <Link href="/install"
                   style={{ background:C.primary, color:C.void, padding:'15px 40px', borderRadius:'var(--radius-btn)', fontFamily:C.mono, fontSize:'var(--mono-cta)', fontWeight:700, letterSpacing:'0.08em', display:'inline-block', marginTop:8, transition:'background 0.12s ease', boxShadow:'inset 0 1px 0 rgba(255,255,255,0.18)' }}
                   onMouseEnter={(e)=>{ e.currentTarget.style.background='#FFFFFF'; }}
                   onMouseLeave={(e)=>{ e.currentTarget.style.background=C.primary; }}>
-                  SELF-HOST
-                </a>
-                <button onClick={() => setShowWaitlist(true)}
-                  style={{ border:`1px solid ${C.border}`, color:C.secondary, padding:'13px 38px', borderRadius:'var(--radius-btn)', fontFamily:C.mono, fontSize:'var(--mono-cta)', letterSpacing:'0.08em', display:'inline-block', marginTop:8, transition:'color 0.12s ease, border-color 0.12s ease', background:'transparent', cursor:'pointer' }}
+                  INSTALL
+                </Link>
+                <a href="https://github.com/sockt-dev/sockt" target="_blank" rel="noopener noreferrer"
+                  style={{ border:`1px solid ${C.border}`, color:C.secondary, padding:'13px 38px', borderRadius:'var(--radius-btn)', fontFamily:C.mono, fontSize:'var(--mono-cta)', letterSpacing:'0.08em', display:'inline-block', marginTop:8, transition:'color 0.12s ease, border-color 0.12s ease' }}
                   onMouseEnter={(e)=>{ e.currentTarget.style.color=C.primary; e.currentTarget.style.borderColor='#3A3A42'; }}
                   onMouseLeave={(e)=>{ e.currentTarget.style.color=C.secondary; e.currentTarget.style.borderColor=C.border; }}>
-                  GET EARLY ACCESS
-                </button>
+                  VIEW ON GITHUB
+                </a>
               </div>
               <p style={{ fontFamily:C.mono, fontSize:10, color:'#44444B', margin:0, letterSpacing:'0.1em' }}>
                 COMMUNITY EDITION IS FREE · PAID PLANS AVAILABLE
