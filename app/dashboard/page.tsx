@@ -1,12 +1,13 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
-import { signOutAction, createTopupCheckoutAction } from '@/app/dashboard/actions';
+import { createTopupCheckoutAction } from '@/app/dashboard/actions';
 import ApiKeysPanel from '@/components/dashboard/ApiKeysPanel';
-import ThemeToggle from '@/components/theme/ThemeToggle';
 import SyncCredits from './SyncCredits';
 import { Suspense } from 'react';
+
+// Client sub-component for console data
+import { default as ConsoleOverviewStats } from '@/components/dashboard/ConsoleOverviewStats';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -18,17 +19,6 @@ type ApiKeyRow = {
   created_at?: string | null;
 };
 
-function initialsFromName(name: string): string {
-  const parts = name
-    .split(' ')
-    .map((part) => part.trim())
-    .filter(Boolean);
-
-  if (!parts.length) return 'U';
-  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
-  return `${parts[0][0] || ''}${parts[1][0] || ''}`.toUpperCase();
-}
-
 export default async function DashboardPage() {
   const cookieStore = await cookies();
   const supabase = createClient(cookieStore);
@@ -37,9 +27,7 @@ export default async function DashboardPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) {
-    redirect('/login');
-  }
+  if (!user) redirect('/login');
 
   const { data: profile } = await supabase
     .from('users')
@@ -57,169 +45,167 @@ export default async function DashboardPage() {
   const apiKeys = ((rawKeys ?? []) as ApiKeyRow[])
     .map((row) => {
       const prefix = row.key_prefix ?? '';
-      if (!prefix || row.is_active === false) {
-        return null;
-      }
-
+      if (!prefix || row.is_active === false) return null;
       return {
         id: row.key_hash,
         preview: `${prefix}****`,
         createdAt: row.created_at ?? null,
       };
     })
-    .filter((value): value is { id: string; preview: string; createdAt: string | null } =>
-      Boolean(value)
+    .filter(
+      (value): value is { id: string; preview: string; createdAt: string | null } =>
+        Boolean(value),
     );
 
-  const balance = Number(profile?.credit_balance_subcents ?? 0);
-  const balanceUsd = balance / 10000000;
-
-  const userEmail = user.email || 'unknown@sockt.dev';
-  const displayName =
-    (typeof user.user_metadata?.full_name === 'string' && user.user_metadata.full_name.trim()) ||
-    (typeof user.user_metadata?.name === 'string' && user.user_metadata.name.trim()) ||
-    userEmail.split('@')[0] ||
-    'Sockt User';
-  const userInitials = initialsFromName(displayName);
-
-  const navItems: Array<{ label: string; href: string; active?: boolean }> = [
-    { label: 'Home', href: '/' },
-    { label: 'Dashboard', href: '/dashboard', active: true },
-    // { label: 'API Keys', href: '/dashboard#api-keys' },
-    { label: 'Account', href: '/dashboard/account' },
-
-  ];
+  const balanceSubcents =
+    typeof profile?.credit_balance_subcents === 'number'
+      ? profile.credit_balance_subcents
+      : 0;
+  const balanceUsd = balanceSubcents / 10_000_000;
 
   return (
-    <main
-      className="min-h-screen"
-      style={{ backgroundColor: 'var(--dashboard-bg)', color: 'var(--dashboard-text)' }}
-    >
-      {/* Sleek Vercel-style Top Navigation Header */}
-      <header
+    <div style={{ maxWidth: 1280 }}>
+      <div style={{ marginBottom: 24 }}>
+        <h1
+          style={{
+            fontSize: 22,
+            fontWeight: 700,
+            fontFamily: 'var(--font-headline)',
+            color: 'var(--text-primary)',
+            letterSpacing: '-0.02em',
+            margin: '0 0 4px',
+          }}
+        >
+          Overview
+        </h1>
+        <p
+          style={{
+            fontSize: 13,
+            fontFamily: 'var(--font-body)',
+            color: 'var(--text-secondary)',
+            margin: 0,
+          }}
+        >
+          Your workspace at a glance
+        </p>
+      </div>
+
+      <Suspense fallback={<div>Loading stats...</div>}>
+        <ConsoleOverviewStats />
+      </Suspense>
+
+      <div
         style={{
-          borderBottom: '1px solid var(--dashboard-border)',
-          backgroundColor: 'var(--dashboard-sidebar)',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+          gap: 16,
         }}
       >
-        <div className="mx-auto flex max-w-[1280px] items-center justify-between px-6 py-4">
-          {/* Left Side: Logo & Workspace Breadcrumbs */}
-          <div className="flex items-center gap-4">
-            <Link href="/" className="flex items-baseline gap-[5px] no-underline">
-              <span className="font-mono text-lg text-[var(--dashboard-accent)]">{'{*}'}</span>
-              <span className="font-display text-lg font-medium text-[var(--dashboard-text)]">Sockt</span>
-            </Link>
-            <span className="font-mono text-sm text-[var(--dashboard-muted)]">/</span>
-            <span className="font-mono text-xs text-[var(--dashboard-muted)]">Personal Workspace</span>
-          </div>
-
-          {/* Right Side: ThemeToggle, Profile and Sign Out */}
-          <div className="flex items-center gap-4">
-            <ThemeToggle className="rounded-lg border-[0.5px] border-[var(--dashboard-border)] px-3 py-1.5 text-xs font-mono uppercase tracking-[0.08em] text-[var(--dashboard-text)] hover:border-[var(--dashboard-accent)]" />
-            <div className="flex items-center gap-3 border-l-[1px] border-[var(--dashboard-border)] pl-4">
-              <div className="grid h-8 w-8 place-items-center rounded-full bg-[var(--dashboard-accent)] font-mono text-xs font-semibold text-[var(--dashboard-bg)]">
-                {userInitials}
-              </div>
-              <div className="hidden min-w-0 flex-col md:flex">
-                <span className="truncate text-xs font-semibold text-[var(--dashboard-text)]">{displayName}</span>
-                <span className="truncate text-[10px] text-[var(--dashboard-muted)]">{userEmail}</span>
-              </div>
-              <form action={signOutAction}>
-                <button
-                  type="submit"
-                  className="rounded-lg border-[0.5px] border-[var(--dashboard-border)] px-3 py-1.5 text-xs font-mono uppercase tracking-[0.12em] text-[var(--dashboard-text)] hover:border-[var(--accent-red)] hover:text-[var(--accent-red)] transition-colors"
-                >
-                  Sign out
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-
-        {/* Horizontal Navigation Sub-Tabs */}
-        <div className="mx-auto max-w-[1280px] px-6">
-          <nav className="flex gap-6">
-            <Link
-              href="/dashboard"
-              className="border-b-2 border-[var(--dashboard-accent)] pb-3 pt-2 text-xs font-mono uppercase tracking-[0.1em] text-[var(--dashboard-text)]"
-            >
-              Overview
-            </Link>
-            <Link
-              href="/dashboard/docs"
-              className="border-b-2 border-transparent pb-3 pt-2 text-xs font-mono uppercase tracking-[0.1em] text-[var(--dashboard-muted)] hover:text-[var(--dashboard-text)] transition-colors"
-            >
-              Docs
-            </Link>
-            <Link
-              href="/dashboard/account"
-              className="border-b-2 border-transparent pb-3 pt-2 text-xs font-mono uppercase tracking-[0.1em] text-[var(--dashboard-muted)] hover:text-[var(--dashboard-text)] transition-colors"
-            >
-              Account Settings
-            </Link>
-          </nav>
-        </div>
-      </header>
-
-      {/* Main Spacious Content Grid */}
-      <div className="mx-auto max-w-[1280px] px-6 py-8">
-        {/* Welcome Banner */}
-        <div className="mb-8 border-b-[0.5px] border-[var(--dashboard-border)] pb-6">
-          <h2 className="font-display text-2xl font-semibold text-[var(--dashboard-text)]">
-            Welcome back, {displayName.split(' ')[0]}
-          </h2>
-          <p className="mt-1 text-sm text-[var(--dashboard-muted)]">
-            Manage your sandboxed compute credits and active API keys here.
-          </p>
-        </div>
-
-        {/* Workspace Cards */}
-        <div className="grid gap-6 lg:grid-cols-2">
-          {/* Card 1: Credit Balance */}
-          <section
-            id="billing"
-            className="rounded-xl border-[0.5px] border-[var(--dashboard-border)] bg-[var(--dashboard-card)] p-6 flex flex-col justify-between"
+        <div
+          style={{
+            background: 'var(--bg-surface)',
+            border: '1px solid var(--bg-border)',
+            borderTop: '1px solid var(--border-top-highlight)',
+            borderRadius: 'var(--radius-card)',
+            padding: 20,
+          }}
+        >
+          <div
+            style={{
+              fontSize: 10,
+              fontFamily: 'var(--font-mono)',
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
+              color: 'var(--text-secondary)',
+              marginBottom: 12,
+            }}
           >
-            <div>
-              <div className="mb-4 flex items-center justify-between">
-                <span className="font-mono text-xs uppercase tracking-[0.15em] text-[var(--dashboard-muted)]">
-                  Credit Balance
-                </span>
-                <span className="flex items-center gap-1.5 font-mono text-[10px] text-[var(--accent-green)] uppercase tracking-[0.1em]">
-                  <span className="h-2 w-2 rounded-full bg-[var(--accent-green)] animate-pulse" />
-                  Active
-                </span>
-              </div>
-              <p className="font-display text-5xl font-semibold text-[var(--dashboard-text)]">
-                ${balanceUsd.toFixed(2)}{' '}
-                <span className="text-base font-normal text-[var(--dashboard-muted)]">USD</span>
-              </p>
-              <p className="mt-4 text-xs leading-relaxed text-[var(--dashboard-muted)]">
-                Credits are debited automatically per request when your agents provision CPU/GPU sandboxes. Treat your balance as a compute budget allocation.
-              </p>
-            </div>
-
-            <div className="mt-8 pt-6 border-t-[0.5px] border-[var(--dashboard-border)] flex items-center justify-between">
-              <span className="font-mono text-[10px] text-[var(--dashboard-muted)]">
-                Secure checkout via Polar
-              </span>
-              <form action={createTopupCheckoutAction}>
-                <button
-                  type="submit"
-                  className="rounded-lg bg-[var(--dashboard-accent)] px-4 py-2 text-xs font-mono uppercase tracking-[0.12em] font-semibold text-[var(--dashboard-bg)] hover:opacity-90 transition-opacity"
-                >
-                  Top up credits
-                </button>
-              </form>
-            </div>
-          </section>
-
-          {/* Card 2: API Keys Panel */}
-          <div id="api-keys">
-            <ApiKeysPanel initialKeys={apiKeys} />
+            Credit Balance
           </div>
+          <div
+            style={{
+              fontSize: 32,
+              fontWeight: 700,
+              fontFamily: 'var(--font-headline)',
+              color: 'var(--text-primary)',
+              letterSpacing: '-0.03em',
+            }}
+          >
+            ${balanceUsd.toFixed(2)} USD
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 4 }}>
+            <span
+              style={{
+                width: 5,
+                height: 5,
+                borderRadius: '50%',
+                background: 'var(--accent-green)',
+              }}
+            />
+            <span
+              style={{
+                fontSize: 10,
+                fontFamily: 'var(--font-mono)',
+                color: 'var(--text-secondary)',
+              }}
+            >
+              Active
+            </span>
+          </div>
+          <p
+            style={{
+              fontSize: 12,
+              fontFamily: 'var(--font-body)',
+              color: 'var(--text-secondary)',
+              lineHeight: 1.5,
+              marginTop: 12,
+            }}
+          >
+            Credits are consumed when your agents provision CPU/GPU sandboxes.
+          </p>
+          <form action={createTopupCheckoutAction} style={{ marginTop: 12 }}>
+            <button
+              type="submit"
+              style={{
+                background: 'var(--text-primary)',
+                color: 'var(--bg-void)',
+                fontFamily: 'var(--font-mono)',
+                fontSize: 'var(--mono-cta)',
+                fontWeight: 700,
+                letterSpacing: '0.06em',
+                textTransform: 'uppercase',
+                padding: '8px 20px',
+                border: 'none',
+                borderRadius: 'var(--radius-btn)',
+                cursor: 'pointer',
+                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18)',
+              }}
+            >
+              Top up credits
+            </button>
+          </form>
+        </div>
+
+        <div
+          style={{
+            background: 'var(--bg-surface)',
+            border: '1px solid var(--bg-border)',
+            borderTop: '1px solid var(--border-top-highlight)',
+            borderRadius: 'var(--radius-card)',
+            padding: 20,
+          }}
+        >
+          <ApiKeysPanel
+            initialKeys={apiKeys.map((k) => ({
+              id: k.id,
+              preview: k.preview,
+              createdAt: k.createdAt || '',
+            }))}
+          />
         </div>
       </div>
-    </main>
+
+      <SyncCredits currentBalance={balanceUsd} />
+    </div>
   );
 }
