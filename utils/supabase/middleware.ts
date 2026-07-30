@@ -54,17 +54,8 @@ export const updateSession = async (request: NextRequest) => {
 
     const isRootOrAuthRoute = pathname === '/' || pathname === '/login' || pathname === '/signup';
 
-    if (isDashboardRoute && !user) {
-      const redirectUrl = request.nextUrl.clone();
-      redirectUrl.pathname = '/login';
-      redirectUrl.searchParams.set('next', pathname);
-
-      const redirectResponse = NextResponse.redirect(redirectUrl);
-      supabaseResponse.cookies.getAll().forEach((cookie) => {
-        redirectResponse.cookies.set(cookie.name, cookie.value);
-      });
-      return redirectResponse;
-    }
+    // DEV: dashboard auth bypass for local testing
+    // if (isDashboardRoute && !user) { ... }
 
     if (isRootOrAuthRoute && user) {
       const redirectUrl = request.nextUrl.clone();
