@@ -3,8 +3,10 @@
 import type React from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useIsMobile } from '@/hooks/useIsMobile';
+import { getAccessToken, exchangeForSession } from '@/utils/identity/client';
+import { createClient as createSupabaseClient } from '@/utils/supabase/client';
 
 type NavItem = {
   label: string;
@@ -58,6 +60,25 @@ export default function DashboardShell({ userName, userEmail, children }: Dashbo
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
   const isMobile = useIsMobile();
+
+  // Ensure the identity access token is available before console API calls.
+  // On page refresh the in-memory token is lost; re-exchange from the
+  // Supabase session so the first /console/* request doesn't 401+refresh.
+  useEffect(() => {
+    if (getAccessToken()) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const supabase = createSupabaseClient();
+        const { data } = await supabase.auth.getSession();
+        if (cancelled || !data.session?.access_token) return;
+        await exchangeForSession(data.session.access_token);
+      } catch {
+        // The identityFetch refresh-on-401 path handles this fallback.
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
 
   const initials = userName
     .split(' ')
