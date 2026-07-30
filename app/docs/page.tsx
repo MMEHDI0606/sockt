@@ -23,6 +23,7 @@ const sections = [
 
 const examples = [
   'Growth swarm: watches for buying intent, enriches leads, and drafts outbound for approval.',
+  'Content swarm: builds a weekly content calendar, writes X threads and LinkedIn posts, submits drafts to Slack for approval, then publishes to platform APIs.',
   'Product swarm: turns a request into a structured spec, runs approved tasks, and delivers a consolidated PR.',
   'Ops swarm: catches incidents, correlates history, and drafts the root-cause summary.',
 ];

@@ -17,8 +17,19 @@ const departments = [
     ),
   },
   {
+    name: 'Content',
+    roles: 'X threads + LinkedIn + YouTube scripts → Slack approval → publish',
+    description: 'Plans content calendars, writes platform-native posts, routes drafts for approval, and publishes to X, LinkedIn, and YouTube/TikTok automatically.',
+    icon: (
+      <svg width="38" height="38" viewBox="0 0 38 38" aria-hidden="true">
+        <rect x="7" y="10" width="24" height="18" rx="4" fill="none" stroke="var(--accent-btc)" strokeWidth="2" />
+        <path d="M12 16h14M12 20h10M12 24h7" stroke="var(--accent-btc)" strokeWidth="1.5" strokeLinecap="round" />
+      </svg>
+    ),
+  },
+  {
     name: 'Product Development',
-    roles: 'Spec ? execute ? PR',
+    roles: 'Spec → execute → PR',
     description: 'Turns tickets into scoped execution and returns consolidated PRs.',
     icon: (
       <svg width="38" height="38" viewBox="0 0 38 38" aria-hidden="true">
@@ -41,8 +52,8 @@ const departments = [
 ];
 
 const comingSoon = [
-  ['Marketing Content', 'Brand Voice Analyst, Content Strategist, Copy Writer, Distribution Coordinator', 'Q3 2026'],
   ['Customer Success', 'Ticket Classifier, Response Drafter, Escalation Manager, Satisfaction Analyst', 'Q4 2026'],
+  ['Sales Intelligence', 'Deal Researcher, Competitive Analyst, Proposal Writer, CRM Sync Agent', 'Q1 2027'],
 ];
 
 export default function DepartmentsPage() {
