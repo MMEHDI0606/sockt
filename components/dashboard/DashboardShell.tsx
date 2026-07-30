@@ -37,6 +37,8 @@ const NAV_GROUPS: NavGroup[] = [
       { label: 'Agents', href: '/dashboard/agents', icon: '# ' },
       { label: 'LLM Keys', href: '/dashboard/llm-keys', icon: '🔑' },
       { label: 'Tools', href: '/dashboard/tools', icon: '⚙' },
+      { label: 'Deployments', href: '/dashboard/deployments', icon: '▶' },
+      { label: 'Users', href: '/dashboard/users', icon: '⊕' },
       { label: 'Slack', href: '/dashboard/slack', icon: '⚡' },
     ],
   },

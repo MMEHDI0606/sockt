@@ -5,6 +5,7 @@ import { createClient } from '@/utils/supabase/server';
 import { signOutAction } from '@/app/dashboard/actions';
 import ThemeToggle from '@/components/theme/ThemeToggle';
 import AccountSettingsForm from '@/components/dashboard/AccountSettingsForm';
+import AccountSecuritySection from '@/components/dashboard/AccountSecuritySection';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -139,6 +140,9 @@ export default async function DashboardAccountPage() {
           userId={user.id}
           balanceUsd={balanceUsd}
         />
+
+        {/* Sessions, SCIM, SSO */}
+        <AccountSecuritySection />
       </div>
     </main>
   );

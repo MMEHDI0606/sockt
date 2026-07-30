@@ -149,6 +149,52 @@ export async function getFleetBenchmarks(metric?: string): Promise<FleetBenchmar
   return cFetchList(`/benchmarks${query}`);
 }
 
+// ═══ Rate Limits (monitor) ═══
+export interface RateLimit { id: string; name: string; current: number; max: number; windowMs: number; }
+export async function getRateLimits(): Promise<RateLimit[]> { return cFetchList('/rate-limits'); }
+
+// ═══ Identity — users & RBAC (calls identity service directly) ═══
+const IDENTITY_URL = process.env.NEXT_PUBLIC_IDENTITY_URL || 'http://localhost:3003';
+
+async function iFetch<T>(path: string, init?: RequestInit): Promise<T> {
+  const res = await identityFetch(`${IDENTITY_URL}${path}`, {
+    ...init,
+    headers: { 'Content-Type': 'application/json', ...init?.headers },
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(`Identity API error ${res.status}: ${body.error || 'unknown'}`);
+  }
+  return res.json() as Promise<T>;
+}
+
+export interface IdentityUser {
+  id: string; tenantId: string; email: string; displayName: string;
+  role: string; departmentId?: string; active: boolean; createdAt: number;
+}
+export async function getIdentityUsers(): Promise<IdentityUser[]> {
+  const r = await iFetch<{ users: IdentityUser[] }>('/api/users');
+  return r.users;
+}
+export async function updateIdentityUserRole(userId: string, role: string): Promise<IdentityUser> {
+  const r = await iFetch<{ user: IdentityUser }>(`/api/rbac/users/${userId}/role`, { method: 'POST', body: JSON.stringify({ role }) });
+  return r.user;
+}
+export async function updateIdentityUserDepartment(userId: string, departmentId: string | null): Promise<IdentityUser> {
+  const r = await iFetch<{ user: IdentityUser }>(`/api/rbac/users/${userId}/department`, { method: 'PUT', body: JSON.stringify({ departmentId }) });
+  return r.user;
+}
+
+// ═══ Identity — sessions ═══
+export interface ActiveSession { id: string; userId: string; ipAddress?: string; userAgent?: string; createdAt: number; expiresAt: number; }
+export async function getActiveSessions(): Promise<ActiveSession[]> {
+  const r = await iFetch<{ sessions: ActiveSession[] }>('/api/sessions/active');
+  return r.sessions ?? [];
+}
+export async function revokeSession(sessionId: string): Promise<void> {
+  await iFetch('/api/sessions/revoke', { method: 'POST', body: JSON.stringify({ sessionId }) });
+}
+
 export {
   identityFetch,
   getAccessToken,

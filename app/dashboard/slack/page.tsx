@@ -78,14 +78,24 @@ export default function SlackPage() {
         </div>
       )}
 
-      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <button
-          style={{ ...BTN_PRIMARY(), opacity: 0.5, cursor: 'not-allowed' }}
-          disabled
-          title="Coming soon"
-        >
-          Connect Workspace (Coming Soon)
-        </button>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 12 }}>
+        {process.env.NEXT_PUBLIC_SLACK_CLIENT_ID ? (
+          <a
+            href={`https://slack.com/oauth/v2/authorize?client_id=${process.env.NEXT_PUBLIC_SLACK_CLIENT_ID}&scope=app_mentions:read,channels:history,channels:read,chat:write,users:read&redirect_uri=${encodeURIComponent((process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000') + '/api/slack/callback')}`}
+            style={{ ...BTN_PRIMARY(), textDecoration: 'none', display: 'inline-block' }}
+          >
+            Connect Workspace
+          </a>
+        ) : (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span style={{ fontFamily: C.mono, fontSize: 11, color: C.secondary }}>
+              Set <code style={{ background: C.raised, padding: '1px 5px', borderRadius: 4 }}>NEXT_PUBLIC_SLACK_CLIENT_ID</code> to enable OAuth
+            </span>
+            <button style={{ ...BTN_PRIMARY(), opacity: 0.45, cursor: 'not-allowed' }} disabled>
+              Connect Workspace
+            </button>
+          </div>
+        )}
       </div>
 
       {loading ? (

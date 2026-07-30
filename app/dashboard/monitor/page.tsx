@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getIntegrationHealth, getAlerts, getFleetBenchmarks, acknowledgeAlert, resolveAlert } from '@/lib/console/client';
+import { getIntegrationHealth, getAlerts, getFleetBenchmarks, getRateLimits, acknowledgeAlert, resolveAlert } from '@/lib/console/client';
 import type { IntegrationHealth, ConsoleAlert, FleetBenchmark } from '@/lib/console/types';
+import type { RateLimit } from '@/lib/console/client';
 
 const C = {
   void: 'var(--bg-void)',
@@ -64,6 +65,7 @@ export default function MonitorPage() {
   const [integrations, setIntegrations] = useState<IntegrationHealth[]>([]);
   const [alerts, setAlerts] = useState<ConsoleAlert[]>([]);
   const [benchmarks, setBenchmarks] = useState<FleetBenchmark[]>([]);
+  const [rateLimits, setRateLimits] = useState<RateLimit[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [actingAlert, setActingAlert] = useState<string | null>(null);
@@ -73,15 +75,19 @@ export default function MonitorPage() {
 
     async function fetchAll() {
       try {
-        const [iData, aData, bData] = await Promise.all([
+        const [iData, aData, bData, rData] = await Promise.allSettled([
           getIntegrationHealth(),
           getAlerts(),
           getFleetBenchmarks(),
+          getRateLimits(),
         ]);
         if (!cancelled) {
-          setIntegrations(iData);
-          setAlerts(aData);
-          setBenchmarks(bData);
+          if (iData.status === 'fulfilled') setIntegrations(iData.value);
+          if (aData.status === 'fulfilled') setAlerts(aData.value);
+          if (bData.status === 'fulfilled') setBenchmarks(bData.value);
+          if (rData.status === 'fulfilled') setRateLimits(rData.value);
+          const allFailed = [iData, aData, bData].every((r) => r.status === 'rejected');
+          if (allFailed) throw new Error((iData as PromiseRejectedResult).reason?.message || 'Failed to load monitor data');
           setError(null);
         }
       } catch (err) {
@@ -335,6 +341,35 @@ export default function MonitorPage() {
                     </div>
                   </div>
                 ))}
+              </div>
+            )}
+          </div>
+
+          <div style={{ marginBottom: 24 }}>
+            <div style={{ fontSize: 11, fontFamily: C.mono, color: C.secondary, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 12 }}>
+              Rate Limits
+            </div>
+            {rateLimits.length === 0 ? (
+              <div style={{ fontSize: 13, fontFamily: C.body, color: C.secondary, padding: '16px 0' }}>
+                Rate limit data unavailable — monitor service may not be running.
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                {rateLimits.map((r) => {
+                  const pct = Math.min(100, Math.round((r.current / r.max) * 100));
+                  const barColor = pct > 85 ? C.red : pct > 60 ? '#F59E0B' : C.green;
+                  return (
+                    <div key={r.id} style={{ background: C.surface, border: `1px solid ${C.border}`, borderTop: '1px solid var(--border-top-highlight)', borderRadius: C.radiusCard, padding: '10px 14px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+                        <span style={{ fontFamily: C.mono, fontSize: 12, color: C.primary }}>{r.name}</span>
+                        <span style={{ fontFamily: C.mono, fontSize: 11, color: C.secondary }}>{r.current} / {r.max} <span style={{ opacity: 0.6 }}>({Math.round(r.windowMs / 1000)}s window)</span></span>
+                      </div>
+                      <div style={{ height: 4, borderRadius: 2, background: C.raised, overflow: 'hidden' }}>
+                        <div style={{ height: '100%', width: `${pct}%`, background: barColor, borderRadius: 2, transition: 'width 0.4s ease' }} />
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>
