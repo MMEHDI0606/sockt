@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from 'next';
 import SmoothScrollProvider from '@/components/providers/SmoothScrollProvider';
 import './globals.css';
 import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const themeBootstrapScript = `
 (() => {
@@ -150,6 +151,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body>
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
