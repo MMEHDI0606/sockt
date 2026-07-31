@@ -18,8 +18,8 @@ const departments = [
   },
   {
     name: 'Content',
-    roles: 'X threads + LinkedIn + YouTube scripts → Slack approval → publish',
-    description: 'Plans content calendars, writes platform-native posts, routes drafts for approval, and publishes to X, LinkedIn, and YouTube/TikTok automatically.',
+    roles: 'X threads + LinkedIn + YouTube/TikTok → AI video → Slack approval → publish',
+    description: 'Plans content calendars, writes platform-native posts and video scripts, generates AI video clips (LTX draft → Kling final), stitches them, routes everything for approval, then publishes automatically.',
     icon: (
       <svg width="38" height="38" viewBox="0 0 38 38" aria-hidden="true">
         <rect x="7" y="10" width="24" height="18" rx="4" fill="none" stroke="var(--accent-btc)" strokeWidth="2" />
