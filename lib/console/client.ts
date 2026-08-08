@@ -18,7 +18,7 @@ import type {
   FleetBenchmark,
 } from './types';
 
-const CONSOLE_URL = process.env.NEXT_PUBLIC_CONSOLE_API_URL || 'https://api.sockt.dev/console';
+const CONSOLE_URL = process.env.NEXT_PUBLIC_CONSOLE_API_URL || 'http://localhost:8080/console';
 
 async function cFetch<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await identityFetch(`${CONSOLE_URL}${path}`, {

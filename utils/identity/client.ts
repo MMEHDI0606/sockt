@@ -11,7 +11,7 @@
  *   4. `logoutSession()` revokes the identity session and clears the cookie.
  */
 
-const IDENTITY_URL = process.env.NEXT_PUBLIC_IDENTITY_URL;
+const IDENTITY_URL = process.env.NEXT_PUBLIC_IDENTITY_URL || 'http://localhost:3003';
 
 let accessToken: string | null = null;
 let accessExpiresAt: number | null = null;
