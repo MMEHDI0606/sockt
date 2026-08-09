@@ -33,13 +33,14 @@ const NAV_GROUPS: NavGroup[] = [
   {
     label: 'CONFIGURE',
     items: [
-      { label: 'Teams', href: '/dashboard/teams', icon: '⬡' },
-      { label: 'Agents', href: '/dashboard/agents', icon: '# ' },
-      { label: 'LLM Keys', href: '/dashboard/llm-keys', icon: '🔑' },
-      { label: 'Tools', href: '/dashboard/tools', icon: '⚙' },
-      { label: 'Deployments', href: '/dashboard/deployments', icon: '▶' },
-      { label: 'Users', href: '/dashboard/users', icon: '⊕' },
-      { label: 'Slack', href: '/dashboard/slack', icon: '⚡' },
+      { label: 'Slack', href: '/dashboard/configure/slack', icon: '⚡' },
+      { label: 'BYOK Keys', href: '/dashboard/configure/keys', icon: '🔑' },
+    ],
+  },
+  {
+    label: 'DEPLOY',
+    items: [
+      { label: 'Departments', href: '/dashboard/deploy', icon: '⬡' },
     ],
   },
   {

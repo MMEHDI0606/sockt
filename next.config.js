@@ -26,6 +26,17 @@ const nextConfig = {
   },
   // Disable Turbopack, use Webpack instead
   productionBrowserSourceMaps: false,
+  async redirects() {
+    return [
+      { source: '/dashboard/slack', destination: '/dashboard/configure/slack', permanent: false },
+      { source: '/dashboard/llm-keys', destination: '/dashboard/configure/keys', permanent: false },
+      { source: '/dashboard/deployments', destination: '/dashboard/deploy', permanent: false },
+      { source: '/dashboard/teams', destination: '/dashboard/deploy', permanent: false },
+      { source: '/dashboard/agents', destination: '/dashboard/deploy', permanent: false },
+      { source: '/dashboard/tools', destination: '/dashboard/deploy', permanent: false },
+      { source: '/dashboard/users', destination: '/dashboard/deploy', permanent: false },
+    ];
+  },
 };
 
 module.exports = nextConfig;

@@ -33,6 +33,7 @@ export default function SlackPage() {
   const [error, setError] = useState<string | null>(null);
   const [workspaces, setWorkspaces] = useState<SlackWorkspace[]>([]);
   const [deployments, setDeployments] = useState<Deployment[]>([]);
+  const [justConnected, setJustConnected] = useState<string | null>(null);
 
   const fetchData = async () => {
     try {
@@ -48,6 +49,10 @@ export default function SlackPage() {
   };
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const sp = new URLSearchParams(window.location.search);
+      if (sp.get('success') === '1' && sp.get('team_id')) setJustConnected(sp.get('team_id'));
+    }
     fetchData();
   }, []);
 
@@ -71,6 +76,13 @@ export default function SlackPage() {
         <p style={{ fontSize: 13, fontFamily: C.body, color: C.secondary, margin: '4px 0 0 0' }}>Manage Slack workspace connections for AI swarm deployments.</p>
       </div>
 
+      {justConnected && (
+        <div style={{ ...CARD(), borderColor: C.green, color: C.green, fontFamily: C.mono, fontSize: 12 }}>
+          Workspace "{justConnected}" connected.
+          <button style={{ ...BTN_OUTLINE, marginLeft: 12, borderColor: C.green, color: C.green }} onClick={() => setJustConnected(null)}>Dismiss</button>
+        </div>
+      )}
+
       {error && (
         <div style={{ ...CARD(), borderColor: C.red, color: C.red, fontFamily: C.mono, fontSize: 12 }}>
           {error}
@@ -80,12 +92,18 @@ export default function SlackPage() {
 
       <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 12 }}>
         {process.env.NEXT_PUBLIC_SLACK_CLIENT_ID ? (
-          <a
-            href={`https://slack.com/oauth/v2/authorize?client_id=${process.env.NEXT_PUBLIC_SLACK_CLIENT_ID}&scope=app_mentions:read,channels:history,channels:read,chat:write,users:read&redirect_uri=${encodeURIComponent((process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000') + '/api/slack/callback')}`}
-            style={{ ...BTN_PRIMARY(), textDecoration: 'none', display: 'inline-block' }}
-          >
-            Connect Workspace
-          </a>
+          (() => {
+            const consoleBase = (process.env.NEXT_PUBLIC_CONSOLE_API_URL || 'http://localhost:8080/console').replace(/\/console$/, '');
+            const redirectUri = `${consoleBase}/slack/oauth/callback`;
+            return (
+              <a
+                href={`https://slack.com/oauth/v2/authorize?client_id=${process.env.NEXT_PUBLIC_SLACK_CLIENT_ID}&scope=app_mentions:read,channels:history,channels:read,chat:write,users:read&redirect_uri=${encodeURIComponent(redirectUri)}`}
+                style={{ ...BTN_PRIMARY(), textDecoration: 'none', display: 'inline-block' }}
+              >
+                Connect Workspace
+              </a>
+            );
+          })()
         ) : (
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <span style={{ fontFamily: C.mono, fontSize: 11, color: C.secondary }}>
