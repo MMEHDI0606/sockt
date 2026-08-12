@@ -13,7 +13,7 @@ type AccountSettingsFormProps = {
   initialDisplayName: string;
   initialEmail: string;
   userId: string;
-  balanceUsd: number;
+  balanceUsd?: number;
 };
 
 export default function AccountSettingsForm({
@@ -283,7 +283,7 @@ export default function AccountSettingsForm({
               Delete Workspace & Account
             </h3>
             <p className="text-xs leading-relaxed text-[var(--dashboard-muted)] max-w-xl">
-              This action is permanent and irreversible. Once you delete your account, your remaining pre-loaded credit balance of <span className="font-semibold text-[var(--dashboard-text)]">${balanceUsd.toFixed(2)} USD</span>, all active sandboxed API Keys, and logs will be permanently destroyed.
+              This action is permanent and irreversible. Once you delete your account, all active sandboxed agents, API keys, and logs will be permanently destroyed.
             </p>
           </div>
         </div>
@@ -310,7 +310,7 @@ export default function AccountSettingsForm({
               <span className="text-[var(--accent-red)] font-semibold">⚠️</span> Confirm Account Purge
             </h3>
             <p className="mt-4 text-xs leading-relaxed text-[var(--dashboard-muted)]">
-              This is a final warning. You are about to permanently delete your account and all associated sandbox credits of <span className="font-semibold text-[var(--dashboard-text)]">${balanceUsd.toFixed(2)} USD</span>.
+              This is a final warning. You are about to permanently delete your account and all associated data.
             </p>
 
             <form onSubmit={handleDeleteAccount} className="space-y-5 mt-6">

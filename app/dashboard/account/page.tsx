@@ -33,15 +33,6 @@ export default async function DashboardAccountPage() {
     redirect('/login');
   }
 
-  const { data: profile } = await supabase
-    .from('users')
-    .select('credit_balance_subcents')
-    .eq('id', user.id)
-    .maybeSingle();
-
-  const balance = Number(profile?.credit_balance_subcents ?? 0);
-  const balanceUsd = balance / 10000000;
-
   const userEmail = user.email || 'unknown@sockt.dev';
   const displayName =
     (typeof user.user_metadata?.full_name === 'string' && user.user_metadata.full_name.trim()) ||
@@ -138,7 +129,6 @@ export default async function DashboardAccountPage() {
           initialDisplayName={displayName}
           initialEmail={userEmail}
           userId={user.id}
-          balanceUsd={balanceUsd}
         />
 
         {/* Sessions, SCIM, SSO */}
